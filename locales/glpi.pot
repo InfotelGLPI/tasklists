@@ -1,0 +1,72 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Tasklists Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI - Tasklists plugin 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-08 09:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: setup.php:64 inc/dashboard.class.php:77 inc/dashboard.class.php:189
+#: inc/dashboard.class.php:194 inc/menu.class.php:35 inc/profile.class.php:41
+msgid "Tasks list"
+msgstr ""
+
+#: setup.php:77
+msgid "This plugin requires GLPI >= 0.85"
+msgstr ""
+
+#: inc/dashboard.class.php:76 inc/dashboard.class.php:92
+#: inc/dashboard.class.php:98 inc/dashboard.class.php:176
+#: inc/dashboard.class.php:181
+msgid "Add task"
+msgstr ""
+
+#: inc/dashboard.class.php:107 inc/task.class.php:61 inc/task.class.php:194
+#: inc/tasktype.class.php:39
+msgid "Context"
+msgid_plural "Contexts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/dashboard.class.php:146
+msgid "Mark as done"
+msgstr ""
+
+#: inc/dashboard.class.php:151 inc/dashboard.class.php:156
+msgid "Add comment"
+msgstr ""
+
+#: inc/task.class.php:237
+msgid "Empty for infinite"
+msgstr ""
+
+#: inc/task.class.php:601
+msgctxt "visibility"
+msgid "This user"
+msgstr ""
+
+#: inc/task.class.php:604
+msgctxt "visibility"
+msgid "This user and this group"
+msgstr ""
+
+#: inc/task.class.php:607
+msgctxt "visibility"
+msgid "All"
+msgstr ""
+
+#: inc/task.class.php:623
+msgid "Affect entity for create task"
+msgstr ""

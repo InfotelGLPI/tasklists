@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Domains Development Team
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Xavier CAILLAUD <tsmr@thetsmr.fr>, 2013,2015
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - domains plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-08 09:44+0100\n"
+"PO-Revision-Date: 2016-01-08 09:44+0100\n"
+"Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
+"Language-Team: French (France) (http://www.transifex.com/tsmr/GLPI_domains/"
+"language/fr_FR/)\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.6\n"
+
+#: setup.php:64 inc/dashboard.class.php:77 inc/dashboard.class.php:189
+#: inc/dashboard.class.php:194 inc/menu.class.php:35 inc/profile.class.php:41
+msgid "Tasks list"
+msgstr "Liste des tâches"
+
+#: setup.php:77
+msgid "This plugin requires GLPI >= 0.85"
+msgstr "Ce plugin nécessite GLPI >= 0.85"
+
+#: inc/dashboard.class.php:76 inc/dashboard.class.php:92
+#: inc/dashboard.class.php:98 inc/dashboard.class.php:176
+#: inc/dashboard.class.php:181
+msgid "Add task"
+msgstr "Ajouter une tâche"
+
+#: inc/dashboard.class.php:107 inc/task.class.php:61 inc/task.class.php:194
+#: inc/tasktype.class.php:39
+msgid "Context"
+msgid_plural "Contexts"
+msgstr[0] "Contexte"
+msgstr[1] "Contextes"
+
+#: inc/dashboard.class.php:146
+msgid "Mark as done"
+msgstr "Maquer comme fait"
+
+#: inc/dashboard.class.php:151 inc/dashboard.class.php:156
+msgid "Add comment"
+msgstr "Ajouter un commentaire"
+
+#: inc/task.class.php:237
+msgid "Empty for infinite"
+msgstr "Vide pour infini"
+
+#: inc/task.class.php:601
+msgctxt "visibility"
+msgid "This user"
+msgstr "Cet utilisateur"
+
+#: inc/task.class.php:604
+msgctxt "visibility"
+msgid "This user and this group"
+msgstr "Cet utilisateur et ce groupe"
+
+#: inc/task.class.php:607
+msgctxt "visibility"
+msgid "All"
+msgstr "Tout le monde"
+
+#: inc/task.class.php:623
+msgid "Affect entity for create task"
+msgstr "Affecter une entité pour une création de tâche"
+
+#~ msgid "Task type"
+#~ msgid_plural "Task types"
+#~ msgstr[0] "Type de tâche"
+#~ msgstr[1] "Types de tâche"
+
+#~ msgid "Task"
+#~ msgid_plural "Tasks"
+#~ msgstr[0] "Tâche"
+#~ msgstr[1] "Tâches"
+
+#~ msgid "Does not expire"
+#~ msgstr "N'expire pas"
+
+#~ msgid "Associate a domain"
+#~ msgstr "Associer un domaine"
+
+#~ msgid "Domain"
+#~ msgid_plural "Domains"
+#~ msgstr[0] "Domaine"
+#~ msgstr[1] "Domaines"
+
+#~ msgid "Plugin Setup"
+#~ msgstr "Configuration du plugin"
+
+#~ msgid "Time of checking of validity of domains"
+#~ msgstr "Délai de vérification de validité des domaines"
+
+#~ msgid "Domains expired since more"
+#~ msgstr "Domaines expirés depuis plus de"
+
+#~ msgid "Domains expiring in less than"
+#~ msgstr "Domaines  qui vont expirer dans moins de"
+
+#~ msgid "Expired or expiring domains"
+#~ msgstr "Domaines expirés ou domaines qui vont expirer"
+
+#~ msgid "Domain type"
+#~ msgid_plural "Domain types"
+#~ msgstr[0] "Type de domaine"
+#~ msgstr[1] "Types de domaine"
+
+#~ msgid "Expired domains"
+#~ msgstr "Domaines expirés"
+
+#~ msgid "Expiring domains"
+#~ msgstr "Domaines  qui vont expirer"
