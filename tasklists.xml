@@ -10,8 +10,8 @@
          <en><![CDATA[Adding a management of simple tasks. This plugin adds in GLPI, an interface to input simple tasks.]]></en>
       </short>
       <long>
-         <fr><![CDATA[Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples.<br />- Peut être utilisé avec le collecteur de mail pour créer des tâches.]]></fr>
-         <en><![CDATA[This plugin adds in GLPI, an interface to input simple tasks.<br />- Can be used with mail collector to create tasks.]]></en>
+         <fr><![CDATA[Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples.<br />- Ajout de notes possibles sur les tâches.<br />- Peut être utilisé avec le collecteur de mail pour créer des tâches.<br />- Peut être utilisé avec le plugin mydashboard d'Infotel.]]></fr>
+         <en><![CDATA[This plugin adds in GLPI, an interface to input simple tasks.<br />- Can add notes on tasks.<br />- Can be used with mail collector to create tasks.<br />- Can be used with mydashboard plugin of Infotel]]></en>
       </long>
    </description>
    <homepage>https://github.com/InfotelGLPI/tasklists</homepage>
