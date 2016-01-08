@@ -9,8 +9,10 @@ Adding a management of simple tasks. This plugin adds in GLPI, an interface to i
 
 For use it with mail collector you must to modify "inc/rulemailcollector.class.php" file, into  "executeActions" fonction, into switch : switch ($action->fields["action_type"]), add a default case  : 
 
+```
 default:
    //plugins actions
    $executeaction = clone $this;
    $output = $executeaction->executePluginsActions($action, $output, $params);
    break;
+```
