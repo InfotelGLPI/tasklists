@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Domains Development Team
+# Copyright (C) YEAR Tasklists Development Team
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GLPI Project - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-08 09:44+0100\n"
-"PO-Revision-Date: 2016-01-08 13:54+0100\n"
+"PO-Revision-Date: 2016-01-08 13:57+0100\n"
 "Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/tsmr/"
 "GLPI_tasklists/language/fr_FR/)\n"
@@ -27,7 +27,7 @@ msgstr "Liste des tâches"
 
 #: setup.php:77
 msgid "This plugin requires GLPI >= 0.85"
-msgstr "Ce plugin nécessite GLPI >= 0.85"
+msgstr "Ce plugin nécessite GLPI >= 0.90"
 
 #: inc/dashboard.class.php:76 inc/dashboard.class.php:92
 #: inc/dashboard.class.php:98 inc/dashboard.class.php:176
@@ -72,50 +72,3 @@ msgstr "Tout le monde"
 #: inc/task.class.php:623
 msgid "Affect entity for create task"
 msgstr "Affecter une entité pour une création de tâche"
-
-#~ msgid "Task type"
-#~ msgid_plural "Task types"
-#~ msgstr[0] "Type de tâche"
-#~ msgstr[1] "Types de tâche"
-
-#~ msgid "Task"
-#~ msgid_plural "Tasks"
-#~ msgstr[0] "Tâche"
-#~ msgstr[1] "Tâches"
-
-#~ msgid "Does not expire"
-#~ msgstr "N'expire pas"
-
-#~ msgid "Associate a domain"
-#~ msgstr "Associer un domaine"
-
-#~ msgid "Domain"
-#~ msgid_plural "Domains"
-#~ msgstr[0] "Domaine"
-#~ msgstr[1] "Domaines"
-
-#~ msgid "Plugin Setup"
-#~ msgstr "Configuration du plugin"
-
-#~ msgid "Time of checking of validity of domains"
-#~ msgstr "Délai de vérification de validité des domaines"
-
-#~ msgid "Domains expired since more"
-#~ msgstr "Domaines expirés depuis plus de"
-
-#~ msgid "Domains expiring in less than"
-#~ msgstr "Domaines  qui vont expirer dans moins de"
-
-#~ msgid "Expired or expiring domains"
-#~ msgstr "Domaines expirés ou domaines qui vont expirer"
-
-#~ msgid "Domain type"
-#~ msgid_plural "Domain types"
-#~ msgstr[0] "Type de domaine"
-#~ msgstr[1] "Types de domaine"
-
-#~ msgid "Expired domains"
-#~ msgstr "Domaines expirés"
-
-#~ msgid "Expiring domains"
-#~ msgstr "Domaines  qui vont expirer"

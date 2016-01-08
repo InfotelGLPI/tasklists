@@ -38,4 +38,8 @@
             <tag>Tasks</tag>
          </en>
    </tags>
+   <screenshots>
+      <screenshot>https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/addTask.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/Tasks%20list%20from Dashboard.png</screenshot>
+   </screenshots>
 </root>

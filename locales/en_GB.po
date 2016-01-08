@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Domains Development Team
+# Copyright (C) YEAR Tasklists Development Team
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GLPI Project - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-08 09:44+0100\n"
-"PO-Revision-Date: 2016-01-08 13:55+0100\n"
+"PO-Revision-Date: 2016-01-08 13:58+0100\n"
 "Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/tsmr/"
 "GLPI_tasklists/language/en_GB/)\n"
@@ -26,7 +26,7 @@ msgstr "Tasks list"
 
 #: setup.php:77
 msgid "This plugin requires GLPI >= 0.85"
-msgstr "This plugin requires GLPI >= 0.85"
+msgstr "This plugin requires GLPI >= 0.90"
 
 #: inc/dashboard.class.php:76 inc/dashboard.class.php:92
 #: inc/dashboard.class.php:98 inc/dashboard.class.php:176
@@ -71,50 +71,3 @@ msgstr "All"
 #: inc/task.class.php:623
 msgid "Affect entity for create task"
 msgstr "Affect entity for create task"
-
-#~ msgid "Task type"
-#~ msgid_plural "Task types"
-#~ msgstr[0] "Task type"
-#~ msgstr[1] "Task types"
-
-#~ msgid "Task"
-#~ msgid_plural "Tasks"
-#~ msgstr[0] "Task"
-#~ msgstr[1] "Tasks"
-
-#~ msgid "Does not expire"
-#~ msgstr "Does not expire"
-
-#~ msgid "Associate a domain"
-#~ msgstr "Associate a domain"
-
-#~ msgid "Domain"
-#~ msgid_plural "Domains"
-#~ msgstr[0] "Domain"
-#~ msgstr[1] "Domains"
-
-#~ msgid "Plugin Setup"
-#~ msgstr "Plugin Setup"
-
-#~ msgid "Time of checking of validity of domains"
-#~ msgstr "Time of checking of validity of domains"
-
-#~ msgid "Domains expired since more"
-#~ msgstr "Domains expired since more"
-
-#~ msgid "Domains expiring in less than"
-#~ msgstr "Domains expiring in less than"
-
-#~ msgid "Expired or expiring domains"
-#~ msgstr "Expired or expiring domains"
-
-#~ msgid "Domain type"
-#~ msgid_plural "Domain types"
-#~ msgstr[0] "Domain type"
-#~ msgstr[1] "Domain types"
-
-#~ msgid "Expired domains"
-#~ msgstr "Expired domains"
-
-#~ msgid "Expiring domains"
-#~ msgstr "Expiring domains"
