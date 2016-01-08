@@ -37,7 +37,7 @@ if (strpos($_SERVER['PHP_SELF'],"dropdownTypeTasks.php")) {
 Session::checkCentralAccess();
 
 // Make a select box
-if (isset($_POST["domaintypes"])) {
+if (isset($_POST["tasktypes"])) {
    $used = array();
 
    // Clean used array
