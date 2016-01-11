@@ -33,7 +33,9 @@ function plugin_init_tasklists() {
    
    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
    $PLUGIN_HOOKS['change_profile']['tasklists'] = array('PluginTasklistsProfile','initProfile');
-
+   
+   $PLUGIN_HOOKS['use_rules']['tasklists'] = array('RuleMailCollector');
+   
    if (Session::getLoginUserID()) {
       
       Plugin::registerClass('PluginTasklistsTask', array(
@@ -46,7 +48,7 @@ function plugin_init_tasklists() {
       
 
       $PLUGIN_HOOKS['menu_toadd']['tasklists'] = array('helpdesk'   => 'PluginTasklistsMenu');
-      $PLUGIN_HOOKS['use_rules']['tasklists'] = array('RuleMailCollector');
+      
       if (class_exists('PluginMydashboardMenu')) {
          $PLUGIN_HOOKS['mydashboard']['tasklists'] = array ("PluginTasklistsDashboard");
       }
@@ -66,15 +68,15 @@ function plugin_version_tasklists() {
       'license' => 'GPLv2+',
       'author'  => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'=>'https://github.com/InfotelGLPI/tasklists',
-      'minGlpiVersion' => '0.90',// For compatibility / no install in version < 0.90
+      'minGlpiVersion' => '0.85',// For compatibility / no install in version < 0.80
    );
 
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_tasklists_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '0.90', 'lt') || version_compare(GLPI_VERSION, '0.92', 'ge')) {
-      _e('This plugin requires GLPI >= 0.90', 'tasklists');
+   if (version_compare(GLPI_VERSION, '0.85', 'lt') || version_compare(GLPI_VERSION, '0.92', 'ge')) {
+      _e('This plugin requires GLPI >= 0.85', 'tasklists');
       return false;
    }
    return true;

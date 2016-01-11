@@ -63,7 +63,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                             WHERE NOT `glpi_plugin_tasklists_tasks`.`is_deleted`
                                  AND `glpi_plugin_tasklists_tasks`.`state` < 2 ";
                   $query .= getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
-                  $query .=  "ORDER BY `glpi_plugin_tasklists_tasks`.`date_mod`DESC ";
+                  $query .=  "ORDER BY `glpi_plugin_tasklists_tasks`.`priority`DESC ";
 
                   $tasks = array();
                   if ($result = $DB->query($query)) {
