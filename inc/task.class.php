@@ -649,7 +649,7 @@ class PluginTasklistsTask extends CommonDBTM {
                      $input['name'] = $params['headers']['subject'];
                   }
                   if (isset($params['ticket'])) {
-                     $input['comment'] = strip_tags($params['ticket']['content']);
+                     $input['comment'] = addslashes(strip_tags($params['ticket']['content']));
                   }
                   if (isset($params['headers']['from'])) {
                      $input['users_id'] = User::getOrImportByEmail($params['headers']['from']);
