@@ -17,7 +17,8 @@
    <homepage>https://github.com/InfotelGLPI/tasklists</homepage>
    <download>https://github.com/InfotelGLPI/tasklists/releases</download>
    <authors>
-      <author>Xavier Caillaud / Infotel</author>
+      <author>Xavier Caillaud</author>
+      <author>Infotel</author>
    </authors>
    <versions>
       <version>
