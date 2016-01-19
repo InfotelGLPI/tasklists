@@ -100,7 +100,12 @@ class PluginTasklistsDashboard extends CommonGLPI {
                               $tasks[$data['id']][2] = $data['type'];
                               $tasks[$data['id']][3] = getUserName($data['users_id']);
                               $tasks[$data['id']][4] = Dropdown::getValueWithUnit($data['percent_done'],"%");
-                              $tasks[$data['id']][5] = Html::convDate($data['due_date']);
+                              $due_date = $data['due_date'];
+                              $display =Html::convDate($data['due_date']);
+                              if ($due_date <= date('Y-m-d') && !empty($due_date)) {
+                                 $display ="<div class='deleted'>".Html::convDate($data['due_date'])."</div>";
+                              }
+                              $tasks[$data['id']][5] = $display;
                               $tasks[$data['id']][6] = "<div align='center'>";
                               if (Session::haveRight("plugin_tasklists", UPDATE)) {
                                  $tasks[$data['id']][6] .= "<a class='pointer' onclick=\" submitGetLink('".$CFG_GLPI['root_doc']."/plugins/tasklists/front/task.form.php', {'done': 'done', 'id': '".$data['id']."', '_glpi_csrf_token': '".Session::getNewCSRFToken()."', '_glpi_simple_form': '1'});\"><img src='".$CFG_GLPI['root_doc']."/plugins/tasklists/pics/ok.png' title='".__('Mark as done', 'tasklists')."'></a>";
