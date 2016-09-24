@@ -290,12 +290,6 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "</td>";
 
       echo "</tr>";
-      
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='center' colspan='4'>";
-      printf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
-      echo "</td>";
-      echo "</tr>";
 
       $this->showFormButtons($options);
 

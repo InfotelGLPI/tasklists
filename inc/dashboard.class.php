@@ -1,29 +1,31 @@
 <?php
-
 /*
+ * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
- Activity plugin for GLPI
- Copyright (C) 2013 by the Activity Development Team.
+ Tasklists plugin for GLPI
+ Copyright (C) 2003-2016 by the Tasklists Development Team.
+
+ https://github.com/InfotelGLPI/tasklists
  -------------------------------------------------------------------------
 
  LICENSE
+      
+ This file is part of Tasklists.
 
- This file is part of Activity.
-
- Activity is free software; you can redistribute it and/or modify
+ Tasklists is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- Activity is distributed in the hope that it will be useful,
+ Tasklists is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Activity. If not, see <http://www.gnu.org/licenses/>.
+ along with Tasklists. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
-*/
+ */
 
 class PluginTasklistsDashboard extends CommonGLPI {
 

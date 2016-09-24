@@ -65,7 +65,7 @@ function plugin_version_tasklists() {
 
    return array (
       'name' => __('Tasks list', 'tasklists'),
-      'version' => '1.0.0',
+      'version' => '1.1.0',
       'license' => 'GPLv2+',
       'author'  => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'=>'https://github.com/InfotelGLPI/tasklists',
@@ -76,7 +76,7 @@ function plugin_version_tasklists() {
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_tasklists_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '0.85', 'lt') || version_compare(GLPI_VERSION, '0.92', 'ge')) {
+   if (version_compare(GLPI_VERSION, '0.85', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
       _e('This plugin requires GLPI >= 0.85', 'tasklists');
       return false;
    }
