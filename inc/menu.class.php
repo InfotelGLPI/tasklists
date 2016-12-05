@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -27,35 +28,48 @@
  --------------------------------------------------------------------------
  */
 
- 
-class PluginTasklistsMenu extends CommonGLPI {
+
+/**
+ * Class PluginTasklistsMenu
+ */
+class PluginTasklistsMenu extends CommonGLPI
+{
    static $rightname = 'plugin_tasklists';
 
-   static function getMenuName($nb = 1) {
+   /**
+    * @param int $nb
+    * @return translated
+    */
+   static function getMenuName($nb = 1)
+   {
       return __('Tasks list', 'tasklists');
    }
 
-   static function getMenuContent() {
-      global $CFG_GLPI;
+   /**
+    * @return array
+    */
+   static function getMenuContent()
+   {
 
-      $menu                                           = array();
-      $menu['title']                                  = self::getMenuName(2);
-      $menu['page']                                   = PluginTasklistsTask::getSearchURL(false);
-      $menu['links']['search']                        = PluginTasklistsTask::getSearchURL(false);
+      $menu = array();
+      $menu['title'] = self::getMenuName(2);
+      $menu['page'] = PluginTasklistsTask::getSearchURL(false);
+      $menu['links']['search'] = PluginTasklistsTask::getSearchURL(false);
       if (PluginTasklistsTask::canCreate()) {
-         $menu['links']['add']                        = PluginTasklistsTask::getFormURL(false);
+         $menu['links']['add'] = PluginTasklistsTask::getFormURL(false);
       }
-      
+
 
       return $menu;
    }
 
-   static function removeRightsFromSession() {
+   static function removeRightsFromSession()
+   {
       if (isset($_SESSION['glpimenu']['helpdesk']['types']['PluginTasklistsMenu'])) {
-         unset($_SESSION['glpimenu']['helpdesk']['types']['PluginTasklistsMenu']); 
+         unset($_SESSION['glpimenu']['helpdesk']['types']['PluginTasklistsMenu']);
       }
       if (isset($_SESSION['glpimenu']['helpdesk']['content']['plugintasklistsmenu'])) {
-         unset($_SESSION['glpimenu']['helpdesk']['content']['plugintasklistsmenu']); 
+         unset($_SESSION['glpimenu']['helpdesk']['content']['plugintasklistsmenu']);
       }
    }
 }

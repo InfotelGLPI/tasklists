@@ -27,14 +27,16 @@
  --------------------------------------------------------------------------
  */
 
-if (strpos($_SERVER['PHP_SELF'],"dropdownTypeTasks.php")) {
-   $AJAX_INCLUDE=1;
-   include ('../../../inc/includes.php');
+if (strpos($_SERVER['PHP_SELF'], "dropdownTypeTasks.php")) {
+   $AJAX_INCLUDE = 1;
+   include('../../../inc/includes.php');
    header("Content-Type: text/html; charset=UTF-8");
    Html::header_nocache();
 }
 
 Session::checkCentralAccess();
+
+global $DB;
 
 // Make a select box
 if (isset($_POST["tasktypes"])) {
@@ -44,8 +46,8 @@ if (isset($_POST["tasktypes"])) {
    if (isset($_POST['used']) && is_array($_POST['used']) && (count($_POST['used']) > 0)) {
       $query = "SELECT `id`
                 FROM `glpi_plugin_tasklists_tasks`
-                WHERE `id` IN (".implode(',',$_POST['used']).")
-                      AND `plugin_tasklists_tasktypes_id` = '".$_POST["tasktypes"]."'";
+                WHERE `id` IN (" . implode(',', $_POST['used']) . ")
+                      AND `plugin_tasklists_tasktypes_id` = '" . $_POST["tasktypes"] . "'";
 
       foreach ($DB->request($query) AS $data) {
          $used[$data['id']] = $data['id'];
@@ -53,11 +55,10 @@ if (isset($_POST["tasktypes"])) {
    }
 
    Dropdown::show('PluginTasklistsTask',
-                  array('name'      => $_POST['myname'],
-                        'used'      => $used,
-                        'width'     => '50%',
-                        'entity'    => $_POST['entity'],
-                        'rand'      => $_POST['rand'],
-                        'condition' => "glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id='".$_POST["tasktypes"]."'"));
+      array('name' => $_POST['myname'],
+         'used' => $used,
+         'width' => '50%',
+         'entity' => $_POST['entity'],
+         'rand' => $_POST['rand'],
+         'condition' => "glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id='" . $_POST["tasktypes"] . "'"));
 }
-?>

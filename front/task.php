@@ -27,14 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
-Html::header(PluginTasklistsTask::getTypeName(2),'',"helpdesk","plugintasklistsmenu");
+Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
 $task = new PluginTasklistsTask();
 
-if ($task->canView() || Session::haveRight("config",CREATE)) {
-      
+if ($task->canView() || Session::haveRight("config", CREATE)) {
+
    Search::show("PluginTasklistsTask");
 
 } else {
@@ -42,5 +42,3 @@ if ($task->canView() || Session::haveRight("config",CREATE)) {
 }
 
 Html::footer();
-
-?>

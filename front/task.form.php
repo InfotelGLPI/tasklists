@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 if (!isset($_GET["id"]))
    $_GET["id"] = "";
@@ -47,22 +47,22 @@ if (isset($_POST["add"])) {
    $task->check($_POST['id'], DELETE);
    $task->delete($_POST);
    $task->redirectToList();
-   
+
 } else if (isset($_POST["restore"])) {
    $task->check($_POST['id'], PURGE);
    $task->restore($_POST);
    $task->redirectToList();
-   
+
 } else if (isset($_POST["purge"])) {
    $task->check($_POST['id'], PURGE);
    $task->delete($_POST, 1);
    $task->redirectToList();
-   
+
 } else if (isset($_POST["update"])) {
    $task->check($_POST['id'], UPDATE);
    $task->update($_POST);
    Html::back();
-   
+
 } else if (isset($_POST["done"])) {
    $task->check($_POST['id'], UPDATE);
    $options['id'] = $_POST['id'];
@@ -70,15 +70,14 @@ if (isset($_POST["add"])) {
    $options['percent_done'] = 100;
    $task->update($options);
    Html::back();
-   
+
 } else {
 
    $task->checkGlobal(READ);
 
-   Html::header(PluginTasklistsTask::getTypeName(2),'',"helpdesk","plugintasklistsmenu");
-   
+   Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+
    $task->display($_GET);
 
    Html::footer();
 }
-?>

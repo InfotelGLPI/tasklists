@@ -27,43 +27,50 @@
  --------------------------------------------------------------------------
  */
 
-function plugin_tasklists_install() {
+/**
+ * @return bool
+ */
+function plugin_tasklists_install()
+{
    global $DB;
-   
-   include_once (GLPI_ROOT."/plugins/tasklists/inc/profile.class.php");
-   include_once (GLPI_ROOT."/plugins/tasklists/inc/task.class.php");
+
+   include_once(GLPI_ROOT . "/plugins/tasklists/inc/profile.class.php");
+   include_once(GLPI_ROOT . "/plugins/tasklists/inc/task.class.php");
    if (!TableExists("glpi_plugin_tasklists_tasks")) {
-      
-      $install=true;
-      $DB->runFile(GLPI_ROOT ."/plugins/tasklists/sql/empty-1.0.0.sql");
+
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.0.0.sql");
 
    }
-   
+
    PluginTasklistsProfile::initProfile();
    PluginTasklistsProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 
    return true;
 }
 
-function plugin_tasklists_uninstall() {
+/**
+ * @return bool
+ */
+function plugin_tasklists_uninstall()
+{
    global $DB;
 
-   include_once (GLPI_ROOT."/plugins/tasklists/inc/profile.class.php");
-   include_once (GLPI_ROOT."/plugins/tasklists/inc/menu.class.php");
+   include_once(GLPI_ROOT . "/plugins/tasklists/inc/profile.class.php");
+   include_once(GLPI_ROOT . "/plugins/tasklists/inc/menu.class.php");
 
    $tables = array("glpi_plugin_tasklists_tasks",
-               "glpi_plugin_tasklists_tasktypes");
+      "glpi_plugin_tasklists_tasktypes");
 
-   foreach($tables as $table)
+   foreach ($tables as $table)
       $DB->query("DROP TABLE IF EXISTS `$table`;");
 
-      
-   $tables_glpi = array("glpi_displaypreferences",
-               "glpi_notepads",
-               "glpi_bookmarks",
-               "glpi_logs");
 
-   foreach($tables_glpi as $table_glpi)
+   $tables_glpi = array("glpi_displaypreferences",
+      "glpi_notepads",
+      "glpi_bookmarks",
+      "glpi_logs");
+
+   foreach ($tables_glpi as $table_glpi)
       $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
 
 
@@ -73,34 +80,42 @@ function plugin_tasklists_uninstall() {
       $profileRight->deleteByCriteria(array('name' => $right['field']));
    }
    PluginTasklistsMenu::removeRightsFromSession();
-   
+
    PluginTasklistsProfile::removeRightsFromSession();
 
    return true;
 }
 
 // Define dropdown relations
-function plugin_tasklists_getDatabaseRelations() {
+/**
+ * @return array
+ */
+function plugin_tasklists_getDatabaseRelations()
+{
 
    $plugin = new Plugin();
 
    if ($plugin->isActivated("tasklists"))
-      return array("glpi_plugin_tasklists_tasktypes"=>array("glpi_plugin_tasklists_tasks"=>"plugin_tasklists_tasktypes_id"),
-                     "glpi_users"=>array("glpi_plugin_tasklists_tasks"=>"users_id"),
-                     "glpi_groups"=>array("glpi_plugin_tasklists_tasks"=>"groups_id"),
-                     "glpi_entities"=>array("glpi_plugin_tasklists_tasks"=>"entities_id",
-                                             "glpi_plugin_tasklists_tasktypes"=>"entities_id"));
+      return array("glpi_plugin_tasklists_tasktypes" => array("glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"),
+         "glpi_users" => array("glpi_plugin_tasklists_tasks" => "users_id"),
+         "glpi_groups" => array("glpi_plugin_tasklists_tasks" => "groups_id"),
+         "glpi_entities" => array("glpi_plugin_tasklists_tasks" => "entities_id",
+            "glpi_plugin_tasklists_tasktypes" => "entities_id"));
    else
       return array();
 }
 
 // Define Dropdown tables to be manage in GLPI :
-function plugin_tasklists_getDropdown() {
-   
+/**
+ * @return array
+ */
+function plugin_tasklists_getDropdown()
+{
+
    $plugin = new Plugin();
 
    if ($plugin->isActivated("tasklists"))
-      return array('PluginTasklistsTaskType'=>PluginTasklistsTaskType::getTypeName(2));
+      return array('PluginTasklistsTaskType' => PluginTasklistsTaskType::getTypeName(2));
    else
       return array();
 }
@@ -129,34 +144,54 @@ function plugin_tasklists_getAddSearchOptions($itemtype) {
    return $sopt;
 }
 */
-function plugin_tasklists_displayConfigItem($type,$ID,$data,$num) {
+/**
+ * @param $type
+ * @param $ID
+ * @param $data
+ * @param $num
+ * @return string
+ */
+function plugin_tasklists_displayConfigItem($type, $ID, $data, $num)
+{
 
-   $searchopt=&Search::getOptions($type);
-   $table=$searchopt[$ID]["table"];
-   $field=$searchopt[$ID]["field"];
-   
-   switch ($table.'.'.$field) {
+   $searchopt =& Search::getOptions($type);
+   $table = $searchopt[$ID]["table"];
+   $field = $searchopt[$ID]["field"];
+
+   switch ($table . '.' . $field) {
       case "glpi_plugin_tasklists_tasks.priority" :
-            return " style=\"background-color:".$_SESSION["glpipriority_".$data[$num][0]['name']].";\" ";
+         return " style=\"background-color:" . $_SESSION["glpipriority_" . $data[$num][0]['name']] . ";\" ";
          break;
    }
    return "";
 }
 
-function plugin_tasklists_getRuleActions($options) {
+/**
+ * @param $options
+ * @return array
+ */
+function plugin_tasklists_getRuleActions($options)
+{
    $task = new PluginTasklistsTask();
    return $task->getActions();
 }
 
-function plugin_tasklists_getRuleCriterias($options) {
+/**
+ * @param $options
+ * @return mixed
+ */
+function plugin_tasklists_getRuleCriterias($options)
+{
    $task = new PluginTasklistsTask();
    return $task->getCriterias();
 }
 
-function plugin_tasklists_executeActions($options) {
+/**
+ * @param $options
+ * @return the
+ */
+function plugin_tasklists_executeActions($options)
+{
    $task = new PluginTasklistsTask();
    return $task->executeActions($options['action'], $options['output'], $options['params']);
 }
-
-
-?>

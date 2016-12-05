@@ -27,14 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 if (!isset($_GET["id"]))
    $_GET["id"] = "";
 if (!isset($_GET["withtemplate"]))
    $_GET["withtemplate"] = "";
 
-Html::header(PluginTasklistsTask::getTypeName(2),'',"helpdesk","plugintasklistsmenu");
+Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
 $task = new PluginTasklistsTask();
 $task->checkGlobal(READ);
@@ -43,5 +43,3 @@ $note = new Notepad();
 $note->showForItem($task);
 
 Html::footer();
-
-?>

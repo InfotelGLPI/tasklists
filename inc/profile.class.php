@@ -31,56 +31,81 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginTasklistsProfile extends Profile {
-   
-   static $rightname = "profile";
-   
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+/**
+ * Class PluginTasklistsProfile
+ */
+class PluginTasklistsProfile extends Profile
+{
 
-      if ($item->getType()=='Profile') {
-            return __('Tasks list', 'tasklists');
+   static $rightname = "profile";
+
+   /**
+    * @param CommonGLPI $item
+    * @param int $withtemplate
+    * @return string|translated
+    */
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+   {
+
+      if ($item->getType() == 'Profile') {
+         return __('Tasks list', 'tasklists');
       }
       return '';
    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
-      global $CFG_GLPI;
+   /**
+    * @param CommonGLPI $item
+    * @param int $tabnum
+    * @param int $withtemplate
+    * @return bool
+    */
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+   {
 
-      if ($item->getType()=='Profile') {
+      if ($item->getType() == 'Profile') {
          $ID = $item->getID();
          $prof = new self();
 
-         self::addDefaultProfileInfos($ID, 
-                                    array('plugin_tasklists'    => 0));
+         self::addDefaultProfileInfos($ID,
+            array('plugin_tasklists' => 0));
          $prof->showForm($ID);
       }
       return true;
    }
-   
-   static function createFirstAccess($ID) {
+
+   /**
+    * @param $ID
+    */
+   static function createFirstAccess($ID)
+   {
       //85
       self::addDefaultProfileInfos($ID,
-                                    array('plugin_tasklists'   => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE), true);
+         array('plugin_tasklists' => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE), true);
    }
-   
-    /**
-    * @param $profile
-   **/
-   static function addDefaultProfileInfos($profiles_id, $rights, $drop_existing = false) {
-      global $DB;
-      
+
+   /**
+    * @param $profiles_id
+    * @param $rights
+    * @param bool $drop_existing
+    * @internal param $profile
+    */
+   static function addDefaultProfileInfos($profiles_id, $rights, $drop_existing = false)
+   {
+
       $profileRight = new ProfileRight();
       foreach ($rights as $right => $value) {
          if (countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'") && $drop_existing) {
+               "`profiles_id`='$profiles_id' AND `name`='$right'") && $drop_existing
+         ) {
             $profileRight->deleteByCriteria(array('profiles_id' => $profiles_id, 'name' => $right));
          }
          if (!countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+            "`profiles_id`='$profiles_id' AND `name`='$right'")
+         ) {
             $myright['profiles_id'] = $profiles_id;
-            $myright['name']        = $right;
-            $myright['rights']      = $value;
+            $myright['name'] = $right;
+            $myright['rights'] = $value;
             $profileRight->add($myright);
 
             //Add right to the current session
@@ -92,31 +117,36 @@ class PluginTasklistsProfile extends Profile {
    /**
     * Show profile form
     *
-    * @param $items_id integer id of the profile
-    * @param $target value url of target
-    *
+    * @param int $profiles_id
+    * @param bool $openform
+    * @param bool $closeform
     * @return nothing
-    **/
-   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
+    * @internal param int $items_id id of the profile
+    * @internal param value $target url of target
+    */
+   function showForm($profiles_id = 0, $openform = TRUE, $closeform = TRUE)
+   {
 
       echo "<div class='firstbloc'>";
       if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
-          && $openform) {
+         && $openform
+      ) {
          $profile = new Profile();
-         echo "<form method='post' action='".$profile->getFormURL()."'>";
+         echo "<form method='post' action='" . $profile->getFormURL() . "'>";
       }
 
       $profile = new Profile();
       $profile->getFromDB($profiles_id);
       if ($profile->getField('interface') == 'central') {
          $rights = $this->getAllRights();
-         $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-                                                         'default_class' => 'tab_bg_2',
-                                                         'title'         => __('General')));
+         $profile->displayRightsChoiceMatrix($rights, array('canedit' => $canedit,
+            'default_class' => 'tab_bg_2',
+            'title' => __('General')));
       }
-      
+
       if ($canedit
-          && $closeform) {
+         && $closeform
+      ) {
          echo "<div class='center'>";
          echo Html::hidden('id', array('value' => $profiles_id));
          echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
@@ -126,25 +156,33 @@ class PluginTasklistsProfile extends Profile {
       echo "</div>";
    }
 
-   static function getAllRights($all = false) {
+   /**
+    * @param bool $all
+    * @return array
+    */
+   static function getAllRights($all = false)
+   {
       $rights = array(
-          array('itemtype'  => 'PluginTasklistsTask',
-                'label'     => PluginTasklistsTask::getTypeName(2),
-                'field'     => 'plugin_tasklists'
-          ),
+         array('itemtype' => 'PluginTasklistsTask',
+            'label' => PluginTasklistsTask::getTypeName(2),
+            'field' => 'plugin_tasklists'
+         ),
       );
-      
+
       return $rights;
    }
 
    /**
     * Init profiles
     *
-    **/
-    
-   static function translateARight($old_right) {
+    * @param $old_right
+    * @return int
+    */
+
+   static function translateARight($old_right)
+   {
       switch ($old_right) {
-         case '': 
+         case '':
             return 0;
          case 'r' :
             return READ;
@@ -153,38 +191,41 @@ class PluginTasklistsProfile extends Profile {
          case '0':
          case '1':
             return $old_right;
-            
+
          default :
             return 0;
       }
    }
- 
-   
+
+
    /**
-   * Initialize profiles, and migrate it necessary
-   */
-   static function initProfile() {
+    * Initialize profiles, and migrate it necessary
+    */
+   static function initProfile()
+   {
       global $DB;
       $profile = new self();
 
       //Add new rights in glpi_profilerights table
       foreach ($profile->getAllRights(true) as $data) {
-         if (countElementsInTable("glpi_profilerights", 
-                                  "`name` = '".$data['field']."'") == 0) {
+         if (countElementsInTable("glpi_profilerights",
+               "`name` = '" . $data['field'] . "'") == 0
+         ) {
             ProfileRight::addProfileRights(array($data['field']));
          }
       }
-      
+
       foreach ($DB->request("SELECT *
                            FROM `glpi_profilerights` 
-                           WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."' 
+                           WHERE `profiles_id`='" . $_SESSION['glpiactiveprofile']['id'] . "' 
                               AND `name` LIKE '%plugin_tasklists%'") as $prof) {
-         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights']; 
+         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
       }
    }
 
 
-   static function removeRightsFromSession() {
+   static function removeRightsFromSession()
+   {
       foreach (self::getAllRights(true) as $right) {
          if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
             unset($_SESSION['glpiactiveprofile'][$right['field']]);
@@ -192,5 +233,3 @@ class PluginTasklistsProfile extends Profile {
       }
    }
 }
-
-?>
