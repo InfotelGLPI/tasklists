@@ -47,7 +47,8 @@ class PluginTasklistsProfile extends Profile
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
    {
 
-      if ($item->getType() == 'Profile') {
+      if ($item->getType() == 'Profile'
+      && $item->getField('interface') != 'helpdesk') {
          return __('Tasks list', 'tasklists');
       }
       return '';
