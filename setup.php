@@ -86,7 +86,7 @@ function plugin_version_tasklists()
 function plugin_tasklists_check_prerequisites()
 {
    if (version_compare(GLPI_VERSION, '0.85', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-      _e('This plugin requires GLPI >= 0.85', 'tasklists');
+      echo __('This plugin requires GLPI >= 0.85', 'tasklists');
       return false;
    }
    return true;
