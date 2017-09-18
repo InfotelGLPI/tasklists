@@ -28,8 +28,7 @@
  */
 
 // Init the hooks of the plugins -Needed
-function plugin_init_tasklists()
-{
+function plugin_init_tasklists() {
    global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
@@ -40,12 +39,12 @@ function plugin_init_tasklists()
    if (Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginTasklistsTask', array(
-         'linkuser_types' => true,
+         'linkuser_types'  => true,
          'linkgroup_types' => true
       ));
 
       Plugin::registerClass('PluginTasklistsProfile',
-         array('addtabon' => 'Profile'));
+                            array('addtabon' => 'Profile'));
 
       if (Session::haveRight("plugin_tasklists", READ)) {
          $PLUGIN_HOOKS['menu_toadd']['tasklists'] = array('helpdesk' => 'PluginTasklistsMenu');
@@ -65,16 +64,15 @@ function plugin_init_tasklists()
 /**
  * @return array
  */
-function plugin_version_tasklists()
-{
+function plugin_version_tasklists() {
 
    return array(
-      'name' => __('Tasks list', 'tasklists'),
-      'version' => '1.1.0',
-      'license' => 'GPLv2+',
-      'author' => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
-      'homepage' => 'https://github.com/InfotelGLPI/tasklists',
-      'minGlpiVersion' => '0.85',// For compatibility / no install in version < 0.80
+      'name'           => __('Tasks list', 'tasklists'),
+      'version'        => '1.2.0',
+      'license'        => 'GPLv2+',
+      'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
+      'homepage'       => 'https://github.com/InfotelGLPI/tasklists',
+      'minGlpiVersion' => '9.2',// For compatibility / no install in version < 9.2
    );
 
 }
@@ -83,10 +81,9 @@ function plugin_version_tasklists()
 /**
  * @return bool
  */
-function plugin_tasklists_check_prerequisites()
-{
-   if (version_compare(GLPI_VERSION, '0.85', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-      echo __('This plugin requires GLPI >= 0.85', 'tasklists');
+function plugin_tasklists_check_prerequisites() {
+   if (version_compare(GLPI_VERSION, '9.2', 'lt') || version_compare(GLPI_VERSION, '9.3', 'ge')) {
+      echo __('This plugin requires GLPI >= 9.2');
       return false;
    }
    return true;
@@ -96,7 +93,6 @@ function plugin_tasklists_check_prerequisites()
 /**
  * @return bool
  */
-function plugin_tasklists_check_config()
-{
+function plugin_tasklists_check_config() {
    return true;
 }

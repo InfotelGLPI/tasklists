@@ -30,13 +30,12 @@
 /**
  * @return bool
  */
-function plugin_tasklists_install()
-{
+function plugin_tasklists_install() {
    global $DB;
 
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/profile.class.php");
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/task.class.php");
-   if (!TableExists("glpi_plugin_tasklists_tasks")) {
+   if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
 
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.0.0.sql");
 
@@ -51,24 +50,23 @@ function plugin_tasklists_install()
 /**
  * @return bool
  */
-function plugin_tasklists_uninstall()
-{
+function plugin_tasklists_uninstall() {
    global $DB;
 
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/profile.class.php");
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/menu.class.php");
 
    $tables = array("glpi_plugin_tasklists_tasks",
-      "glpi_plugin_tasklists_tasktypes");
+                   "glpi_plugin_tasklists_tasktypes");
 
    foreach ($tables as $table)
       $DB->query("DROP TABLE IF EXISTS `$table`;");
 
 
    $tables_glpi = array("glpi_displaypreferences",
-      "glpi_notepads",
-      "glpi_bookmarks",
-      "glpi_logs");
+                        "glpi_notepads",
+                        "glpi_bookmarks",
+                        "glpi_logs");
 
    foreach ($tables_glpi as $table_glpi)
       $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
@@ -90,17 +88,16 @@ function plugin_tasklists_uninstall()
 /**
  * @return array
  */
-function plugin_tasklists_getDatabaseRelations()
-{
+function plugin_tasklists_getDatabaseRelations() {
 
    $plugin = new Plugin();
 
    if ($plugin->isActivated("tasklists"))
       return array("glpi_plugin_tasklists_tasktypes" => array("glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"),
-         "glpi_users" => array("glpi_plugin_tasklists_tasks" => "users_id"),
-         "glpi_groups" => array("glpi_plugin_tasklists_tasks" => "groups_id"),
-         "glpi_entities" => array("glpi_plugin_tasklists_tasks" => "entities_id",
-            "glpi_plugin_tasklists_tasktypes" => "entities_id"));
+                   "glpi_users"                      => array("glpi_plugin_tasklists_tasks" => "users_id"),
+                   "glpi_groups"                     => array("glpi_plugin_tasklists_tasks" => "groups_id"),
+                   "glpi_entities"                   => array("glpi_plugin_tasklists_tasks"     => "entities_id",
+                                                              "glpi_plugin_tasklists_tasktypes" => "entities_id"));
    else
       return array();
 }
@@ -109,8 +106,7 @@ function plugin_tasklists_getDatabaseRelations()
 /**
  * @return array
  */
-function plugin_tasklists_getDropdown()
-{
+function plugin_tasklists_getDropdown() {
 
    $plugin = new Plugin();
 
@@ -149,14 +145,14 @@ function plugin_tasklists_getAddSearchOptions($itemtype) {
  * @param $ID
  * @param $data
  * @param $num
+ *
  * @return string
  */
-function plugin_tasklists_displayConfigItem($type, $ID, $data, $num)
-{
+function plugin_tasklists_displayConfigItem($type, $ID, $data, $num) {
 
    $searchopt =& Search::getOptions($type);
-   $table = $searchopt[$ID]["table"];
-   $field = $searchopt[$ID]["field"];
+   $table     = $searchopt[$ID]["table"];
+   $field     = $searchopt[$ID]["field"];
 
    switch ($table . '.' . $field) {
       case "glpi_plugin_tasklists_tasks.priority" :
@@ -168,30 +164,30 @@ function plugin_tasklists_displayConfigItem($type, $ID, $data, $num)
 
 /**
  * @param $options
+ *
  * @return array
  */
-function plugin_tasklists_getRuleActions($options)
-{
+function plugin_tasklists_getRuleActions($options) {
    $task = new PluginTasklistsTask();
    return $task->getActions();
 }
 
 /**
  * @param $options
+ *
  * @return mixed
  */
-function plugin_tasklists_getRuleCriterias($options)
-{
+function plugin_tasklists_getRuleCriterias($options) {
    $task = new PluginTasklistsTask();
    return $task->getCriterias();
 }
 
 /**
  * @param $options
+ *
  * @return the
  */
-function plugin_tasklists_executeActions($options)
-{
+function plugin_tasklists_executeActions($options) {
    $task = new PluginTasklistsTask();
    return $task->executeActions($options['action'], $options['output'], $options['params']);
 }

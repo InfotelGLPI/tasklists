@@ -275,7 +275,7 @@ class PluginTasklistsTask extends CommonDBTM
       Html::showToolTip(nl2br(__('Empty for infinite', 'tasklists')));
       echo "</td>";
       echo "<td>";
-      Html::showDateFormItem("due_date", $this->fields["due_date"], true, true);
+      Html::showDateField("due_date", ['value' => $this->fields["due_date"]]);
       echo "</td>";
 
       echo "</tr>";
