@@ -65,7 +65,7 @@ function plugin_tasklists_uninstall() {
 
    $tables_glpi = array("glpi_displaypreferences",
                         "glpi_notepads",
-                        "glpi_bookmarks",
+                        "glpi_savedsearches",
                         "glpi_logs");
 
    foreach ($tables_glpi as $table_glpi)
