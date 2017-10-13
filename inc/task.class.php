@@ -97,7 +97,7 @@ class PluginTasklistsTask extends CommonDBTM
 
       $tab[6]['table'] = $this->getTable();
       $tab[6]['field'] = 'due_date';
-      $tab[6]['name'] = __('Due date');
+      $tab[6]['name'] = __('Due date', 'tasklists');
       $tab[6]['datatype'] = 'date';
 
       $tab[7]['table'] = $this->getTable();
@@ -270,7 +270,7 @@ class PluginTasklistsTask extends CommonDBTM
       self::dropdownVisibility(array('value' => $this->fields['visibility']));
       echo "</td>";
 
-      echo "<td>" . __('Due date');
+      echo "<td>" . __('Due date', 'tasklists');
       echo "&nbsp;";
       Html::showToolTip(nl2br(__('Empty for infinite', 'tasklists')));
       echo "</td>";

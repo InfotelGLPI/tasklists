@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-26 12:21+0200\n"
-"PO-Revision-Date: 2016-09-26 12:21+0200\n"
+"POT-Creation-Date: 2017-10-10 16:51+0200\n"
+"PO-Revision-Date: 2017-10-13 10:56+0200\n"
 "Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/tsmr/GLPI_tasklists/"
 "language/fr_FR/)\n"
@@ -18,58 +18,61 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 2.0.3\n"
 
-#: setup.php:67 inc/dashboard.class.php:47 inc/dashboard.class.php:156
-#: inc/dashboard.class.php:161 inc/menu.class.php:35 inc/profile.class.php:41
+#: setup.php:70 inc/dashboard.class.php:62 inc/dashboard.class.php:176
+#: inc/dashboard.class.php:181 inc/menu.class.php:45 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Liste des tâches"
 
-#: setup.php:80
-msgid "This plugin requires GLPI >= 0.85"
-msgstr "Ce plugin nécessite GLPI >= 0.90"
-
-#: inc/dashboard.class.php:61 inc/task.class.php:61 inc/task.class.php:194
-#: inc/tasktype.class.php:39
+#: inc/dashboard.class.php:81 inc/task.class.php:74 inc/task.class.php:231
+#: inc/tasktype.class.php:48
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Contexte"
 msgstr[1] "Contextes"
 
-#: inc/dashboard.class.php:113
+#: inc/dashboard.class.php:133
 msgid "Mark as done"
 msgstr "Maquer comme fait"
 
-#: inc/dashboard.class.php:118 inc/dashboard.class.php:123
+#: inc/dashboard.class.php:138 inc/dashboard.class.php:143
 msgid "Add comment"
 msgstr "Ajouter un commentaire"
 
-#: inc/dashboard.class.php:143 inc/dashboard.class.php:148
+#: inc/dashboard.class.php:163 inc/dashboard.class.php:168
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
-#: inc/task.class.php:238
+#: inc/task.class.php:100 inc/task.class.php:273
+msgid "Due date"
+msgstr "Date d'échéance"
+
+#: inc/task.class.php:275
 msgid "Empty for infinite"
 msgstr "Vide pour infini"
 
-#: inc/task.class.php:596
+#: inc/task.class.php:657
 msgctxt "visibility"
 msgid "This user"
 msgstr "Cet utilisateur"
 
-#: inc/task.class.php:599
+#: inc/task.class.php:660
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Cet utilisateur et ce groupe"
 
-#: inc/task.class.php:602
+#: inc/task.class.php:663
 msgctxt "visibility"
 msgid "All"
 msgstr "Tout le monde"
 
-#: inc/task.class.php:618
+#: inc/task.class.php:680
 msgid "Affect entity for create task"
 msgstr "Affecter une entité pour une création de tâche"
+
+#~ msgid "This plugin requires GLPI >= 0.85"
+#~ msgstr "Ce plugin nécessite GLPI >= 0.90"
 
 #~ msgid "This plugin requires GLPI >= 0.90"
 #~ msgstr "Ce plugin nécessite GLPI >= 0.90"

@@ -40,7 +40,7 @@ function plugin_init_tasklists() {
 
       Plugin::registerClass('PluginTasklistsTask', array(
          'linkuser_types'  => true,
-         'linkgroup_types' => true
+         'linkgroup_types' => true,
       ));
 
       Plugin::registerClass('PluginTasklistsProfile',
