@@ -1,6 +1,12 @@
 # tasklists
 Plugin Tasklists for GLPI
 
+Ce plugin est sur Transifex - Aidez-nous à le traduire :
+https://www.transifex.com/tsmr/GLPI_tasklists/
+
+This plugin is on Transifex - Help us to translate :
+https://www.transifex.com/tsmr/GLPI_tasklists/
+
 Ajout d'une gestion de tâches simples. Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples.
 > * Peut être utilisé avec le collecteur de mail pour créer des tâches.
 
