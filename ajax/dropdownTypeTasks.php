@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -40,7 +40,7 @@ global $DB;
 
 // Make a select box
 if (isset($_POST["tasktypes"])) {
-   $used = array();
+   $used = [];
 
    // Clean used array
    if (isset($_POST['used']) && is_array($_POST['used']) && (count($_POST['used']) > 0)) {
@@ -55,10 +55,10 @@ if (isset($_POST["tasktypes"])) {
    }
 
    Dropdown::show('PluginTasklistsTask',
-      array('name' => $_POST['myname'],
+      ['name' => $_POST['myname'],
          'used' => $used,
          'width' => '50%',
          'entity' => $_POST['entity'],
          'rand' => $_POST['rand'],
-         'condition' => "glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id='" . $_POST["tasktypes"] . "'"));
+         'condition' => "glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id='" . $_POST["tasktypes"] . "'"]);
 }

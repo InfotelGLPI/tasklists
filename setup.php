@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -32,26 +32,26 @@ function plugin_init_tasklists() {
    global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
-   $PLUGIN_HOOKS['change_profile']['tasklists'] = array('PluginTasklistsProfile', 'initProfile');
+   $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
 
-   $PLUGIN_HOOKS['use_rules']['tasklists'] = array('RuleMailCollector');
+   $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
 
    if (Session::getLoginUserID()) {
 
-      Plugin::registerClass('PluginTasklistsTask', array(
+      Plugin::registerClass('PluginTasklistsTask', [
          'linkuser_types'  => true,
          'linkgroup_types' => true,
-      ));
+      ]);
 
       Plugin::registerClass('PluginTasklistsProfile',
-                            array('addtabon' => 'Profile'));
+                            ['addtabon' => 'Profile']);
 
       if (Session::haveRight("plugin_tasklists", READ)) {
-         $PLUGIN_HOOKS['menu_toadd']['tasklists'] = array('helpdesk' => 'PluginTasklistsMenu');
+         $PLUGIN_HOOKS['menu_toadd']['tasklists'] = ['helpdesk' => 'PluginTasklistsMenu'];
       }
 
       if (class_exists('PluginMydashboardMenu')) {
-         $PLUGIN_HOOKS['mydashboard']['tasklists'] = array("PluginTasklistsDashboard");
+         $PLUGIN_HOOKS['mydashboard']['tasklists'] = ["PluginTasklistsDashboard"];
       }
 
       if (Session::haveRight("plugin_tasklists", CREATE)) {
@@ -66,14 +66,14 @@ function plugin_init_tasklists() {
  */
 function plugin_version_tasklists() {
 
-   return array(
+   return [
       'name'           => __('Tasks list', 'tasklists'),
       'version'        => '1.2.0',
       'license'        => 'GPLv2+',
       'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/tasklists',
       'minGlpiVersion' => '9.2',// For compatibility / no install in version < 9.2
-   );
+   ];
 
 }
 

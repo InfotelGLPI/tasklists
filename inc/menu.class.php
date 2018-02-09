@@ -10,7 +10,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -40,18 +40,16 @@ class PluginTasklistsMenu extends CommonGLPI
     * @param int $nb
     * @return translated
     */
-   static function getMenuName($nb = 1)
-   {
+   static function getMenuName($nb = 1) {
       return __('Tasks list', 'tasklists');
    }
 
    /**
     * @return array
     */
-   static function getMenuContent()
-   {
+   static function getMenuContent() {
 
-      $menu = array();
+      $menu = [];
       $menu['title'] = self::getMenuName(2);
       $menu['page'] = PluginTasklistsTask::getSearchURL(false);
       $menu['links']['search'] = PluginTasklistsTask::getSearchURL(false);
@@ -59,12 +57,10 @@ class PluginTasklistsMenu extends CommonGLPI
          $menu['links']['add'] = PluginTasklistsTask::getFormURL(false);
       }
 
-
       return $menu;
    }
 
-   static function removeRightsFromSession()
-   {
+   static function removeRightsFromSession() {
       if (isset($_SESSION['glpimenu']['helpdesk']['types']['PluginTasklistsMenu'])) {
          unset($_SESSION['glpimenu']['helpdesk']['types']['PluginTasklistsMenu']);
       }

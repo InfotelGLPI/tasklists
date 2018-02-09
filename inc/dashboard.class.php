@@ -10,7 +10,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -34,7 +34,7 @@
 class PluginTasklistsDashboard extends CommonGLPI
 {
 
-   public $widgets = array();
+   public $widgets = [];
    private $options;
    private $datas, $form;
 
@@ -42,43 +42,39 @@ class PluginTasklistsDashboard extends CommonGLPI
     * PluginTasklistsDashboard constructor.
     * @param array $options
     */
-   function __construct($options = array())
-   {
+   function __construct($options = []) {
       $this->options = $options;
    }
 
-   function init()
-   {
-
+   function init() {
 
    }
 
    /**
     * @return array
     */
-   function getWidgetsForItem()
-   {
-      return array(
+   function getWidgetsForItem() {
+      return [
          $this->getType() . "1" => __("Tasks list", 'tasklists'),
-      );
+      ];
    }
 
    /**
     * @param $widgetId
     * @return PluginMydashboardDatatable
     */
-   function getWidgetContentForItem($widgetId)
-   {
+   function getWidgetContentForItem($widgetId) {
       global $CFG_GLPI, $DB;
 
-      if (empty($this->form))
+      if (empty($this->form)) {
          $this->init();
+      }
       switch ($widgetId) {
          case $this->getType() . "1":
             $plugin = new Plugin();
             if ($plugin->isActivated("tasklists")) {
                $widget = new PluginMydashboardDatatable();
-               $headers = array(__('Name'), __('Priority'), _n('Context', 'Contexts', 1, 'tasklists'), __('User'), __('Percent done'), __('Due date'), __('Action'));
+               $headers = [__('Name'), __('Priority'), _n('Context', 'Contexts', 1, 'tasklists'), __('User'), __('Percent done'), __('Due date'), __('Action')];
                $query = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
                             FROM `glpi_plugin_tasklists_tasks`
                             LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
@@ -87,19 +83,18 @@ class PluginTasklistsDashboard extends CommonGLPI
                $query .= getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
                $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority`DESC ";
 
-               $tasks = array();
+               $tasks = [];
                if ($result = $DB->query($query)) {
                   if ($DB->numrows($result)) {
                      while ($data = $DB->fetch_array($result)) {
 
                         //$groups = Group_User::getGroupUsers($data['groups_id']);
                         $groupusers = Group_User::getGroupUsers($data['groups_id']);
-                        $groups = array();
+                        $groups = [];
                         foreach ($groupusers as $groupuser) {
                            $groups[] = $groupuser["id"];
                         }
-                        if (
-                           ($data['visibility'] == 1 && $data['users_id'] == Session::getLoginUserID())
+                        if (($data['visibility'] == 1 && $data['users_id'] == Session::getLoginUserID())
                            ||
                            ($data['visibility'] == 2 && ($data['users_id'] == Session::getLoginUserID()
                                  || in_array(Session::getLoginUserID(), $groups)
@@ -114,8 +109,8 @@ class PluginTasklistsDashboard extends CommonGLPI
                            $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
 
                            $tasks[$data['id']][0] .= Html::showToolTip($data['comment'],
-                              array('applyto' => 'task' . $data["id"] . $rand,
-                                 'display' => false));
+                              ['applyto' => 'task' . $data["id"] . $rand,
+                                 'display' => false]);
 
                            $bgcolor = $_SESSION["glpipriority_" . $data['priority']];
                            $tasks[$data['id']][1] = "<div class='center' style='background-color:$bgcolor;'>" . CommonITILObject::getPriorityName($data['priority']) . "</div>";
@@ -140,12 +135,12 @@ class PluginTasklistsDashboard extends CommonGLPI
 
                               $link .= Ajax::createIframeModalWindow('comment' . $rand,
                                  $CFG_GLPI["root_doc"] . "/plugins/tasklists/front/comment.form.php?id=" . $ID,
-                                 array('title' => __('Add comment', 'tasklists'),
+                                 ['title' => __('Add comment', 'tasklists'),
                                     'reloadonclose' => false,
                                     'width' => 1100,
                                     'display' => false,
                                     'height' => 300
-                                 ));
+                                 ]);
                               $tasks[$data['id']][6] .= $link;
                            }
                            $tasks[$data['id']][6] .= "</div>";
@@ -165,12 +160,12 @@ class PluginTasklistsDashboard extends CommonGLPI
 
                $link .= Ajax::createIframeModalWindow('task',
                   $CFG_GLPI["root_doc"] . "/plugins/tasklists/front/task.form.php",
-                  array('title' => __('Add task', 'tasklists'),
+                  ['title' => __('Add task', 'tasklists'),
                      'reloadonclose' => false,
                      'width' => 1180,
                      'display' => false,
                      'height' => 600
-                  ));
+                  ]);
                $widget->appendWidgetHtmlContent($link);
 
                $widget->setWidgetTitle(__("Tasks list", 'tasklists'));
@@ -188,8 +183,7 @@ class PluginTasklistsDashboard extends CommonGLPI
    /**
     * @return mixed
     */
-   static function addTask()
-   {
+   static function addTask() {
 
       //$task->showFormButtons($options);
       //return $form;

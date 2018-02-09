@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -40,14 +40,13 @@ class PluginTasklistsTask extends CommonDBTM
    public $dohistory = true;
    static $rightname = 'plugin_tasklists';
    protected $usenotepad = true;
-   static $types = array();
+   static $types = [];
 
    /**
     * @param int $nb
     * @return translated
     */
-   static function getTypeName($nb = 0)
-   {
+   static function getTypeName($nb = 0) {
 
       return _n('Task', 'Tasks', $nb);
    }
@@ -56,10 +55,9 @@ class PluginTasklistsTask extends CommonDBTM
    /**
     * @return array
     */
-   function getSearchOptions()
-   {
+   function getSearchOptions() {
 
-      $tab = array();
+      $tab = [];
 
       $tab['common'] = self::getTypeName(2);
 
@@ -159,10 +157,9 @@ class PluginTasklistsTask extends CommonDBTM
     * @param array $options
     * @return array
     */
-   function defineTabs($options = array())
-   {
+   function defineTabs($options = []) {
 
-      $ong = array();
+      $ong = [];
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('Notepad', $ong, $options);
       $this->addStandardTab('Log', $ong, $options);
@@ -173,8 +170,7 @@ class PluginTasklistsTask extends CommonDBTM
    /**
     *
     */
-   function post_getEmpty()
-   {
+   function post_getEmpty() {
 
       $this->fields['priority'] = 3;
       $this->fields['percent_done'] = 0;
@@ -186,11 +182,11 @@ class PluginTasklistsTask extends CommonDBTM
     * @param datas $input
     * @return datas
     */
-   function prepareInputForAdd($input)
-   {
+   function prepareInputForAdd($input) {
 
-      if (isset($input['due_date']) && empty($input['due_date']))
+      if (isset($input['due_date']) && empty($input['due_date'])) {
          $input['due_date'] = 'NULL';
+      }
 
       return $input;
    }
@@ -199,11 +195,11 @@ class PluginTasklistsTask extends CommonDBTM
     * @param datas $input
     * @return datas
     */
-   function prepareInputForUpdate($input)
-   {
+   function prepareInputForUpdate($input) {
 
-      if (isset($input['due_date']) && empty($input['due_date']))
+      if (isset($input['due_date']) && empty($input['due_date'])) {
          $input['due_date'] = 'NULL';
+      }
 
       return $input;
    }
@@ -214,8 +210,7 @@ class PluginTasklistsTask extends CommonDBTM
     * @param array $options
     * @return bool
     */
-   function showForm($ID, $options = array())
-   {
+   function showForm($ID, $options = []) {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -227,13 +222,11 @@ class PluginTasklistsTask extends CommonDBTM
       Html::autocompletionTextField($this, "name");
       echo "</td>";
 
-
       echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";
-      Dropdown::show('PluginTasklistsTaskType', array('name' => "plugin_tasklists_tasktypes_id",
+      Dropdown::show('PluginTasklistsTaskType', ['name' => "plugin_tasklists_tasktypes_id",
          'value' => $this->fields["plugin_tasklists_tasktypes_id"],
-         'entity' => $this->fields["entities_id"]));
+         'entity' => $this->fields["entities_id"]]);
       echo "</td>";
-
 
       echo "</tr>";
 
@@ -241,24 +234,24 @@ class PluginTasklistsTask extends CommonDBTM
 
       echo "<td>" . __('Priority') . "</td>";
       echo "<td>";
-      CommonITILObject::dropdownPriority(array('value' => $this->fields['priority'],
-         'withmajor' => 1));
+      CommonITILObject::dropdownPriority(['value' => $this->fields['priority'],
+         'withmajor' => 1]);
       echo "</td>";
 
       echo "<td>" . __('Planned duration') . "</td>";
       echo "<td>";
-      $toadd = array();
+      $toadd = [];
       //for ($i=9 ; $i<=100 ; $i++) {
       //   $toadd[] = $i*HOUR_TIMESTAMP;
       //}
 
-      Dropdown::showTimeStamp("actiontime", array('min' => 0,
+      Dropdown::showTimeStamp("actiontime", ['min' => 0,
          'max' => 50 * DAY_TIMESTAMP,
          'step' => DAY_TIMESTAMP,
          'value' => $this->fields["actiontime"],
          //'addfirstminutes' => true,
          //'inhours'         => true,
-         'toadd' => $toadd));
+         'toadd' => $toadd]);
       echo "</td>";
 
       echo "</tr>";
@@ -267,7 +260,7 @@ class PluginTasklistsTask extends CommonDBTM
 
       echo "<td>" . __('Visibility') . "</td>";
       echo "<td>";
-      self::dropdownVisibility(array('value' => $this->fields['visibility']));
+      self::dropdownVisibility(['value' => $this->fields['visibility']]);
       echo "</td>";
 
       echo "<td>" . __('Due date', 'tasklists');
@@ -283,21 +276,20 @@ class PluginTasklistsTask extends CommonDBTM
       echo "<tr class='tab_bg_1'>";
 
       echo "<td>" . __('User') . "</td><td>";
-      User::dropdown(array('name' => "users_id",
+      User::dropdown(['name' => "users_id",
          'value' => $this->fields["users_id"],
          'entity' => $this->fields["entities_id"],
-         'right' => 'all'));
+         'right' => 'all']);
       echo "</td>";
 
       echo "<td>" . __('Percent done') . "</td>";
       echo "<td>";
-      Dropdown::showNumber("percent_done", array('value' => $this->fields['percent_done'],
+      Dropdown::showNumber("percent_done", ['value' => $this->fields['percent_done'],
          'min' => 0,
          'max' => 100,
          'step' => 20,
-         'unit' => '%'));
+         'unit' => '%']);
       echo "</td>";
-
 
       echo "</tr>";
 
@@ -305,10 +297,10 @@ class PluginTasklistsTask extends CommonDBTM
 
       echo "<td>" . __('Group') . "</td>";
       echo "<td>";
-      Dropdown::show('Group', array('name' => "groups_id",
+      Dropdown::show('Group', ['name' => "groups_id",
          'value' => $this->fields["groups_id"],
          'entity' => $this->fields["entities_id"],
-         'condition' => '`is_assign`'));
+         'condition' => '`is_assign`']);
       echo "</td>";
 
       echo "<td>" . __('Status') . "</td><td>";
@@ -345,14 +337,13 @@ class PluginTasklistsTask extends CommonDBTM
     *
     * @return nothing (print out an HTML select box)
     * */
-   static function dropdownTasklists($options = array())
-   {
+   static function dropdownTasklists($options = []) {
 
       global $DB, $CFG_GLPI;
 
       $p['name'] = 'plugin_tasklists_tasklists_id';
       $p['entity'] = '';
-      $p['used'] = array();
+      $p['used'] = [];
       $p['display'] = true;
 
       if (is_array($options) && count($options)) {
@@ -378,23 +369,23 @@ class PluginTasklistsTask extends CommonDBTM
         ORDER BY `name`";
       $result = $DB->query($query);
 
-      $values = array(0 => Dropdown::EMPTY_VALUE);
+      $values = [0 => Dropdown::EMPTY_VALUE];
 
       while ($data = $DB->fetch_assoc($result)) {
          $values[$data['id']] = $data['name'];
       }
 
-      $out = Dropdown::showFromArray('_tasktype', $values, array('width' => '30%',
+      $out = Dropdown::showFromArray('_tasktype', $values, ['width' => '30%',
          'rand' => $rand,
-         'display' => false));
+         'display' => false]);
       $field_id = Html::cleanId("dropdown__tasktype$rand");
 
-      $params = array('tasktypes' => '__VALUE__',
+      $params = ['tasktypes' => '__VALUE__',
          'entity' => $p['entity'],
          'rand' => $rand,
          'myname' => $p['name'],
          'used' => $p['used']
-      );
+      ];
 
       $out .= Ajax::updateItemOnSelectEvent($field_id, "show_" . $p['name'] . $rand, $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownTypeTasks.php", $params, false);
 
@@ -415,8 +406,7 @@ class PluginTasklistsTask extends CommonDBTM
     * @param null $checkitem
     * @return an
     */
-   function getSpecificMassiveActions($checkitem = NULL)
-   {
+   function getSpecificMassiveActions($checkitem = null) {
       $isadmin = static::canUpdate();
       $actions = parent::getSpecificMassiveActions($checkitem);
 
@@ -439,13 +429,12 @@ class PluginTasklistsTask extends CommonDBTM
     * @param MassiveAction $ma
     * @return bool|false
     */
-   static function showMassiveActionsSubForm(MassiveAction $ma)
-   {
+   static function showMassiveActionsSubForm(MassiveAction $ma) {
 
       switch ($ma->getAction()) {
          case "transfer" :
             Dropdown::show('Entity');
-            echo Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
             return true;
             break;
       }
@@ -461,8 +450,7 @@ class PluginTasklistsTask extends CommonDBTM
     * @param array $ids
     * @return nothing|void
     */
-   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids)
-   {
+   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
 
       switch ($ma->getAction()) {
          case "transfer" :
@@ -500,8 +488,7 @@ class PluginTasklistsTask extends CommonDBTM
     *
     * @param $type string class name
     * */
-   static function registerType($type)
-   {
+   static function registerType($type) {
       if (!in_array($type, self::$types)) {
          self::$types[] = $type;
       }
@@ -514,8 +501,7 @@ class PluginTasklistsTask extends CommonDBTM
     *
     * @return array of types
     * */
-   static function getTypes($all = false)
-   {
+   static function getTypes($all = false) {
 
       if ($all) {
          return self::$types;
@@ -548,11 +534,10 @@ class PluginTasklistsTask extends CommonDBTM
     *
     * @return a string
     **/
-   static function getSpecificValueToDisplay($field, $values, array $options = array())
-   {
+   static function getSpecificValueToDisplay($field, $values, array $options = []) {
 
       if (!is_array($values)) {
-         $values = array($field => $values);
+         $values = [$field => $values];
       }
       switch ($field) {
          case 'priority':
@@ -575,11 +560,10 @@ class PluginTasklistsTask extends CommonDBTM
     *
     * @return string
     **/
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = array())
-   {
+   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
 
       if (!is_array($values)) {
-         $values = array($field => $values);
+         $values = [$field => $values];
       }
       $options['display'] = false;
 
@@ -616,8 +600,7 @@ class PluginTasklistsTask extends CommonDBTM
     * @param array $options
     * @return int|string
     */
-   static function dropdownVisibility(array $options = array())
-   {
+   static function dropdownVisibility(array $options = []) {
 
       $p['name'] = 'visibility';
       $p['value'] = 0;
@@ -631,7 +614,7 @@ class PluginTasklistsTask extends CommonDBTM
          }
       }
 
-      $values = array();
+      $values = [];
 
       $values[1] = static::getVisibilityName(1);
       $values[2] = static::getVisibilityName(2);
@@ -648,8 +631,7 @@ class PluginTasklistsTask extends CommonDBTM
     *
     * @return priority|string
     */
-   static function getVisibilityName($value)
-   {
+   static function getVisibilityName($value) {
 
       switch ($value) {
 
@@ -672,15 +654,14 @@ class PluginTasklistsTask extends CommonDBTM
    /**
     * @see Rule::getActions()
     * */
-   function getActions()
-   {
+   function getActions() {
 
-      $actions = array();
+      $actions = [];
 
       $actions['tasklists']['name'] = __('Affect entity for create task', 'tasklists');
       $actions['tasklists']['type'] = 'dropdown';
       $actions['tasklists']['table'] = 'glpi_entities';
-      $actions['tasklists']['force_actions'] = array('send');
+      $actions['tasklists']['force_actions'] = ['send'];
 
       return $actions;
    }
@@ -693,8 +674,7 @@ class PluginTasklistsTask extends CommonDBTM
     * @param $params parameters
     * @return the $output array modified
     */
-   function executeActions($action, $output, $params)
-   {
+   function executeActions($action, $output, $params) {
 
       switch ($params['rule_itemtype']) {
          case 'RuleMailCollector':

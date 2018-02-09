@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -42,8 +42,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown
     * @param int $nb
     * @return translated
     */
-   static function getTypeName($nb = 0)
-   {
+   static function getTypeName($nb = 0) {
 
       return _n('Context', 'Contexts', $nb, 'tasklists');
    }
@@ -55,8 +54,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown
     * @param $entity
     * @return ID|int|the
     */
-   static function transfer($ID, $entity)
-   {
+   static function transfer($ID, $entity) {
       global $DB;
 
       if ($ID > 0) {

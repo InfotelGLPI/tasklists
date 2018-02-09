@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -29,10 +29,12 @@
 
 include('../../../inc/includes.php');
 
-if (!isset($_GET["id"]))
+if (!isset($_GET["id"])) {
    $_GET["id"] = "";
-if (!isset($_GET["withtemplate"]))
+}
+if (!isset($_GET["withtemplate"])) {
    $_GET["withtemplate"] = "";
+}
 
 Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 

@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Tasklists.
 
  Tasklists is free software; you can redistribute it and/or modify
@@ -56,26 +56,26 @@ function plugin_tasklists_uninstall() {
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/profile.class.php");
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/menu.class.php");
 
-   $tables = array("glpi_plugin_tasklists_tasks",
-                   "glpi_plugin_tasklists_tasktypes");
+   $tables = ["glpi_plugin_tasklists_tasks",
+                   "glpi_plugin_tasklists_tasktypes"];
 
-   foreach ($tables as $table)
+   foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
+   }
 
-
-   $tables_glpi = array("glpi_displaypreferences",
+   $tables_glpi = ["glpi_displaypreferences",
                         "glpi_notepads",
                         "glpi_savedsearches",
-                        "glpi_logs");
+                        "glpi_logs"];
 
-   foreach ($tables_glpi as $table_glpi)
+   foreach ($tables_glpi as $table_glpi) {
       $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
-
+   }
 
    //Delete rights associated with the plugin
    $profileRight = new ProfileRight();
    foreach (PluginTasklistsProfile::getAllRights() as $right) {
-      $profileRight->deleteByCriteria(array('name' => $right['field']));
+      $profileRight->deleteByCriteria(['name' => $right['field']]);
    }
    PluginTasklistsMenu::removeRightsFromSession();
 
@@ -92,14 +92,15 @@ function plugin_tasklists_getDatabaseRelations() {
 
    $plugin = new Plugin();
 
-   if ($plugin->isActivated("tasklists"))
-      return array("glpi_plugin_tasklists_tasktypes" => array("glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"),
-                   "glpi_users"                      => array("glpi_plugin_tasklists_tasks" => "users_id"),
-                   "glpi_groups"                     => array("glpi_plugin_tasklists_tasks" => "groups_id"),
-                   "glpi_entities"                   => array("glpi_plugin_tasklists_tasks"     => "entities_id",
-                                                              "glpi_plugin_tasklists_tasktypes" => "entities_id"));
-   else
-      return array();
+   if ($plugin->isActivated("tasklists")) {
+      return ["glpi_plugin_tasklists_tasktypes" => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"],
+                   "glpi_users"                      => ["glpi_plugin_tasklists_tasks" => "users_id"],
+                   "glpi_groups"                     => ["glpi_plugin_tasklists_tasks" => "groups_id"],
+                   "glpi_entities"                   => ["glpi_plugin_tasklists_tasks"     => "entities_id",
+                                                              "glpi_plugin_tasklists_tasktypes" => "entities_id"]];
+   } else {
+      return [];
+   }
 }
 
 // Define Dropdown tables to be manage in GLPI :
@@ -110,16 +111,17 @@ function plugin_tasklists_getDropdown() {
 
    $plugin = new Plugin();
 
-   if ($plugin->isActivated("tasklists"))
-      return array('PluginTasklistsTaskType' => PluginTasklistsTaskType::getTypeName(2));
-   else
-      return array();
+   if ($plugin->isActivated("tasklists")) {
+      return ['PluginTasklistsTaskType' => PluginTasklistsTaskType::getTypeName(2)];
+   } else {
+      return [];
+   }
 }
 
 ////// SEARCH FUNCTIONS ///////() {
 /*
 function plugin_tasklists_getAddSearchOptions($itemtype) {
-    
+
    $sopt=array();
 
    if (in_array($itemtype, PluginTasklistsTask::getTypes(true))) {
