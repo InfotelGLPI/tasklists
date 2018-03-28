@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Tasklists Development Team
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the GLPI - Tasklists plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
@@ -8,63 +8,63 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-10 16:51+0200\n"
+"POT-Creation-Date: 2018-03-28 08:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: setup.php:70 inc/dashboard.class.php:62 inc/dashboard.class.php:176
-#: inc/dashboard.class.php:181 inc/menu.class.php:45 inc/profile.class.php:52
+#: setup.php:70 inc/dashboard.class.php:58 inc/dashboard.class.php:171
+#: inc/dashboard.class.php:176 inc/menu.class.php:44 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr ""
 
-#: inc/dashboard.class.php:81 inc/task.class.php:74 inc/task.class.php:231
-#: inc/tasktype.class.php:48
+#: inc/dashboard.class.php:77 inc/task.class.php:72 inc/task.class.php:225
+#: inc/tasktype.class.php:47
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/dashboard.class.php:133
+#: inc/dashboard.class.php:128
 msgid "Mark as done"
 msgstr ""
 
-#: inc/dashboard.class.php:138 inc/dashboard.class.php:143
+#: inc/dashboard.class.php:133 inc/dashboard.class.php:138
 msgid "Add comment"
 msgstr ""
 
-#: inc/dashboard.class.php:163 inc/dashboard.class.php:168
+#: inc/dashboard.class.php:158 inc/dashboard.class.php:163
 msgid "Add task"
 msgstr ""
 
-#: inc/task.class.php:100 inc/task.class.php:273
+#: inc/task.class.php:98 inc/task.class.php:266
 msgid "Due date"
 msgstr ""
 
-#: inc/task.class.php:275
+#: inc/task.class.php:268
 msgid "Empty for infinite"
 msgstr ""
 
-#: inc/task.class.php:657
+#: inc/task.class.php:639
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: inc/task.class.php:660
+#: inc/task.class.php:642
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
 
-#: inc/task.class.php:663
+#: inc/task.class.php:645
 msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: inc/task.class.php:680
+#: inc/task.class.php:661
 msgid "Affect entity for create task"
 msgstr ""

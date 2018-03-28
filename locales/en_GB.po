@@ -1,77 +1,70 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Tasklists Development Team
-# This file is distributed under the same license as the PACKAGE package.
-#
-# Translators:
+# This file is distributed under the same license as the GLPI - Tasklists plugin package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Project - Tasklists plugin\n"
+"Project-Id-Version: GLPI - Tasklists plugin 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-10 16:51+0200\n"
-"PO-Revision-Date: 2017-10-13 10:56+0200\n"
-"Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
-"Language-Team: English (United Kingdom) (http://www.transifex.com/tsmr/"
-"GLPI_tasklists/language/en_GB/)\n"
-"Language: en_GB\n"
+"POT-Creation-Date: 2018-03-28 08:53+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.3\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: setup.php:70 inc/dashboard.class.php:62 inc/dashboard.class.php:176
-#: inc/dashboard.class.php:181 inc/menu.class.php:45 inc/profile.class.php:52
+#: setup.php:70 inc/dashboard.class.php:58 inc/dashboard.class.php:171
+#: inc/dashboard.class.php:176 inc/menu.class.php:44 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Tasks list"
 
-#: inc/dashboard.class.php:81 inc/task.class.php:74 inc/task.class.php:231
-#: inc/tasktype.class.php:48
+#: inc/dashboard.class.php:77 inc/task.class.php:72 inc/task.class.php:225
+#: inc/tasktype.class.php:47
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Context"
 msgstr[1] "Contexts"
 
-#: inc/dashboard.class.php:133
+#: inc/dashboard.class.php:128
 msgid "Mark as done"
 msgstr "Mark as done"
 
-#: inc/dashboard.class.php:138 inc/dashboard.class.php:143
+#: inc/dashboard.class.php:133 inc/dashboard.class.php:138
 msgid "Add comment"
 msgstr "Add comment"
 
-#: inc/dashboard.class.php:163 inc/dashboard.class.php:168
+#: inc/dashboard.class.php:158 inc/dashboard.class.php:163
 msgid "Add task"
 msgstr "Add task"
 
-#: inc/task.class.php:100 inc/task.class.php:273
+#: inc/task.class.php:98 inc/task.class.php:266
 msgid "Due date"
 msgstr "Due date"
 
-#: inc/task.class.php:275
+#: inc/task.class.php:268
 msgid "Empty for infinite"
 msgstr "Empty for infinite"
 
-#: inc/task.class.php:657
+#: inc/task.class.php:639
 msgctxt "visibility"
 msgid "This user"
 msgstr "This user"
 
-#: inc/task.class.php:660
+#: inc/task.class.php:642
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "This user and this group"
 
-#: inc/task.class.php:663
+#: inc/task.class.php:645
 msgctxt "visibility"
 msgid "All"
 msgstr "All"
 
-#: inc/task.class.php:680
+#: inc/task.class.php:661
 msgid "Affect entity for create task"
 msgstr "Affect entity for create task"
-
-#~ msgid "This plugin requires GLPI >= 0.85"
-#~ msgstr "This plugin requires GLPI >= 0.90"
-
-#~ msgid "This plugin requires GLPI >= 0.90"
-#~ msgstr "This plugin requires GLPI >= 0.90"

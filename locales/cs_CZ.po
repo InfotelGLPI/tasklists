@@ -10,62 +10,63 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-28 08:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Amandine Manceau, 2017\n"
-"Language-Team: French (France) (https://www.transifex.com/tsmr/teams/79675/fr_FR/)\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>, 2018\n"
+"Language-Team: Czech (Czech Republic) (https://www.transifex.com/tsmr/teams/79675/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Poedit 2.0.6\n"
 
 #: setup.php:70 inc/dashboard.class.php:58 inc/dashboard.class.php:171
 #: inc/dashboard.class.php:176 inc/menu.class.php:44 inc/profile.class.php:52
 msgid "Tasks list"
-msgstr "Liste des tâches"
+msgstr "Seznam úkolů"
 
 #: inc/dashboard.class.php:77 inc/task.class.php:72 inc/task.class.php:225
 #: inc/tasktype.class.php:47
 msgid "Context"
 msgid_plural "Contexts"
-msgstr[0] "Contexte"
-msgstr[1] "Contextes"
+msgstr[0] "Kontext"
+msgstr[1] "Kontexty"
+msgstr[2] "Kontextů"
 
 #: inc/dashboard.class.php:128
 msgid "Mark as done"
-msgstr "Maquer comme fait"
+msgstr "Označit jako dokončené"
 
 #: inc/dashboard.class.php:133 inc/dashboard.class.php:138
 msgid "Add comment"
-msgstr "Ajouter un commentaire"
+msgstr "Přidat komentář"
 
 #: inc/dashboard.class.php:158 inc/dashboard.class.php:163
 msgid "Add task"
-msgstr "Ajouter une tâche"
+msgstr "Přidat úkol"
 
 #: inc/task.class.php:98 inc/task.class.php:266
 msgid "Due date"
-msgstr "Date d'échéance"
+msgstr "Termín"
 
 #: inc/task.class.php:268
 msgid "Empty for infinite"
-msgstr "Vide pour infini"
+msgstr "Prázdné pro nekončno"
 
 #: inc/task.class.php:639
 msgctxt "visibility"
 msgid "This user"
-msgstr "Cet utilisateur"
+msgstr "Tento uživatel"
 
 #: inc/task.class.php:642
 msgctxt "visibility"
 msgid "This user and this group"
-msgstr "Cet utilisateur et ce groupe"
+msgstr "Tento uživatel a skupina"
 
 #: inc/task.class.php:645
 msgctxt "visibility"
 msgid "All"
-msgstr "Tout le monde"
+msgstr "Vše"
 
 #: inc/task.class.php:661
 msgid "Affect entity for create task"
-msgstr "Affecter une entité pour une création de tâche"
+msgstr "Entita které se vytvoření úkolu týká"
