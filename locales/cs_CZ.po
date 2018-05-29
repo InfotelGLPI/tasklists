@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "X-Generator: Poedit 2.0.6\n"
 
 #: setup.php:70 inc/dashboard.class.php:58 inc/dashboard.class.php:171
@@ -31,6 +31,7 @@ msgid_plural "Contexts"
 msgstr[0] "Kontext"
 msgstr[1] "Kontexty"
 msgstr[2] "Kontextů"
+msgstr[3] "Kontextů"
 
 #: inc/dashboard.class.php:128
 msgid "Mark as done"
