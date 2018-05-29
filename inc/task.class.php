@@ -34,16 +34,16 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginTasklistsTask
  */
-class PluginTasklistsTask extends CommonDBTM
-{
+class PluginTasklistsTask extends CommonDBTM {
 
-   public $dohistory = true;
-   static $rightname = 'plugin_tasklists';
+   public    $dohistory  = true;
+   static    $rightname  = 'plugin_tasklists';
    protected $usenotepad = true;
-   static $types = [];
+   static    $types      = [];
 
    /**
     * @param int $nb
+    *
     * @return translated
     */
    static function getTypeName($nb = 0) {
@@ -55,106 +55,154 @@ class PluginTasklistsTask extends CommonDBTM
    /**
     * @return array
     */
-   function getSearchOptions() {
+   function rawSearchOptions() {
 
       $tab = [];
 
-      $tab['common'] = self::getTypeName(2);
+      $tab[] = [
+         'id'   => 'common',
+         'name' => self::getTypeName(2)
+      ];
 
-      $tab[1]['table'] = $this->getTable();
-      $tab[1]['field'] = 'name';
-      $tab[1]['name'] = __('Name');
-      $tab[1]['datatype'] = 'itemlink';
-      $tab[1]['itemlink_type'] = $this->getType();
+      $tab[] = [
+         'id'            => '1',
+         'table'         => $this->getTable(),
+         'field'         => 'name',
+         'name'          => __('Name'),
+         'datatype'      => 'itemlink',
+         'itemlink_type' => $this->getType()
+      ];
 
-      $tab[2]['table'] = 'glpi_plugin_tasklists_tasktypes';
-      $tab[2]['field'] = 'name';
-      $tab[2]['name'] = _n('Context', 'Contexts', 1, 'tasklists');
-      $tab[2]['datatype'] = 'dropdown';
+      $tab[] = [
+         'id'       => '2',
+         'table'    => 'glpi_plugin_tasklists_tasktypes',
+         'field'    => 'name',
+         'name'     => _n('Context', 'Contexts', 1, 'tasklists'),
+         'datatype' => 'dropdown'
+      ];
 
-      $tab[3]['table'] = 'glpi_users';
-      $tab[3]['field'] = 'name';
-      $tab[3]['linkfield'] = 'users_id';
-      $tab[3]['name'] = __('User');
-      $tab[3]['datatype'] = 'dropdown';
+      $tab[] = [
+         'id'        => '3',
+         'table'     => 'glpi_users',
+         'field'     => 'name',
+         'linkfield' => 'users_id',
+         'name'      => __('User'),
+         'datatype'  => 'dropdown'
+      ];
 
-      $tab[4]['table'] = $this->getTable();
-      $tab[4]['field'] = 'actiontime';
-      $tab[4]['name'] = __('Planned duration');
-      $tab[4]['datatype'] = 'timestamp';
-      $tab[4]['massiveaction'] = false;
+      $tab[] = [
+         'id'            => '4',
+         'table'         => $this->getTable(),
+         'field'         => 'actiontime',
+         'name'          => __('Planned duration'),
+         'datatype'      => 'timestamp',
+         'massiveaction' => false
+      ];
 
-      $tab[5]['table'] = $this->getTable();
-      $tab[5]['field'] = 'percent_done';
-      $tab[5]['name'] = __('Percent done');
-      $tab[5]['datatype'] = 'number';
-      $tab[5]['unit'] = '%';
-      $tab[5]['min'] = 0;
-      $tab[5]['max'] = 100;
-      $tab[5]['step'] = 5;
+      $tab[] = [
+         'id'       => '5',
+         'table'    => $this->getTable(),
+         'field'    => 'percent_done',
+         'name'     => __('Percent done'),
+         'datatype' => 'number',
+         'unit'     => '%',
+         'min'      => 0,
+         'max'      => 100,
+         'step'     => 5
+      ];
 
-      $tab[6]['table'] = $this->getTable();
-      $tab[6]['field'] = 'due_date';
-      $tab[6]['name'] = __('Due date', 'tasklists');
-      $tab[6]['datatype'] = 'date';
+      $tab[] = [
+         'id'       => '6',
+         'table'    => $this->getTable(),
+         'field'    => 'due_date',
+         'name'     => __('Due date', 'tasklists'),
+         'datatype' => 'date'
+      ];
 
-      $tab[7]['table'] = $this->getTable();
-      $tab[7]['field'] = 'comment';
-      $tab[7]['name'] = __('Description');
-      $tab[7]['datatype'] = 'text';
+      $tab[] = [
+         'id'       => '7',
+         'table'    => $this->getTable(),
+         'field'    => 'comment',
+         'name'     => __('Description'),
+         'datatype' => 'text'
+      ];
 
-      $tab[8]['table'] = $this->getTable();
-      $tab[8]['field'] = 'priority';
-      $tab[8]['name'] = __('Priority');
-      $tab[8]['searchtype'] = 'equals';
-      $tab[8]['datatype'] = 'specific';
+      $tab[] = [
+         'id'         => '8',
+         'table'      => $this->getTable(),
+         'field'      => 'priority',
+         'name'       => __('Priority'),
+         'searchtype' => 'equals',
+         'datatype'   => 'specific'
+      ];
 
-      $tab[9]['table'] = $this->getTable();
-      $tab[9]['field'] = 'visibility';
-      $tab[9]['name'] = __('Visibility');
-      $tab[9]['searchtype'] = 'equals';
-      $tab[9]['datatype'] = 'specific';
-      $tab[9]['massiveaction'] = false;
+      $tab[] = [
+         'id'            => '9',
+         'table'         => $this->getTable(),
+         'field'         => 'visibility',
+         'name'          => __('Visibility'),
+         'searchtype'    => 'equals',
+         'datatype'      => 'specific',
+         'massiveaction' => false
+      ];
 
-      $tab[10]['table'] = 'glpi_groups';
-      $tab[10]['field'] = 'name';
-      $tab[10]['linkfield'] = 'groups_id';
-      $tab[10]['name'] = __('Group');
-      $tab[10]['condition'] = '`is_assign`';
-      $tab[10]['datatype'] = 'dropdown';
+      $tab[] = [
+         'id'        => '10',
+         'table'     => 'glpi_groups',
+         'field'     => 'name',
+         'linkfield' => 'groups_id',
+         'name'      => __('Group'),
+         'condition' => '`is_assign`',
+         'datatype'  => 'dropdown'
+      ];
 
-      $tab[11]['table'] = $this->getTable();
-      $tab[11]['field'] = 'state';
-      $tab[11]['name'] = __('Status');
-      $tab[11]['searchtype'] = 'equals';
-      $tab[11]['datatype'] = 'specific';
+      $tab[] = [
+         'id'         => '11',
+         'table'      => $this->getTable(),
+         'field'      => 'state',
+         'name'       => __('Status'),
+         'searchtype' => 'equals',
+         'datatype'   => 'specific'
+      ];
 
-      $tab[12]['table'] = $this->getTable();
-      $tab[12]['field'] = 'date_mod';
-      $tab[12]['massiveaction'] = false;
-      $tab[12]['name'] = __('Last update');
-      $tab[12]['datatype'] = 'datetime';
+      $tab[] = [
+         'id'            => '12',
+         'table'         => $this->getTable(),
+         'field'         => 'date_mod',
+         'massiveaction' => false,
+         'name'          => __('Last update'),
+         'datatype'      => 'datetime'
+      ];
 
-      $tab[18]['table'] = $this->getTable();
-      $tab[18]['field'] = 'is_recursive';
-      $tab[18]['name'] = __('Child entities');
-      $tab[18]['datatype'] = 'bool';
+      $tab[] = [
+         'id'       => '18',
+         'table'    => $this->getTable(),
+         'field'    => 'is_recursive',
+         'name'     => __('Child entities'),
+         'datatype' => 'bool'
+      ];
 
-      $tab[30]['table'] = $this->getTable();
-      $tab[30]['field'] = 'id';
-      $tab[30]['name'] = __('ID');
-      $tab[30]['datatype'] = 'number';
+      $tab[] = [
+         'id'       => '30',
+         'table'    => $this->getTable(),
+         'field'    => 'id',
+         'name'     => __('ID'),
+         'datatype' => 'number'
+      ];
 
-      $tab[80]['table'] = 'glpi_entities';
-      $tab[80]['field'] = 'completename';
-      $tab[80]['name'] = __('Entity');
-      $tab[80]['datatype'] = 'dropdown';
-
+      $tab[] = [
+         'id'       => '80',
+         'table'    => 'glpi_entities',
+         'field'    => 'completename',
+         'name'     => __('Entity'),
+         'datatype' => 'dropdown'
+      ];
       return $tab;
    }
 
    /**
     * @param array $options
+    *
     * @return array
     */
    function defineTabs($options = []) {
@@ -172,14 +220,15 @@ class PluginTasklistsTask extends CommonDBTM
     */
    function post_getEmpty() {
 
-      $this->fields['priority'] = 3;
+      $this->fields['priority']     = 3;
       $this->fields['percent_done'] = 0;
-      $this->fields['users_id'] = Session::getLoginUserID();
-      $this->fields['state'] = Planning::TODO;
+      $this->fields['users_id']     = Session::getLoginUserID();
+      $this->fields['state']        = Planning::TODO;
    }
 
    /**
     * @param datas $input
+    *
     * @return datas
     */
    function prepareInputForAdd($input) {
@@ -193,6 +242,7 @@ class PluginTasklistsTask extends CommonDBTM
 
    /**
     * @param datas $input
+    *
     * @return datas
     */
    function prepareInputForUpdate($input) {
@@ -206,8 +256,9 @@ class PluginTasklistsTask extends CommonDBTM
 
 
    /**
-    * @param $ID
+    * @param       $ID
     * @param array $options
+    *
     * @return bool
     */
    function showForm($ID, $options = []) {
@@ -223,9 +274,9 @@ class PluginTasklistsTask extends CommonDBTM
       echo "</td>";
 
       echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";
-      Dropdown::show('PluginTasklistsTaskType', ['name' => "plugin_tasklists_tasktypes_id",
-         'value' => $this->fields["plugin_tasklists_tasktypes_id"],
-         'entity' => $this->fields["entities_id"]]);
+      Dropdown::show('PluginTasklistsTaskType', ['name'   => "plugin_tasklists_tasktypes_id",
+                                                 'value'  => $this->fields["plugin_tasklists_tasktypes_id"],
+                                                 'entity' => $this->fields["entities_id"]]);
       echo "</td>";
 
       echo "</tr>";
@@ -234,8 +285,8 @@ class PluginTasklistsTask extends CommonDBTM
 
       echo "<td>" . __('Priority') . "</td>";
       echo "<td>";
-      CommonITILObject::dropdownPriority(['value' => $this->fields['priority'],
-         'withmajor' => 1]);
+      CommonITILObject::dropdownPriority(['value'     => $this->fields['priority'],
+                                          'withmajor' => 1]);
       echo "</td>";
 
       echo "<td>" . __('Planned duration') . "</td>";
@@ -245,13 +296,13 @@ class PluginTasklistsTask extends CommonDBTM
       //   $toadd[] = $i*HOUR_TIMESTAMP;
       //}
 
-      Dropdown::showTimeStamp("actiontime", ['min' => 0,
-         'max' => 50 * DAY_TIMESTAMP,
-         'step' => DAY_TIMESTAMP,
-         'value' => $this->fields["actiontime"],
-         //'addfirstminutes' => true,
-         //'inhours'         => true,
-         'toadd' => $toadd]);
+      Dropdown::showTimeStamp("actiontime", ['min'   => 0,
+                                             'max'   => 50 * DAY_TIMESTAMP,
+                                             'step'  => DAY_TIMESTAMP,
+                                             'value' => $this->fields["actiontime"],
+                                             //'addfirstminutes' => true,
+                                             //'inhours'         => true,
+                                             'toadd' => $toadd]);
       echo "</td>";
 
       echo "</tr>";
@@ -276,19 +327,19 @@ class PluginTasklistsTask extends CommonDBTM
       echo "<tr class='tab_bg_1'>";
 
       echo "<td>" . __('User') . "</td><td>";
-      User::dropdown(['name' => "users_id",
-         'value' => $this->fields["users_id"],
-         'entity' => $this->fields["entities_id"],
-         'right' => 'all']);
+      User::dropdown(['name'   => "users_id",
+                      'value'  => $this->fields["users_id"],
+                      'entity' => $this->fields["entities_id"],
+                      'right'  => 'all']);
       echo "</td>";
 
       echo "<td>" . __('Percent done') . "</td>";
       echo "<td>";
       Dropdown::showNumber("percent_done", ['value' => $this->fields['percent_done'],
-         'min' => 0,
-         'max' => 100,
-         'step' => 20,
-         'unit' => '%']);
+                                            'min'   => 0,
+                                            'max'   => 100,
+                                            'step'  => 20,
+                                            'unit'  => '%']);
       echo "</td>";
 
       echo "</tr>";
@@ -297,10 +348,10 @@ class PluginTasklistsTask extends CommonDBTM
 
       echo "<td>" . __('Group') . "</td>";
       echo "<td>";
-      Dropdown::show('Group', ['name' => "groups_id",
-         'value' => $this->fields["groups_id"],
-         'entity' => $this->fields["entities_id"],
-         'condition' => '`is_assign`']);
+      Dropdown::show('Group', ['name'      => "groups_id",
+                               'value'     => $this->fields["groups_id"],
+                               'entity'    => $this->fields["entities_id"],
+                               'condition' => '`is_assign`']);
       echo "</td>";
 
       echo "<td>" . __('Status') . "</td><td>";
@@ -341,9 +392,9 @@ class PluginTasklistsTask extends CommonDBTM
 
       global $DB, $CFG_GLPI;
 
-      $p['name'] = 'plugin_tasklists_tasklists_id';
-      $p['entity'] = '';
-      $p['used'] = [];
+      $p['name']    = 'plugin_tasklists_tasklists_id';
+      $p['entity']  = '';
+      $p['used']    = [];
       $p['display'] = true;
 
       if (is_array($options) && count($options)) {
@@ -361,7 +412,7 @@ class PluginTasklistsTask extends CommonDBTM
          $where .= " AND `id` NOT IN (0, " . implode(",", $p['used']) . ")";
       }
 
-      $query = "SELECT *
+      $query  = "SELECT *
         FROM `glpi_plugin_tasklists_tasktypes`
         WHERE `id` IN (SELECT DISTINCT `plugin_tasklists_tasktypes_id`
                        FROM `glpi_plugin_tasklists_tasks`
@@ -375,16 +426,16 @@ class PluginTasklistsTask extends CommonDBTM
          $values[$data['id']] = $data['name'];
       }
 
-      $out = Dropdown::showFromArray('_tasktype', $values, ['width' => '30%',
-         'rand' => $rand,
-         'display' => false]);
+      $out      = Dropdown::showFromArray('_tasktype', $values, ['width'   => '30%',
+                                                                 'rand'    => $rand,
+                                                                 'display' => false]);
       $field_id = Html::cleanId("dropdown__tasktype$rand");
 
       $params = ['tasktypes' => '__VALUE__',
-         'entity' => $p['entity'],
-         'rand' => $rand,
-         'myname' => $p['name'],
-         'used' => $p['used']
+                 'entity'    => $p['entity'],
+                 'rand'      => $rand,
+                 'myname'    => $p['name'],
+                 'used'      => $p['used']
       ];
 
       $out .= Ajax::updateItemOnSelectEvent($field_id, "show_" . $p['name'] . $rand, $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownTypeTasks.php", $params, false);
@@ -393,7 +444,7 @@ class PluginTasklistsTask extends CommonDBTM
       $out .= "</span>\n";
 
       $params['tasktype'] = 0;
-      $out .= Ajax::updateItem("show_" . $p['name'] . $rand, $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownTypeTasks.php", $params, false);
+      $out                .= Ajax::updateItem("show_" . $p['name'] . $rand, $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownTypeTasks.php", $params, false);
       if ($p['display']) {
          echo $out;
          return $rand;
@@ -402,8 +453,10 @@ class PluginTasklistsTask extends CommonDBTM
    }
 
    //Massive action
+
    /**
     * @param null $checkitem
+    *
     * @return an
     */
    function getSpecificMassiveActions($checkitem = null) {
@@ -426,7 +479,9 @@ class PluginTasklistsTask extends CommonDBTM
     * @since version 0.85
     *
     * @see CommonDBTM::showMassiveActionsSubForm()
+    *
     * @param MassiveAction $ma
+    *
     * @return bool|false
     */
    static function showMassiveActionsSubForm(MassiveAction $ma) {
@@ -445,9 +500,11 @@ class PluginTasklistsTask extends CommonDBTM
     * @since version 0.85
     *
     * @see CommonDBTM::processMassiveActionsForOneItemtype()
+    *
     * @param MassiveAction $ma
-    * @param CommonDBTM $item
-    * @param array $ids
+    * @param CommonDBTM    $item
+    * @param array         $ids
+    *
     * @return nothing|void
     */
    static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
@@ -460,12 +517,12 @@ class PluginTasklistsTask extends CommonDBTM
                   $item->getFromDB($key);
                   $type = PluginTasklistsTaskType::transfer($item->fields["plugin_tasklists_tasktypes_id"], $input['entities_id']);
                   if ($type > 0) {
-                     $values["id"] = $key;
+                     $values["id"]                            = $key;
                      $values["plugin_tasklists_tasktypes_id"] = $type;
                      $item->update($values);
                   }
                   unset($values);
-                  $values["id"] = $key;
+                  $values["id"]          = $key;
                   $values["entities_id"] = $input['entities_id'];
 
                   if ($item->update($values)) {
@@ -569,13 +626,13 @@ class PluginTasklistsTask extends CommonDBTM
 
       switch ($field) {
          case 'priority':
-            $options['name'] = $name;
-            $options['value'] = $values[$field];
+            $options['name']      = $name;
+            $options['value']     = $values[$field];
             $options['withmajor'] = 1;
             return CommonITILObject::dropdownPriority($options);
 
          case 'visibility':
-            $options['name'] = $name;
+            $options['name']  = $name;
             $options['value'] = $values[$field];
             return self::dropdownVisibility($options);
 
@@ -598,14 +655,15 @@ class PluginTasklistsTask extends CommonDBTM
    **/
    /**
     * @param array $options
+    *
     * @return int|string
     */
    static function dropdownVisibility(array $options = []) {
 
-      $p['name'] = 'visibility';
-      $p['value'] = 0;
-      $p['showtype'] = 'normal';
-      $p['display'] = true;
+      $p['name']      = 'visibility';
+      $p['value']     = 0;
+      $p['showtype']  = 'normal';
+      $p['display']   = true;
       $p['withmajor'] = false;
 
       if (is_array($options) && count($options)) {
@@ -658,9 +716,9 @@ class PluginTasklistsTask extends CommonDBTM
 
       $actions = [];
 
-      $actions['tasklists']['name'] = __('Affect entity for create task', 'tasklists');
-      $actions['tasklists']['type'] = 'dropdown';
-      $actions['tasklists']['table'] = 'glpi_entities';
+      $actions['tasklists']['name']          = __('Affect entity for create task', 'tasklists');
+      $actions['tasklists']['type']          = 'dropdown';
+      $actions['tasklists']['table']         = 'glpi_entities';
       $actions['tasklists']['force_actions'] = ['send'];
 
       return $actions;
@@ -672,6 +730,7 @@ class PluginTasklistsTask extends CommonDBTM
     * @param $action
     * @param $output the fields to manipulate
     * @param $params parameters
+    *
     * @return the $output array modified
     */
    function executeActions($action, $output, $params) {
@@ -697,8 +756,8 @@ class PluginTasklistsTask extends CommonDBTM
                   $input['state'] = 1;
 
                   if (isset($input['name'])
-                     && $input['name'] !== false
-                     && isset($input['entities_id'])
+                      && $input['name'] !== false
+                      && isset($input['entities_id'])
                   ) {
                      $this->add($input);
                   }

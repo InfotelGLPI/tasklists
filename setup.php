@@ -72,7 +72,7 @@ function plugin_version_tasklists() {
       'license'        => 'GPLv2+',
       'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/tasklists',
-      'minGlpiVersion' => '9.2',// For compatibility / no install in version < 9.2
+      'minGlpiVersion' => '9.3',// For compatibility / no install in version < 9.2
    ];
 
 }
@@ -82,8 +82,8 @@ function plugin_version_tasklists() {
  * @return bool
  */
 function plugin_tasklists_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.2', 'lt') || version_compare(GLPI_VERSION, '9.3', 'ge')) {
-      echo __('This plugin requires GLPI >= 9.2');
+   if (version_compare(GLPI_VERSION, '9.3', 'lt') || version_compare(GLPI_VERSION, '9.4', 'ge')) {
+      echo __('This plugin requires GLPI >= 9.3');
       return false;
    }
    return true;
