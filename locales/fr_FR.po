@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-28 08:53+0200\n"
+"POT-Creation-Date: 2018-07-04 09:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Amandine Manceau, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/tsmr/teams/79675/fr_FR/)\n"
@@ -17,14 +17,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.0.6\n"
 
 #: setup.php:70 inc/dashboard.class.php:58 inc/dashboard.class.php:171
 #: inc/dashboard.class.php:176 inc/menu.class.php:44 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Liste des tâches"
 
-#: inc/dashboard.class.php:77 inc/task.class.php:72 inc/task.class.php:225
+#: inc/dashboard.class.php:77 inc/task.class.php:80 inc/task.class.php:276
 #: inc/tasktype.class.php:47
 msgid "Context"
 msgid_plural "Contexts"
@@ -43,29 +42,29 @@ msgstr "Ajouter un commentaire"
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
-#: inc/task.class.php:98 inc/task.class.php:266
+#: inc/task.class.php:118 inc/task.class.php:317
 msgid "Due date"
 msgstr "Date d'échéance"
 
-#: inc/task.class.php:268
+#: inc/task.class.php:319
 msgid "Empty for infinite"
 msgstr "Vide pour infini"
 
-#: inc/task.class.php:639
+#: inc/task.class.php:697
 msgctxt "visibility"
 msgid "This user"
 msgstr "Cet utilisateur"
 
-#: inc/task.class.php:642
+#: inc/task.class.php:700
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Cet utilisateur et ce groupe"
 
-#: inc/task.class.php:645
+#: inc/task.class.php:703
 msgctxt "visibility"
 msgid "All"
 msgstr "Tout le monde"
 
-#: inc/task.class.php:661
+#: inc/task.class.php:719
 msgid "Affect entity for create task"
 msgstr "Affecter une entité pour une création de tâche"

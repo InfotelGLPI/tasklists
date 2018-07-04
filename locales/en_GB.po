@@ -2,13 +2,16 @@
 # Copyright (C) YEAR Tasklists Development Team
 # This file is distributed under the same license as the GLPI - Tasklists plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-28 08:53+0200\n"
-"PO-Revision-Date: 2018-05-29 15:41+0200\n"
+"POT-Creation-Date: 2018-07-04 09:46+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,7 +26,7 @@ msgstr ""
 msgid "Tasks list"
 msgstr "Tasks list"
 
-#: inc/dashboard.class.php:77 inc/task.class.php:72 inc/task.class.php:225
+#: inc/dashboard.class.php:77 inc/task.class.php:80 inc/task.class.php:276
 #: inc/tasktype.class.php:47
 msgid "Context"
 msgid_plural "Contexts"
@@ -42,29 +45,29 @@ msgstr "Add comment"
 msgid "Add task"
 msgstr "Add task"
 
-#: inc/task.class.php:98 inc/task.class.php:266
+#: inc/task.class.php:118 inc/task.class.php:317
 msgid "Due date"
 msgstr "Due date"
 
-#: inc/task.class.php:268
+#: inc/task.class.php:319
 msgid "Empty for infinite"
 msgstr "Empty for infinite"
 
-#: inc/task.class.php:639
+#: inc/task.class.php:697
 msgctxt "visibility"
 msgid "This user"
 msgstr "This user"
 
-#: inc/task.class.php:642
+#: inc/task.class.php:700
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "This user and this group"
 
-#: inc/task.class.php:645
+#: inc/task.class.php:703
 msgctxt "visibility"
 msgid "All"
 msgstr "All"
 
-#: inc/task.class.php:661
+#: inc/task.class.php:719
 msgid "Affect entity for create task"
 msgstr "Affect entity for create task"
