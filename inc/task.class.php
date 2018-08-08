@@ -404,9 +404,9 @@ class PluginTasklistsTask extends CommonDBTM {
       }
 
       $rand = mt_rand();
-
+      $dbu  = new DbUtils();
       $where = " WHERE `glpi_plugin_tasklists_tasklists`.`is_deleted` = '0' ";
-      $where .= getEntitiesRestrictRequest("AND", 'glpi_plugin_tasklists_tasklists', '', $p['entity'], true);
+      $where .= $dbu->getEntitiesRestrictRequest("AND", 'glpi_plugin_tasklists_tasklists', '', $p['entity'], true);
 
       if (count($p['used'])) {
          $where .= " AND `id` NOT IN (0, " . implode(",", $p['used']) . ")";

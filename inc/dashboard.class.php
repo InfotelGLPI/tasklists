@@ -73,6 +73,7 @@ class PluginTasklistsDashboard extends CommonGLPI
          case $this->getType() . "1":
             $plugin = new Plugin();
             if ($plugin->isActivated("tasklists")) {
+               $dbu = new DbUtils();
                $widget = new PluginMydashboardDatatable();
                $headers = [__('Name'), __('Priority'), _n('Context', 'Contexts', 1, 'tasklists'), __('User'), __('Percent done'), __('Due date'), __('Action')];
                $query = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
@@ -80,7 +81,7 @@ class PluginTasklistsDashboard extends CommonGLPI
                             LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
                             WHERE NOT `glpi_plugin_tasklists_tasks`.`is_deleted`
                                  AND `glpi_plugin_tasklists_tasks`.`state` < 2 ";
-               $query .= getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
+               $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
                $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority`DESC ";
 
                $tasks = [];
@@ -115,7 +116,7 @@ class PluginTasklistsDashboard extends CommonGLPI
                            $bgcolor = $_SESSION["glpipriority_" . $data['priority']];
                            $tasks[$data['id']][1] = "<div class='center' style='background-color:$bgcolor;'>" . CommonITILObject::getPriorityName($data['priority']) . "</div>";
                            $tasks[$data['id']][2] = $data['type'];
-                           $tasks[$data['id']][3] = getUserName($data['users_id']);
+                           $tasks[$data['id']][3] = $dbu->getUserName($data['users_id']);
                            $tasks[$data['id']][4] = Dropdown::getValueWithUnit($data['percent_done'], "%");
                            $due_date = $data['due_date'];
                            $display = Html::convDate($data['due_date']);
