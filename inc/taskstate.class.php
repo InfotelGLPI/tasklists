@@ -47,44 +47,43 @@ class PluginTasklistsTaskState extends CommonDropdown {
     * @return translated
     */
    static function getTypeName($nb = 0) {
-      return __('Status');
+      return _n('Status', 'Statuses', $nb);
    }
-
 
    public function showForm($ID, $options = []) {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Name')."</td>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "name");
+      Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
       echo "</td>";
 
-      echo "<td rowspan='3'>".__('Description')."</td>";
+      echo "<td rowspan='3'>" . __('Description') . "</td>";
       echo "<td rowspan='3'>";
-      echo "<textarea name='comment' id ='comment' cols='45' rows='3'>".
-           $this->fields['comment'].
+      echo "<textarea name='comment' id ='comment' cols='45' rows='3'>" .
+           $this->fields['comment'] .
            "</textarea>";
       echo "</td>";
       echo "</tr>";
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>".__('Color')."</td>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Color') . "</td>";
       echo "<td>";
       Html::showColorField('color', ['value' => $this->fields['color']]);
       echo "</td>";
       echo "</tr>";
 
-      echo "<tr class='tab_bg_2'>";
+      echo "<tr class='tab_bg_1'>";
       echo "<td>"
-           ._n('Context', 'Contexts', 1, 'tasklists')."</td>";
+           . _n('Context', 'Contexts', 1, 'tasklists') . "</td>";
       echo "</td>";
       echo "<td>";
       echo Html::hidden("tasktypes");
       $possible_values = [];
-      $dbu = new DbUtils();
+      $dbu             = new DbUtils();
       $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
       if (!empty($datatypes)) {
          foreach ($datatypes as $datatype) {
@@ -113,38 +112,39 @@ class PluginTasklistsTaskState extends CommonDropdown {
       $tab = parent::rawSearchOptions();
 
       $tab[] = [
-         'id'            => 11,
-         'table'         => $this->getTable(),
-         'field'         => 'color',
-         'name'          => __('Color'),
-         'searchtype'    => 'contains',
-         'datatype'      => 'specific',
+         'id'         => 11,
+         'table'      => $this->getTable(),
+         'field'      => 'color',
+         'name'       => __('Color'),
+         'searchtype' => 'contains',
+         'datatype'   => 'specific',
       ];
 
       $tab[] = [
-         'id'            => '12',
-         'table'         => $this->getTable(),
-         'field'         => 'tasktypes',
-         'name'          => _n('Context', 'Contexts', 1, 'tasklists'),
-         'searchtype'    => ['equals', 'notequals'],
-         'datatype'      => 'specific'
+         'id'           => '12',
+         'table'        => $this->getTable(),
+         'field'        => 'tasktypes',
+         'name'         => _n('Context', 'Contexts', 1, 'tasklists'),
+         'nosearch'     => true,
+         'masiveaction' => false,
+         'datatype'     => 'specific'
       ];
 
       return $tab;
    }
 
    function prepareInputForAdd($input) {
-//      if (!$this->checkMandatoryFields($input)) {
-//         return false;
-//      }
+      //      if (!$this->checkMandatoryFields($input)) {
+      //         return false;
+      //      }
 
       return $this->encodeSubtypes($input);
    }
 
    function prepareInputForUpdate($input) {
-//      if (!$this->checkMandatoryFields($input)) {
-//         return false;
-//      }
+      //      if (!$this->checkMandatoryFields($input)) {
+      //         return false;
+      //      }
 
       return $this->encodeSubtypes($input);
    }
@@ -163,33 +163,6 @@ class PluginTasklistsTaskState extends CommonDropdown {
    }
 
    /**
-    * Display specific fields
-    *
-    * @global type $CFG_GLPI
-    *
-    * @param type  $ID
-    * @param type  $field
-    */
-//   function displaySpecificTypeField($ID, $field = []) {
-//      $dbu = new DbUtils();
-//      switch ($field['name']) {
-//         case 'tasktypes':
-//            $possible_values = [];
-//            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
-//            if (!empty($datatypes)) {
-//               foreach ($datatypes as $datatype) {
-//                  $possible_values[$datatype['id']] = $datatype['name'];
-//               }
-//            }
-//            Dropdown::showFromArray($field['name'], $possible_values,
-//                                    ['multiple' => 'multiples',
-//                                     'width' => 200,
-//                                     'display'  => false]);
-//            break;
-//      }
-//   }
-
-   /**
     * @since 0.84
     *
     * @param $field
@@ -197,30 +170,31 @@ class PluginTasklistsTaskState extends CommonDropdown {
     * @param $values (default '')
     * @param $options      array
     **/
-   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+//   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+//      if (!is_array($values)) {
+//         $values = [$field => $values];
+//      }
+//      $dbu = new DbUtils();
+//      switch ($field) {
+//         case 'tasktypes':
+//            $possible_values = ['' => Dropdown::EMPTY_VALUE];
+//            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+//            if (!empty($datatypes)) {
+//               foreach ($datatypes as $datatype) {
+//                  $possible_values[$datatype['id']] = $datatype['name'];
+//               }
+//            }
+//
+//            return Dropdown::showFromArray($name, $possible_values,
+//                                           ['display' => false,
+//                                            'value'   => $values[$field]]);
+//
+//            break;
+//      }
+//
+//      return parent::getSpecificValueToSelect($field, $name, $values, $options);
+//   }
 
-      $dbu = new DbUtils();
-      if (!is_array($values)) {
-         $values = [$field => $values];
-      }
-
-      switch ($field) {
-         case 'tasktypes' :
-            $possible_values = [];
-            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
-            if (!empty($datatypes)) {
-               foreach ($datatypes as $datatype) {
-                  $possible_values[$datatype['id']] = $datatype['name'];
-               }
-            }
-
-            return Dropdown::showFromArray($name, $possible_values,
-                                           ['value'    => $values[$field],
-                                            'multiple' => true,
-                                            'display'  => false]);
-      }
-      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   }
 
    /**
     * @since 0.84
@@ -236,45 +210,24 @@ class PluginTasklistsTaskState extends CommonDropdown {
       }
 
       switch ($field) {
-         case 'tasktypes' :
-            return "toto";
-//            return Dropdown::getDropdownName("glpi_plugin_tasklists_tasktypes", $values[$field]);
-//         case 'type_menu':
-//            $itemtypes = json_decode($values[$field]);
-//            if (!is_array($itemtypes)) {
-//               return "&nbsp;";
-//            }
-//            $itemtype_names = [];
-//            foreach ($itemtypes as $itemtype) {
-//               if(!$item = getItemForItemtype($itemtype)) {
-//                  continue;
-//               }
-//               $itemtype_names[] = $item->getTypeName();
-//            }
-//            $out = implode(", ", $itemtype_names);
-//            return $out;
-//         case 'color' :
-//            return "<div style='background-color: $values[$field];'>&nbsp;</div>";
+         case 'tasktypes':
+            $types = json_decode($values[$field]);
+            if (!is_array($types)) {
+               return "&nbsp;";
+            }
+            $names    = [];
+            $tasktype = new PluginTasklistsTaskType();
+            foreach ($types as $type) {
+               if ($tasktype->getFromDB($type)) {
+                  $names[] = $tasktype->fields['name'];
+               }
+            }
+            $out = implode(", ", $names);
+            return $out;
+         case 'color' :
+            return "<div style='background-color: $values[$field];'>&nbsp;</div>";
             break;
       }
       return parent::getSpecificValueToDisplay($field, $values, $options);
    }
-
-   //   function post_getEmpty() {
-   //
-   //      $this->fields['rank'] = self::getLaskRank() + 1;
-   //   }
-
-   //   function getLaskRank($plugin_tasklists_tasktypes_id) {
-   //
-   //      $restrict = "`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
-   //      $restrict .= getEntitiesRestrictRequest('AND',"glpi_plugin_tasklists_taskstates",'','',true);
-   //      $restrict .= "ORDER BY rank DESC LIMIT 1";
-   //      $configs = getAllDatasFromTable("glpi_plugin_tasklists_taskstates", $restrict);
-   //      if (!empty($configs)) {
-   //         foreach ($configs as $config) {
-   //            return $config['rank'];
-   //         }
-   //      }
-   //   }
 }

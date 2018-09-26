@@ -29,7 +29,7 @@
 
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
-   global $PLUGIN_HOOKS;
+   global $PLUGIN_HOOKS,$CFG_GLPI;
 
    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
    $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
@@ -60,6 +60,10 @@ function plugin_init_tasklists() {
       }
       // require spectrum (for glpi >= 9.2)
       $CFG_GLPI['javascript']['config']['commondropdown']['PluginTasklistsTaskState'] = ['colorpicker'];
+      $PLUGIN_HOOKS['javascript']['tasklists'][] = "/plugins/tasklists/lib/redips/redips-drag-min.js";
+      $PLUGIN_HOOKS['javascript']['tasklists'][] = "/plugins/tasklists/scripts/plugin_tasklists_drag-field-row.js";
+
+
    }
 }
 

@@ -12,3 +12,13 @@ CREATE TABLE `glpi_plugin_tasklists_taskstates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `plugin_tasklists_taskstates_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_tasklists_taskstates (id)';
+
+CREATE TABLE `glpi_plugin_tasklists_stateorders` (
+  `id` int(11) NOT NULL auto_increment, -- id
+  `plugin_tasklists_taskstates_id` int(11) NOT NULL DEFAULT 0,
+  `plugin_tasklists_tasktypes_id` int(11) NOT NULL DEFAULT 0,
+  `ranking` int(11) NULL,
+  PRIMARY KEY  (`id`),
+  KEY `plugin_tasklists_tasktypes_id` (`plugin_tasklists_tasktypes_id`),
+  KEY `plugin_tasklists_taskstates_id` (`plugin_tasklists_taskstates_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

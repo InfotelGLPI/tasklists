@@ -52,8 +52,14 @@ class PluginTasklistsKanban extends CommonGLPI {
 
       $ong = array();
       $this->addStandardTab(__CLASS__, $ong, $options);
-
+      $ong['no_all_tab'] = true;
       return $ong;
+   }
+
+   static function countTasksForKanban($id) {
+      $dbu   = new DbUtils();
+      return $dbu->countElementsInTable('glpi_plugin_tasklists_tasks',
+                                        ["plugin_tasklists_tasktypes_id" => $id]);
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -63,23 +69,24 @@ class PluginTasklistsKanban extends CommonGLPI {
       $query = "SELECT `glpi_plugin_tasklists_tasktypes`.*
                 FROM `glpi_plugin_tasklists_tasktypes` ";
       $query .= $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_plugin_tasklists_tasktypes');
-
-      $tabs = [];
+      $tabs  = [];
       if ($item->getType() == __CLASS__) {
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
                while ($data = $DB->fetch_array($result)) {
-                  $tabs[$data["id"]] = $data["name"];
+                  if (self::countTasksForKanban($data["id"]) > 0)
+                  $tabs[$data["id"]] = $data["completename"];
                }
             }
          }
+
          return $tabs;
       }
+
       return '';
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-
       if ($item->getType() == __CLASS__) {
          self::showKanban($tabnum);
       }
@@ -120,7 +127,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                            'block'       => ($data['plugin_tasklists_taskstates_id'] > 0 ? $data['plugin_tasklists_taskstates_id'] : 0),
                            'link'        => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
                            'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])),
-                                                              $CFG_GLPI["cut"]),
+                                                              80),
                            'link_text'   => _n('Link', 'Links', 1),
                            'priority'    => CommonITILObject::getPriorityName($data['priority']),
                            'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
@@ -133,23 +140,44 @@ class PluginTasklistsKanban extends CommonGLPI {
       $tasks = json_encode($tasks);
 
       echo "<div id='kanban$rand'></div>";
-      $colors[0] = "#FFFAAA";
-      $states[]  = ['id'    => 0,
-                    'title' => __('Backlog', 'tasklists')];
-      $nb        = 1;
-
+      $colors[0]  = "#FFFAAA";
+      $states[]   = ['id'    => 0,
+                     'title' => __('Backlog', 'tasklists'),
+                     'rank'  => 0];
+      $nb         = 1;
       $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
       if (!empty($datastates)) {
          foreach ($datastates as $datastate) {
             $tasktypes = json_decode($datastate['tasktypes']);
             if (is_array($tasktypes)) {
                if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
+
+                  $condition = "`plugin_tasklists_taskstates_id` = '" . $datastate['id'] . "'
+                                          AND `plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
+                  $order     = new PluginTasklistsStateOrder();
+                  $ranks     = $order->find($condition);
+                  $ranking = 0;
+                  if (count($ranks) > 0) {
+                     foreach ($ranks as $rank) {
+                        $ranking = $rank['ranking'];
+                     }
+                  }
+
                   $states[] = ['id'    => $datastate['id'],
-                               'title' => $datastate['name']];
+                               'title' => $datastate['name'],
+                               'rank'  => $ranking];
+
+                  $states_ranked = array();
+                  foreach ($states as $key => $row)
+                  {
+                     $states_ranked[$key] = $row['rank'];
+                  }
+                  array_multisort($states_ranked, SORT_ASC, $states);
 
                   $colors[$datastate['id']] = $datastate['color'];
 
                   $nb++;
+
                }
             }
          }

@@ -29,25 +29,44 @@
 
 include('../../../inc/includes.php');
 
-Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+$plugin = new Plugin();
 
-$task      = new PluginTasklistsTask();
-$dashboard = new PluginTasklistsKanban();
+if ($plugin->isActivated("tasklists")) {
 
-if ($task->canView() || Session::haveRight("config", CREATE)) {
+//   if (Session::haveRight("tasklists", CREATE)) {
 
-   if (isset($_GET['showkanban']) && $_GET['showkanban']) {
-      echo Html::script('/plugins/tasklists/lib/kanban/js/kanban.js');
-      echo Html::css('/plugins/tasklists/lib/kanban/css/kanban.css');
+      Html::header(__('Setup'), '', "config", "plugins");
 
-      $options = [];
-      $dashboard->display($options);
-   } else {
-      Search::show("PluginTasklistsTask");
-   }
+      $order = new PluginTasklistsStateOrder();
+
+//      if (isset($_GET['reload'])
+//          && isset($_GET['plugin_tasklists_tasktypes_id'])
+//      ) {
+//
+//         $order->loadCategories($_GET['plugin_tasklists_tasktypes_id']);
+//         Html::back();
+//
+//      } else
+         if (isset($_GET['addnew'])
+                 && isset($_GET['plugin_tasklists_tasktypes_id'])
+      ) {
+
+         $order->addNewStates($_GET['plugin_tasklists_tasktypes_id']);
+         Html::back();
+
+      }
+//      else if (isset($_GET['plugin_tasklists_tasktypes_id'])) {
+//
+//
+//         $order->showOrderStates($_GET['plugin_tasklists_tasktypes_id']);
+//      }
+
+//   } else {
+//      Html::displayRightError();
+//   }
 
 } else {
    Html::displayRightError();
-}
 
+}
 Html::footer();

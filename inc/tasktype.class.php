@@ -51,6 +51,17 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
    static $rightname = 'plugin_tasklists';
 
    /**
+    * @see CommonGLPI::defineTabs()
+    */
+   function defineTabs($options = []) {
+
+      $ong = parent::defineTabs($options);
+      $this->addStandardTab(__CLASS__, $ong, $options);
+      $this->addStandardTab('PluginTasklistsStateOrder', $ong, $options);
+      return $ong;
+   }
+
+   /**
     * @param $ID
     * @param $entity
     *
