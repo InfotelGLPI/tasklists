@@ -32,14 +32,15 @@ if (!defined('GLPI_ROOT')) {
 }
 
 // Class for a Dropdown
+
 /**
  * Class PluginTasklistsTaskType
  */
-class PluginTasklistsTaskType extends CommonTreeDropdown
-{
+class PluginTasklistsTaskType extends CommonTreeDropdown {
 
    /**
     * @param int $nb
+    *
     * @return translated
     */
    static function getTypeName($nb = 0) {
@@ -52,6 +53,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown
    /**
     * @param $ID
     * @param $entity
+    *
     * @return ID|int|the
     */
    static function transfer($ID, $entity) {
@@ -66,12 +68,12 @@ class PluginTasklistsTaskType extends CommonTreeDropdown
 
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
-               $data = $DB->fetch_assoc($result);
-               $data = Toolbox::addslashes_deep($data);
-               $input['name'] = $data['name'];
+               $data                 = $DB->fetch_assoc($result);
+               $data                 = Toolbox::addslashes_deep($data);
+               $input['name']        = $data['name'];
                $input['entities_id'] = $entity;
-               $temp = new self();
-               $newID = $temp->getID();
+               $temp                 = new self();
+               $newID                = $temp->getID();
 
                if ($newID < 0) {
                   $newID = $temp->import($input);

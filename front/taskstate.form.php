@@ -29,24 +29,5 @@
 
 include('../../../inc/includes.php');
 
-Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
-
-$task      = new PluginTasklistsTask();
-$dashboard = new PluginTasklistsKanban();
-
-if ($task->canView() || Session::haveRight("config", CREATE)) {
-
-   if (isset($_GET['showkanban']) && $_GET['showkanban']) {
-      echo Html::script('/plugins/tasklists/lib/kanban/js/kanban.js');
-      echo Html::css('/plugins/tasklists/lib/kanban/css/kanban.css');
-      $options = [];
-      $dashboard->display($options);
-   } else {
-      Search::show("PluginTasklistsTask");
-   }
-
-} else {
-   Html::displayRightError();
-}
-
-Html::footer();
+$dropdown = new PluginTasklistsTaskState();
+include(GLPI_ROOT . "/front/dropdown.common.form.php");

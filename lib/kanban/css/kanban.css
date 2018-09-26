@@ -1,0 +1,175 @@
+/*
+    ---------------------------
+    BOARD STYLES
+    ---------------------------
+*/
+
+.cd_kanban_board {
+   width: 100%;
+   height: auto;
+   min-height: 400px;
+   display: block;
+   clear: both;
+   overflow-x: auto;
+   background: #FFF;
+}
+
+.cd_kanban_board > .cd_kanban_board_titles {
+   margin: 0px;
+   padding: 0px;
+   display: flex;
+   clear: both;
+}
+
+.cd_kanban_board > .cd_kanban_board_titles:after {
+   content: '';
+   display: block;
+   clear: both;
+}
+
+.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title {
+   margin: 0 10px 0 0;
+   padding: 1em;
+   color: #FFF;
+   position: relative;
+   flex: 1;
+}
+
+.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:before {
+   width: 80%;
+   height: 100%;
+   background: #343a40;
+   display: block;
+   clear: both;
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   content: "";
+}
+
+.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title p {
+   position: relative;
+   z-index: 10;
+   margin: 0px;
+}
+
+.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:last-child {
+   margin: 0px;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks {
+   margin: 0px;
+   padding: 0px;
+   display: flex;
+   clear: both;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks:after {
+   content: '';
+   display: block;
+   clear: both;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block {
+   /*height: 70%;*/
+   min-height: 400px;
+   text-align: left;
+   margin: 10px 10px 10px 0;
+   padding: 1em;
+   flex: 1;
+   background: #f2f2f2;
+   overflow-y: auto;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block:last-child {
+   margin: 10px 0 0;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item {
+   width: auto; /*100%;*/
+   height: auto;
+   margin: 0 0 10px;
+   padding: 0.75rem;
+   display: block;
+   clear: both;
+   background: #FFF;
+   border: 1px solid #c0c2cd;
+   -webkit-transition: -webkit-transform 300ms ease-in-out;
+   -moz-transition: -moz-transform 300ms ease-in-out;
+   -ms-transition: -ms-transform 300ms ease-in-out;
+   -o-transition: -o-transform 300ms ease-in-out;
+   transition: transform 300ms ease-in-out;
+   transform: rotate(0deg);
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item a {
+   /*font-style: italic;*/
+   /*text-decoration: underline;*/
+   /*margin: 5px 0 0;*/
+   color: #000;
+   font-size: 12px;
+   display: block;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_title {
+   margin: 0 0 0.25rem;
+   padding: 0 0 0 20px;
+   background: url("../images/dragger.png") 0px 0px no-repeat;
+   font-size: 1em !important;
+   line-height: 1rem;
+   font-weight: bold;
+}
+
+/*.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item.ui-sortable-helper{ transform: rotate(-4deg); }*/
+.cd_kanban_board_block_item_placeholder {
+   width: 100%;
+   height: 200px;
+   margin: 0 0 10px;
+   display: block;
+   clear: both;
+   border: 1px dashed #000;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_priority {
+   margin: 10px;
+   padding: 10px;
+   display: block;
+   clear: both;
+   font-size: 12px;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_footer {
+   margin: 1px;
+   /*padding: 10px;*/
+   display: block;
+   clear: both;
+   font-size: 11px;
+   border-top: 1px solid #c0c2cd;
+}
+
+.kanbancomment {
+   color: #8c8c8c;
+   font-size: 11px;
+}
+
+.kanban_user_picture_border_verysmall {
+   width: 36px;
+   height: 36px;
+   margin-right: 5px;
+   background-color: #FFF;
+   float:left;
+}
+
+.kanban_user_picture_verysmall {
+   margin: 0 auto;
+   width: 35px;
+   height: 35px;
+   border-radius: 50%; /* the magic */
+   -moz-border-radius: 50%;
+   -webkit-border-radius: 50%;
+   vertical-align: top;
+}
+
+.kanban_user_verysmall {
+   line-height:30px;
+}

@@ -158,11 +158,10 @@ class PluginTasklistsTask extends CommonDBTM {
 
       $tab[] = [
          'id'         => '11',
-         'table'      => $this->getTable(),
-         'field'      => 'state',
+         'table'    => 'glpi_plugin_tasklists_taskstates',
+         'field'    => 'name',
          'name'       => __('Status'),
-         'searchtype' => 'equals',
-         'datatype'   => 'specific'
+         'datatype'   => 'dropdown'
       ];
 
       $tab[] = [
@@ -355,7 +354,9 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "</td>";
 
       echo "<td>" . __('Status') . "</td><td>";
-      Planning::dropdownState("state", $this->fields["state"]);
+      //      Planning::dropdownState("state", $this->fields["state"]);
+      Dropdown::show('PluginTasklistsTaskState', ['name'  => "plugin_tasklists_taskstates_id",
+                                                  'value' => $this->fields["plugin_tasklists_taskstates_id"]]);
       echo "</td>";
 
       echo "</tr>";
@@ -374,6 +375,7 @@ class PluginTasklistsTask extends CommonDBTM {
 
       return true;
    }
+
 
    /**
     * Make a select box for link tasklists
@@ -403,8 +405,8 @@ class PluginTasklistsTask extends CommonDBTM {
          }
       }
 
-      $rand = mt_rand();
-      $dbu  = new DbUtils();
+      $rand  = mt_rand();
+      $dbu   = new DbUtils();
       $where = " WHERE `glpi_plugin_tasklists_tasklists`.`is_deleted` = '0' ";
       $where .= $dbu->getEntitiesRestrictRequest("AND", 'glpi_plugin_tasklists_tasklists', '', $p['entity'], true);
 
@@ -601,8 +603,6 @@ class PluginTasklistsTask extends CommonDBTM {
             return CommonITILObject::getPriorityName($values[$field]);
          case 'visibility':
             return self::getVisibilityName($values[$field]);
-         case 'state' :
-            return Planning::getState($values[$field]);
       }
       return parent::getSpecificValueToDisplay($field, $values, $options);
    }
@@ -635,9 +635,6 @@ class PluginTasklistsTask extends CommonDBTM {
             $options['name']  = $name;
             $options['value'] = $values[$field];
             return self::dropdownVisibility($options);
-
-         case 'state':
-            return Planning::dropdownState($name, $values[$field], false);
       }
       return parent::getSpecificValueToSelect($field, $name, $values, $options);
    }

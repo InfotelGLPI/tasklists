@@ -37,8 +37,15 @@ function plugin_tasklists_install() {
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/task.class.php");
    if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
 
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.3.0.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.4.0.sql");
 
+   }
+
+   if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
+
+      $mig = new Migration("1.4.0");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.0.sql");
+      $mig->executeMigration();
    }
 
    PluginTasklistsProfile::initProfile();
@@ -57,16 +64,17 @@ function plugin_tasklists_uninstall() {
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/menu.class.php");
 
    $tables = ["glpi_plugin_tasklists_tasks",
-                   "glpi_plugin_tasklists_tasktypes"];
+              "glpi_plugin_tasklists_tasktypes",
+              "glpi_plugin_tasklists_taskstates"];
 
    foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
    }
 
    $tables_glpi = ["glpi_displaypreferences",
-                        "glpi_notepads",
-                        "glpi_savedsearches",
-                        "glpi_logs"];
+                   "glpi_notepads",
+                   "glpi_savedsearches",
+                   "glpi_logs"];
 
    foreach ($tables_glpi as $table_glpi) {
       $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
@@ -93,11 +101,13 @@ function plugin_tasklists_getDatabaseRelations() {
    $plugin = new Plugin();
 
    if ($plugin->isActivated("tasklists")) {
-      return ["glpi_plugin_tasklists_tasktypes" => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"],
-                   "glpi_users"                      => ["glpi_plugin_tasklists_tasks" => "users_id"],
-                   "glpi_groups"                     => ["glpi_plugin_tasklists_tasks" => "groups_id"],
-                   "glpi_entities"                   => ["glpi_plugin_tasklists_tasks"     => "entities_id",
-                                                              "glpi_plugin_tasklists_tasktypes" => "entities_id"]];
+      return ["glpi_plugin_tasklists_tasktypes"  => ["glpi_plugin_tasklists_tasks"      => "plugin_tasklists_tasktypes_id",
+                                                     "glpi_plugin_tasklists_taskstates" => "plugin_tasklists_tasktypes_id"],
+              "glpi_plugin_tasklists_taskstates" => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_taskstates_id"],
+              "glpi_users"                       => ["glpi_plugin_tasklists_tasks" => "users_id"],
+              "glpi_groups"                      => ["glpi_plugin_tasklists_tasks" => "groups_id"],
+              "glpi_entities"                    => ["glpi_plugin_tasklists_tasks"     => "entities_id",
+                                                     "glpi_plugin_tasklists_tasktypes" => "entities_id"]];
    } else {
       return [];
    }
@@ -112,7 +122,8 @@ function plugin_tasklists_getDropdown() {
    $plugin = new Plugin();
 
    if ($plugin->isActivated("tasklists")) {
-      return ['PluginTasklistsTaskType' => PluginTasklistsTaskType::getTypeName(2)];
+      return ['PluginTasklistsTaskType'  => PluginTasklistsTaskType::getTypeName(2),
+              'PluginTasklistsTaskState' => PluginTasklistsTaskState::getTypeName(2)];
    } else {
       return [];
    }

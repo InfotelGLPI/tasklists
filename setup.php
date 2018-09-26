@@ -36,6 +36,7 @@ function plugin_init_tasklists() {
 
    $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
 
+
    if (Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginTasklistsTask', [
@@ -57,6 +58,8 @@ function plugin_init_tasklists() {
       if (Session::haveRight("plugin_tasklists", CREATE)) {
          $PLUGIN_HOOKS['use_massive_action']['tasklists'] = 1;
       }
+      // require spectrum (for glpi >= 9.2)
+      $CFG_GLPI['javascript']['config']['commondropdown']['PluginTasklistsTaskState'] = ['colorpicker'];
    }
 }
 
@@ -68,7 +71,7 @@ function plugin_version_tasklists() {
 
    return [
       'name'           => __('Tasks list', 'tasklists'),
-      'version'        => '1.3.1',
+      'version'        => '1.4.0',
       'license'        => 'GPLv2+',
       'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/tasklists',

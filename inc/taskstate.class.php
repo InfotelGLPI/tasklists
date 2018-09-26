@@ -1,0 +1,280 @@
+<?php
+/*
+ * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
+ -------------------------------------------------------------------------
+ Tasklists plugin for GLPI
+ Copyright (C) 2003-2016 by the Tasklists Development Team.
+
+ https://github.com/InfotelGLPI/tasklists
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of Tasklists.
+
+ Tasklists is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ Tasklists is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Tasklists. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ */
+
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access directly to this file");
+}
+
+// Class for a Dropdown
+
+/**
+ * Class PluginTasklistsTaskState
+ */
+class PluginTasklistsTaskState extends CommonDropdown {
+
+   static $rightname = 'plugin_tasklists';
+
+
+   /**
+    * @param int $nb
+    *
+    * @return translated
+    */
+   static function getTypeName($nb = 0) {
+      return __('Status');
+   }
+
+
+   public function showForm($ID, $options = []) {
+
+      $this->initForm($ID, $options);
+      $this->showFormHeader($options);
+
+      echo "<tr class='tab_bg_2'>";
+      echo "<td>".__('Name')."</td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, "name");
+      echo "</td>";
+
+      echo "<td rowspan='3'>".__('Description')."</td>";
+      echo "<td rowspan='3'>";
+      echo "<textarea name='comment' id ='comment' cols='45' rows='3'>".
+           $this->fields['comment'].
+           "</textarea>";
+      echo "</td>";
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_2'>";
+      echo "<td>".__('Color')."</td>";
+      echo "<td>";
+      Html::showColorField('color', ['value' => $this->fields['color']]);
+      echo "</td>";
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_2'>";
+      echo "<td>"
+           ._n('Context', 'Contexts', 1, 'tasklists')."</td>";
+      echo "</td>";
+      echo "<td>";
+      echo Html::hidden("tasktypes");
+      $possible_values = [];
+      $dbu = new DbUtils();
+      $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+      if (!empty($datatypes)) {
+         foreach ($datatypes as $datatype) {
+            $possible_values[$datatype['id']] = $datatype['name'];
+         }
+      }
+      $values = json_decode($this->fields['tasktypes']);
+      if (!is_array($values)) {
+         $values = [];
+      }
+      Dropdown::showFromArray("tasktypes",
+                              $possible_values,
+                              ['values'   => $values,
+                               'multiple' => 'multiples']);
+
+      echo "</td>";
+      echo "</tr>";
+
+      $this->showFormButtons($options);
+
+      return true;
+   }
+
+
+   function rawSearchOptions() {
+      $tab = parent::rawSearchOptions();
+
+      $tab[] = [
+         'id'            => 11,
+         'table'         => $this->getTable(),
+         'field'         => 'color',
+         'name'          => __('Color'),
+         'searchtype'    => 'contains',
+         'datatype'      => 'specific',
+      ];
+
+      $tab[] = [
+         'id'            => '12',
+         'table'         => $this->getTable(),
+         'field'         => 'tasktypes',
+         'name'          => _n('Context', 'Contexts', 1, 'tasklists'),
+         'searchtype'    => ['equals', 'notequals'],
+         'datatype'      => 'specific'
+      ];
+
+      return $tab;
+   }
+
+   function prepareInputForAdd($input) {
+//      if (!$this->checkMandatoryFields($input)) {
+//         return false;
+//      }
+
+      return $this->encodeSubtypes($input);
+   }
+
+   function prepareInputForUpdate($input) {
+//      if (!$this->checkMandatoryFields($input)) {
+//         return false;
+//      }
+
+      return $this->encodeSubtypes($input);
+   }
+
+   /**
+    * Encode sub types
+    *
+    * @param type $input
+    */
+   function encodeSubtypes($input) {
+      if (!empty($input['tasktypes'])) {
+         $input['tasktypes'] = json_encode(array_values($input['tasktypes']));
+      }
+
+      return $input;
+   }
+
+   /**
+    * Display specific fields
+    *
+    * @global type $CFG_GLPI
+    *
+    * @param type  $ID
+    * @param type  $field
+    */
+//   function displaySpecificTypeField($ID, $field = []) {
+//      $dbu = new DbUtils();
+//      switch ($field['name']) {
+//         case 'tasktypes':
+//            $possible_values = [];
+//            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+//            if (!empty($datatypes)) {
+//               foreach ($datatypes as $datatype) {
+//                  $possible_values[$datatype['id']] = $datatype['name'];
+//               }
+//            }
+//            Dropdown::showFromArray($field['name'], $possible_values,
+//                                    ['multiple' => 'multiples',
+//                                     'width' => 200,
+//                                     'display'  => false]);
+//            break;
+//      }
+//   }
+
+   /**
+    * @since 0.84
+    *
+    * @param $field
+    * @param $name (default '')
+    * @param $values (default '')
+    * @param $options      array
+    **/
+   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+
+      $dbu = new DbUtils();
+      if (!is_array($values)) {
+         $values = [$field => $values];
+      }
+
+      switch ($field) {
+         case 'tasktypes' :
+            $possible_values = [];
+            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+            if (!empty($datatypes)) {
+               foreach ($datatypes as $datatype) {
+                  $possible_values[$datatype['id']] = $datatype['name'];
+               }
+            }
+
+            return Dropdown::showFromArray($name, $possible_values,
+                                           ['value'    => $values[$field],
+                                            'multiple' => true,
+                                            'display'  => false]);
+      }
+      return parent::getSpecificValueToSelect($field, $name, $values, $options);
+   }
+
+   /**
+    * @since 0.84
+    *
+    * @param $field
+    * @param $values
+    * @param $options   array
+    **/
+   static function getSpecificValueToDisplay($field, $values, array $options = []) {
+
+      if (!is_array($values)) {
+         $values = [$field => $values];
+      }
+
+      switch ($field) {
+         case 'tasktypes' :
+            return "toto";
+//            return Dropdown::getDropdownName("glpi_plugin_tasklists_tasktypes", $values[$field]);
+//         case 'type_menu':
+//            $itemtypes = json_decode($values[$field]);
+//            if (!is_array($itemtypes)) {
+//               return "&nbsp;";
+//            }
+//            $itemtype_names = [];
+//            foreach ($itemtypes as $itemtype) {
+//               if(!$item = getItemForItemtype($itemtype)) {
+//                  continue;
+//               }
+//               $itemtype_names[] = $item->getTypeName();
+//            }
+//            $out = implode(", ", $itemtype_names);
+//            return $out;
+//         case 'color' :
+//            return "<div style='background-color: $values[$field];'>&nbsp;</div>";
+            break;
+      }
+      return parent::getSpecificValueToDisplay($field, $values, $options);
+   }
+
+   //   function post_getEmpty() {
+   //
+   //      $this->fields['rank'] = self::getLaskRank() + 1;
+   //   }
+
+   //   function getLaskRank($plugin_tasklists_tasktypes_id) {
+   //
+   //      $restrict = "`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
+   //      $restrict .= getEntitiesRestrictRequest('AND',"glpi_plugin_tasklists_taskstates",'','',true);
+   //      $restrict .= "ORDER BY rank DESC LIMIT 1";
+   //      $configs = getAllDatasFromTable("glpi_plugin_tasklists_taskstates", $restrict);
+   //      if (!empty($configs)) {
+   //         foreach ($configs as $config) {
+   //            return $config['rank'];
+   //         }
+   //      }
+   //   }
+}
