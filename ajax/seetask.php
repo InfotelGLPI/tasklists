@@ -33,11 +33,21 @@ Session::checkLoginUser();
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
+
 if (isset($_GET['id'])) {
    $options = [
       'from_edit_ajax' => true,
    ];
    $task = new PluginTasklistsTask();
    $task->showForm($_GET['id'], $options);
+} else if (isset($_GET['plugin_tasklists_tasktypes_id'])
+           && isset($_GET['plugin_tasklists_taskstates_id'])) {
+   $options = [
+      'from_edit_ajax' => true,
+      'plugin_tasklists_tasktypes_id' => $_GET['plugin_tasklists_tasktypes_id'],
+      'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
+   ];
+   $task = new PluginTasklistsTask();
+   $task->showForm(0, $options);
 }
 Html::ajaxFooter();

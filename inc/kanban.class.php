@@ -185,6 +185,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $colors   = json_encode($colors);
       $root_doc = $CFG_GLPI['root_doc'];
       echo "<script>$('#kanban$rand').kanban({
+           context: $plugin_tasklists_tasktypes_id,
            titles: $states,
            colours: $colors,
            items: $tasks,

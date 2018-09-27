@@ -276,9 +276,14 @@ class PluginTasklistsTask extends CommonDBTM {
       }
       echo "</td>";
 
+      $plugin_tasklists_tasktypes_id = $this->fields["plugin_tasklists_tasktypes_id"];
+      if (isset($options['plugin_tasklists_tasktypes_id'])
+          && $options['plugin_tasklists_tasktypes_id']) {
+         $plugin_tasklists_tasktypes_id = $options['plugin_tasklists_tasktypes_id'];
+      }
       echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";
       $rand_type = Dropdown::show('PluginTasklistsTaskType', ['name'      => "plugin_tasklists_tasktypes_id",
-                                                              'value'     => $this->fields["plugin_tasklists_tasktypes_id"],
+                                                              'value'     => $plugin_tasklists_tasktypes_id,
                                                               'entity'    => $this->fields["entities_id"],
                                                               'on_change' => "plugin_tasklists_load_states();",]);
       echo "</td>";
@@ -359,8 +364,15 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "</td>";
 
       echo "<td>" . __('Status') . "</td><td id='plugin_tasklists_state'>";
-      if ($this->fields['plugin_tasklists_tasktypes_id']) {
-         self::displayState($this->fields['plugin_tasklists_tasktypes_id'], $this->fields['plugin_tasklists_taskstates_id']);
+
+      $plugin_tasklists_taskstates_id = $this->fields["plugin_tasklists_taskstates_id"];
+      if (isset($options['plugin_tasklists_taskstates_id'])
+          && $options['plugin_tasklists_taskstates_id']) {
+         $plugin_tasklists_taskstates_id = $options['plugin_tasklists_taskstates_id'];
+      }
+
+      if ($plugin_tasklists_tasktypes_id) {
+         self::displayState($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id);
       }
       $JS     = "function plugin_tasklists_load_states(){";
       $params = ['plugin_tasklists_tasktypes_id' => '__VALUE__',

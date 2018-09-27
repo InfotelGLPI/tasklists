@@ -148,6 +148,8 @@
    border-top: 1px solid #c0c2cd;
 }
 
+/****CUSTOM*****/
+
 .kanbancomment {
    color: #8c8c8c;
    font-size: 11px;
@@ -173,4 +175,12 @@
 
 .kanban_user_verysmall {
    line-height:30px;
+}
+
+.fa-white {
+   color: white;
+}
+
+#page a.fa-white, #page a.fa-white:link, a .fa-white {
+   color: white;
 }
