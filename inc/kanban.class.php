@@ -57,7 +57,7 @@ class PluginTasklistsKanban extends CommonGLPI {
    }
 
    static function countTasksForKanban($id) {
-      $dbu   = new DbUtils();
+      $dbu = new DbUtils();
       return $dbu->countElementsInTable('glpi_plugin_tasklists_tasks',
                                         ["plugin_tasklists_tasktypes_id" => $id]);
    }
@@ -75,7 +75,7 @@ class PluginTasklistsKanban extends CommonGLPI {
             if ($DB->numrows($result)) {
                while ($data = $DB->fetch_array($result)) {
                   if (self::countTasksForKanban($data["id"]) > 0)
-                  $tabs[$data["id"]] = $data["completename"];
+                     $tabs[$data["id"]] = $data["completename"];
                }
             }
          }
@@ -131,7 +131,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                            'link_text'   => _n('Link', 'Links', 1),
                            'priority'    => CommonITILObject::getPriorityName($data['priority']),
                            'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
-                           'footer'      => $link . " "//<i class='fa fa-user'></i><div class='pull-right'><i class='fa fa-check-square'></i> 1/4</div>
+                           'footer'      => $link . "<div class='pull-right'><b>" . $data['percent_done'] . "</b> <i class='fa fa-percent'></i></div>"//<i class='fa fa-user'></i>
                ];
             }
          }
@@ -156,7 +156,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                                           AND `plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
                   $order     = new PluginTasklistsStateOrder();
                   $ranks     = $order->find($condition);
-                  $ranking = 0;
+                  $ranking   = 0;
                   if (count($ranks) > 0) {
                      foreach ($ranks as $rank) {
                         $ranking = $rank['ranking'];
@@ -168,8 +168,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                                'rank'  => $ranking];
 
                   $states_ranked = array();
-                  foreach ($states as $key => $row)
-                  {
+                  foreach ($states as $key => $row) {
                      $states_ranked[$key] = $row['rank'];
                   }
                   array_multisort($states_ranked, SORT_ASC, $states);
@@ -182,14 +181,15 @@ class PluginTasklistsKanban extends CommonGLPI {
             }
          }
       }
-      $states = json_encode($states);
-      $colors = json_encode($colors);
-
+      $states   = json_encode($states);
+      $colors   = json_encode($colors);
+      $root_doc = $CFG_GLPI['root_doc'];
       echo "<script>$('#kanban$rand').kanban({
            titles: $states,
            colours: $colors,
            items: $tasks,
-           rand: $rand,
+           rootdoc: '$root_doc',
        });</script>";
+
    }
 }

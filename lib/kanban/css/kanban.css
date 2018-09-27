@@ -141,6 +141,7 @@
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_footer {
    margin: 1px;
    /*padding: 10px;*/
+   padding-bottom: 5px;
    display: block;
    clear: both;
    font-size: 11px;

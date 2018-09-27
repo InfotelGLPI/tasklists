@@ -48,7 +48,11 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $task->check($_POST['id'], DELETE);
    $task->delete($_POST);
-   $task->redirectToList();
+   if (!isset($_POST["from_edit_ajax"])) {
+      $task->redirectToList();
+   } else {
+      Html::back();
+   }
 
 } else if (isset($_POST["restore"])) {
    $task->check($_POST['id'], PURGE);
@@ -58,7 +62,11 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["purge"])) {
    $task->check($_POST['id'], PURGE);
    $task->delete($_POST, 1);
-   $task->redirectToList();
+   if (!isset($_POST["from_edit_ajax"])) {
+      $task->redirectToList();
+   } else {
+      Html::back();
+   }
 
 } else if (isset($_POST["update"])) {
    $task->check($_POST['id'], UPDATE);

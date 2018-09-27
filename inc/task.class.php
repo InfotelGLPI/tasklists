@@ -222,7 +222,6 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->fields['priority']     = 3;
       $this->fields['percent_done'] = 0;
       $this->fields['users_id']     = Session::getLoginUserID();
-      $this->fields['state']        = Planning::TODO;
    }
 
    /**
@@ -269,7 +268,11 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "name");
+      Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
+      if (isset($options['from_edit_ajax'])
+          && $options['from_edit_ajax']) {
+         echo Html::hidden('from_edit_ajax');
+      }
       echo "</td>";
 
       echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";

@@ -1,12 +1,12 @@
 State migration
 see state from context into task form
-send notification for add / change task status ?
 add options from title div ? example archive closed tasks or add tasks
-open popup for see tasks
 see percent from div tasks ?
+send notification for add / change task status ?
 add notification for revive user in charge ?
+add closed to state
 
-
+open popup for see tasks : OK
 Order States : OK
 Cacher onglet tous : OK
 Add context to States : OK
