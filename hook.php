@@ -132,7 +132,7 @@ function plugin_tasklists_getDropdown() {
 /*
 function plugin_tasklists_getAddSearchOptions($itemtype) {
 
-   $sopt=array();
+   $sopt=[];
 
    if (in_array($itemtype, PluginTasklistsTask::getTypes(true))) {
       if (Session::haveRight("plugin_tasklists",READ)) {

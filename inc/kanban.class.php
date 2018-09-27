@@ -48,9 +48,9 @@ class PluginTasklistsKanban extends CommonGLPI {
    }
 
 
-   function defineTabs($options = array()) {
+   function defineTabs($options = []) {
 
-      $ong = array();
+      $ong = [];
       $this->addStandardTab(__CLASS__, $ong, $options);
       $ong['no_all_tab'] = true;
       return $ong;
@@ -167,7 +167,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                                'title' => $datastate['name'],
                                'rank'  => $ranking];
 
-                  $states_ranked = array();
+                  $states_ranked = [];
                   foreach ($states as $key => $row) {
                      $states_ranked[$key] = $row['rank'];
                   }

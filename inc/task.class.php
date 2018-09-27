@@ -157,11 +157,11 @@ class PluginTasklistsTask extends CommonDBTM {
       ];
 
       $tab[] = [
-         'id'         => '11',
+         'id'       => '11',
          'table'    => 'glpi_plugin_tasklists_taskstates',
          'field'    => 'name',
-         'name'       => __('Status'),
-         'datatype'   => 'dropdown'
+         'name'     => __('Status'),
+         'datatype' => 'dropdown'
       ];
 
       $tab[] = [
@@ -260,6 +260,7 @@ class PluginTasklistsTask extends CommonDBTM {
     * @return bool
     */
    function showForm($ID, $options = []) {
+      global $CFG_GLPI;
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -276,9 +277,10 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "</td>";
 
       echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";
-      Dropdown::show('PluginTasklistsTaskType', ['name'   => "plugin_tasklists_tasktypes_id",
-                                                 'value'  => $this->fields["plugin_tasklists_tasktypes_id"],
-                                                 'entity' => $this->fields["entities_id"]]);
+      $rand_type = Dropdown::show('PluginTasklistsTaskType', ['name'      => "plugin_tasklists_tasktypes_id",
+                                                              'value'     => $this->fields["plugin_tasklists_tasktypes_id"],
+                                                              'entity'    => $this->fields["entities_id"],
+                                                              'on_change' => "plugin_tasklists_load_states();",]);
       echo "</td>";
 
       echo "</tr>";
@@ -356,10 +358,19 @@ class PluginTasklistsTask extends CommonDBTM {
                                'condition' => '`is_assign`']);
       echo "</td>";
 
-      echo "<td>" . __('Status') . "</td><td>";
-      //      Planning::dropdownState("state", $this->fields["state"]);
-      Dropdown::show('PluginTasklistsTaskState', ['name'  => "plugin_tasklists_taskstates_id",
-                                                  'value' => $this->fields["plugin_tasklists_taskstates_id"]]);
+      echo "<td>" . __('Status') . "</td><td id='plugin_tasklists_state'>";
+      if ($this->fields['plugin_tasklists_tasktypes_id']) {
+         self::displayState($this->fields['plugin_tasklists_tasktypes_id'], $this->fields['plugin_tasklists_taskstates_id']);
+      }
+      $JS     = "function plugin_tasklists_load_states(){";
+      $params = ['plugin_tasklists_tasktypes_id' => '__VALUE__',
+                 'entity'                        => $this->fields["entities_id"]];
+      $JS     .= Ajax::updateItemJsCode("plugin_tasklists_state",
+                                        $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownState.php",
+                                        $params, 'dropdown_plugin_tasklists_tasktypes_id' . $rand_type, false);
+      $JS     .= "}";
+      echo Html::scriptBlock($JS);
+
       echo "</td>";
 
       echo "</tr>";
@@ -379,6 +390,61 @@ class PluginTasklistsTask extends CommonDBTM {
       return true;
    }
 
+
+   /**
+    * States by type dropdown list
+    *
+    * @param $users_id
+    */
+   static function displayState($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id = 0) {
+
+
+      $states[]   = ['id'    => 0,
+                     'name' => __('Backlog', 'tasklists'),
+                     'rank'  => 0];
+      $ranked = [];
+      $states_ranked = [];
+      $dbu        = new DbUtils();
+      $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
+      if (!empty($datastates)) {
+         foreach ($datastates as $datastate) {
+            $tasktypes = json_decode($datastate['tasktypes']);
+            if (is_array($tasktypes)) {
+               if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
+
+                  $condition = "`plugin_tasklists_taskstates_id` = '" . $datastate['id'] . "'
+                                          AND `plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
+                  $order     = new PluginTasklistsStateOrder();
+                  $ranks     = $order->find($condition);
+                  $ranking   = 0;
+                  if (count($ranks) > 0) {
+                     foreach ($ranks as $rank) {
+                        $ranking = $rank['ranking'];
+                     }
+                  }
+//                  $states[$datastate['id']] = $datastate['name'];
+                  $states[] = ['id'    => $datastate['id'],
+                               'name' => $datastate['name'],
+                               'rank'  => $ranking];
+
+
+                  foreach ($states as $key => $row) {
+                     $ranked[$key] = $row['rank'];
+                  }
+                  array_multisort($ranked, SORT_ASC, $states);
+               }
+            }
+         }
+      }
+      foreach ($states as $k => $v) {
+         $states_ranked[$v['id']] = $v['name'];
+      }
+      $rand = mt_rand();
+      Dropdown::showFromArray('plugin_tasklists_taskstates_id', $states_ranked, ['rand'    => $rand,
+                                                                                 'value' => $plugin_tasklists_taskstates_id,
+                                                                          'display' => true]);
+
+   }
 
    /**
     * Make a select box for link tasklists

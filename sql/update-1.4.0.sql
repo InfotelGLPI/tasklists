@@ -11,7 +11,10 @@ CREATE TABLE `glpi_plugin_tasklists_taskstates` (
   KEY `entities_id` (`entities_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `plugin_tasklists_taskstates_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_tasklists_taskstates (id)';
+INSERT INTO `glpi_plugin_tasklists_taskstates` (`id`, `name`, `entities_id`, `is_recursive`, `comment`, `color`, `tasktypes`) VALUES (1, 'To do', '0', '1', NULL, '#CCC', NULL);
+INSERT INTO `glpi_plugin_tasklists_taskstates` (`id`, `name`, `entities_id`, `is_recursive`, `comment`, `color`, `tasktypes`) VALUES (2, 'Done', '0', '1', NULL, '#CCC', NULL);
+
+ALTER TABLE `glpi_plugin_tasklists_tasks` CHANGE `state` `plugin_tasklists_taskstates_id` INT(11) NOT NULL DEFAULT '0' COMMENT 'RELATION to glpi_plugin_tasklists_taskstates (id)';
 
 CREATE TABLE `glpi_plugin_tasklists_stateorders` (
   `id` int(11) NOT NULL auto_increment, -- id
