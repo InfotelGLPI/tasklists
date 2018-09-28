@@ -1,5 +1,4 @@
 add options from title div ? example archive closed tasks
-see graph percent from div tasks ? or move percent ? https://kingrayhan.github.io/LineProgressbar/demos.html
 Minimize closed tasks
 send notification for add / change task status ?
 add notification for revive user in charge ?
@@ -8,7 +7,7 @@ preference : contexte by default
 check visibility
 
 **************
-
+see graph percent from div tasks ? or move percent ? OK
 add tasks from title : OK
 see state from context into task form : OK
 State migration : OK
