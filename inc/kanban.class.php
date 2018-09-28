@@ -38,6 +38,9 @@ class PluginTasklistsKanban extends CommonGLPI {
 
    static $rightname = 'plugin_tasklists';
 
+   static function canView() {
+      return Session::haveRight(self::$rightname, READ);
+   }
    /**
     * @param int $nb
     *
@@ -122,9 +125,18 @@ class PluginTasklistsKanban extends CommonGLPI {
                      $link .= "</p>";
                   }
                }
+               $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
+               $finished = 'style="display: inline;"';
+               $state = new PluginTasklistsTaskState();
+               if ($state->getFromDB($plugin_tasklists_taskstates_id)) {
+                  if ($state->getFinishedState()) {
+                     $finished = 'style="display: none;"';
+                  }
+               }
+
                $tasks[] = ['id'          => $data['id'],
                            'title'       => $data['name'],
-                           'block'       => ($data['plugin_tasklists_taskstates_id'] > 0 ? $data['plugin_tasklists_taskstates_id'] : 0),
+                           'block'       => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
                            'link'        => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
                            'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])),
                                                               80),
@@ -133,6 +145,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                            'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
                            'percent'     => $data['percent_done'],
                            'footer'      => $link,
+                           'finished' => $finished
                ];
             }
          }

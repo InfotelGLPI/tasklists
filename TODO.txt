@@ -1,8 +1,6 @@
 add options from title div ? example archive closed tasks
-Minimize closed tasks
 send notification for add / change task status ?
 add notification for revive user in charge ?
-
 preference : contexte by default
 check visibility
 
@@ -16,3 +14,4 @@ Order States : OK
 Cacher onglet tous : OK
 Add context to States : OK
 Add color to States : OK
+Minimize closed tasks : OK

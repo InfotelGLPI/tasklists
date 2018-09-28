@@ -31,11 +31,15 @@ include('../../../inc/includes.php');
 
 Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
-$task      = new PluginTasklistsTask();
+$kanban = new PluginTasklistsKanban();
 
-if ($task->canView() || Session::haveRight("config", CREATE)) {
+if ($kanban->canView() || Session::haveRight("config", CREATE)) {
 
-   Search::show("PluginTasklistsTask");
+   echo Html::script('/plugins/tasklists/lib/kanban/js/kanban.js');
+   echo Html::css('/plugins/tasklists/lib/kanban/css/kanban.css');
+
+   $options = [];
+   $kanban->display($options);
 
 } else {
    Html::displayRightError();

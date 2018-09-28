@@ -108,13 +108,14 @@
    /*margin: 5px 0 0;*/
    color: #000;
    font-size: 12px;
-   display: block;
+   /*display: block;*/
+   vertical-align: center;
 }
 
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_title {
    margin: 0 0 0.25rem;
-   padding: 0 0 0 20px;
-   background: url("../images/dragger.png") 0px 0px no-repeat;
+   /*padding: 0 0 0 20px;*/
+   /*background: url("../images/dragger.png") 0px 0px no-repeat;*/
    font-size: 1em !important;
    line-height: 1rem;
    font-weight: bold;
@@ -248,4 +249,16 @@
    background: linear-gradient(top, #8DCA09, #72A307);
 
    border-color: #496805;
+}
+
+.dot {
+   height: 15px;
+   width: 15px;
+   vertical-align: middle;
+   border-radius: 50%;
+   display: inline-block;
+}
+
+.hideopt {
+   margin: 0 0 0 4px;
 }
