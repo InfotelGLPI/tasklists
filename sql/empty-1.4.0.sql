@@ -53,6 +53,7 @@ CREATE TABLE `glpi_plugin_tasklists_taskstates` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `entities_id` int(11) NOT NULL DEFAULT '0',
   `is_recursive` tinyint(1) NOT NULL DEFAULT '0',
+  `is_finished` tinyint(1) NOT NULL DEFAULT '0',
   `tasktypes` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `color` varchar(200) DEFAULT '#CCC' NOT NULL,
   `comment` text COLLATE utf8_unicode_ci,

@@ -131,7 +131,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                            'link_text'   => _n('Link', 'Links', 1),
                            'priority'    => CommonITILObject::getPriorityName($data['priority']),
                            'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
-                           'footer'      => $link . "<div class='pull-right'><b>" . $data['percent_done'] . "</b> <i class='fa fa-percent'></i></div>"//<i class='fa fa-user'></i>
+                           'percent'     => $data['percent_done'],
+                           'footer'      => $link,
                ];
             }
          }

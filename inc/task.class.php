@@ -248,7 +248,14 @@ class PluginTasklistsTask extends CommonDBTM {
       if (isset($input['due_date']) && empty($input['due_date'])) {
          $input['due_date'] = 'NULL';
       }
-
+      if (isset($input['plugin_tasklists_taskstates_id'])) {
+         $state = new PluginTasklistsTaskState();
+         if ($state->getFromDB($input['plugin_tasklists_taskstates_id'])) {
+            if ($state->getFinishedState()) {
+               $input['percent_done'] = 100;
+            }
+         }
+      }
       return $input;
    }
 
@@ -347,7 +354,7 @@ class PluginTasklistsTask extends CommonDBTM {
       Dropdown::showNumber("percent_done", ['value' => $this->fields['percent_done'],
                                             'min'   => 0,
                                             'max'   => 100,
-                                            'step'  => 20,
+                                            'step'  => 10,
                                             'unit'  => '%']);
       echo "</td>";
 

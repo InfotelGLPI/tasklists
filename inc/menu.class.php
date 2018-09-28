@@ -51,7 +51,7 @@ class PluginTasklistsMenu extends CommonGLPI
 
       $menu = [];
       $menu['title'] = self::getMenuName(2);
-      $menu['page'] = PluginTasklistsTask::getSearchURL(false);
+      $menu['page'] = PluginTasklistsTask::getSearchURL(false).'?showkanban=1';
       $menu['links']['search'] = PluginTasklistsTask::getSearchURL(false);
       if (PluginTasklistsTask::canCreate()) {
          $menu['links']['add'] = PluginTasklistsTask::getFormURL(false);

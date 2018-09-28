@@ -61,8 +61,8 @@ class PluginTasklistsTaskState extends CommonDropdown {
       Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
       echo "</td>";
 
-      echo "<td rowspan='3'>" . __('Description') . "</td>";
-      echo "<td rowspan='3'>";
+      echo "<td rowspan='4'>" . __('Description') . "</td>";
+      echo "<td rowspan='4'>";
       echo "<textarea name='comment' id ='comment' cols='45' rows='3'>" .
            $this->fields['comment'] .
            "</textarea>";
@@ -73,6 +73,13 @@ class PluginTasklistsTaskState extends CommonDropdown {
       echo "<td>" . __('Color') . "</td>";
       echo "<td>";
       Html::showColorField('color', ['value' => $this->fields['color']]);
+      echo "</td>";
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Finished state') . "</td>";
+      echo "<td>";
+      Dropdown::showYesNo('is_finished', $this->fields['is_finished']);
       echo "</td>";
       echo "</tr>";
 
@@ -130,6 +137,14 @@ class PluginTasklistsTaskState extends CommonDropdown {
          'datatype'     => 'specific'
       ];
 
+      $tab[] = [
+         'id'       => '13',
+         'table'    => $this->getTable(),
+         'field'    => 'is_finished',
+         'name'     => __('Finished state'),
+         'datatype' => 'bool'
+      ];
+
       return $tab;
    }
 
@@ -170,30 +185,30 @@ class PluginTasklistsTaskState extends CommonDropdown {
     * @param $values (default '')
     * @param $options      array
     **/
-//   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
-//      if (!is_array($values)) {
-//         $values = [$field => $values];
-//      }
-//      $dbu = new DbUtils();
-//      switch ($field) {
-//         case 'tasktypes':
-//            $possible_values = ['' => Dropdown::EMPTY_VALUE];
-//            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
-//            if (!empty($datatypes)) {
-//               foreach ($datatypes as $datatype) {
-//                  $possible_values[$datatype['id']] = $datatype['name'];
-//               }
-//            }
-//
-//            return Dropdown::showFromArray($name, $possible_values,
-//                                           ['display' => false,
-//                                            'value'   => $values[$field]]);
-//
-//            break;
-//      }
-//
-//      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-//   }
+   //   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+   //      if (!is_array($values)) {
+   //         $values = [$field => $values];
+   //      }
+   //      $dbu = new DbUtils();
+   //      switch ($field) {
+   //         case 'tasktypes':
+   //            $possible_values = ['' => Dropdown::EMPTY_VALUE];
+   //            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+   //            if (!empty($datatypes)) {
+   //               foreach ($datatypes as $datatype) {
+   //                  $possible_values[$datatype['id']] = $datatype['name'];
+   //               }
+   //            }
+   //
+   //            return Dropdown::showFromArray($name, $possible_values,
+   //                                           ['display' => false,
+   //                                            'value'   => $values[$field]]);
+   //
+   //            break;
+   //      }
+   //
+   //      return parent::getSpecificValueToSelect($field, $name, $values, $options);
+   //   }
 
 
    /**
@@ -229,5 +244,9 @@ class PluginTasklistsTaskState extends CommonDropdown {
             break;
       }
       return parent::getSpecificValueToDisplay($field, $values, $options);
+   }
+
+   function getFinishedState() {
+      return $this->fields['is_finished'];
    }
 }
