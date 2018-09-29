@@ -148,6 +148,13 @@ class PluginTasklistsKanban extends CommonGLPI {
                   if (!empty($data['due_date'])) {
                      $duedate = __('Due date', 'tasklists') . " " . Html::convDate($data['due_date']);
                   }
+                  $actiontime = '';
+                  if ($data['actiontime'] != 0) {
+                     $time = floor($data['actiontime']);
+                     $time          = round(abs($time));
+                     $actiontime = sprintf(__('%1$s%2$d days', 'tasklists'),"" , $time/DAY_TIMESTAMP);
+                  }
+
 
                   $tasks[] = ['id'          => $data['id'],
                               'title'       => $data['name'],
@@ -158,7 +165,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                               'priority'    => CommonITILObject::getPriorityName($data['priority']),
                               'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
                               'percent'     => $data['percent_done'],
-                              'duedate'    => $duedate,
+                              'actiontime'  => $actiontime,
+                              'duration'    => $duedate,
                               'footer'      => $link,
                               'finished'    => $finished
                   ];

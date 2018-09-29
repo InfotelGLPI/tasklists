@@ -263,3 +263,9 @@
 .hideopt {
    margin: 0 0 0 4px;
 }
+
+.endfooter {
+   color: #8c8c8c;
+   font-size: 9px;
+   font-style: italic;
+}
