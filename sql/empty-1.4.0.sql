@@ -72,3 +72,13 @@ CREATE TABLE `glpi_plugin_tasklists_stateorders` (
   KEY `plugin_tasklists_tasktypes_id` (`plugin_tasklists_tasktypes_id`),
   KEY `plugin_tasklists_taskstates_id` (`plugin_tasklists_taskstates_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `glpi_plugin_tasklists_typevisibilities`;
+CREATE TABLE `glpi_plugin_tasklists_typevisibilities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `groups_id` int(11) NOT NULL default '0',
+  `plugin_tasklists_tasktypes_id` int(11) NOT NULL default '0',
+  PRIMARY KEY (`id`),
+  KEY `plugin_tasklists_tasktypes_id` (`plugin_tasklists_tasktypes_id`),
+  KEY `groups_id` (`groups_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

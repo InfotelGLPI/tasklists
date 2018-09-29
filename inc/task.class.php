@@ -289,9 +289,11 @@ class PluginTasklistsTask extends CommonDBTM {
          $plugin_tasklists_tasktypes_id = $options['plugin_tasklists_tasktypes_id'];
       }
       echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";
+      $types     = PluginTasklistsTypeVisibility::seeAllowedTypes();
       $rand_type = Dropdown::show('PluginTasklistsTaskType', ['name'      => "plugin_tasklists_tasktypes_id",
                                                               'value'     => $plugin_tasklists_tasktypes_id,
                                                               'entity'    => $this->fields["entities_id"],
+                                                              'condition' => "id IN (" . implode(",", $types) . ")",
                                                               'on_change' => "plugin_tasklists_load_states();",]);
       echo "</td>";
 
@@ -418,13 +420,13 @@ class PluginTasklistsTask extends CommonDBTM {
    static function displayState($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id = 0) {
 
 
-      $states[]   = ['id'    => 0,
-                     'name' => __('Backlog', 'tasklists'),
-                     'rank'  => 0];
-      $ranked = [];
+      $states[]      = ['id'   => 0,
+                        'name' => __('Backlog', 'tasklists'),
+                        'rank' => 0];
+      $ranked        = [];
       $states_ranked = [];
-      $dbu        = new DbUtils();
-      $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
+      $dbu           = new DbUtils();
+      $datastates    = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
       if (!empty($datastates)) {
          foreach ($datastates as $datastate) {
             $tasktypes = json_decode($datastate['tasktypes']);
@@ -441,10 +443,10 @@ class PluginTasklistsTask extends CommonDBTM {
                         $ranking = $rank['ranking'];
                      }
                   }
-//                  $states[$datastate['id']] = $datastate['name'];
-                  $states[] = ['id'    => $datastate['id'],
+                  //                  $states[$datastate['id']] = $datastate['name'];
+                  $states[] = ['id'   => $datastate['id'],
                                'name' => $datastate['name'],
-                               'rank'  => $ranking];
+                               'rank' => $ranking];
 
 
                   foreach ($states as $key => $row) {
@@ -460,8 +462,8 @@ class PluginTasklistsTask extends CommonDBTM {
       }
       $rand = mt_rand();
       Dropdown::showFromArray('plugin_tasklists_taskstates_id', $states_ranked, ['rand'    => $rand,
-                                                                                 'value' => $plugin_tasklists_taskstates_id,
-                                                                          'display' => true]);
+                                                                                 'value'   => $plugin_tasklists_taskstates_id,
+                                                                                 'display' => true]);
 
    }
 
@@ -792,6 +794,27 @@ class PluginTasklistsTask extends CommonDBTM {
             return $value;
 
       }
+   }
+
+   function checkVisibility($id) {
+
+      if(Session::haveRight("plugin_tasklists_see_all", 1)){
+         return true;
+      }
+      if ($this->getFromDB(($id))) {
+         $groupusers = Group_User::getGroupUsers($this->fields['groups_id']);
+         $groups     = [];
+         foreach ($groupusers as $groupuser) {
+            $groups[] = $groupuser["id"];
+         }
+         if (($this->fields['visibility'] == 1 && $this->fields['users_id'] == Session::getLoginUserID())
+             || ($this->fields['visibility'] == 2 && ($this->fields['users_id'] == Session::getLoginUserID()
+                                                      || in_array(Session::getLoginUserID(), $groups)))
+             || ($this->fields['visibility'] == 3)) {
+            return true;
+         }
+      }
+      return false;
    }
 
    /**

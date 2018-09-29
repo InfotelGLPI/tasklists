@@ -27,31 +27,16 @@
  --------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
+include('../../../inc/includes.php');
 
-Session::checkLoginUser();
+$group = new PluginTasklistsTypeVisibility();
 
-Html::header_nocache();
-header("Content-Type: text/html; charset=UTF-8");
-
-if (isset($_GET['id'])) {
-   $options = [
-      'from_edit_ajax' => true,
-   ];
-   echo "<div class='center'>";
-   echo "<a href='".PluginTasklistsTask::getFormURL(true)."?id=".$_GET['id']."'>".__("View this item in his context")."</a>";
-   echo "</div>";
-   echo "<hr>";
-   $task = new PluginTasklistsTask();
-   $task->showForm($_GET['id'], $options);
-} else if (isset($_GET['plugin_tasklists_tasktypes_id'])
-           && isset($_GET['plugin_tasklists_taskstates_id'])) {
-   $options = [
-      'from_edit_ajax' => true,
-      'plugin_tasklists_tasktypes_id' => $_GET['plugin_tasklists_tasktypes_id'],
-      'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
-   ];
-   $task = new PluginTasklistsTask();
-   $task->showForm(0, $options);
+if (isset($_POST["add_groups"])) {
+   $group->check(-1, UPDATE, $_POST);
+   //add groups
+   foreach ($_POST['groups_id'] as $groups_id) {
+      $group->add(['groups_id'                     => $groups_id,
+                   'plugin_tasklists_tasktypes_id' => $_POST['plugin_tasklists_tasktypes_id']]);
+   }
+   Html::back();
 }
-Html::ajaxFooter();

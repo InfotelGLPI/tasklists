@@ -69,7 +69,8 @@ class PluginTasklistsProfile extends Profile {
          $prof = new self();
 
          self::addDefaultProfileInfos($ID,
-                                      ['plugin_tasklists' => 0]);
+                                      ['plugin_tasklists' => 0,
+                                       'plugin_tasklists_see_all' => 0]);
          $prof->showForm($ID);
       }
       return true;
@@ -81,7 +82,8 @@ class PluginTasklistsProfile extends Profile {
    static function createFirstAccess($ID) {
       //85
       self::addDefaultProfileInfos($ID,
-                                   ['plugin_tasklists' => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE], true);
+                                   ['plugin_tasklists' => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE,
+                                    'plugin_tasklists_see_all' => 1], true);
    }
 
    /**
@@ -142,6 +144,17 @@ class PluginTasklistsProfile extends Profile {
                                                             'title'         => __('General')]);
       }
 
+      echo "<table class='tab_cadre_fixehov'>";
+      $effective_rights = ProfileRight::getProfileRights($profiles_id, ['plugin_tasklists_see_all']);
+
+      echo "<tr class='tab_bg_2'>";
+      echo "<td width='20%'>" . __('See all tasks', 'tasklists') . "</td>";
+      echo "<td colspan='5'>";
+      Html::showCheckbox(['name'    => '_plugin_tasklists_see_all',
+                          'checked' => $effective_rights['plugin_tasklists_see_all']]);
+      echo "</td></tr>\n";
+      echo "</table>";
+
       if ($canedit
           && $closeform
       ) {
@@ -166,7 +179,11 @@ class PluginTasklistsProfile extends Profile {
                'field'    => 'plugin_tasklists'
          ],
       ];
-
+      if ($all) {
+         $rights[] = ['itemtype' => 'PluginTasklistsTask',
+                      'label'    => __('See all tasks', 'tasklists'),
+                      'field'    => 'plugin_tasklists_see_all'];
+      }
       return $rights;
    }
 

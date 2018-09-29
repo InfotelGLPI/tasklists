@@ -36,7 +36,7 @@
 }
 
 .cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:before {
-   width: 80%;
+   width: 90%;
    height: 100%;
    background: #343a40;
    display: block;
@@ -50,7 +50,7 @@
 .cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title p {
    position: relative;
    z-index: 10;
-   margin: 0 0 0 20px;
+   margin: 0 20px 0 0;
 }
 
 .cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:last-child {
@@ -154,6 +154,7 @@
 .kanbancomment {
    color: #8c8c8c;
    font-size: 11px;
+   margin-bottom: 5px;
 }
 
 .kanban_user_picture_border_verysmall {

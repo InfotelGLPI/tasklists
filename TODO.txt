@@ -1,8 +1,9 @@
 add options from title div ? example archive closed tasks
 send notification for add / change task status ?
 add notification for revive user in charge ?
-preference : contexte by default
 check visibility
+ordonner les contextes - pref ?
+preference : contexte by default
 
 **************
 see graph percent from div tasks ? or move percent ? OK

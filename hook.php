@@ -65,7 +65,9 @@ function plugin_tasklists_uninstall() {
 
    $tables = ["glpi_plugin_tasklists_tasks",
               "glpi_plugin_tasklists_tasktypes",
-              "glpi_plugin_tasklists_taskstates"];
+              "glpi_plugin_tasklists_taskstates",
+              "glpi_plugin_tasklists_stateorders",
+              "glpi_plugin_tasklists_typevisibilities"];
 
    foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
@@ -101,7 +103,7 @@ function plugin_tasklists_getDatabaseRelations() {
    $plugin = new Plugin();
 
    if ($plugin->isActivated("tasklists")) {
-      return ["glpi_plugin_tasklists_tasktypes"  => ["glpi_plugin_tasklists_tasks"      => "plugin_tasklists_tasktypes_id"],
+      return ["glpi_plugin_tasklists_tasktypes"  => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"],
               "glpi_plugin_tasklists_taskstates" => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_taskstates_id"],
               "glpi_users"                       => ["glpi_plugin_tasklists_tasks" => "users_id"],
               "glpi_groups"                      => ["glpi_plugin_tasklists_tasks" => "groups_id"],
@@ -126,6 +128,46 @@ function plugin_tasklists_getDropdown() {
    } else {
       return [];
    }
+}
+
+/**
+ * @param $type
+ *
+ * @return string
+ */
+function plugin_tasklists_addDefaultWhere($type) {
+
+   switch ($type) {
+      case "PluginTasklistsTask" :
+         $who = Session::getLoginUserID();
+         if (!Session::haveRight("plugin_tasklists_see_all", 1)) {
+            if (count($_SESSION["glpigroups"])
+//                && Session::haveRight("plugin_tasklists_my_groups", 1)
+            ) {
+               $first_groups = true;
+               $groups       = "";
+               foreach ($_SESSION['glpigroups'] as $val) {
+                  if (!$first_groups) {
+                     $groups .= ",";
+                  } else {
+                     $first_groups = false;
+                  }
+                  $groups .= "'" . $val . "'";
+               }
+               return " (`glpi_plugin_tasklists_tasks`.`groups_id` IN (
+               SELECT DISTINCT `groups_id`
+               FROM `glpi_groups_users`
+               WHERE `groups_id` IN ($groups)
+               )
+               OR `glpi_plugin_tasklists_tasks`.`users_id` = '$who'
+               OR `glpi_plugin_tasklists_tasks`.`visibility` = '3') ";
+            } else { // Only personal ones
+               return " (`glpi_plugin_tasklists_tasks`.`users_id` = '$who' 
+                OR `glpi_plugin_tasklists_tasks`.`visibility` = '3')";
+            }
+         }
+   }
+   return "";
 }
 
 ////// SEARCH FUNCTIONS ///////() {

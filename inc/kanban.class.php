@@ -77,8 +77,10 @@ class PluginTasklistsKanban extends CommonGLPI {
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
                while ($data = $DB->fetch_array($result)) {
-                  if (self::countTasksForKanban($data["id"]) > 0)
+                  if (self::countTasksForKanban($data["id"]) > 0
+                      && PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
                      $tabs[$data["id"]] = $data["completename"];
+                  }
                }
             }
          }
@@ -99,6 +101,12 @@ class PluginTasklistsKanban extends CommonGLPI {
 
    static function showKanban($plugin_tasklists_tasktypes_id = 0) {
       global $DB, $CFG_GLPI;
+
+      if(!PluginTasklistsTypeVisibility::isUserHaveRight($plugin_tasklists_tasktypes_id)) {
+         echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
+         echo "<b>".__("You don't have the right to see this context", 'metademands')."</b></div>";
+         return false;
+      }
 
       $dbu   = new DbUtils();
       $rand  = mt_rand();
@@ -133,20 +141,22 @@ class PluginTasklistsKanban extends CommonGLPI {
                      $finished = 'style="display: none;"';
                   }
                }
-
-               $tasks[] = ['id'          => $data['id'],
-                           'title'       => $data['name'],
-                           'block'       => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
-                           'link'        => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
-                           'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])),
-                                                              80),
-                           'link_text'   => _n('Link', 'Links', 1),
-                           'priority'    => CommonITILObject::getPriorityName($data['priority']),
-                           'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
-                           'percent'     => $data['percent_done'],
-                           'footer'      => $link,
-                           'finished' => $finished
-               ];
+               $task = new PluginTasklistsTask();
+               if ($task->checkVisibility($data['id']) == true) {
+                  $tasks[] = ['id'          => $data['id'],
+                              'title'       => $data['name'],
+                              'block'       => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
+                              'link'        => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
+                              'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])),
+                                                                 80),
+                              'link_text'   => _n('Link', 'Links', 1),
+                              'priority'    => CommonITILObject::getPriorityName($data['priority']),
+                              'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
+                              'percent'     => $data['percent_done'],
+                              'footer'      => $link,
+                              'finished'    => $finished
+                  ];
+               }
             }
          }
       }

@@ -178,59 +178,5 @@ class PluginTasklistsStateOrder extends CommonDBTM {
             }
          }
       }
-
-      //      //Check Max ranking
-      //      $query = "SELECT MAX(ranking) AS max
-      //                FROM `glpi_plugin_tasklists_stateorders`
-      //                WHERE `plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
-      //
-      //      $result = $DB->queryOrDie($query, 'Error');
-      //      $first  = $result->fetch_assoc();
-      //      $max    = $first['max'];
-      //
-      //      //check states not in table
-      //      $condition = " `type` = '" . $plugin_tasklists_tasktypes_id . "'";
-      //      $result    = $this->find($condition, "id");
-      //      $catorders = [];
-      //      if (count($result) > 0) {
-      //         foreach ($result as $data) {
-      //            $catorders[] = $data["plugin_tasklists_taskstates_id"];
-      //         }
-      //      }
-      //
-      //      $news      = [];
-      //      $dbu       = new DbUtils();
-      //      $condition = " `type` = '" . $plugin_tasklists_tasktypes_id . "'";
-      //      $condition .= $dbu->getEntitiesRestrictRequest(" AND ", 'glpi_plugin_tasklists_taskstates', '', $_SESSION["glpiactive_entity"]);
-      //      //true);
-      //      $itil_category = new PluginTasklistsTaskState();
-      //      $categories    = $itil_category->find($condition, "id");
-      //
-      //      if (count($categories) > 0) {
-      //         foreach ($categories as $cat) {
-      //            if (!in_array($cat["id"], $catorders)) {
-      //               $news[] = $cat;
-      //            }
-      //         }
-      //      }
-      //      $ok = 0;
-      //      if (count($news) > 0) {
-      //         foreach ($news as $data) {
-      //            $input['plugin_tasklists_taskstates_id'] = $data['id'];
-      //            //            $input['entities_id']            = $_SESSION["glpiactive_entity"];
-      //            $input['$plugin_tasklists_tasktypes_id'] = $plugin_tasklists_tasktypes_id;
-      //            $input['ranking']                        = $max + 1;
-      //            $this->add($input);
-      //            $max++;
-      //            $ok = 1;
-      //         }
-      //      }
-      //      if ($ok > 0) {
-      //         $message = __('New states added', 'tasklists');
-      //      } else {
-      //         $message = __('No new states found', 'tasklists');
-      //      }
-      //      Session::addMessageAfterRedirect($message);
-
    }
 }
