@@ -41,6 +41,7 @@ class PluginTasklistsKanban extends CommonGLPI {
    static function canView() {
       return Session::haveRight(self::$rightname, READ);
    }
+
    /**
     * @param int $nb
     *
@@ -102,9 +103,9 @@ class PluginTasklistsKanban extends CommonGLPI {
    static function showKanban($plugin_tasklists_tasktypes_id = 0) {
       global $DB, $CFG_GLPI;
 
-      if(!PluginTasklistsTypeVisibility::isUserHaveRight($plugin_tasklists_tasktypes_id)) {
-         echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-         echo "<b>".__("You don't have the right to see this context", 'metademands')."</b></div>";
+      if (!PluginTasklistsTypeVisibility::isUserHaveRight($plugin_tasklists_tasktypes_id)) {
+         echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
+         echo "<b>" . __("You don't have the right to see this context", 'metademands') . "</b></div>";
          return false;
       }
 
@@ -134,8 +135,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
                }
                $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
-               $finished = 'style="display: inline;"';
-               $state = new PluginTasklistsTaskState();
+               $finished                       = 'style="display: inline;"';
+               $state                          = new PluginTasklistsTaskState();
                if ($state->getFromDB($plugin_tasklists_taskstates_id)) {
                   if ($state->getFinishedState()) {
                      $finished = 'style="display: none;"';
@@ -143,16 +144,21 @@ class PluginTasklistsKanban extends CommonGLPI {
                }
                $task = new PluginTasklistsTask();
                if ($task->checkVisibility($data['id']) == true) {
+                  $duedate = '';
+                  if (!empty($data['due_date'])) {
+                     $duedate = __('Due date', 'tasklists') . " " . Html::convDate($data['due_date']);
+                  }
+
                   $tasks[] = ['id'          => $data['id'],
                               'title'       => $data['name'],
                               'block'       => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
                               'link'        => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
-                              'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])),
-                                                                 80),
+                              'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])), 80),
                               'link_text'   => _n('Link', 'Links', 1),
                               'priority'    => CommonITILObject::getPriorityName($data['priority']),
                               'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
                               'percent'     => $data['percent_done'],
+                              'duedate'    => $duedate,
                               'footer'      => $link,
                               'finished'    => $finished
                   ];

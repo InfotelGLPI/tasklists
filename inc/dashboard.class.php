@@ -83,6 +83,11 @@ class PluginTasklistsDashboard extends CommonGLPI {
                foreach ($states as $state) {
                   $states_founded[] = $state["id"];
                }
+               $groups_founded = [];
+               $groups = Group_User::getUserGroups(Session::getLoginUserID());
+               foreach ($groups as $group) {
+                  $groups_founded[] = $group["id"];
+               }
 
                $headers = [__('Name'), __('Priority'), _n('Context', 'Contexts', 1, 'tasklists'), __('User'), __('Percent done'), __('Due date', 'tasklists'), __('Action')];
                $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
@@ -92,6 +97,11 @@ class PluginTasklistsDashboard extends CommonGLPI {
                if (is_array($states) && count($states) > 0) {
                   $query .= " AND `glpi_plugin_tasklists_tasks`.`state` IN (" . implode(",", $states_founded) . ") ";
                }
+               $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '".Session::getLoginUserID()."'";
+               if (count($groups) > 0){
+                  $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
+               }
+               $query .= "OR `glpi_plugin_tasklists_tasks`.`visibility` = 3)";
                $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
                $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
@@ -147,7 +157,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                $widget->setOption("bSort", false);
                $widget->toggleWidgetRefresh();
 
-               $link = Ajax::createIframeModalWindow('task' . $rand,
+               $link = Ajax::createIframeModalWindow('task',
                                                      $CFG_GLPI["root_doc"] . "/plugins/tasklists/front/task.form.php",
                                                      ['title'         => __('Add task', 'tasklists'),
                                                       'reloadonclose' => false,
@@ -156,7 +166,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                                                       'height'        => 600
                                                      ]);
                $link .= "<div align='right'>";
-               $link .= "<a href='#' class='vsubmit' onClick=\"javascript:" . Html::jsGetElementbyID('task' . $rand) . ".dialog('open');\">";
+               $link .= "<a href='#' class='vsubmit' onClick=\"javascript:" . Html::jsGetElementbyID('task') . ".dialog('open');\">";
                $link .= __('Add task', 'tasklists');
                $link .= "</a></div>";
 
