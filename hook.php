@@ -67,7 +67,8 @@ function plugin_tasklists_uninstall() {
               "glpi_plugin_tasklists_tasktypes",
               "glpi_plugin_tasklists_taskstates",
               "glpi_plugin_tasklists_stateorders",
-              "glpi_plugin_tasklists_typevisibilities"];
+              "glpi_plugin_tasklists_typevisibilities",
+              "glpi_plugin_tasklists_preferences"];
 
    foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
@@ -142,7 +143,7 @@ function plugin_tasklists_addDefaultWhere($type) {
          $who = Session::getLoginUserID();
          if (!Session::haveRight("plugin_tasklists_see_all", 1)) {
             if (count($_SESSION["glpigroups"])
-//                && Session::haveRight("plugin_tasklists_my_groups", 1)
+               //                && Session::haveRight("plugin_tasklists_my_groups", 1)
             ) {
                $first_groups = true;
                $groups       = "";

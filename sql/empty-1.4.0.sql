@@ -28,7 +28,6 @@ CREATE TABLE `glpi_plugin_tasklists_tasks` (
    KEY `is_deleted` (`is_deleted`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
 DROP TABLE IF EXISTS `glpi_plugin_tasklists_tasktypes`;
 CREATE TABLE `glpi_plugin_tasklists_tasktypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -81,4 +80,12 @@ CREATE TABLE `glpi_plugin_tasklists_typevisibilities` (
   PRIMARY KEY (`id`),
   KEY `plugin_tasklists_tasktypes_id` (`plugin_tasklists_tasktypes_id`),
   KEY `groups_id` (`groups_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `glpi_plugin_tasklists_preferences`;
+CREATE TABLE `glpi_plugin_tasklists_preferences` (
+  `id`                      INT(11)    NOT NULL
+  COMMENT 'RELATION to glpi_users(id)',
+  `default_type` INT(11)    NOT NULL DEFAULT '10',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

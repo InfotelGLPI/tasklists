@@ -47,6 +47,9 @@ function plugin_init_tasklists() {
       Plugin::registerClass('PluginTasklistsProfile',
                             ['addtabon' => 'Profile']);
 
+      Plugin::registerClass('PluginTasklistsPreference',
+                            ['addtabon' => 'Preference']);
+
       if (Session::haveRight("plugin_tasklists", READ)) {
          $PLUGIN_HOOKS['menu_toadd']['tasklists'] = ['helpdesk' => 'PluginTasklistsMenu'];
       }

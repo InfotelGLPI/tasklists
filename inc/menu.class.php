@@ -32,12 +32,12 @@
 /**
  * Class PluginTasklistsMenu
  */
-class PluginTasklistsMenu extends CommonGLPI
-{
+class PluginTasklistsMenu extends CommonGLPI {
    static $rightname = 'plugin_tasklists';
 
    /**
     * @param int $nb
+    *
     * @return translated
     */
    static function getMenuName($nb = 1) {
@@ -49,14 +49,21 @@ class PluginTasklistsMenu extends CommonGLPI
     */
    static function getMenuContent() {
 
-      $menu = [];
+      $url             = "";
+      $default_context = PluginTasklistsPreference::checkDefaultType(Session::getLoginUserID());
+      if ($default_context > 0) {
+         $url = "?itemtype=PluginTasklistsKanban&glpi_tab=PluginTasklistsKanban$" . $default_context;
+      }
+
+      $menu          = [];
       $menu['title'] = self::getMenuName(2);
-      $menu['page'] = PluginTasklistsKanban::getSearchURL(false);
+      $menu['page']  = PluginTasklistsKanban::getSearchURL(false) . $url;
+
       $menu['links']['search'] = PluginTasklistsTask::getSearchURL(false);
       if (PluginTasklistsTask::canCreate()) {
          $menu['links']['add'] = PluginTasklistsTask::getFormURL(false);
       }
-      $menu['links']['summary'] = PluginTasklistsKanban::getSearchURL(false);
+      $menu['links']['summary'] = PluginTasklistsKanban::getSearchURL(false) . $url;
 
       return $menu;
    }

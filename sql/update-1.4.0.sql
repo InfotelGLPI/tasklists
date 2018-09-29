@@ -35,3 +35,10 @@ CREATE TABLE `glpi_plugin_tasklists_typevisibilities` (
   KEY `plugin_tasklists_tasktypes_id` (`plugin_tasklists_tasktypes_id`),
   KEY `groups_id` (`groups_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `glpi_plugin_tasklists_preferences` (
+  `id`                      INT(11)    NOT NULL
+  COMMENT 'RELATION to glpi_users(id)',
+  `default_type` INT(11)    NOT NULL DEFAULT '10',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

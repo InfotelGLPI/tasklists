@@ -76,10 +76,9 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
     * @return bool|true
     */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      $field = new self();
-
+      $vis = new self();
       if (in_array($item->getType(), self::getTypes(true))) {
-         $field->showVisibilities($item);
+         $vis->showVisibilities($item);
       }
       return true;
    }
