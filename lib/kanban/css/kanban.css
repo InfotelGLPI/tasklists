@@ -26,6 +26,10 @@
    font-size: 12px;
 }
 
+.titleright{
+   width: 20%;
+}
+
 .cd_kanban_board > .cd_kanban_board_titles:after {
    content: '';
    display: block;
@@ -38,6 +42,11 @@
    color: #FFF;
    position: relative;
    flex: 1;
+}
+
+.title {
+   display: flex;
+   justify-content: center;
 }
 
 .cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:before {
@@ -126,6 +135,7 @@
    font-weight: bold;
    position: relative;
    z-index: 10;
+   width: 80%;
 }
 
 /*.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item.ui-sortable-helper{ transform: rotate(-4deg); }*/
@@ -179,6 +189,9 @@
    margin-right: 5px;
    /*background: #F6F6F6 !important;*/
    float: left;
+   position: relative;
+   z-index: 10;
+   display: flex;
 }
 
 .kanban_user_picture_verysmall {

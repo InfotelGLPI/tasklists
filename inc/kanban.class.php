@@ -124,13 +124,12 @@ class PluginTasklistsKanban extends CommonGLPI {
          if ($DB->numrows($result)) {
             while ($data = $DB->fetch_array($result)) {
                $user = new User();
-               $link = $dbu->getUserName($data['users_id']);
+               $link = "";
                if ($user->getFromDB($data['users_id'])) {
                   if ($user->fields['picture']) {
                      $link = "<div class='kanban_user_picture_border_verysmall'>";
-                     $link .= "<img class='kanban_user_picture_verysmall' alt=\"" . __s('Picture') . "\" src='" .
-                              User::getThumbnailURLForPicture($user->fields['picture']) . "'></div><div class='kanban_user_verysmall'>";
-                     $link .= $dbu->getUserName($data['users_id']);
+                     $link .= "<img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
+                              User::getThumbnailURLForPicture($user->fields['picture']) . "'>";
                      $link .= "</div>";
                   }
                }
@@ -161,7 +160,6 @@ class PluginTasklistsKanban extends CommonGLPI {
                               'block'       => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
                               'link'        => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
                               'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])), 80),
-                              'link_text'   => _n('Link', 'Links', 1),
                               'priority'    => CommonITILObject::getPriorityName($data['priority']),
                               'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
                               'percent'     => $data['percent_done'],
