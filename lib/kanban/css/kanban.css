@@ -4,6 +4,10 @@
     ---------------------------
 */
 
+.ui-tabs {
+   width: 100% !important;
+}
+
 .cd_kanban_board {
    width: 100%;
    height: auto;
@@ -19,6 +23,7 @@
    padding: 0px;
    display: flex;
    clear: both;
+   font-size: 12px;
 }
 
 .cd_kanban_board > .cd_kanban_board_titles:after {
@@ -187,7 +192,8 @@
 }
 
 .kanban_user_verysmall {
-   line-height: 30px;
+   line-height: 20px;
+   margin-top: 2px;
 }
 
 .fa-white {

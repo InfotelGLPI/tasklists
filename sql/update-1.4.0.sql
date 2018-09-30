@@ -37,8 +37,7 @@ CREATE TABLE `glpi_plugin_tasklists_typevisibilities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `glpi_plugin_tasklists_preferences` (
-  `id`                      INT(11)    NOT NULL
-  COMMENT 'RELATION to glpi_users(id)',
-  `default_type` INT(11)    NOT NULL DEFAULT '10',
+  `id` int(11) NOT NULL COMMENT 'RELATION to glpi_users(id)',
+  `default_type` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
