@@ -127,11 +127,11 @@ class PluginTasklistsKanban extends CommonGLPI {
                $link = $dbu->getUserName($data['users_id']);
                if ($user->getFromDB($data['users_id'])) {
                   if ($user->fields['picture']) {
-                     $link = "<p class='kanban_user_picture_border_verysmall'>";
+                     $link = "<div class='kanban_user_picture_border_verysmall'>";
                      $link .= "<img class='kanban_user_picture_verysmall' alt=\"" . __s('Picture') . "\" src='" .
-                              User::getThumbnailURLForPicture($user->fields['picture']) . "'></p><p class='kanban_user_verysmall'>";
+                              User::getThumbnailURLForPicture($user->fields['picture']) . "'></div><div class='kanban_user_verysmall'>";
                      $link .= $dbu->getUserName($data['users_id']);
-                     $link .= "</p>";
+                     $link .= "</div>";
                   }
                }
                $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
@@ -150,9 +150,9 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
                   $actiontime = '';
                   if ($data['actiontime'] != 0) {
-                     $time = floor($data['actiontime']);
-                     $time          = round(abs($time));
-                     $actiontime = sprintf(__('%1$s%2$d days', 'tasklists'),"" , $time/DAY_TIMESTAMP);
+                     $time       = floor($data['actiontime']);
+                     $time       = round(abs($time));
+                     $actiontime = sprintf(__('%1$s%2$d days', 'tasklists'), "", $time / DAY_TIMESTAMP);
                   }
 
 
@@ -166,7 +166,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                               'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
                               'percent'     => $data['percent_done'],
                               'actiontime'  => $actiontime,
-                              'duration'    => $duedate,
+                              'duedate'     => $duedate,
                               'footer'      => $link,
                               'finished'    => $finished
                   ];
@@ -178,10 +178,18 @@ class PluginTasklistsKanban extends CommonGLPI {
       $tasks = json_encode($tasks);
 
       echo "<div id='kanban$rand'></div>";
+
+      $cond       = ["plugin_tasklists_taskstates_id" => 0,
+                     "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
+                     "is_deleted"                     => 0];
+      $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
+                                               $cond);
+
       $colors[0]  = "#FFFAAA";
       $states[]   = ['id'    => 0,
                      'title' => __('Backlog', 'tasklists'),
-                     'rank'  => 0];
+                     'rank'  => 0,
+                     'count' => $countTasks];
       $nb         = 1;
       $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
       if (!empty($datastates)) {
@@ -189,7 +197,6 @@ class PluginTasklistsKanban extends CommonGLPI {
             $tasktypes = json_decode($datastate['tasktypes']);
             if (is_array($tasktypes)) {
                if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
-
                   $condition = "`plugin_tasklists_taskstates_id` = '" . $datastate['id'] . "'
                                           AND `plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
                   $order     = new PluginTasklistsStateOrder();
@@ -200,10 +207,16 @@ class PluginTasklistsKanban extends CommonGLPI {
                         $ranking = $rank['ranking'];
                      }
                   }
+                  $cond       = ["plugin_tasklists_taskstates_id" => $datastate['id'],
+                                 "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
+                                 "is_deleted"                     => 0];
+                  $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
+                                                           $cond);
 
                   $states[] = ['id'    => $datastate['id'],
                                'title' => $datastate['name'],
-                               'rank'  => $ranking];
+                               'rank'  => $ranking,
+                               'count' => $countTasks];
 
                   $states_ranked = [];
                   foreach ($states as $key => $row) {

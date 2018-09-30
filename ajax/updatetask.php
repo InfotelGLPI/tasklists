@@ -32,9 +32,20 @@ include("../../../inc/includes.php");
 Session::checkLoginUser();
 
 if (isset($_POST['data_id'])
-      && isset($_POST['percent_done'])) {
-   $task = new PluginTasklistsTask();
+    && isset($_POST['percent_done'])) {
+   $task                  = new PluginTasklistsTask();
    $input['percent_done'] = $_POST['percent_done'];
-   $input['id'] = $_POST['data_id'];
+   $input['id']           = $_POST['data_id'];
+   $task->update($input);
+} else if (isset($_POST['data_id'])
+           && isset($_POST['updatepriority'])) {
+   $task                  = new PluginTasklistsTask();
+   if ($task->getFromDB($_POST['data_id'])) {
+      $priority = $task->fields["priority"];
+   }
+   if ($priority = $task->fields["priority"] < 5) {
+      $input['priority'] =  $task->fields["priority"] + 1;
+   }
+   $input['id']           = $_POST['data_id'];
    $task->update($input);
 }
