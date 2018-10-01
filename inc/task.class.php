@@ -345,9 +345,9 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
 
-      echo "<td>" . __('Visibility') . "</td>";
+      echo "<td>" . __('Client', 'tasklists') . "</td>";
       echo "<td>";
-      self::dropdownVisibility(['value' => $this->fields['visibility']]);
+      Html::autocompletionTextField($this, "client", ['option' => "size='40'"]);
       echo "</td>";
 
       echo "<td>" . __('Due date', 'tasklists');
@@ -425,12 +425,15 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Visibility') . "</td>";
+      echo "<td>";
+      self::dropdownVisibility(['value' => $this->fields['visibility']]);
+      echo "</td>";
+
       echo "<td>" . __('Archived', 'tasklists') . "</td>";
       echo "<td>";
       Dropdown::showYesNo("is_archived", $this->fields["is_archived"]);
       echo "</td>";
-
-      echo "<td colspan='2'></td>";
 
       echo "</tr>";
 

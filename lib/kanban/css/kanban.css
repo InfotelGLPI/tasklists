@@ -9,7 +9,7 @@
 }
 
 .cd_kanban_board {
-   width: 100%;
+   width: 90%;
    height: auto;
    min-height: 400px;
    display: block;
@@ -176,6 +176,17 @@
 }
 
 /****CUSTOM*****/
+
+
+.client {
+   color: #8c8c8c;
+   font-size: 11px;
+   margin-bottom: 5px;
+   padding: 0 0 0 5px;
+   position: relative;
+   z-index: 10;
+   margin-left: 10px;
+}
 
 .kanbancomment {
    color: #8c8c8c;

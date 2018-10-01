@@ -63,7 +63,7 @@ if (isset($_POST['data_id'])
              "plugin_tasklists_tasktypes_id"  => $_POST['context_id'],
              "is_deleted"                     => 0,
              "is_archived"                    => 0];
-   $tasks = $task->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTasks'),
+   $tasks = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                        $cond);
    foreach ($tasks as $key => $row) {
       if ($task->getFromDB($row['id'])) {

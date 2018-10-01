@@ -17,6 +17,7 @@ INSERT INTO `glpi_plugin_tasklists_taskstates` (`id`, `name`, `entities_id`, `is
 
 ALTER TABLE `glpi_plugin_tasklists_tasks` CHANGE `state` `plugin_tasklists_taskstates_id` INT(11) NOT NULL DEFAULT '0' COMMENT 'RELATION to glpi_plugin_tasklists_taskstates (id)';
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `is_archived` tinyint(1) NOT NULL default '0';
+ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `client` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL;
 
 CREATE TABLE `glpi_plugin_tasklists_stateorders` (
   `id` int(11) NOT NULL auto_increment, -- id

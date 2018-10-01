@@ -41,9 +41,9 @@ $task = new PluginTasklistsTask();
 if (isset($_POST["add"])) {
    $task->check(-1, CREATE, $_POST);
    $newID = $task->add($_POST);
-   if ($_SESSION['glpibackcreated']) {
-      Html::redirect($task->getFormURL() . "?id=" . $newID);
-   }
+   //if ($_SESSION['glpibackcreated']) {
+   //   Html::redirect($task->getFormURL() . "?id=" . $newID);
+   //}
    Html::back();
 } else if (isset($_POST["delete"])) {
    $task->check($_POST['id'], DELETE);

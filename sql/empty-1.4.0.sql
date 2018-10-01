@@ -14,6 +14,7 @@ CREATE TABLE `glpi_plugin_tasklists_tasks` (
    `due_date` date default NULL,
    `users_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_users (id)',
    `groups_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_groups (id)',
+   `client` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
    `comment` text collate utf8_unicode_ci,
    `notepad` longtext collate utf8_unicode_ci,
    `date_mod` datetime default NULL,
