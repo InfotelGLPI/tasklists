@@ -102,7 +102,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                   $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
                }
                $query .= "OR `glpi_plugin_tasklists_tasks`.`visibility` = 3)";
-               $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
+               $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
                $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
                $tasks = [];

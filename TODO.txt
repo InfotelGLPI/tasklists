@@ -1,7 +1,7 @@
 add options from title div ? example archive closed tasks
 send notification for add / change task status ?
 add notification for revive user in charge ?
-
+Add min - max by state
 **************
 ordonner les contextes - pref ?
 **************

@@ -72,7 +72,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $dbu   = new DbUtils();
       $query = "SELECT `glpi_plugin_tasklists_tasktypes`.*
                 FROM `glpi_plugin_tasklists_tasktypes` ";
-      $query .= $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_plugin_tasklists_tasktypes', '', '',true);
+      $query .= $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_plugin_tasklists_tasktypes', '', $_SESSION["glpiactiveentities"], true);
       $tabs  = [];
       if ($item->getType() == __CLASS__) {
          if ($result = $DB->query($query)) {
@@ -123,7 +123,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                 WHERE `glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'
                 AND `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 
                 AND `glpi_plugin_tasklists_tasks`.`is_archived` = 0 ";
-      $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
+      $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
       $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
       $tasks = [];
