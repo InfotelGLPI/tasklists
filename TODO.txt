@@ -4,11 +4,13 @@ add notification for revive user in charge ?
 Add min - max by state
 
 Add entity pre-selection
-check transfer
+
+Backlog from list
 
 **************
 ordonner les contextes - pref ?
 **************
+check transfer : OK
 Add client field : OK
 preference : contexte by default : OK
 check visibility : OK

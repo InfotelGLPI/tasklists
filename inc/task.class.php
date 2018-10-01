@@ -182,6 +182,14 @@ class PluginTasklistsTask extends CommonDBTM {
       ];
 
       $tab[] = [
+         'id'       => '14',
+         'table'    => $this->getTable(),
+         'field'    => 'client',
+         'name'     => __('Client', 'tasklists'),
+         'datatype' => 'text'
+      ];
+
+      $tab[] = [
          'id'       => '18',
          'table'    => $this->getTable(),
          'field'    => 'is_recursive',
