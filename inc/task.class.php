@@ -266,6 +266,7 @@ class PluginTasklistsTask extends CommonDBTM {
       }
       if (isset($input['is_archived'])
           && $input['is_archived'] == 1) {
+         $state = new PluginTasklistsTaskState();
          if ($state->getFromDB($this->fields['plugin_tasklists_taskstates_id'])) {
             if (!$state->getFinishedState()) {
                Session::addMessageAfterRedirect(__('You cannot archive a task with this state', 'tasklists'), false, ERROR);

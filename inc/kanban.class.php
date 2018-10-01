@@ -72,7 +72,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $dbu   = new DbUtils();
       $query = "SELECT `glpi_plugin_tasklists_tasktypes`.*
                 FROM `glpi_plugin_tasklists_tasktypes` ";
-      $query .= $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_plugin_tasklists_tasktypes');
+      $query .= $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_plugin_tasklists_tasktypes', '', '',true);
       $tabs  = [];
       if ($item->getType() == __CLASS__) {
          if ($result = $DB->query($query)) {
@@ -81,14 +81,15 @@ class PluginTasklistsKanban extends CommonGLPI {
                   if (self::countTasksForKanban($data["id"]) > 0) {
                      if (PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
                         $tabs[$data["id"]] = $data["completename"];
-                     } else {
-                        echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
-                        echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
-                        return false;
                      }
                   }
                }
             }
+         }
+         if (count($tabs) == 0){
+            echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
+            echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
+            return false;
          }
 
          return $tabs;
@@ -245,6 +246,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       }
       $lang['add_tasks']       = __('Add task', 'tasklists');
       $lang['archive_all_tasks']   = __('Archive all tasks of this state', 'tasklists');
+      $lang['alert_archive_task']   = __('Are you sure you want to archive this task ?', 'tasklists');
       $lang['alert_archive_all_tasks']   = __('Are you sure you want to archive all tasks ?', 'tasklists');
       $lang['archive_task']   = __('Archive this task', 'tasklists');
       $lang['update_priority'] = __('Update priority of task', 'tasklists');

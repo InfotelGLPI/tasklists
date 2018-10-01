@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-01 11:37+0200\n"
+"POT-Creation-Date: 2018-10-01 12:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Tasks list"
 msgstr "Tasks list"
 
-#: inc/dashboard.class.php:92 inc/task.class.php:80 inc/task.class.php:308
+#: inc/dashboard.class.php:92 inc/task.class.php:80 inc/task.class.php:309
 #: inc/taskstate.class.php:88 inc/taskstate.class.php:134
 #: inc/tasktype.class.php:48
 msgid "Context"
@@ -32,13 +32,13 @@ msgid_plural "Contexts"
 msgstr[0] "Context"
 msgstr[1] "Contexts"
 
-#: inc/dashboard.class.php:92 inc/kanban.class.php:156 inc/task.class.php:118
-#: inc/task.class.php:352
+#: inc/dashboard.class.php:92 inc/kanban.class.php:157 inc/task.class.php:118
+#: inc/task.class.php:353
 msgid "Due date"
 msgstr "Due date"
 
 #: inc/dashboard.class.php:162 inc/dashboard.class.php:170
-#: inc/kanban.class.php:246
+#: inc/kanban.class.php:247
 msgid "Add task"
 msgstr "Add task"
 
@@ -46,36 +46,40 @@ msgstr "Add task"
 msgid "Kanban"
 msgstr "Kanban"
 
-#: inc/kanban.class.php:86 inc/kanban.class.php:113
+#: inc/kanban.class.php:91 inc/kanban.class.php:114
 msgid "You don't have the right to see any context"
 msgstr "You don't have the right to see any context"
 
-#: inc/kanban.class.php:162
+#: inc/kanban.class.php:163
 #, php-format
 msgid "%1$s%2$d days"
 msgstr "%1$s%2$d days"
 
-#: inc/kanban.class.php:198 inc/task.class.php:451
+#: inc/kanban.class.php:199 inc/task.class.php:452
 msgid "Backlog"
 msgstr "Backlog"
 
-#: inc/kanban.class.php:247
+#: inc/kanban.class.php:248
 msgid "Archive all tasks of this state"
 msgstr "Archive all tasks of this state"
 
-#: inc/kanban.class.php:248
+#: inc/kanban.class.php:249
+msgid "Are you sure you want to archive this task ?"
+msgstr "Are you sure you want to archive this task ?"
+
+#: inc/kanban.class.php:250
 msgid "Are you sure you want to archive all tasks ?"
 msgstr "Are you sure you want to archive all tasks ?"
 
-#: inc/kanban.class.php:249
+#: inc/kanban.class.php:251
 msgid "Archive this task"
 msgstr "Archive this task"
 
-#: inc/kanban.class.php:250
+#: inc/kanban.class.php:252
 msgid "Update priority of task"
 msgstr "Update priority of task"
 
-#: inc/kanban.class.php:251
+#: inc/kanban.class.php:253
 msgid "Details of task"
 msgstr "Details of task"
 
@@ -95,34 +99,34 @@ msgstr "States ordering"
 msgid "Add states from GLPI"
 msgstr "Add states from GLPI"
 
-#: inc/task.class.php:180 inc/task.class.php:427
+#: inc/task.class.php:180 inc/task.class.php:428
 msgid "Archived"
 msgstr "Archived"
 
-#: inc/task.class.php:271
+#: inc/task.class.php:272
 msgid "You cannot archive a task with this state"
 msgstr "You cannot archive a task with this state"
 
-#: inc/task.class.php:354
+#: inc/task.class.php:355
 msgid "Empty for infinite"
 msgstr "Empty for infinite"
 
-#: inc/task.class.php:811
+#: inc/task.class.php:812
 msgctxt "visibility"
 msgid "This user"
 msgstr "This user"
 
-#: inc/task.class.php:814
+#: inc/task.class.php:815
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "This user and this group"
 
-#: inc/task.class.php:817
+#: inc/task.class.php:818
 msgctxt "visibility"
 msgid "All"
 msgstr "All"
 
-#: inc/task.class.php:854
+#: inc/task.class.php:855
 msgid "Affect entity for create task"
 msgstr "Affect entity for create task"
 
