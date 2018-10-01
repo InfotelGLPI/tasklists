@@ -115,7 +115,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                 FROM `glpi_plugin_tasklists_tasks`
                 LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
                 WHERE `glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'
-                AND `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 ";
+                AND `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 
+                AND `glpi_plugin_tasklists_tasks`.`is_archived` = 0 ";
       $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks');
       $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
@@ -134,11 +135,13 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
                }
                $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
-               $finished                       = 'style="display: inline;"';
+               $finished                       = 0;
+               $finished_style                 = 'style="display: inline;"';
                $state                          = new PluginTasklistsTaskState();
                if ($state->getFromDB($plugin_tasklists_taskstates_id)) {
                   if ($state->getFinishedState()) {
-                     $finished = 'style="display: none;"';
+                     $finished_style = 'style="display: none;"';
+                     $finished       = 1;
                   }
                }
                $task = new PluginTasklistsTask();
@@ -155,18 +158,19 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
 
 
-                  $tasks[] = ['id'          => $data['id'],
-                              'title'       => $data['name'],
-                              'block'       => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
-                              'link'        => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
-                              'description' => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])), 80),
-                              'priority'    => CommonITILObject::getPriorityName($data['priority']),
-                              'bgcolor'     => $_SESSION["glpipriority_" . $data['priority']],
-                              'percent'     => $data['percent_done'],
-                              'actiontime'  => $actiontime,
-                              'duedate'     => $duedate,
-                              'footer'      => $link,
-                              'finished'    => $finished
+                  $tasks[] = ['id'             => $data['id'],
+                              'title'          => $data['name'],
+                              'block'          => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
+                              'link'           => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
+                              'description'    => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])), 80),
+                              'priority'       => CommonITILObject::getPriorityName($data['priority']),
+                              'bgcolor'        => $_SESSION["glpipriority_" . $data['priority']],
+                              'percent'        => $data['percent_done'],
+                              'actiontime'     => $actiontime,
+                              'duedate'        => $duedate,
+                              'footer'         => $link,
+                              'finished'       => $finished,
+                              'finished_style' => $finished_style,
                   ];
                }
             }
@@ -179,15 +183,17 @@ class PluginTasklistsKanban extends CommonGLPI {
 
       $cond       = ["plugin_tasklists_taskstates_id" => 0,
                      "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
-                     "is_deleted"                     => 0];
+                     "is_deleted"                     => 0,
+                     "is_archived"                    => 0];
       $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                                $cond);
 
       $colors[0]  = "#FFFAAA";
-      $states[]   = ['id'    => 0,
-                     'title' => __('Backlog', 'tasklists'),
-                     'rank'  => 0,
-                     'count' => $countTasks];
+      $states[]   = ['id'       => 0,
+                     'title'    => __('Backlog', 'tasklists'),
+                     'rank'     => 0,
+                     'count'    => $countTasks,
+                     'finished' => 0];
       $nb         = 1;
       $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
       if (!empty($datastates)) {
@@ -207,14 +213,16 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
                   $cond       = ["plugin_tasklists_taskstates_id" => $datastate['id'],
                                  "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
-                                 "is_deleted"                     => 0];
+                                 "is_deleted"                     => 0,
+                                 "is_archived"                    => 0];
                   $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                                            $cond);
 
-                  $states[] = ['id'    => $datastate['id'],
-                               'title' => $datastate['name'],
-                               'rank'  => $ranking,
-                               'count' => $countTasks];
+                  $states[] = ['id'       => $datastate['id'],
+                               'title'    => $datastate['name'],
+                               'rank'     => $ranking,
+                               'count'    => $countTasks,
+                               'finished' => $datastate['is_finished']];
 
                   $states_ranked = [];
                   foreach ($states as $key => $row) {
@@ -230,6 +238,14 @@ class PluginTasklistsKanban extends CommonGLPI {
             }
          }
       }
+      $lang['add_tasks']       = __('Add task', 'tasklists');
+      $lang['archive_all_tasks']   = __('Archive all tasks of this state', 'tasklists');
+      $lang['alert_archive_all_tasks']   = __('Are you sure you want to archive all tasks ?', 'tasklists');
+      $lang['archive_task']   = __('Archive this task', 'tasklists');
+      $lang['update_priority'] = __('Update priority of task', 'tasklists');
+      $lang['see_details']     = __('Details of task', 'tasklists');
+      $lang                    = json_encode($lang);
+
       $states   = json_encode($states);
       $colors   = json_encode($colors);
       $root_doc = $CFG_GLPI['root_doc'];
@@ -239,6 +255,7 @@ class PluginTasklistsKanban extends CommonGLPI {
            colours: $colors,
            items: $tasks,
            rootdoc: '$root_doc',
+           lang: $lang
        });</script>";
 
    }

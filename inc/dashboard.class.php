@@ -89,7 +89,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                   $groups_founded[] = $group["id"];
                }
 
-               $headers = [__('Name'), __('Priority'), _n('Context', 'Contexts', 1, 'tasklists'), __('User'), __('Percent done'), __('Due date', 'tasklists'), __('Action')];
+               $headers = [__('Name'), __('Priority'), _n('Context', 'Contexts', 1, 'tasklists'), __('User'), __('Percent done'), __('Due date', 'tasklists')];//, __('Action')
                $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
                             FROM `glpi_plugin_tasklists_tasks`
                             LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 

@@ -16,6 +16,7 @@ INSERT INTO `glpi_plugin_tasklists_taskstates` (`id`, `name`, `entities_id`, `is
 INSERT INTO `glpi_plugin_tasklists_taskstates` (`id`, `name`, `entities_id`, `is_recursive`, `comment`, `color`, `tasktypes`) VALUES (2, 'Done', '0', '1', NULL, '#CCC', NULL);
 
 ALTER TABLE `glpi_plugin_tasklists_tasks` CHANGE `state` `plugin_tasklists_taskstates_id` INT(11) NOT NULL DEFAULT '0' COMMENT 'RELATION to glpi_plugin_tasklists_taskstates (id)';
+ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `is_archived` tinyint(1) NOT NULL default '0';
 
 CREATE TABLE `glpi_plugin_tasklists_stateorders` (
   `id` int(11) NOT NULL auto_increment, -- id

@@ -406,6 +406,16 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "</tr>";
 
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __('Archived', 'tasklists') . "</td>";
+      echo "<td>";
+      Dropdown::showYesNo("is_archived", $this->fields["is_archived"]);
+      echo "</td>";
+
+      echo "<td colspan='2'></td>";
+
+      echo "</tr>";
+
       $this->showFormButtons($options);
 
       return true;

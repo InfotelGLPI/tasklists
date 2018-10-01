@@ -18,6 +18,7 @@ CREATE TABLE `glpi_plugin_tasklists_tasks` (
    `notepad` longtext collate utf8_unicode_ci,
    `date_mod` datetime default NULL,
    `is_deleted` tinyint(1) NOT NULL default '0',
+   `is_archived` tinyint(1) NOT NULL default '0',
    PRIMARY KEY  (`id`),
    KEY `name` (`name`),
    KEY `entities_id` (`entities_id`),
@@ -25,7 +26,8 @@ CREATE TABLE `glpi_plugin_tasklists_tasks` (
    KEY `users_id` (`users_id`),
    KEY `groups_id` (`groups_id`),
    KEY `date_mod` (`date_mod`),
-   KEY `is_deleted` (`is_deleted`)
+   KEY `is_deleted` (`is_deleted`),
+  KEY `is_deleted` (`is_archived`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `glpi_plugin_tasklists_tasktypes`;
