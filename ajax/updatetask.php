@@ -64,11 +64,12 @@ if (isset($_POST['data_id'])
              "is_deleted"                     => 0,
              "is_archived"                    => 0];
    $tasks = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTasks'),
-                                       $cond);
+                                      $cond);
    foreach ($tasks as $key => $row) {
       if ($task->getFromDB($row['id'])) {
          $input['is_archived'] = 1;
          $input['id']          = $row['id'];
+         $task->update($input);
       }
    }
 }

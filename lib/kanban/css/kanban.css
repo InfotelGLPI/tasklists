@@ -220,8 +220,11 @@
 }
 
 .kanban_user_verysmall {
-   line-height: 20px;
    margin-top: 2px;
+   z-index: 10;
+   display: flex;
+   color: #CCC;
+   font-size: 11px;
 }
 
 .fa-white {

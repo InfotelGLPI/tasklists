@@ -2,10 +2,14 @@ add options from title div ? example archive closed tasks
 send notification for add / change task status ?
 add notification for revive user in charge ?
 Add min - max by state
-Add client field
+
+Add entity pre-selection
+check transfer
+
 **************
 ordonner les contextes - pref ?
 **************
+Add client field : OK
 preference : contexte by default : OK
 check visibility : OK
 see graph percent from div tasks ? or move percent ? OK

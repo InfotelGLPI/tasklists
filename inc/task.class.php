@@ -152,7 +152,7 @@ class PluginTasklistsTask extends CommonDBTM {
          'field'     => 'name',
          'linkfield' => 'groups_id',
          'name'      => __('Group'),
-         'condition' => '`is_assign`',
+         'condition' => '`is_usergroup`',
          'datatype'  => 'dropdown'
       ];
 
@@ -174,7 +174,7 @@ class PluginTasklistsTask extends CommonDBTM {
       ];
 
       $tab[] = [
-         'id'       => '183',
+         'id'       => '13',
          'table'    => $this->getTable(),
          'field'    => 'is_archived',
          'name'     => __('Archived', 'tasklists'),
@@ -230,6 +230,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->fields['priority']     = 3;
       $this->fields['percent_done'] = 0;
       $this->fields['users_id']     = Session::getLoginUserID();
+      $this->fields['visibility']   = 2;
    }
 
    /**
@@ -387,7 +388,8 @@ class PluginTasklistsTask extends CommonDBTM {
       Dropdown::show('Group', ['name'      => "groups_id",
                                'value'     => $this->fields["groups_id"],
                                'entity'    => $this->fields["entities_id"],
-                               'condition' => '`is_assign`']);
+                               'condition' => '`is_usergroup`'
+      ]);
       echo "</td>";
 
       echo "<td>" . __('Status') . "</td><td id='plugin_tasklists_state'>";
@@ -829,7 +831,7 @@ class PluginTasklistsTask extends CommonDBTM {
 
    function checkVisibility($id) {
 
-      if(Session::haveRight("plugin_tasklists_see_all", 1)){
+      if (Session::haveRight("plugin_tasklists_see_all", 1)) {
          return true;
       }
       if ($this->getFromDB(($id))) {

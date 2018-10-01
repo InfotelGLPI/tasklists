@@ -80,12 +80,13 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
-               $data                 = $DB->fetch_assoc($result);
-               $data                 = Toolbox::addslashes_deep($data);
-               $input['name']        = $data['name'];
-               $input['entities_id'] = $entity;
-               $temp                 = new self();
-               $newID                = $temp->getID();
+               $data                  = $DB->fetch_assoc($result);
+               $data                  = Toolbox::addslashes_deep($data);
+               $input['name']         = $data['name'];
+               $input['entities_id']  = $entity;
+               $input['is recursive'] = $data['recursive'];
+               $temp                  = new self();
+               $newID                 = $temp->getID();
 
                if ($newID < 0) {
                   $newID = $temp->import($input);

@@ -138,6 +138,10 @@ class PluginTasklistsKanban extends CommonGLPI {
                      $link .= "<img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
                               User::getThumbnailURLForPicture($user->fields['picture']) . "'>";
                      $link .= "</div>";
+                  } else {
+                     $link = "<div class='kanban_user_verysmall'>";
+                     $link .= $dbu->getUserName($data['users_id']);
+                     $link .= "</div>";
                   }
                }
                $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];

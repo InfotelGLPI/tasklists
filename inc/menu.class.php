@@ -50,7 +50,10 @@ class PluginTasklistsMenu extends CommonGLPI {
    static function getMenuContent() {
 
       $url             = "";
-      $default_context = PluginTasklistsPreference::checkDefaultType(Session::getLoginUserID());
+      $default_context = 0;
+      if (class_exists("PluginTasklistsPreference")) {
+         $default_context = PluginTasklistsPreference::checkDefaultType(Session::getLoginUserID());
+      }
       if ($default_context > 0) {
          $url = "?itemtype=PluginTasklistsKanban&glpi_tab=PluginTasklistsKanban$" . $default_context;
       }
