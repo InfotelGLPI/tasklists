@@ -37,9 +37,7 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
 
    echo Html::script('/plugins/tasklists/lib/kanban/js/kanban.js');
    echo Html::css('/plugins/tasklists/lib/kanban/css/kanban.css');
-
-   $options = [];
-   $kanban->display($options);
+   $kanban->display();
 
 } else {
    Html::displayRightError();

@@ -174,6 +174,14 @@ class PluginTasklistsTask extends CommonDBTM {
       ];
 
       $tab[] = [
+         'id'       => '183',
+         'table'    => $this->getTable(),
+         'field'    => 'is_archived',
+         'name'     => __('Archived', 'tasklists'),
+         'datatype' => 'bool'
+      ];
+
+      $tab[] = [
          'id'       => '18',
          'table'    => $this->getTable(),
          'field'    => 'is_recursive',
@@ -253,6 +261,15 @@ class PluginTasklistsTask extends CommonDBTM {
          if ($state->getFromDB($input['plugin_tasklists_taskstates_id'])) {
             if ($state->getFinishedState()) {
                $input['percent_done'] = 100;
+            }
+         }
+      }
+      if (isset($input['is_archived'])
+          && $input['is_archived'] == 1) {
+         if ($state->getFromDB($this->fields['plugin_tasklists_taskstates_id'])) {
+            if (!$state->getFinishedState()) {
+               Session::addMessageAfterRedirect(__('You cannot archive a task with this state', 'tasklists'), false, ERROR);
+               return false;
             }
          }
       }

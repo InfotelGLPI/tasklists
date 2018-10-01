@@ -47,6 +47,7 @@
 .title {
    display: flex;
    justify-content: left;
+   margin-left: 10px;
 }
 
 .cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:before {

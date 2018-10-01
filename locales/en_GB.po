@@ -6,68 +6,130 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI - Tasklists plugin 1.2.0\n"
+"Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 09:46+0200\n"
+"POT-Creation-Date: 2018-10-01 11:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: en_GB\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 2.0.9\n"
 
-#: setup.php:70 inc/dashboard.class.php:58 inc/dashboard.class.php:171
-#: inc/dashboard.class.php:176 inc/menu.class.php:44 inc/profile.class.php:52
+#: setup.php:80 inc/dashboard.class.php:58 inc/dashboard.class.php:176
+#: inc/dashboard.class.php:181 inc/menu.class.php:44
+#: inc/preference.class.php:45 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Tasks list"
 
-#: inc/dashboard.class.php:77 inc/task.class.php:80 inc/task.class.php:276
-#: inc/tasktype.class.php:47
+#: inc/dashboard.class.php:92 inc/task.class.php:80 inc/task.class.php:308
+#: inc/taskstate.class.php:88 inc/taskstate.class.php:134
+#: inc/tasktype.class.php:48
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Context"
 msgstr[1] "Contexts"
 
-#: inc/dashboard.class.php:128
-msgid "Mark as done"
-msgstr "Mark as done"
-
-#: inc/dashboard.class.php:133 inc/dashboard.class.php:138
-msgid "Add comment"
-msgstr "Add comment"
-
-#: inc/dashboard.class.php:158 inc/dashboard.class.php:163
-msgid "Add task"
-msgstr "Add task"
-
-#: inc/task.class.php:118 inc/task.class.php:317
+#: inc/dashboard.class.php:92 inc/kanban.class.php:156 inc/task.class.php:118
+#: inc/task.class.php:352
 msgid "Due date"
 msgstr "Due date"
 
-#: inc/task.class.php:319
+#: inc/dashboard.class.php:162 inc/dashboard.class.php:170
+#: inc/kanban.class.php:246
+msgid "Add task"
+msgstr "Add task"
+
+#: inc/kanban.class.php:51
+msgid "Kanban"
+msgstr "Kanban"
+
+#: inc/kanban.class.php:86 inc/kanban.class.php:113
+msgid "You don't have the right to see any context"
+msgstr "You don't have the right to see any context"
+
+#: inc/kanban.class.php:162
+#, php-format
+msgid "%1$s%2$d days"
+msgstr "%1$s%2$d days"
+
+#: inc/kanban.class.php:198 inc/task.class.php:451
+msgid "Backlog"
+msgstr "Backlog"
+
+#: inc/kanban.class.php:247
+msgid "Archive all tasks of this state"
+msgstr "Archive all tasks of this state"
+
+#: inc/kanban.class.php:248
+msgid "Are you sure you want to archive all tasks ?"
+msgstr "Are you sure you want to archive all tasks ?"
+
+#: inc/kanban.class.php:249
+msgid "Archive this task"
+msgstr "Archive this task"
+
+#: inc/kanban.class.php:250
+msgid "Update priority of task"
+msgstr "Update priority of task"
+
+#: inc/kanban.class.php:251
+msgid "Details of task"
+msgstr "Details of task"
+
+#: inc/preference.class.php:78
+msgid "Context by default"
+msgstr "Context by default"
+
+#: inc/profile.class.php:151 inc/profile.class.php:184
+msgid "See all tasks"
+msgstr "See all tasks"
+
+#: inc/stateorder.class.php:86
+msgid "States ordering"
+msgstr "States ordering"
+
+#: inc/stateorder.class.php:146
+msgid "Add states from GLPI"
+msgstr "Add states from GLPI"
+
+#: inc/task.class.php:180 inc/task.class.php:427
+msgid "Archived"
+msgstr "Archived"
+
+#: inc/task.class.php:271
+msgid "You cannot archive a task with this state"
+msgstr "You cannot archive a task with this state"
+
+#: inc/task.class.php:354
 msgid "Empty for infinite"
 msgstr "Empty for infinite"
 
-#: inc/task.class.php:697
+#: inc/task.class.php:811
 msgctxt "visibility"
 msgid "This user"
 msgstr "This user"
 
-#: inc/task.class.php:700
+#: inc/task.class.php:814
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "This user and this group"
 
-#: inc/task.class.php:703
+#: inc/task.class.php:817
 msgctxt "visibility"
 msgid "All"
 msgstr "All"
 
-#: inc/task.class.php:719
+#: inc/task.class.php:854
 msgid "Affect entity for create task"
 msgstr "Affect entity for create task"
+
+#: inc/typevisibility.class.php:131
+msgid "Add a group"
+msgstr "Add a group"
+
+#: inc/typevisibility.class.php:172
+msgid "Groups allowed to use context"
+msgstr "Groups allowed to use context"

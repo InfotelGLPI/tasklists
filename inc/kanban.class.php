@@ -67,7 +67,7 @@ class PluginTasklistsKanban extends CommonGLPI {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      global $DB;
+      global $DB, $CFG_GLPI;
 
       $dbu   = new DbUtils();
       $query = "SELECT `glpi_plugin_tasklists_tasktypes`.*
@@ -78,9 +78,14 @@ class PluginTasklistsKanban extends CommonGLPI {
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
                while ($data = $DB->fetch_array($result)) {
-                  if (self::countTasksForKanban($data["id"]) > 0
-                      && PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
-                     $tabs[$data["id"]] = $data["completename"];
+                  if (self::countTasksForKanban($data["id"]) > 0) {
+                     if (PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
+                        $tabs[$data["id"]] = $data["completename"];
+                     } else {
+                        echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
+                        echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
+                        return false;
+                     }
                   }
                }
             }
@@ -105,7 +110,7 @@ class PluginTasklistsKanban extends CommonGLPI {
 
       if (!PluginTasklistsTypeVisibility::isUserHaveRight($plugin_tasklists_tasktypes_id)) {
          echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
-         echo "<b>" . __("You don't have the right to see this context", 'metademands') . "</b></div>";
+         echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
          return false;
       }
 
