@@ -155,6 +155,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                      $finished       = 1;
                   }
                }
+
                $task = new PluginTasklistsTask();
                if ($task->checkVisibility($data['id']) == true) {
                   $duedate = '';
@@ -166,6 +167,11 @@ class PluginTasklistsKanban extends CommonGLPI {
                      $time       = floor($data['actiontime']);
                      $time       = round(abs($time));
                      $actiontime = sprintf(__('%1$s%2$d days', 'tasklists'), "", $time / DAY_TIMESTAMP);
+                  }
+
+                  if (isset($data['users_id'])
+                      && $data['users_id'] != Session::getLoginUserID()) {
+                     $finished_style = 'style="display: none;"';
                   }
 
                   $right = 0;

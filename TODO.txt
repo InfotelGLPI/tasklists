@@ -7,6 +7,8 @@ Add entity pre-selection
 Backlog from list
 Add template
 See archived tasks
+planning : 0,5 j
+add comments
 
 **************
 ordonner les contextes - pref ?
