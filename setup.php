@@ -45,6 +45,11 @@ function plugin_init_tasklists() {
          'document_types'  => true,
       ]);
 
+      Plugin::registerClass('PluginTasklistsTicket',
+                            ['addtabon' => 'Ticket']);
+
+      $PLUGIN_HOOKS['item_purge']['tasklists']['Ticket'] = ['PluginTasklistsTaskTicket', 'cleanForTicket'];
+
       Plugin::registerClass('PluginTasklistsProfile',
                             ['addtabon' => 'Profile']);
 

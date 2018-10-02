@@ -157,11 +157,12 @@ class PluginTasklistsTask extends CommonDBTM {
       ];
 
       $tab[] = [
-         'id'       => '11',
-         'table'    => 'glpi_plugin_tasklists_taskstates',
-         'field'    => 'name',
-         'name'     => __('Status'),
-         'datatype' => 'dropdown'
+         'id'         => '11',
+         'table'      => $this->getTable(),
+         'field'      => 'plugin_tasklists_taskstates_id',
+         'name'       => __('Status'),
+         'searchtype' => ['equals', 'notequals'],
+         'datatype'   => 'specific'
       ];
 
       $tab[] = [
@@ -187,6 +188,15 @@ class PluginTasklistsTask extends CommonDBTM {
          'field'    => 'client',
          'name'     => __('Client', 'tasklists'),
          'datatype' => 'text'
+      ];
+
+      $tab[] = [
+         'id'            => '121',
+         'table'         => $this->getTable(),
+         'field'         => 'date_creation',
+         'name'          => __('Creation date'),
+         'datatype'      => 'datetime',
+         'massiveaction' => false
       ];
 
       $tab[] = [
@@ -225,6 +235,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $ong = [];
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('Document_Item', $ong, $options);
+      $this->addStandardTab('PluginTasklistsTicket', $ong, $options);
       $this->addStandardTab('Notepad', $ong, $options);
       $this->addStandardTab('Log', $ong, $options);
 
@@ -337,18 +348,10 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "<td>" . __('Planned duration') . "</td>";
       echo "<td>";
-      $toadd = [];
-      //for ($i=9 ; $i<=100 ; $i++) {
-      //   $toadd[] = $i*HOUR_TIMESTAMP;
-      //}
-
-      Dropdown::showTimeStamp("actiontime", ['min'   => 0,
-                                             'max'   => 50 * DAY_TIMESTAMP,
-                                             'step'  => DAY_TIMESTAMP,
-                                             'value' => $this->fields["actiontime"],
-                                             //'addfirstminutes' => true,
-                                             //'inhours'         => true,
-                                             'toadd' => $toadd]);
+      Dropdown::showTimeStamp("actiontime", ['min'   => HOUR_TIMESTAMP * 2,
+                                             'max'   => MONTH_TIMESTAMP * 2,
+                                             'step'  => HOUR_TIMESTAMP * 2,
+                                             'value' => $this->fields["actiontime"]]);
       echo "</td>";
 
       echo "</tr>";
@@ -507,6 +510,20 @@ class PluginTasklistsTask extends CommonDBTM {
                                                                                  'value'   => $plugin_tasklists_taskstates_id,
                                                                                  'display' => true]);
 
+   }
+
+   static function getStateName($value) {
+
+      switch ($value) {
+
+         case 0 :
+            return __('Backlog', 'tasklists');
+
+         default :
+            // Return $value if not define
+            return Dropdown::getDropdownName("glpi_plugin_tasklists_taskstates", $value);
+
+      }
    }
 
    /**
@@ -735,6 +752,8 @@ class PluginTasklistsTask extends CommonDBTM {
             return CommonITILObject::getPriorityName($values[$field]);
          case 'visibility':
             return self::getVisibilityName($values[$field]);
+         case 'plugin_tasklists_taskstates_id':
+            return self::getStateName($values[$field]);
       }
       return parent::getSpecificValueToDisplay($field, $values, $options);
    }
@@ -767,6 +786,14 @@ class PluginTasklistsTask extends CommonDBTM {
             $options['name']  = $name;
             $options['value'] = $values[$field];
             return self::dropdownVisibility($options);
+
+         case 'plugin_tasklists_taskstates_id':
+            return Dropdown::show('PluginTasklistsTaskState', ['name'    => $name,
+                                                               'value'   => $values[$field],
+                                                               'emptylabel' => __('Backlog', 'tasklists'),
+                                                               'display' => false,
+                                                               'width' => '200px'
+            ]);
       }
       return parent::getSpecificValueToSelect($field, $name, $values, $options);
    }

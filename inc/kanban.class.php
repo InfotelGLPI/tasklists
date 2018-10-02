@@ -164,9 +164,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
                   $actiontime = '';
                   if ($data['actiontime'] != 0) {
-                     $time       = floor($data['actiontime']);
-                     $time       = round(abs($time));
-                     $actiontime = sprintf(__('%1$s%2$d days', 'tasklists'), "", $time / DAY_TIMESTAMP);
+                     $actiontime =Html::timestampToString($data['actiontime'],false, true);
                   }
 
                   if (isset($data['users_id'])
@@ -263,6 +261,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       }
       $lang['add_tasks']               = __('Add task', 'tasklists');
       $lang['archive_all_tasks']       = __('Archive all tasks of this state', 'tasklists');
+      $lang['see_archived_tasks']       = __('See archived tasks of this state', 'tasklists');
       $lang['alert_archive_task']      = __('Are you sure you want to archive this task ?', 'tasklists');
       $lang['alert_archive_all_tasks'] = __('Are you sure you want to archive all tasks ?', 'tasklists');
       $lang['archive_task']            = __('Archive this task', 'tasklists');

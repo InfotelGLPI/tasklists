@@ -4,16 +4,18 @@ add notification for revive user in charge ?
 
 Add min - max by state
 Add entity pre-selection
-Backlog from list
 Add template
 See archived tasks
-planning : 0,5 j
-add comments
+add comments ?
+Number of notes of task
 
 **************
 ordonner les contextes - pref ?
 **************
-Droits autres users : OK
+Backlog from list : OK
+link to tickets : OK
+planning : hours : OK
+Rights : OK
 check transfer : OK
 Add client field : OK
 preference : contexte by default : OK
@@ -24,7 +26,7 @@ see state from context into task form : OK
 State migration : OK
 open popup for see tasks : OK
 Order States : OK
-Cacher onglet tous : OK
+Hide All tab : OK
 Add context to States : OK
 Add color to States : OK
 Minimize closed tasks : OK

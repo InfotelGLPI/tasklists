@@ -18,6 +18,7 @@ CREATE TABLE `glpi_plugin_tasklists_tasks` (
    `comment` text collate utf8_unicode_ci,
    `notepad` longtext collate utf8_unicode_ci,
    `date_mod` datetime default NULL,
+   `date_creation` datetime default NULL,
    `is_deleted` tinyint(1) NOT NULL default '0',
    `is_archived` tinyint(1) NOT NULL default '0',
    PRIMARY KEY  (`id`),
@@ -90,4 +91,14 @@ CREATE TABLE `glpi_plugin_tasklists_preferences` (
   `id` int(11) NOT NULL COMMENT 'RELATION to glpi_users(id)',
   `default_type` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `glpi_plugin_tasklists_tickets`;
+CREATE TABLE `glpi_plugin_tasklists_tickets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tickets_id` int(11) NOT NULL DEFAULT '0',
+  `plugin_tasklists_tasks_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `plugin_tasklists_tasks_id` (`plugin_tasklists_tasks_id`),
+  KEY `tickets_id` (`tickets_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

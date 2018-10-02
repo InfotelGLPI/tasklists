@@ -18,6 +18,7 @@ INSERT INTO `glpi_plugin_tasklists_taskstates` (`id`, `name`, `entities_id`, `is
 ALTER TABLE `glpi_plugin_tasklists_tasks` CHANGE `state` `plugin_tasklists_taskstates_id` INT(11) NOT NULL DEFAULT '0' COMMENT 'RELATION to glpi_plugin_tasklists_taskstates (id)';
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `is_archived` tinyint(1) NOT NULL default '0';
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `client` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL;
+ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `date_creation` datetime default NULL;
 
 CREATE TABLE `glpi_plugin_tasklists_stateorders` (
   `id` int(11) NOT NULL auto_increment, -- id
@@ -42,4 +43,13 @@ CREATE TABLE `glpi_plugin_tasklists_preferences` (
   `id` int(11) NOT NULL COMMENT 'RELATION to glpi_users(id)',
   `default_type` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `glpi_plugin_tasklists_tickets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tickets_id` int(11) NOT NULL DEFAULT '0',
+  `plugin_tasklists_tasks_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `plugin_tasklists_tasks_id` (`plugin_tasklists_tasks_id`),
+  KEY `tickets_id` (`tickets_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

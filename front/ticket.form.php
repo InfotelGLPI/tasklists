@@ -26,33 +26,17 @@
  along with Tasklists. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
-
-include("../../../inc/includes.php");
+include ('../../../inc/includes.php');
 
 Session::checkLoginUser();
 
-Html::header_nocache();
-header("Content-Type: text/html; charset=UTF-8");
+$ticket = new PluginTasklistsTicket();
+if (isset($_POST["add"])) {
+   $ticket->check(-1, CREATE, $_POST);
 
-if (isset($_GET['id'])) {
-   $options = [
-      'from_edit_ajax' => true,
-      'id' => $_GET['id']
-   ];
-   echo "<div class='center'>";
-   echo "<a href='".PluginTasklistsTask::getFormURL(true)."?id=".$_GET['id']."'>".__("View this item in his context")."</a>";
-   echo "</div>";
-   echo "<hr>";
-   $task = new PluginTasklistsTask();
-   $task->display($options);
-} else if (isset($_GET['plugin_tasklists_tasktypes_id'])
-           && isset($_GET['plugin_tasklists_taskstates_id'])) {
-   $options = [
-      'from_edit_ajax' => true,
-      'plugin_tasklists_tasktypes_id' => $_GET['plugin_tasklists_tasktypes_id'],
-      'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
-   ];
-   $task = new PluginTasklistsTask();
-   $task->showForm(0, $options);
+   $ticket->add($_POST);
+   Html::back();
+
 }
-Html::ajaxFooter();
+
+Html::displayErrorAndDie("lost");

@@ -81,6 +81,15 @@ if (isset($_POST["add"])) {
    $task->update($options);
    Html::back();
 
+} else if (isset($_POST["ticket_link"])) {
+
+   $ticket = new PluginTasklistsTicket();
+   $task  = new PluginTasklistsTask();
+   $task->check($_POST['plugin_tasklists_tasks_id'], UPDATE);
+   $ticket->add(['tickets_id'                     => $_POST['tickets_id'],
+                 'plugin_tasklists_tasks_id' => $_POST['plugin_tasklists_tasks_id']]);
+   Html::back();
+
 } else {
 
    $task->checkGlobal(READ);
