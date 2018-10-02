@@ -1,15 +1,17 @@
 add options from title div ? example archive closed tasks
 send notification for add / change task status ?
 add notification for revive user in charge ?
+
 Add min - max by state
-
 Add entity pre-selection
-
 Backlog from list
+Add template
+See archived tasks
 
 **************
 ordonner les contextes - pref ?
 **************
+Droits autres users : OK
 check transfer : OK
 Add client field : OK
 preference : contexte by default : OK

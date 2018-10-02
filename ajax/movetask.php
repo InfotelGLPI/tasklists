@@ -31,12 +31,16 @@ include("../../../inc/includes.php");
 
 Session::checkLoginUser();
 
-//Toolbox::logWarning($_POST);
-
 if (isset($_POST['data_id'])
       && isset($_POST['data_destblock'])) {
    $task = new PluginTasklistsTask();
-   $input['plugin_tasklists_taskstates_id'] = $_POST['data_destblock'];
-   $input['id'] = $_POST['data_id'];
-   $task->update($input);
+   if ($task->getFromDB($_POST['data_id'])) {
+      $input['plugin_tasklists_taskstates_id'] = $_POST['data_destblock'];
+      $input['id'] = $_POST['data_id'];
+
+      if (($task->fields['users_id'] == Session::getLoginUserID() && Session::haveRight("plugin_tasklists", UPDATE))
+          || Session::haveRight("plugin_tasklists_see_all", 1)) {
+         $task->update($input);
+      }
+   }
 }

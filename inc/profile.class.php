@@ -148,7 +148,7 @@ class PluginTasklistsProfile extends Profile {
       $effective_rights = ProfileRight::getProfileRights($profiles_id, ['plugin_tasklists_see_all']);
 
       echo "<tr class='tab_bg_2'>";
-      echo "<td width='20%'>" . __('See all tasks', 'tasklists') . "</td>";
+      echo "<td width='20%'>" . __('See and update all tasks', 'tasklists') . "</td>";
       echo "<td colspan='5'>";
       Html::showCheckbox(['name'    => '_plugin_tasklists_see_all',
                           'checked' => $effective_rights['plugin_tasklists_see_all']]);
@@ -181,7 +181,7 @@ class PluginTasklistsProfile extends Profile {
       ];
       if ($all) {
          $rights[] = ['itemtype' => 'PluginTasklistsTask',
-                      'label'    => __('See all tasks', 'tasklists'),
+                      'label'    => __('See and update all tasks', 'tasklists'),
                       'field'    => 'plugin_tasklists_see_all'];
       }
       return $rights;

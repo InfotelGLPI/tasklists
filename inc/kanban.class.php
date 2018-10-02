@@ -73,6 +73,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $query = "SELECT `glpi_plugin_tasklists_tasktypes`.*
                 FROM `glpi_plugin_tasklists_tasktypes` ";
       $query .= $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_plugin_tasklists_tasktypes', '', $_SESSION["glpiactiveentities"], true);
+      $query .= "ORDER BY `name`";
       $tabs  = [];
       if ($item->getType() == __CLASS__) {
          if ($result = $DB->query($query)) {
@@ -167,7 +168,11 @@ class PluginTasklistsKanban extends CommonGLPI {
                      $actiontime = sprintf(__('%1$s%2$d days', 'tasklists'), "", $time / DAY_TIMESTAMP);
                   }
 
-
+                  $right = 0;
+                  if (($data['users_id'] == Session::getLoginUserID() && Session::haveRight("plugin_tasklists", UPDATE))
+                      || Session::haveRight("plugin_tasklists_see_all", 1)) {
+                     $right = 1;
+                  }
                   $tasks[] = ['id'             => $data['id'],
                               'title'          => $data['name'],
                               'block'          => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
@@ -182,6 +187,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                               'client'         => $data['client'],
                               'finished'       => $finished,
                               'finished_style' => $finished_style,
+                              'right'          => $right,
                   ];
                }
             }
@@ -261,13 +267,16 @@ class PluginTasklistsKanban extends CommonGLPI {
       $states   = json_encode($states);
       $colors   = json_encode($colors);
       $root_doc = $CFG_GLPI['root_doc'];
+
+      $allright = (Session::haveRight("plugin_tasklists_see_all", 1) ? 1 : 0);
       echo "<script>$('#kanban$rand').kanban({
            context: $plugin_tasklists_tasktypes_id,
            titles: $states,
            colours: $colors,
            items: $tasks,
            rootdoc: '$root_doc',
-           lang: $lang
+           lang: $lang,
+           allright: $allright
        });</script>";
 
    }
