@@ -40,9 +40,10 @@ function plugin_init_tasklists() {
    if (Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginTasklistsTask', [
-         'linkuser_types'  => true,
-         'linkgroup_types' => true,
-         'document_types'  => true,
+         'linkuser_types'              => true,
+         'linkgroup_types'             => true,
+         'document_types'              => true,
+         'notificationtemplates_types' => true
       ]);
 
       Plugin::registerClass('PluginTasklistsTicket',

@@ -93,7 +93,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
                             FROM `glpi_plugin_tasklists_tasks`
                             LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
-                            WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 ";
+                            WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 ";
                if (is_array($states) && count($states) > 0) {
                   $query .= " AND `glpi_plugin_tasklists_tasks`.`state` IN (" . implode(",", $states_founded) . ") ";
                }

@@ -48,6 +48,10 @@ function plugin_tasklists_install() {
       $mig->executeMigration();
    }
 
+   // Add record notification
+   include_once(GLPI_ROOT . "/plugins/tasklists/inc/notificationtargettask.class.php");
+   call_user_func(["PluginTasklistsNotificationTargetTask", 'install']);
+
    PluginTasklistsProfile::initProfile();
    PluginTasklistsProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 
@@ -84,6 +88,28 @@ function plugin_tasklists_uninstall() {
       $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
    }
 
+   $notif = new Notification();
+
+   $options = ['itemtype' => 'PluginTasklistsTask',
+               'FIELDS' => 'id'];
+   foreach ($DB->request('glpi_notifications', $options) as $data) {
+      $notif->delete($data);
+   }
+
+   //templates
+   $template = new NotificationTemplate();
+   $translation = new NotificationTemplateTranslation();
+   $options = ['itemtype' => 'PluginTasklistsTask',
+               'FIELDS' => 'id'];
+   foreach ($DB->request('glpi_notificationtemplates', $options) as $data) {
+      $options_template = ['notificationtemplates_id' => $data['id'],
+                           'FIELDS' => 'id'];
+
+      foreach ($DB->request('glpi_notificationtemplatetranslations', $options_template) as $data_template) {
+         $translation->delete($data_template);
+      }
+      $template->delete($data);
+   }
    //Delete rights associated with the plugin
    $profileRight = new ProfileRight();
    foreach (PluginTasklistsProfile::getAllRights() as $right) {

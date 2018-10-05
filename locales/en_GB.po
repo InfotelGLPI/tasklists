@@ -2,29 +2,29 @@
 # Copyright (C) YEAR Tasklists Development Team
 # This file is distributed under the same license as the GLPI - Tasklists plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-01 12:14+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2018-10-05 11:52+0200\n"
+"PO-Revision-Date: 2018-10-05 11:54+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.9\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_GB\n"
 
-#: setup.php:80 inc/dashboard.class.php:58 inc/dashboard.class.php:176
+#: setup.php:87 inc/dashboard.class.php:58 inc/dashboard.class.php:176
 #: inc/dashboard.class.php:181 inc/menu.class.php:44
 #: inc/preference.class.php:45 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Tasks list"
 
-#: inc/dashboard.class.php:92 inc/task.class.php:80 inc/task.class.php:309
+#: inc/dashboard.class.php:92 inc/task.class.php:80 inc/task.class.php:405
 #: inc/taskstate.class.php:88 inc/taskstate.class.php:134
 #: inc/tasktype.class.php:48
 msgid "Context"
@@ -32,13 +32,14 @@ msgid_plural "Contexts"
 msgstr[0] "Context"
 msgstr[1] "Contexts"
 
-#: inc/dashboard.class.php:92 inc/kanban.class.php:157 inc/task.class.php:118
-#: inc/task.class.php:353
+#: inc/dashboard.class.php:92 inc/kanban.class.php:164
+#: inc/notificationtargettask.class.php:183
+#: inc/notificationtargettask.class.php:225 inc/task.class.php:118
 msgid "Due date"
 msgstr "Due date"
 
 #: inc/dashboard.class.php:162 inc/dashboard.class.php:170
-#: inc/kanban.class.php:247
+#: inc/kanban.class.php:274 inc/ticket.class.php:148
 msgid "Add task"
 msgstr "Add task"
 
@@ -46,50 +47,72 @@ msgstr "Add task"
 msgid "Kanban"
 msgstr "Kanban"
 
-#: inc/kanban.class.php:91 inc/kanban.class.php:114
+#: inc/kanban.class.php:92 inc/kanban.class.php:115
 msgid "You don't have the right to see any context"
 msgstr "You don't have the right to see any context"
 
-#: inc/kanban.class.php:163
-#, php-format
-msgid "%1$s%2$d days"
-msgstr "%1$s%2$d days"
-
-#: inc/kanban.class.php:199 inc/task.class.php:452
+#: inc/kanban.class.php:226 inc/task.class.php:573 inc/task.class.php:624
+#: inc/task.class.php:897
 msgid "Backlog"
 msgstr "Backlog"
 
-#: inc/kanban.class.php:248
+#: inc/kanban.class.php:275
 msgid "Archive all tasks of this state"
 msgstr "Archive all tasks of this state"
 
-#: inc/kanban.class.php:249
+#: inc/kanban.class.php:276
+msgid "See archived tasks of this state"
+msgstr "See archived tasks of this state"
+
+#: inc/kanban.class.php:277
 msgid "Are you sure you want to archive this task ?"
 msgstr "Are you sure you want to archive this task ?"
 
-#: inc/kanban.class.php:250
+#: inc/kanban.class.php:278
 msgid "Are you sure you want to archive all tasks ?"
 msgstr "Are you sure you want to archive all tasks ?"
 
-#: inc/kanban.class.php:251
+#: inc/kanban.class.php:279
 msgid "Archive this task"
 msgstr "Archive this task"
 
-#: inc/kanban.class.php:252
+#: inc/kanban.class.php:280
 msgid "Update priority of task"
 msgstr "Update priority of task"
 
-#: inc/kanban.class.php:253
+#: inc/kanban.class.php:281
 msgid "Details of task"
 msgstr "Details of task"
+
+#: inc/notificationtargettask.class.php:50
+msgid "A task has been added"
+msgstr "A task has been added"
+
+#: inc/notificationtargettask.class.php:51
+msgid "A task has been updated"
+msgstr "A task has been updated"
+
+#: inc/notificationtargettask.class.php:52
+msgid "A task has been removed"
+msgstr "A task has been removed"
+
+#: inc/notificationtargettask.class.php:187
+#: inc/notificationtargettask.class.php:229 inc/task.class.php:189
+#: inc/task.class.php:462
+msgid "Other client"
+msgstr "Other client"
+
+#: inc/notificationtargettask.class.php:237
+msgid "At creation, update, removal of a task"
+msgstr "At creation, update, removal of a task"
 
 #: inc/preference.class.php:78
 msgid "Context by default"
 msgstr "Context by default"
 
 #: inc/profile.class.php:151 inc/profile.class.php:184
-msgid "See all tasks"
-msgstr "See all tasks"
+msgid "See and update all tasks"
+msgstr "See and update all tasks"
 
 #: inc/stateorder.class.php:86
 msgid "States ordering"
@@ -99,36 +122,54 @@ msgstr "States ordering"
 msgid "Add states from GLPI"
 msgstr "Add states from GLPI"
 
-#: inc/task.class.php:180 inc/task.class.php:428
+#: inc/task.class.php:181 inc/task.class.php:551
 msgid "Archived"
 msgstr "Archived"
 
-#: inc/task.class.php:272
+#: inc/task.class.php:320
 msgid "You cannot archive a task with this state"
 msgstr "You cannot archive a task with this state"
 
-#: inc/task.class.php:355
-msgid "Empty for infinite"
-msgstr "Empty for infinite"
+#: inc/task.class.php:439
+msgid "Existing client"
+msgstr "Existing client"
 
-#: inc/task.class.php:812
+#: inc/task.class.php:957
 msgctxt "visibility"
 msgid "This user"
 msgstr "This user"
 
-#: inc/task.class.php:815
+#: inc/task.class.php:960
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "This user and this group"
 
-#: inc/task.class.php:818
+#: inc/task.class.php:963
 msgctxt "visibility"
 msgid "All"
 msgstr "All"
 
-#: inc/task.class.php:855
+#: inc/task.class.php:1000
 msgid "Affect entity for create task"
 msgstr "Affect entity for create task"
+
+#: inc/ticket.class.php:71 inc/ticket.class.php:174
+msgid "Linked task"
+msgid_plural "Linked tasks"
+msgstr[0] "Linked task"
+msgstr[1] "Linked tasks"
+
+#: inc/ticket.class.php:218
+msgid "No task linked to this ticket yet"
+msgstr "No task linked to this ticket yet"
+
+#: inc/ticket.class.php:249
+msgid "Link a existant ticket"
+msgstr "Link a existant ticket"
+
+#: inc/ticket.class.php:275
+msgid "Linked tickets"
+msgstr "Linked tickets"
 
 #: inc/typevisibility.class.php:131
 msgid "Add a group"

@@ -1,30 +1,29 @@
-add options from title div ? example archive closed tasks
-send notification for add / change task status ?
-add notification for revive user in charge ?
 
+add notification for revive user in charge ?
 Add min - max by state
-Add entity pre-selection
-Add template
 See archived tasks
-add comments ?
-Number of notes of task
+Add comments ? or Number of notes of task ?
 
 **************
 ordonner les contextes - pref ?
 **************
+Send notification for add / change / delete task : OK
+Add tinymce tasks : OK
+Add templates by context : OK
+Add entity pre-selection : OK
 Backlog from list : OK
-link to tickets : OK
-planning : hours : OK
+Link to tickets : OK
+Planning : hours : OK
 Rights : OK
-check transfer : OK
+Check transfer : OK
 Add client field : OK
-preference : contexte by default : OK
-check visibility : OK
-see graph percent from div tasks ? or move percent ? OK
-add tasks from title : OK
-see state from context into task form : OK
+Preference : contexte by default : OK
+Check visibility : OK
+See graph percent from div tasks ? or move percent ? OK
+Add tasks from title : OK
+See state from context into task form : OK
 State migration : OK
-open popup for see tasks : OK
+Open popup for see tasks : OK
 Order States : OK
 Hide All tab : OK
 Add context to States : OK

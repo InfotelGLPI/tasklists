@@ -186,7 +186,7 @@ class PluginTasklistsTask extends CommonDBTM {
          'id'       => '14',
          'table'    => $this->getTable(),
          'field'    => 'client',
-         'name'     => __('Client', 'tasklists'),
+         'name'     => __('Other client', 'tasklists'),
          'datatype' => 'text'
       ];
 
@@ -235,7 +235,9 @@ class PluginTasklistsTask extends CommonDBTM {
       $ong = [];
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('Document_Item', $ong, $options);
-      $this->addStandardTab('PluginTasklistsTicket', $ong, $options);
+      if (!isset($options['withtemplate']) || empty($options['withtemplate'])) {
+         $this->addStandardTab('PluginTasklistsTicket', $ong, $options);
+      }
       $this->addStandardTab('Notepad', $ong, $options);
       $this->addStandardTab('Log', $ong, $options);
 
@@ -263,8 +265,33 @@ class PluginTasklistsTask extends CommonDBTM {
       if (isset($input['due_date']) && empty($input['due_date'])) {
          $input['due_date'] = 'NULL';
       }
+      if (isset($input["id"]) && ($input["id"] > 0)) {
+         $input["_oldID"] = $input["id"];
+      }
+      unset($input['id']);
 
       return $input;
+   }
+
+   function post_addItem() {
+      global $CFG_GLPI;
+
+      // Manage add from template
+      if (isset($this->input["_oldID"])) {
+         // ADD Documents
+         Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
+
+         //Add notepad
+         Notepad::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
+      }
+
+      if (isset($this->input['withtemplate'])
+          && $this->input["withtemplate"] != 1
+      ) {
+         if ($CFG_GLPI["notifications_mailing"]) {
+            NotificationEvent::raiseEvent("newtask", $this);
+         }
+      }
    }
 
    /**
@@ -298,6 +325,48 @@ class PluginTasklistsTask extends CommonDBTM {
       return $input;
    }
 
+   /**
+    * Actions done after the UPDATE of the item in the database
+    *
+    * @param $history store changes history ? (default 1)
+    *
+    * @return nothing
+    **/
+   function post_updateItem($history = 1) {
+      global $CFG_GLPI, $DB;
+
+      if (count($this->updates)
+          && isset($this->input["withtemplate"])
+          && $this->input["withtemplate"] != 1
+      ) {
+
+         if ($CFG_GLPI["notifications_mailing"]) {
+            NotificationEvent::raiseEvent("updatetask", $this);
+         }
+      }
+   }
+
+
+   /**
+    * Actions done before the DELETE of the item in the database /
+    * Maybe used to add another check for deletion
+    *
+    * @return bool : true if item need to be deleted else false
+    **/
+   function pre_deleteItem() {
+      global $CFG_GLPI;
+
+      if ($CFG_GLPI["notifications_mailing"]
+          && $this->fields["is_template"] != 1
+          && isset($this->input['_delete'])
+      ) {
+
+         NotificationEvent::raiseEvent("deletetask", $this);
+      }
+
+      return true;
+   }
+
 
    /**
     * @param       $ID
@@ -311,6 +380,8 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
 
+      Html::initEditorSystem('comment');
+
       echo "<tr class='tab_bg_1'>";
 
       echo "<td>" . __('Name') . "</td>";
@@ -318,8 +389,12 @@ class PluginTasklistsTask extends CommonDBTM {
       Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
       if (isset($options['from_edit_ajax'])
           && $options['from_edit_ajax']) {
-         echo Html::hidden('from_edit_ajax');
+         echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
       }
+      if(isset($options['withtemplate']) && empty($options['withtemplate'])) {
+         $options['withtemplate'] = 0;
+      }
+      echo Html::hidden('withtemplate', ['value' => $options['withtemplate']]);
       echo "</td>";
 
       $plugin_tasklists_tasktypes_id = $this->fields["plugin_tasklists_tasktypes_id"];
@@ -335,7 +410,6 @@ class PluginTasklistsTask extends CommonDBTM {
                                                               'condition' => "id IN (" . implode(",", $types) . ")",
                                                               'on_change' => "plugin_tasklists_load_states();",]);
       echo "</td>";
-
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -356,21 +430,41 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "</tr>";
 
+      if (isset($_SESSION["glpiactiveentities"])
+          && count($_SESSION["glpiactiveentities"]) > 1
+          && ($ID == 0 || (isset($options['withtemplate']) && ( $options['withtemplate']== 2)))) {
+
+         echo "<tr class='tab_bg_1'>";
+
+         echo "<td>" . __('Existing client', 'tasklists') . "</td>";
+         echo "<td>";
+         $rand_entity = Dropdown::show('Entity', ['name'         => "entities_id",
+                                                  'entity'       => $_SESSION["glpiactiveentities"],
+                                                  'is_recursive' => true,
+                                                  'on_change'    => "plugin_tasklists_load_entities();",]);
+         echo "</td>";
+
+         echo "<td colspan='2' id='plugin_tasklists_entity'>";
+         $JS     = "function plugin_tasklists_load_entities(){";
+         $params = ['entities_id' => '__VALUE__',
+                    'entity'      => $this->fields["entities_id"]];
+         $JS     .= Ajax::updateItemJsCode("plugin_tasklists_entity",
+                                           $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/inputEntity.php",
+                                           $params, 'dropdown_entities_id' . $rand_entity, false);
+         $JS     .= "}";
+         echo Html::scriptBlock($JS);
+         echo "</td>";
+         echo "</tr>";
+      }
+
       echo "<tr class='tab_bg_1'>";
 
-      echo "<td>" . __('Client', 'tasklists') . "</td>";
+      echo "<td>" . __('Other client', 'tasklists') . "</td>";
       echo "<td>";
       Html::autocompletionTextField($this, "client", ['option' => "size='40'"]);
       echo "</td>";
-
-      echo "<td>" . __('Due date', 'tasklists');
-      echo "&nbsp;";
-      Html::showToolTip(nl2br(__('Empty for infinite', 'tasklists')));
+      echo "<td colspan='2'>";
       echo "</td>";
-      echo "<td>";
-      Html::showDateField("due_date", ['value' => $this->fields["due_date"]]);
-      echo "</td>";
-
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -433,7 +527,17 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "<td>";
       echo __('Description') . "</td>";
       echo "<td colspan = '3' class='center'>";
-      echo "<textarea cols='100' rows='15' name='comment' >" . $this->fields["comment"] . "</textarea>";
+      $rand_text  = mt_rand();
+      $content_id = "comment$rand_text";
+      $cols       = 100;
+      $rows       = 15;
+      Html::textarea(['name'              => 'comment',
+                      'value'             => $this->fields["comment"],
+                      'rand'              => $rand_text,
+                      'editor_id'         => $content_id,
+                      'enable_richtext'   => $CFG_GLPI["use_rich_text"],
+                      'cols'              => $cols,
+                      'rows'              => $rows]);
       echo "</td>";
 
       echo "</tr>";
@@ -556,7 +660,7 @@ class PluginTasklistsTask extends CommonDBTM {
 
       $rand  = mt_rand();
       $dbu   = new DbUtils();
-      $where = " WHERE `glpi_plugin_tasklists_tasklists`.`is_deleted` = '0' ";
+      $where = " WHERE `glpi_plugin_tasklists_tasklists`.`is_deleted` = '0'  AND `glpi_plugin_tasklists_tasks`.`is_template` = 0";
       $where .= $dbu->getEntitiesRestrictRequest("AND", 'glpi_plugin_tasklists_tasklists', '', $p['entity'], true);
 
       if (count($p['used'])) {
@@ -788,11 +892,11 @@ class PluginTasklistsTask extends CommonDBTM {
             return self::dropdownVisibility($options);
 
          case 'plugin_tasklists_taskstates_id':
-            return Dropdown::show('PluginTasklistsTaskState', ['name'    => $name,
-                                                               'value'   => $values[$field],
+            return Dropdown::show('PluginTasklistsTaskState', ['name'       => $name,
+                                                               'value'      => $values[$field],
                                                                'emptylabel' => __('Backlog', 'tasklists'),
-                                                               'display' => false,
-                                                               'width' => '200px'
+                                                               'display'    => false,
+                                                               'width'      => '200px'
             ]);
       }
       return parent::getSpecificValueToSelect($field, $name, $values, $options);
@@ -943,6 +1047,106 @@ class PluginTasklistsTask extends CommonDBTM {
             }
       }
       return $output;
+   }
+
+   function hasTemplate($options) {
+
+      $templates = [];
+      $dbu = new DbUtils();
+      $restrict = ["is_template" => 1] +
+                  ["is_deleted" => 0] +
+                  ["is_archived" => 0] +
+                  ["plugin_tasklists_tasktypes_id" => $options['plugin_tasklists_tasktypes_id']] +
+//                  ["users_id" => Session::getLoginUserID()] +
+                  $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive());
+
+      $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
+      reset($templates);
+      foreach ($templates as $template) {
+         return $template['id'];
+      }
+      return false;
+   }
+
+
+   /**
+    * @param     $target
+    * @param int $add
+    */
+   function listOfTemplates($target, $add = 0, $options=[]) {
+      $dbu = new DbUtils();
+
+      $restrict = ["is_template" => 1] +
+                  $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive())+
+                  ["ORDER" => "name"];
+
+      $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
+
+      if (Session::isMultiEntitiesMode()) {
+         $colsup = 1;
+      } else {
+         $colsup = 0;
+      }
+
+      echo "<div align='center'><table class='tab_cadre_fixe'>";
+      if ($add) {
+         echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Choose a template') . " - " . self::getTypeName(2) . "</th>";
+      } else {
+         echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Templates') . " - " . self::getTypeName(2) . "</th>";
+      }
+
+      echo "</tr>";
+      if ($add) {
+
+         echo "<tr>";
+         echo "<td colspan='" . (2 + $colsup) . "' class='center tab_bg_1'>";
+         echo "<a href=\"$target?id=-1&amp;withtemplate=2\">&nbsp;&nbsp;&nbsp;" . __('Blank Template') . "&nbsp;&nbsp;&nbsp;</a></td>";
+         echo "</tr>";
+      }
+
+      foreach ($templates as $template) {
+
+         $templname = $template["template_name"];
+         if ($_SESSION["glpiis_ids_visible"] || empty($template["template_name"])) {
+            $templname .= "(" . $template["id"] . ")";
+         }
+
+         echo "<tr>";
+         echo "<td class='center tab_bg_1'>";
+         if (!$add) {
+            echo "<a href=\"$target?id=" . $template["id"] . "&amp;withtemplate=1\">&nbsp;&nbsp;&nbsp;$templname&nbsp;&nbsp;&nbsp;</a></td>";
+
+            if (Session::isMultiEntitiesMode()) {
+               echo "<td class='center tab_bg_2'>";
+               echo Dropdown::getDropdownName("glpi_entities", $template['entities_id']);
+               echo "</td>";
+            }
+            echo "<td class='center tab_bg_2'>";
+            Html::showSimpleForm($target,
+                                 'purge',
+                                 _x('button', 'Delete permanently'),
+                                 ['id' => $template["id"], 'withtemplate' => 1]);
+            echo "</td>";
+
+         } else {
+            echo "<a href=\"$target?id=" . $template["id"] . "&amp;withtemplate=2\">&nbsp;&nbsp;&nbsp;$templname&nbsp;&nbsp;&nbsp;</a></td>";
+
+            if (Session::isMultiEntitiesMode()) {
+               echo "<td class='center tab_bg_2'>";
+               echo Dropdown::getDropdownName("glpi_entities", $template['entities_id']);
+               echo "</td>";
+            }
+         }
+         echo "</tr>";
+      }
+      if (!$add) {
+         echo "<tr>";
+         echo "<td colspan='" . (2 + $colsup) . "' class='tab_bg_2 center'>";
+         echo "<b><a href=\"$target?withtemplate=1\">" . __('Add a template...') . "</a></b>";
+         echo "</td>";
+         echo "</tr>";
+      }
+      echo "</table></div>";
    }
 
 }

@@ -207,7 +207,7 @@ class PluginTasklistsTicket extends CommonDBTM {
             echo "</td>";
 
             echo "<td>";
-            echo $data['comment'];
+            echo Html::resume_text(Html::Clean($data['comment']), 80);
             echo "</td>";
 
             echo "</tr>";

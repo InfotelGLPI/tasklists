@@ -34,25 +34,37 @@ Session::checkLoginUser();
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
+Html::requireJs('tinymce');
+
 if (isset($_GET['id'])) {
    $options = [
       'from_edit_ajax' => true,
-      'id' => $_GET['id']
+      'id'             => $_GET['id'],
    ];
    echo "<div class='center'>";
-   echo "<a href='".PluginTasklistsTask::getFormURL(true)."?id=".$_GET['id']."'>".__("View this item in his context")."</a>";
+   echo "<a href='" . PluginTasklistsTask::getFormURL(true) . "?id=" . $_GET['id'] . "'>" . __("View this item in his context") . "</a>";
    echo "</div>";
    echo "<hr>";
    $task = new PluginTasklistsTask();
    $task->display($options);
 } else if (isset($_GET['plugin_tasklists_tasktypes_id'])
            && isset($_GET['plugin_tasklists_taskstates_id'])) {
+
    $options = [
-      'from_edit_ajax' => true,
-      'plugin_tasklists_tasktypes_id' => $_GET['plugin_tasklists_tasktypes_id'],
+      'from_edit_ajax'                 => true,
+      'plugin_tasklists_tasktypes_id'  => $_GET['plugin_tasklists_tasktypes_id'],
       'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
+      'withtemplate'                   => 0
    ];
+
+
    $task = new PluginTasklistsTask();
-   $task->showForm(0, $options);
+   if ($id = $task->hasTemplate($options)) {
+      $options['withtemplate'] = 2;
+      $task->showForm($id, $options);
+   } else {
+      $task->showForm(0, $options);
+   }
+
 }
 Html::ajaxFooter();

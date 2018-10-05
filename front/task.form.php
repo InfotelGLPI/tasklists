@@ -96,7 +96,8 @@ if (isset($_POST["add"])) {
 
    Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
-   $task->display($_GET);
+   Html::requireJs('tinymce');
+   $task->display(['id' => $_GET["id"], 'withtemplate' => $_GET["withtemplate"]]);
 
    Html::footer();
 }

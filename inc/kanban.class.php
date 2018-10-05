@@ -123,6 +123,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                 LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
                 WHERE `glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'
                 AND `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 
+                AND `glpi_plugin_tasklists_tasks`.`is_template` = 0
                 AND `glpi_plugin_tasklists_tasks`.`is_archived` = 0 ";
       $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
       $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
@@ -164,7 +165,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
                   $actiontime = '';
                   if ($data['actiontime'] != 0) {
-                     $actiontime =Html::timestampToString($data['actiontime'],false, true);
+                     $actiontime = Html::timestampToString($data['actiontime'], false, true);
                   }
 
                   if (isset($data['users_id'])
@@ -177,18 +178,29 @@ class PluginTasklistsKanban extends CommonGLPI {
                       || Session::haveRight("plugin_tasklists_see_all", 1)) {
                      $right = 1;
                   }
+                  $entity = new Entity();
+                  if ($entity->getFromDB($data['entities_id'])) {
+                     $entity_name = $entity->fields['name'];
+                  }
+                  $client = (empty($data['client'])) ? $entity_name : $data['client'];
+
+                  $comment = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode($data["comment"],
+                                                                                           ENT_QUOTES,
+                                                                                           "UTF-8"));
+
                   $tasks[] = ['id'             => $data['id'],
                               'title'          => $data['name'],
                               'block'          => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
                               'link'           => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
-                              'description'    => Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($data["comment"])), 80),
+                              'description'    => Html::resume_text($comment, 80),
                               'priority'       => CommonITILObject::getPriorityName($data['priority']),
+                              'priority_id'    => $data['priority'],
                               'bgcolor'        => $_SESSION["glpipriority_" . $data['priority']],
                               'percent'        => $data['percent_done'],
                               'actiontime'     => $actiontime,
                               'duedate'        => $duedate,
                               'user'           => $link,
-                              'client'         => $data['client'],
+                              'client'         => $client,
                               'finished'       => $finished,
                               'finished_style' => $finished_style,
                               'right'          => $right,
@@ -261,7 +273,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       }
       $lang['add_tasks']               = __('Add task', 'tasklists');
       $lang['archive_all_tasks']       = __('Archive all tasks of this state', 'tasklists');
-      $lang['see_archived_tasks']       = __('See archived tasks of this state', 'tasklists');
+      $lang['see_archived_tasks']      = __('See archived tasks of this state', 'tasklists');
       $lang['alert_archive_task']      = __('Are you sure you want to archive this task ?', 'tasklists');
       $lang['alert_archive_all_tasks'] = __('Are you sure you want to archive all tasks ?', 'tasklists');
       $lang['archive_task']            = __('Archive this task', 'tasklists');
@@ -281,7 +293,8 @@ class PluginTasklistsKanban extends CommonGLPI {
            items: $tasks,
            rootdoc: '$root_doc',
            lang: $lang,
-           allright: $allright
+           allright: $allright,
+           max_priority: 5
        });</script>";
 
    }
