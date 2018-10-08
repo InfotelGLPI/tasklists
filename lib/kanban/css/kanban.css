@@ -355,8 +355,8 @@
 
 }
 
-.filterleft {
-   text-align: left;
+.filter_right {
+   text-align: right;
 }
 
 .filter {
@@ -364,11 +364,11 @@
    border-radius: 4px;
    background-color: #e8e8e8;
    border: none;
-   color: #000;
+   color: #555;;
    text-align: center;
    font-size: 9px;
    padding: 5px;
-   width: 200px;
+   width: 230px;
    transition: all 0.5s;
    cursor: pointer;
    margin-bottom: 5px;
@@ -380,7 +380,7 @@
    display: inline-block;
    position: relative;
    transition: 0.5s;
-   color: #000;
+   color: #555;
 }
 
 .filter span:after {
