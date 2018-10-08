@@ -27,6 +27,9 @@
  --------------------------------------------------------------------------
  */
 
+/**
+ * Class PluginTasklistsTicket
+ */
 class PluginTasklistsTicket extends CommonDBTM {
 
    public static $rightname = 'plugin_tasklists';
@@ -34,7 +37,7 @@ class PluginTasklistsTicket extends CommonDBTM {
    /**
     * Returns the type name with consideration of plural
     *
-    * @param number $nb Number of item(s)
+    * @param int $nb Number of item(s)
     *
     * @return string Itemtype name
     */
@@ -80,7 +83,8 @@ class PluginTasklistsTicket extends CommonDBTM {
     * @param int        $tabnum
     * @param int        $withtemplate
     *
-    * @return bool
+    * @return void
+    * @throws \GlpitestSQLError
     */
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       $ticket = new self();
@@ -97,7 +101,7 @@ class PluginTasklistsTicket extends CommonDBTM {
    }
 
    /**
-    * @param $ID
+    * @param $item
     */
    static function cleanForTicket($item) {
 
@@ -107,8 +111,10 @@ class PluginTasklistsTicket extends CommonDBTM {
    }
 
    /**
-    * @param       $ID
-    * @param array $options
+    * @param $ticket
+    *
+    * @return bool
+    * @throws \GlpitestSQLError
     */
    function showForTicket($ticket) {
       global $DB;
@@ -234,7 +240,7 @@ class PluginTasklistsTicket extends CommonDBTM {
     * @param       $ID
     * @param array $options
     */
-   function showForTask($ID, $options = []) {
+   function showForTask($ID) {
 
       $task  = new PluginTasklistsTask();
       $ticket = new Ticket();

@@ -354,3 +354,52 @@
    padding: 10px 15px;
 
 }
+
+.filterleft {
+   text-align: left;
+}
+
+.filter {
+   display: inline-block;
+   border-radius: 4px;
+   background-color: #e8e8e8;
+   border: none;
+   color: #000;
+   text-align: center;
+   font-size: 9px;
+   padding: 5px;
+   width: 200px;
+   transition: all 0.5s;
+   cursor: pointer;
+   margin-bottom: 5px;
+   margin-right: 5px;
+}
+
+.filter span {
+   cursor: pointer;
+   display: inline-block;
+   position: relative;
+   transition: 0.5s;
+   color: #000;
+}
+
+.filter span:after {
+   content: '\00bb';
+   position: absolute;
+   opacity: 0;
+   top: 0;
+   right: -20px;
+   transition: 0.5s;
+   color: #000;
+}
+
+.filter:hover span {
+   padding-right: 25px;
+   color: #000;
+}
+
+.filter:hover span:after {
+   opacity: 1;
+   right: 0;
+   color: #000;
+}

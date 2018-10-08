@@ -328,12 +328,12 @@ class PluginTasklistsTask extends CommonDBTM {
    /**
     * Actions done after the UPDATE of the item in the database
     *
-    * @param $history store changes history ? (default 1)
+    * @param int $history store changes history ? (default 1)
     *
-    * @return nothing
-    **/
+    * @return void
+    */
    function post_updateItem($history = 1) {
-      global $CFG_GLPI, $DB;
+      global $CFG_GLPI;
 
       if (count($this->updates)
           && isset($this->input["withtemplate"])
@@ -564,7 +564,8 @@ class PluginTasklistsTask extends CommonDBTM {
    /**
     * States by type dropdown list
     *
-    * @param $users_id
+    * @param     $plugin_tasklists_tasktypes_id
+    * @param int $plugin_tasklists_taskstates_id
     */
    static function displayState($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id = 0) {
 
@@ -616,6 +617,11 @@ class PluginTasklistsTask extends CommonDBTM {
 
    }
 
+   /**
+    * @param $value
+    *
+    * @return string
+    */
    static function getStateName($value) {
 
       switch ($value) {
@@ -642,7 +648,9 @@ class PluginTasklistsTask extends CommonDBTM {
     * @param $options array of possible options
     *
     * @return nothing (print out an HTML select box)
-    * */
+    *
+    * @throws \GlpitestSQLError
+    */
    static function dropdownTasklists($options = []) {
 
       global $DB, $CFG_GLPI;
@@ -712,7 +720,7 @@ class PluginTasklistsTask extends CommonDBTM {
    /**
     * @param null $checkitem
     *
-    * @return an
+    * @return array
     */
    function getSpecificMassiveActions($checkitem = null) {
       $isadmin = static::canUpdate();
@@ -761,6 +769,7 @@ class PluginTasklistsTask extends CommonDBTM {
     * @param array         $ids
     *
     * @return nothing|void
+    * @throws \GlpitestSQLError
     */
    static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
 
@@ -969,6 +978,11 @@ class PluginTasklistsTask extends CommonDBTM {
       }
    }
 
+   /**
+    * @param $id
+    *
+    * @return bool
+    */
    function checkVisibility($id) {
 
       if (Session::haveRight("plugin_tasklists_see_all", 1)) {
@@ -1049,6 +1063,11 @@ class PluginTasklistsTask extends CommonDBTM {
       return $output;
    }
 
+   /**
+    * @param $options
+    *
+    * @return bool
+    */
    function hasTemplate($options) {
 
       $templates = [];
@@ -1070,10 +1089,11 @@ class PluginTasklistsTask extends CommonDBTM {
 
 
    /**
-    * @param     $target
-    * @param int $add
+    * @param       $target
+    * @param int   $add
+    * @param array $options
     */
-   function listOfTemplates($target, $add = 0, $options=[]) {
+   function listOfTemplates($target, $add = 0) {
       $dbu = new DbUtils();
 
       $restrict = ["is_template" => 1] +

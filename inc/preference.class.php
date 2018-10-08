@@ -99,10 +99,21 @@ class PluginTasklistsPreference extends CommonDBTM
 
    }
 
+   /**
+    * @param $users_id
+    *
+    * @return int
+    */
    public static function checkDefaultType($users_id) {
       return self::checkPreferenceValue('default_type', $users_id);
    }
 
+   /**
+    * @param     $field
+    * @param int $users_id
+    *
+    * @return int
+    */
    public static function checkPreferenceValue($field, $users_id = 0) {
       $dbu        = new DbUtils();
       $data = $dbu->getAllDataFromTable($dbu->getTableForItemType(__CLASS__), ["id" => $users_id]);

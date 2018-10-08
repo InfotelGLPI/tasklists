@@ -40,14 +40,12 @@ function plugin_tasklists_install() {
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.4.0.sql");
 
    }
-
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
 
       $mig = new Migration("1.4.0");
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.0.sql");
       $mig->executeMigration();
    }
-
    // Add record notification
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/notificationtargettask.class.php");
    call_user_func(["PluginTasklistsNotificationTargetTask", 'install']);

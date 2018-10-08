@@ -63,6 +63,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
     * @param $widgetId
     *
     * @return PluginMydashboardDatatable
+    * @throws \GlpitestSQLError
     */
    function getWidgetContentForItem($widgetId) {
       global $CFG_GLPI, $DB;

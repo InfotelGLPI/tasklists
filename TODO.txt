@@ -1,12 +1,12 @@
-
-add notification for revive user in charge ?
+Add notification for revive user in charge ?
 Add min - max by state
-See archived tasks
 Add comments ? or Number of notes of task ?
 
 **************
 ordonner les contextes - pref ?
 **************
+See archived tasks : OK
+See my tasks : OK
 Send notification for add / change / delete task : OK
 Add tinymce tasks : OK
 Add templates by context : OK

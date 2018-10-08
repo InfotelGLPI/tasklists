@@ -43,8 +43,8 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
     * Return main notification events for the object type
     * Internal use only => should use getAllEvents
     *
-    * @return an array which contains : event => event label
-    **/
+    * @return array array which contains : event => event label
+    */
    function getEvents() {
 
       return ['newtask'    => __('A task has been added', 'tasklists'),
@@ -56,6 +56,8 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
 
    /**
     * Get additionnals targets for Tickets
+    *
+    * @param string $event
     */
    function addAdditionalTargets($event = '') {
 
@@ -81,10 +83,10 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       switch ($data['items_id']) {
 
          case self::TASK_USER :
-            $this->getUserAddress($options);
+            $this->getUserAddress();
             break;
          case self::TASK_GROUP :
-            $this->getGroupAddress($options);
+            $this->getGroupAddress();
             break;
       }
    }
@@ -128,7 +130,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
     * @return void
     **/
    function addDataForTemplate($event, $options = []) {
-      global $CFG_GLPI, $DB;
+      global $CFG_GLPI;
 
       $dbu = new DbUtils();
       //      if ($event == 'alerttasks') {
@@ -203,6 +205,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       $this->data['##lang.task.otherclient##'] = __('Other client', 'tasklists');
 
       $this->data['##task.name##']   = $this->obj->getField("name");
+      $entity_name = __('None');
       $entity = new Entity();
       if ($entity->getFromDB($this->obj->getField('entities_id'))) {
          $entity_name = $entity->fields['name'];

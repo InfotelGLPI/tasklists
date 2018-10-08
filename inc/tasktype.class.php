@@ -52,6 +52,10 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
    /**
     * @see CommonGLPI::defineTabs()
+    *
+    * @param array $options
+    *
+    * @return array
     */
    function defineTabs($options = []) {
 
@@ -67,6 +71,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
     * @param $entity
     *
     * @return ID|int|the
+    * @throws \GlpitestSQLError
     */
    static function transfer($ID, $entity) {
       global $DB;

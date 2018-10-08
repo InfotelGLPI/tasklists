@@ -27,21 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+include("../../../inc/includes.php");
 
-Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+Session::checkLoginUser();
 
-$kanban = new PluginTasklistsKanban();
-
-if ($kanban->canView() || Session::haveRight("config", CREATE)) {
-
-   echo Html::script('/plugins/tasklists/lib/kanban/js/kanban.js');
-   echo Html::css('/plugins/tasklists/lib/kanban/css/kanban.css');
-
-   $kanban->display();
-
+if($_SESSION["glpi_plugin_tasklists_archivedtasks"] == 1) {
+   $_SESSION["glpi_plugin_tasklists_archivedtasks"] = 0;
 } else {
-   Html::displayRightError();
+   $_SESSION["glpi_plugin_tasklists_archivedtasks"] = 1;
 }
 
-Html::footer();
+return $_SESSION["glpi_plugin_tasklists_archivedtasks"];

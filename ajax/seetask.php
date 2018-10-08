@@ -49,15 +49,12 @@ if (isset($_GET['id'])) {
    $task->display($options);
 } else if (isset($_GET['plugin_tasklists_tasktypes_id'])
            && isset($_GET['plugin_tasklists_taskstates_id'])) {
-
    $options = [
       'from_edit_ajax'                 => true,
       'plugin_tasklists_tasktypes_id'  => $_GET['plugin_tasklists_tasktypes_id'],
       'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
       'withtemplate'                   => 0
    ];
-
-
    $task = new PluginTasklistsTask();
    if ($id = $task->hasTemplate($options)) {
       $options['withtemplate'] = 2;
@@ -65,6 +62,5 @@ if (isset($_GET['id'])) {
    } else {
       $task->showForm(0, $options);
    }
-
 }
 Html::ajaxFooter();

@@ -50,6 +50,12 @@ class PluginTasklistsTaskState extends CommonDropdown {
       return _n('Status', 'Statuses', $nb);
    }
 
+   /**
+    * @param       $ID
+    * @param array $options
+    *
+    * @return bool
+    */
    public function showForm($ID, $options = []) {
 
       $this->initForm($ID, $options);
@@ -115,6 +121,9 @@ class PluginTasklistsTaskState extends CommonDropdown {
    }
 
 
+   /**
+    * @return array
+    */
    function rawSearchOptions() {
       $tab = parent::rawSearchOptions();
 
@@ -148,6 +157,11 @@ class PluginTasklistsTaskState extends CommonDropdown {
       return $tab;
    }
 
+   /**
+    * @param $input
+    *
+    * @return array|\type
+    */
    function prepareInputForAdd($input) {
       //      if (!$this->checkMandatoryFields($input)) {
       //         return false;
@@ -156,6 +170,11 @@ class PluginTasklistsTaskState extends CommonDropdown {
       return $this->encodeSubtypes($input);
    }
 
+   /**
+    * @param $input
+    *
+    * @return array|\type
+    */
    function prepareInputForUpdate($input) {
       //      if (!$this->checkMandatoryFields($input)) {
       //         return false;
@@ -168,6 +187,8 @@ class PluginTasklistsTaskState extends CommonDropdown {
     * Encode sub types
     *
     * @param type $input
+    *
+    * @return \type
     */
    function encodeSubtypes($input) {
       if (!empty($input['tasktypes'])) {
@@ -217,7 +238,10 @@ class PluginTasklistsTaskState extends CommonDropdown {
     * @param $field
     * @param $values
     * @param $options   array
-    **/
+    **
+    *
+    * @return string
+    */
    static function getSpecificValueToDisplay($field, $values, array $options = []) {
 
       if (!is_array($values)) {
@@ -246,6 +270,9 @@ class PluginTasklistsTaskState extends CommonDropdown {
       return parent::getSpecificValueToDisplay($field, $values, $options);
    }
 
+   /**
+    * @return mixed
+    */
    function getFinishedState() {
       return $this->fields['is_finished'];
    }

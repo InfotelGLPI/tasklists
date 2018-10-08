@@ -40,6 +40,11 @@ class PluginTasklistsStateOrder extends CommonDBTM {
 
    /**
     * @see CommonGLPI::getTabNameForItem()
+    *
+    * @param \CommonGLPI $item
+    * @param int         $withtemplate
+    *
+    * @return string|\translated
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
@@ -51,7 +56,11 @@ class PluginTasklistsStateOrder extends CommonDBTM {
 
    /**
     * @see CommonGLPI::displayTabContentForItem()
-    */
+    * @param \CommonGLPI $item
+    * @param int         $tabnum
+    * @param int         $withtemplate
+    * @return bool
+*/
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       if ($item->getType() == 'PluginTasklistsTaskType') {
@@ -64,14 +73,14 @@ class PluginTasklistsStateOrder extends CommonDBTM {
    /**
     * Display form
     *
-    * @param $type
-    */
+    * @param $plugin_tasklists_tasktypes_id
+*/
    static function showOrderStates($plugin_tasklists_tasktypes_id) {
       global $CFG_GLPI;
 
       Html::requireJs('tasklists');
 
-      $dbu = new DbUtils();
+//      $dbu = new DbUtils();
       //      $condition = $dbu->getEntitiesRestrictRequest(" AND ", 'glpi_plugin_tasklists_stateorders', '', $_SESSION["glpiactive_entity"]);
       //   true);
       $condition = "`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
@@ -152,8 +161,8 @@ class PluginTasklistsStateOrder extends CommonDBTM {
    //   }
 
    /**
-    * @param $type
-    */
+    * @param $plugin_tasklists_tasktypes_id
+*/
    function addNewStates($plugin_tasklists_tasktypes_id) {
 //      global $DB;
 

@@ -38,6 +38,9 @@ class PluginTasklistsKanban extends CommonGLPI {
 
    static $rightname = 'plugin_tasklists';
 
+   /**
+    * @return bool
+    */
    static function canView() {
       return Session::haveRight(self::$rightname, READ);
    }
@@ -52,20 +55,38 @@ class PluginTasklistsKanban extends CommonGLPI {
    }
 
 
+   /**
+    * @param array $options
+    *
+    * @return array
+    */
    function defineTabs($options = []) {
 
       $ong = [];
       $this->addStandardTab(__CLASS__, $ong, $options);
       $ong['no_all_tab'] = true;
+
       return $ong;
    }
 
+   /**
+    * @param $id
+    *
+    * @return int
+    */
    static function countTasksForKanban($id) {
       $dbu = new DbUtils();
       return $dbu->countElementsInTable('glpi_plugin_tasklists_tasks',
                                         ["plugin_tasklists_tasktypes_id" => $id]);
    }
 
+   /**
+    * @param \CommonGLPI $item
+    * @param int         $withtemplate
+    *
+    * @return array|bool|string
+    * @throws \GlpitestSQLError
+    */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       global $DB, $CFG_GLPI;
 
@@ -99,6 +120,14 @@ class PluginTasklistsKanban extends CommonGLPI {
       return '';
    }
 
+   /**
+    * @param \CommonGLPI $item
+    * @param int         $tabnum
+    * @param int         $withtemplate
+    *
+    * @return bool
+    * @throws \GlpitestSQLError
+    */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       if ($item->getType() == __CLASS__) {
          self::showKanban($tabnum);
@@ -107,6 +136,12 @@ class PluginTasklistsKanban extends CommonGLPI {
    }
 
 
+   /**
+    * @param int $plugin_tasklists_tasktypes_id
+    *
+    * @return bool
+    * @throws \GlpitestSQLError
+    */
    static function showKanban($plugin_tasklists_tasktypes_id = 0) {
       global $DB, $CFG_GLPI;
 
@@ -123,8 +158,11 @@ class PluginTasklistsKanban extends CommonGLPI {
                 LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
                 WHERE `glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'
                 AND `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 
-                AND `glpi_plugin_tasklists_tasks`.`is_template` = 0
-                AND `glpi_plugin_tasklists_tasks`.`is_archived` = 0 ";
+                AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 
+                
+                "; //AND `glpi_plugin_tasklists_tasks`.`is_archived` = 0
+
+      //      $query .= "AND `glpi_plugin_tasklists_tasks`.`users_id` = ".Session::getLoginUserID()." ";
       $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
       $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
@@ -167,6 +205,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                   if ($data['actiontime'] != 0) {
                      $actiontime = Html::timestampToString($data['actiontime'], false, true);
                   }
+                  $archived = $data['is_archived'];
 
                   if (isset($data['users_id'])
                       && $data['users_id'] != Session::getLoginUserID()) {
@@ -178,7 +217,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                       || Session::haveRight("plugin_tasklists_see_all", 1)) {
                      $right = 1;
                   }
-                  $entity = new Entity();
+                  $entity      = new Entity();
+                  $entity_name = __('None');
                   if ($entity->getFromDB($data['entities_id'])) {
                      $entity_name = $entity->fields['name'];
                   }
@@ -202,8 +242,10 @@ class PluginTasklistsKanban extends CommonGLPI {
                               'user'           => $link,
                               'client'         => $client,
                               'finished'       => $finished,
+                              'archived'       => $archived,
                               'finished_style' => $finished_style,
                               'right'          => $right,
+                              'users_id'       => $data['users_id'],
                   ];
                }
             }
@@ -217,6 +259,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $cond       = ["plugin_tasklists_taskstates_id" => 0,
                      "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
                      "is_deleted"                     => 0,
+                     "is_template"                    => 0,
                      "is_archived"                    => 0];
       $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                                $cond);
@@ -246,6 +289,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                   }
                   $cond       = ["plugin_tasklists_taskstates_id" => $datastate['id'],
                                  "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
+                                 "is_template"                    => 0,
                                  "is_deleted"                     => 0,
                                  "is_archived"                    => 0];
                   $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
@@ -273,7 +317,10 @@ class PluginTasklistsKanban extends CommonGLPI {
       }
       $lang['add_tasks']               = __('Add task', 'tasklists');
       $lang['archive_all_tasks']       = __('Archive all tasks of this state', 'tasklists');
-      $lang['see_archived_tasks']      = __('See archived tasks of this state', 'tasklists');
+      $lang['see_archived_tasks']      = __('See archived tasks', 'tasklists');
+      $lang['hide_archived_tasks']      = __('Hide archived tasks', 'tasklists');
+      $lang['see_my_tasks']            = __('See my tasks', 'tasklists');
+      $lang['see_all_tasks']            = __('See all tasks', 'tasklists');
       $lang['alert_archive_task']      = __('Are you sure you want to archive this task ?', 'tasklists');
       $lang['alert_archive_all_tasks'] = __('Are you sure you want to archive all tasks ?', 'tasklists');
       $lang['archive_task']            = __('Archive this task', 'tasklists');
@@ -284,8 +331,19 @@ class PluginTasklistsKanban extends CommonGLPI {
       $states   = json_encode($states);
       $colors   = json_encode($colors);
       $root_doc = $CFG_GLPI['root_doc'];
-
+      $users_id = Session::getLoginUserID();
       $allright = (Session::haveRight("plugin_tasklists_see_all", 1) ? 1 : 0);
+
+      $seemytasks = 0;
+      if (isset($_SESSION["glpi_plugin_tasklists_mytasks"])) {
+         $seemytasks = $_SESSION["glpi_plugin_tasklists_mytasks"];
+      }
+
+      $seearchivedtasks = 0;
+      if (isset($_SESSION["glpi_plugin_tasklists_archivedtasks"])) {
+         $seearchivedtasks = $_SESSION["glpi_plugin_tasklists_archivedtasks"];
+      }
+
       echo "<script>$('#kanban$rand').kanban({
            context: $plugin_tasklists_tasktypes_id,
            titles: $states,
@@ -294,7 +352,10 @@ class PluginTasklistsKanban extends CommonGLPI {
            rootdoc: '$root_doc',
            lang: $lang,
            allright: $allright,
-           max_priority: 5
+           max_priority: 5,
+           users_id:$users_id,
+           seemytasks:$seemytasks,
+           seearchivedtasks:$seearchivedtasks
        });</script>";
 
    }

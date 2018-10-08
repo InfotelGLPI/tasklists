@@ -38,6 +38,11 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
 
    static $rightname = 'plugin_tasklists';
 
+   /**
+    * @param int $nb
+    *
+    * @return string
+    */
    static function getTypeName($nb = 0) {
       return __('Visibility');
    }
@@ -87,10 +92,9 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
    /**
     * Display form
     *
-    * @param $type
+    * @param $item
     */
     function showVisibilities($item) {
-      global $CFG_GLPI;
 
       $used_groups = [];
 
@@ -260,6 +264,9 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       return true;
    }
 
+   /**
+    * @return array
+    */
    static function seeAllowedTypes(){
 
       $allowed_types = [];
@@ -277,6 +284,9 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       return $allowed_types;
    }
 
+   /**
+    * @return array
+    */
    function rawSearchOptions() {
 
       $tab = [];
@@ -314,6 +324,11 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       return $tab;
    }
 
+   /**
+    * @param array $input
+    *
+    * @return array|bool
+    */
    function prepareInputForAdd($input) {
       if (!$this->checkMandatoryFields($input)) {
          return false;
@@ -322,6 +337,11 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       return $input;
    }
 
+   /**
+    * @param $input
+    *
+    * @return array|bool
+    */
    function prepareInputForUpdate($input) {
       if (!$this->checkMandatoryFields($input)) {
          return false;
