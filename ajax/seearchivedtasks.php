@@ -31,7 +31,8 @@ include("../../../inc/includes.php");
 
 Session::checkLoginUser();
 
-if($_SESSION["glpi_plugin_tasklists_archivedtasks"] == 1) {
+if(isset($_SESSION["glpi_plugin_tasklists_archivedtasks"]) 
+      && $_SESSION["glpi_plugin_tasklists_archivedtasks"] == 1) {
    $_SESSION["glpi_plugin_tasklists_archivedtasks"] = 0;
 } else {
    $_SESSION["glpi_plugin_tasklists_archivedtasks"] = 1;

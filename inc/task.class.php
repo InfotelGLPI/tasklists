@@ -594,8 +594,11 @@ class PluginTasklistsTask extends CommonDBTM {
                      }
                   }
                   //                  $states[$datastate['id']] = $datastate['name'];
+                  if (empty($name = DropdownTranslation::getTranslatedValue($datastate['id'], 'PluginTasklistsTaskState', 'name', $_SESSION['glpilanguage']))) {
+                     $name = $datastate['name'];
+                  }
                   $states[] = ['id'   => $datastate['id'],
-                               'name' => $datastate['name'],
+                               'name' => $name,
                                'rank' => $ranking];
 
 

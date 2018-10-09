@@ -173,16 +173,10 @@ class PluginTasklistsKanban extends CommonGLPI {
                $user = new User();
                $link = "";
                if ($user->getFromDB($data['users_id'])) {
-                  if ($user->fields['picture']) {
-                     $link = "<div class='kanban_user_picture_border_verysmall'>";
-                     $link .= "<img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
-                              User::getThumbnailURLForPicture($user->fields['picture']) . "'>";
-                     $link .= "</div>";
-                  } else {
-                     $link = "<div class='kanban_user_verysmall'>";
-                     $link .= $dbu->getUserName($data['users_id']);
-                     $link .= "</div>";
-                  }
+                  $link = "<div class='kanban_user_picture_border_verysmall'>";
+                  $link .= "<a target='_blank' href='".Toolbox::getItemTypeFormURL('User')."?id=".$data['users_id']."'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
+                           User::getThumbnailURLForPicture($user->fields['picture']) . "'></a>";
+                  $link .= "</div>";
                }
                $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
                $finished                       = 0;
@@ -295,8 +289,12 @@ class PluginTasklistsKanban extends CommonGLPI {
                   $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                                            $cond);
 
+                  if (empty($name = DropdownTranslation::getTranslatedValue($datastate['id'], 'PluginTasklistsTaskState', 'name', $_SESSION['glpilanguage']))) {
+                     $name = $datastate['name'];
+                  }
+
                   $states[] = ['id'       => $datastate['id'],
-                               'title'    => $datastate['name'],
+                               'title'    => $name,
                                'rank'     => $ranking,
                                'count'    => $countTasks,
                                'finished' => $datastate['is_finished']];
