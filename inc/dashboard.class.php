@@ -96,13 +96,14 @@ class PluginTasklistsDashboard extends CommonGLPI {
                             LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
                             WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 ";
                if (is_array($states) && count($states) > 0) {
-                  $query .= " AND `glpi_plugin_tasklists_tasks`.`state` IN (" . implode(",", $states_founded) . ") ";
+                  $query .= " AND `glpi_plugin_tasklists_tasks`.`plugin_tasklists_taskstates_id` IN (" . implode(",", $states_founded) . ") ";
                }
                $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '".Session::getLoginUserID()."'";
-               if (count($groups) > 0){
-                  $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
-               }
-               $query .= "OR `glpi_plugin_tasklists_tasks`.`visibility` = 3)";
+               //if (count($groups) > 0){
+               //   $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
+               //}
+               //$query .= "OR `glpi_plugin_tasklists_tasks`.`visibility` = 3)";
+               $query .= ") ";
                $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
                $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
