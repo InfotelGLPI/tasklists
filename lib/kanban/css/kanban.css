@@ -367,8 +367,8 @@
    color: #555;;
    text-align: center;
    font-size: 9px;
-   padding: 5px;
-   width: 230px;
+   padding: 7px;
+   /*width: 230px;*/
    transition: all 0.5s;
    cursor: pointer;
    margin-bottom: 5px;

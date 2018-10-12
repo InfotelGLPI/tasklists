@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 13:35+0200\n"
-"PO-Revision-Date: 2018-10-08 13:38+0200\n"
+"POT-Creation-Date: 2018-10-12 17:22+0200\n"
+"PO-Revision-Date: 2018-10-12 17:24+0200\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2018\n"
 "Language-Team: French (France) (https://www.transifex.com/tsmr/teams/79675/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.0.9\n"
 
-#: setup.php:87 inc/dashboard.class.php:58 inc/dashboard.class.php:177
-#: inc/dashboard.class.php:182 inc/menu.class.php:44
+#: setup.php:87 inc/dashboard.class.php:58 inc/dashboard.class.php:178
+#: inc/dashboard.class.php:183 inc/menu.class.php:44
 #: inc/preference.class.php:45 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Liste des tâches"
@@ -32,14 +32,14 @@ msgid_plural "Contexts"
 msgstr[0] "Contexte"
 msgstr[1] "Contextes"
 
-#: inc/dashboard.class.php:93 inc/kanban.class.php:202
+#: inc/dashboard.class.php:93 inc/kanban.class.php:197
 #: inc/notificationtargettask.class.php:201
 #: inc/notificationtargettask.class.php:245 inc/task.class.php:118
 msgid "Due date"
 msgstr "Date d'échéance"
 
-#: inc/dashboard.class.php:163 inc/dashboard.class.php:171
-#: inc/kanban.class.php:318 inc/ticket.class.php:154
+#: inc/dashboard.class.php:164 inc/dashboard.class.php:172
+#: inc/kanban.class.php:321 inc/ticket.class.php:154
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
@@ -51,48 +51,48 @@ msgstr "Kanban"
 msgid "You don't have the right to see any context"
 msgstr "Vous n'avez pas le droit de voir de contexte"
 
-#: inc/kanban.class.php:269 inc/task.class.php:574 inc/task.class.php:630
-#: inc/task.class.php:906
+#: inc/kanban.class.php:268 inc/task.class.php:574 inc/task.class.php:633
+#: inc/task.class.php:909
 msgid "Backlog"
 msgstr "Backlog"
 
-#: inc/kanban.class.php:319
+#: inc/kanban.class.php:322
 msgid "Archive all tasks of this state"
 msgstr "Archiver toutes les taches ayant ce statut"
 
-#: inc/kanban.class.php:320
+#: inc/kanban.class.php:323
 msgid "See archived tasks"
 msgstr "Voir les tâches archivées"
 
-#: inc/kanban.class.php:321
+#: inc/kanban.class.php:324
 msgid "Hide archived tasks"
 msgstr "Cacher les tâches archivées"
 
-#: inc/kanban.class.php:322
-msgid "See my tasks"
-msgstr "Voir mes tâches"
+#: inc/kanban.class.php:325
+msgid "See tasks of"
+msgstr "Voir les tâches de"
 
-#: inc/kanban.class.php:323
+#: inc/kanban.class.php:326
 msgid "See all tasks"
 msgstr "Voir toutes les tâches"
 
-#: inc/kanban.class.php:324
+#: inc/kanban.class.php:327
 msgid "Are you sure you want to archive this task ?"
 msgstr "Êtes-vous sûr de vouloir archiver cette tâche ?"
 
-#: inc/kanban.class.php:325
+#: inc/kanban.class.php:328
 msgid "Are you sure you want to archive all tasks ?"
 msgstr "Êtes-vous sûr de vouloir archiver toutes les tâches ?"
 
-#: inc/kanban.class.php:326
+#: inc/kanban.class.php:329
 msgid "Archive this task"
 msgstr "Archiver cette tâche"
 
-#: inc/kanban.class.php:327
+#: inc/kanban.class.php:330
 msgid "Update priority of task"
 msgstr "Augmenter la priorité de la tâche"
 
-#: inc/kanban.class.php:328
+#: inc/kanban.class.php:331
 msgid "Details of task"
 msgstr "Détails de la tâche"
 
@@ -146,22 +146,22 @@ msgstr "Vous ne pouvez pas archiver une tâche ayant ce statut"
 msgid "Existing client"
 msgstr "Client existant"
 
-#: inc/task.class.php:966
+#: inc/task.class.php:969
 msgctxt "visibility"
 msgid "This user"
 msgstr "Cet utilisateur"
 
-#: inc/task.class.php:969
+#: inc/task.class.php:972
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Cet utilisateur et ce groupe"
 
-#: inc/task.class.php:972
+#: inc/task.class.php:975
 msgctxt "visibility"
 msgid "All"
 msgstr "Tout le monde"
 
-#: inc/task.class.php:1014
+#: inc/task.class.php:1017
 msgid "Affect entity for create task"
 msgstr "Affecter une entité pour une création de tâche"
 

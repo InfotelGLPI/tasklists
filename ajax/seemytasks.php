@@ -32,10 +32,10 @@ include("../../../inc/includes.php");
 Session::checkLoginUser();
 
 if(isset($_SESSION["glpi_plugin_tasklists_mytasks"]) 
-      && $_SESSION["glpi_plugin_tasklists_mytasks"] == 1) {
+      && $_SESSION["glpi_plugin_tasklists_mytasks"] != 0) {
    $_SESSION["glpi_plugin_tasklists_mytasks"] = 0;
 } else {
-   $_SESSION["glpi_plugin_tasklists_mytasks"] = 1;
+   $_SESSION["glpi_plugin_tasklists_mytasks"] = $_POST["k"];
 }
 
 return $_SESSION["glpi_plugin_tasklists_mytasks"];
