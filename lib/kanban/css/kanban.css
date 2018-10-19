@@ -8,6 +8,10 @@
    width: 100% !important;
 }
 
+.cd_kanban_minboard {
+   width: 80% !important;
+}
+
 .cd_kanban_board {
    width: 100%;
    height: auto;

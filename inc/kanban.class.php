@@ -100,11 +100,11 @@ class PluginTasklistsKanban extends CommonGLPI {
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
                while ($data = $DB->fetch_array($result)) {
-                  if (self::countTasksForKanban($data["id"]) > 0) {
+//                  if (self::countTasksForKanban($data["id"]) > 0) {
                      if (PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
                         $tabs[$data["id"]] = $data["completename"];
                      }
-                  }
+//                  }
                }
             }
          }
@@ -356,6 +356,7 @@ class PluginTasklistsKanban extends CommonGLPI {
          $seearchivedtasks = $_SESSION["glpi_plugin_tasklists_archivedtasks"];
       }
 
+      $countStates = self::countTasksForKanban($data["id"]); //cd_kanban_minboard
       echo "<script>$('#kanban$rand').kanban({
            context: $plugin_tasklists_tasktypes_id,
            titles: $states,
