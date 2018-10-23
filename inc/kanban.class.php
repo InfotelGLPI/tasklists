@@ -356,7 +356,6 @@ class PluginTasklistsKanban extends CommonGLPI {
          $seearchivedtasks = $_SESSION["glpi_plugin_tasklists_archivedtasks"];
       }
 
-      $countStates = self::countTasksForKanban($data["id"]); //cd_kanban_minboard
       echo "<script>$('#kanban$rand').kanban({
            context: $plugin_tasklists_tasktypes_id,
            titles: $states,

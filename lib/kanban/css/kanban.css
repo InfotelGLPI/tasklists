@@ -9,7 +9,7 @@
 }
 
 .cd_kanban_minboard {
-   width: 80% !important;
+   width: 90% !important;
 }
 
 .cd_kanban_board {
@@ -18,7 +18,7 @@
    min-height: 400px;
    display: block;
    clear: both;
-   overflow-x: auto;
+   /*overflow-x: auto;*/
    background: #FFF;
 }
 
@@ -46,6 +46,7 @@
    color: #FFF;
    position: relative;
    flex: 1;
+   max-width: 302px;
 }
 
 .title {
@@ -100,6 +101,7 @@
    flex: 1;
    background: #e6e6e6;
    overflow-y: auto;
+   max-width: 300px;
 }
 
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block:last-child {

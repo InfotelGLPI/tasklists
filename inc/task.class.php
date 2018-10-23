@@ -236,6 +236,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('Document_Item', $ong, $options);
       if (!isset($options['withtemplate']) || empty($options['withtemplate'])) {
+         $this->addStandardTab('PluginTasklistsTask_Comment', $ong, $options);
          $this->addStandardTab('PluginTasklistsTicket', $ong, $options);
       }
       $this->addStandardTab('Notepad', $ong, $options);
@@ -255,6 +256,17 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->fields['visibility']   = 2;
    }
 
+   /**
+    * @see CommonDBTM::cleanDBonPurge()
+    *
+    * @since 0.83.1
+    **/
+   function cleanDBonPurge() {
+
+      /// PluginTasklistsTask_Comment does not extends CommonDBConnexity
+      $kbic = new PluginTasklistsTask_Comment();
+      $kbic->deleteByCriteria(['plugin_tasklists_tasks_id' => $this->fields['id']]);
+   }
    /**
     * @param datas $input
     *

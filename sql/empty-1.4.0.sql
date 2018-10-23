@@ -105,3 +105,16 @@ CREATE TABLE `glpi_plugin_tasklists_tickets` (
   KEY `plugin_tasklists_tasks_id` (`plugin_tasklists_tasks_id`),
   KEY `tickets_id` (`tickets_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `glpi_plugin_tasklists_tasks_comments`;
+CREATE TABLE `glpi_plugin_tasklists_tasks_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plugin_tasklists_tasks_id` int(11) NOT NULL,
+  `users_id` int(11) NOT NULL DEFAULT '0',
+  `language` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comment` text COLLATE utf8_unicode_ci NOT NULL,
+  `parent_comment_id` int(11) DEFAULT NULL,
+  `date_creation` datetime DEFAULT NULL,
+  `date_mod` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
