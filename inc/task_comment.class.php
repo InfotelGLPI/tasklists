@@ -94,10 +94,10 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       // Total Number of comments
       if ($item->getType() == PluginTasklistsTask::getType()) {
          $where = [
-            'id' => $item->getID(),
+            'plugin_tasklists_tasks_id' => $item->getID(),
             'language'         => null
          ];
-         $plugin_tasklists_tasks_id = $where['id'];
+         $plugin_tasklists_tasks_id = $where['plugin_tasklists_tasks_id'];
       } else {
          $where = [
             'plugin_tasklists_tasks_id' => $item->fields['plugin_tasklists_tasks_id'],
@@ -144,6 +144,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       echo "<div class='forcomments timeline_history'>";
       echo "<ul class='comments left'>";
       $comments = self::getCommentsForTaskItem($plugin_tasklists_tasks_id, $where['language']);
+      
       $html = self::displayComments($comments, $cancomment);
       echo $html;
 

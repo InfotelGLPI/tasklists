@@ -223,8 +223,21 @@ class PluginTasklistsKanban extends CommonGLPI {
                                                                                            ENT_QUOTES,
                                                                                            "UTF-8"));
 
+                  $nbcomments = "";
+                  $nb = 0;
+                  $where = [
+                           'plugin_tasklists_tasks_id' => $data['id'],
+                           'language'         => null
+                        ];
+                     $nb = countElementsInTable(
+                        'glpi_plugin_tasklists_tasks_comments',
+                        $where
+                     );
+                  if ($nb > 0) {
+                     $nbcomments = " (".$nb.") ";
+                  }
                   $tasks[] = ['id'             => $data['id'],
-                              'title'          => $data['name'],
+                              'title'          => $data['name'].$nbcomments,
                               'block'          => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
                               'link'           => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
                               'description'    => Html::resume_text($comment, 80),

@@ -70,7 +70,8 @@ function plugin_tasklists_uninstall() {
               "glpi_plugin_tasklists_taskstates",
               "glpi_plugin_tasklists_stateorders",
               "glpi_plugin_tasklists_typevisibilities",
-              "glpi_plugin_tasklists_preferences"];
+              "glpi_plugin_tasklists_preferences",
+              "glpi_plugin_tasklists_tasks_comments"];
 
    foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
