@@ -55,11 +55,30 @@ if (isset($_GET['id'])) {
       'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
       'withtemplate'                   => 0
    ];
-   $task = new PluginTasklistsTask();
+   $task    = new PluginTasklistsTask();
    if ($id = $task->hasTemplate($options)) {
       $options['withtemplate'] = 2;
       $task->showForm($id, $options);
    } else {
+      $task->showForm(0, $options);
+   }
+} else if (isset($_GET['clone_id'])) {
+   $id   = $_GET['clone_id'];
+   $task = new PluginTasklistsTask();
+   if ($task->getFromDB($id)) {
+      $options = [
+         'from_edit_ajax'                 => true,
+         'plugin_tasklists_tasktypes_id'  => $task->fields['plugin_tasklists_tasktypes_id'],
+         'plugin_tasklists_taskstates_id' => $task->fields['plugin_tasklists_taskstates_id'],
+         'priority'                       => $task->fields['priority'],
+         'users_id'                       => Session::getLoginUserID(),
+         'groups_id'                      => $task->fields['groups_id'],
+         'client'                         => $task->fields['client'],
+         'entities_id'                    => $task->fields['entities_id'],
+         'visibility'                     => $task->fields['visibility'],
+         'withtemplate'                   => 0
+      ];
+      $task    = new PluginTasklistsTask();
       $task->showForm(0, $options);
    }
 }

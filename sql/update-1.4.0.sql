@@ -19,6 +19,7 @@ ALTER TABLE `glpi_plugin_tasklists_tasks` CHANGE `state` `plugin_tasklists_tasks
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `is_archived` tinyint(1) NOT NULL default '0';
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `client` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL;
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `date_creation` datetime default NULL;
+ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `due_date` date default NULL;
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `is_template` smallint(6) NOT NULL default '0';
 ALTER TABLE `glpi_plugin_tasklists_tasks` ADD `template_name` varchar(200) collate utf8_unicode_ci NOT NULL default '';
 

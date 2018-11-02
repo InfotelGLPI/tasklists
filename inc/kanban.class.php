@@ -100,11 +100,11 @@ class PluginTasklistsKanban extends CommonGLPI {
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
                while ($data = $DB->fetch_array($result)) {
-//                  if (self::countTasksForKanban($data["id"]) > 0) {
-                     if (PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
-                        $tabs[$data["id"]] = $data["completename"];
-                     }
-//                  }
+                  //                  if (self::countTasksForKanban($data["id"]) > 0) {
+                  if (PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
+                     $tabs[$data["id"]] = $data["completename"];
+                  }
+                  //                  }
                }
             }
          }
@@ -224,20 +224,20 @@ class PluginTasklistsKanban extends CommonGLPI {
                                                                                            "UTF-8"));
 
                   $nbcomments = "";
-                  $nb = 0;
-                  $where = [
-                           'plugin_tasklists_tasks_id' => $data['id'],
-                           'language'         => null
-                        ];
-                     $nb = countElementsInTable(
-                        'glpi_plugin_tasklists_tasks_comments',
-                        $where
-                     );
+                  $nb         = 0;
+                  $where      = [
+                     'plugin_tasklists_tasks_id' => $data['id'],
+                     'language'                  => null
+                  ];
+                  $nb         = countElementsInTable(
+                     'glpi_plugin_tasklists_tasks_comments',
+                     $where
+                  );
                   if ($nb > 0) {
-                     $nbcomments = " (".$nb.") ";
+                     $nbcomments = " (" . $nb . ") ";
                   }
                   $tasks[] = ['id'             => $data['id'],
-                              'title'          => $data['name'].$nbcomments,
+                              'title'          => $data['name'] . $nbcomments,
                               'block'          => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
                               'link'           => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
                               'description'    => Html::resume_text($comment, 80),
@@ -335,6 +335,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $lang['archive_all_tasks']       = __('Archive all tasks of this state', 'tasklists');
       $lang['see_archived_tasks']      = __('See archived tasks', 'tasklists');
       $lang['hide_archived_tasks']     = __('Hide archived tasks', 'tasklists');
+      $lang['clone_task']              = __('Clone task', 'tasklists');
       $lang['see_my_tasks']            = __('See tasks of', 'tasklists');
       $lang['see_all_tasks']           = __('See all tasks', 'tasklists');
       $lang['alert_archive_task']      = __('Are you sure you want to archive this task ?', 'tasklists');
@@ -349,7 +350,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $root_doc = $CFG_GLPI['root_doc'];
 
       $users_array = array_unique($users_array);
-      $users_id = [];
+      $users_id    = [];
       foreach ($users_array as $k => $v) {
          $users_id[$v] = $dbu->getUserName($v);
       }

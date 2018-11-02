@@ -267,6 +267,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $kbic = new PluginTasklistsTask_Comment();
       $kbic->deleteByCriteria(['plugin_tasklists_tasks_id' => $this->fields['id']]);
    }
+
    /**
     * @param datas $input
     *
@@ -403,7 +404,7 @@ class PluginTasklistsTask extends CommonDBTM {
           && $options['from_edit_ajax']) {
          echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
       }
-      if(isset($options['withtemplate']) && empty($options['withtemplate'])) {
+      if (isset($options['withtemplate']) && empty($options['withtemplate'])) {
          $options['withtemplate'] = 0;
       }
       echo Html::hidden('withtemplate', ['value' => $options['withtemplate']]);
@@ -428,7 +429,12 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "<td>" . __('Priority') . "</td>";
       echo "<td>";
-      CommonITILObject::dropdownPriority(['value'     => $this->fields['priority'],
+      $priority = $this->fields['priority'];
+      if (isset($options['priority'])
+          && $options['priority']) {
+         $priority = $options['priority'];
+      }
+      CommonITILObject::dropdownPriority(['value'     => $priority,
                                           'withmajor' => 1]);
       echo "</td>";
 
@@ -444,13 +450,19 @@ class PluginTasklistsTask extends CommonDBTM {
 
       if (isset($_SESSION["glpiactiveentities"])
           && count($_SESSION["glpiactiveentities"]) > 1
-          && ($ID == 0 || (isset($options['withtemplate']) && ( $options['withtemplate']== 2)))) {
+          && ($ID == 0 || (isset($options['withtemplate']) && ($options['withtemplate'] == 2)))) {
 
          echo "<tr class='tab_bg_1'>";
 
          echo "<td>" . __('Existing client', 'tasklists') . "</td>";
          echo "<td>";
+         $entities_id = $this->fields['entities_id'];
+         if (isset($options['entities_id'])
+             && $options['entities_id']) {
+            $entities_id = $options['entities_id'];
+         }
          $rand_entity = Dropdown::show('Entity', ['name'         => "entities_id",
+                                                  'value' => $entities_id,
                                                   'entity'       => $_SESSION["glpiactiveentities"],
                                                   'is_recursive' => true,
                                                   'on_change'    => "plugin_tasklists_load_entities();",]);
@@ -473,17 +485,31 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "<td>" . __('Other client', 'tasklists') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "client", ['option' => "size='40'"]);
+      $client = $this->fields['client'];
+      if (isset($options['client'])
+          && $options['client']) {
+         $client = $options['client'];
+      }
+      Html::autocompletionTextField($this, "client", ['option' => "size='40'",
+                                                      'value'  => $client]);
       echo "</td>";
-      echo "<td colspan='2'>";
+      echo "<td>" . __("Due date", "tasklists") . "</td>";
+      echo "<td>";
+      Html::showDateField("due_date", ['value' => $this->fields["due_date"]]);
       echo "</td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
 
       echo "<td>" . __('User') . "</td><td>";
+      $users_id = $this->fields['users_id'];
+      if (isset($options['users_id'])
+          && $options['users_id']) {
+         $users_id = $options['users_id'];
+      }
+
       User::dropdown(['name'   => "users_id",
-                      'value'  => $this->fields["users_id"],
+                      'value'  => $users_id,
                       'entity' => $this->fields["entities_id"],
                       'right'  => 'all']);
       echo "</td>";
@@ -503,8 +529,13 @@ class PluginTasklistsTask extends CommonDBTM {
 
       echo "<td>" . __('Group') . "</td>";
       echo "<td>";
+      $groups_id = $this->fields['groups_id'];
+      if (isset($options['groups_id'])
+          && $options['groups_id']) {
+         $groups_id = $options['groups_id'];
+      }
       Dropdown::show('Group', ['name'      => "groups_id",
-                               'value'     => $this->fields["groups_id"],
+                               'value'     => $groups_id,
                                'entity'    => $this->fields["entities_id"],
                                'condition' => '`is_usergroup`'
       ]);
@@ -543,13 +574,13 @@ class PluginTasklistsTask extends CommonDBTM {
       $content_id = "comment$rand_text";
       $cols       = 100;
       $rows       = 15;
-      Html::textarea(['name'              => 'comment',
-                      'value'             => $this->fields["comment"],
-                      'rand'              => $rand_text,
-                      'editor_id'         => $content_id,
-                      'enable_richtext'   => $CFG_GLPI["use_rich_text"],
-                      'cols'              => $cols,
-                      'rows'              => $rows]);
+      Html::textarea(['name'            => 'comment',
+                      'value'           => $this->fields["comment"],
+                      'rand'            => $rand_text,
+                      'editor_id'       => $content_id,
+                      'enable_richtext' => $CFG_GLPI["use_rich_text"],
+                      'cols'            => $cols,
+                      'rows'            => $rows]);
       echo "</td>";
 
       echo "</tr>";
@@ -557,7 +588,12 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __('Visibility') . "</td>";
       echo "<td>";
-      self::dropdownVisibility(['value' => $this->fields['visibility']]);
+      $visibility = $this->fields['visibility'];
+      if (isset($options['visibility'])
+          && $options['visibility']) {
+         $visibility = $options['visibility'];
+      }
+      self::dropdownVisibility(['value' => $visibility]);
       echo "</td>";
 
       echo "<td>" . __('Archived', 'tasklists') . "</td>";
@@ -630,6 +666,34 @@ class PluginTasklistsTask extends CommonDBTM {
                                                                                  'value'   => $plugin_tasklists_taskstates_id,
                                                                                  'display' => true]);
 
+   }
+
+
+   /**
+    * Closed States for a task
+    *
+    * @param     $plugin_tasklists_tasks_id
+    */
+   static function getClosedStateForTask($plugin_tasklists_tasks_id) {
+
+      $task = new PluginTasklistsTask();
+      if ($task->getFromDB($plugin_tasklists_tasks_id)) {
+         $state      = $task->fields["plugin_tasklists_taskstates_id"];
+         $dbu        = new DbUtils();
+         $condition  = ["is_finished" => 1];
+         $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'), $condition);
+         if (!empty($datastates)) {
+            foreach ($datastates as $datastate) {
+               $tasktypes = json_decode($datastate['tasktypes']);
+               if (is_array($tasktypes)) {
+                  if (in_array($task->fields["plugin_tasklists_tasktypes_id"], $tasktypes)) {
+                     $state = $datastate['id'];
+                  }
+               }
+            }
+         }
+         return $state;
+      }
    }
 
    /**
@@ -1086,13 +1150,13 @@ class PluginTasklistsTask extends CommonDBTM {
    function hasTemplate($options) {
 
       $templates = [];
-      $dbu = new DbUtils();
-      $restrict = ["is_template" => 1] +
-                  ["is_deleted" => 0] +
-                  ["is_archived" => 0] +
-                  ["plugin_tasklists_tasktypes_id" => $options['plugin_tasklists_tasktypes_id']] +
-//                  ["users_id" => Session::getLoginUserID()] +
-                  $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive());
+      $dbu       = new DbUtils();
+      $restrict  = ["is_template" => 1] +
+                   ["is_deleted" => 0] +
+                   ["is_archived" => 0] +
+                   ["plugin_tasklists_tasktypes_id" => $options['plugin_tasklists_tasktypes_id']] +
+                   //                  ["users_id" => Session::getLoginUserID()] +
+                   $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive());
 
       $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
       reset($templates);
@@ -1112,7 +1176,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $dbu = new DbUtils();
 
       $restrict = ["is_template" => 1] +
-                  $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive())+
+                  $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive()) +
                   ["ORDER" => "name"];
 
       $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);

@@ -41,14 +41,22 @@ if (isset($_POST['data_id'])
            && isset($_POST['updatepriority'])) {
    $task = new PluginTasklistsTask();
    if ($task->getFromDB($_POST['data_id'])) {
-      $priority = $task->fields["priority"];
+      if ($task->fields["priority"] < 5) {
+         $input['priority'] = $task->fields["priority"] + 1;
+      }
+      $input['id'] = $_POST['data_id'];
+      $task->update($input);
    }
-   if ($priority = $task->fields["priority"] < 5) {
-      $input['priority'] = $task->fields["priority"] + 1;
+} /*else if (isset($_POST['data_id'])
+           && isset($_POST['clonetask'])) {
+   $task = new PluginTasklistsTask();
+   if ($task->getFromDB($_POST['data_id'])) {
+      $status                                  = PluginTasklistsTask::getClosedStateForTask($_POST['data_id']);
+      $input['plugin_tasklists_taskstates_id'] = $status;
+      $input['id']                             = $_POST['data_id'];
+      $task->update($input);
    }
-   $input['id'] = $_POST['data_id'];
-   $task->update($input);
-} else if (isset($_POST['data_id'])
+}*/ else if (isset($_POST['data_id'])
            && isset($_POST['archivetask'])) {
    $task                 = new PluginTasklistsTask();
    $input['is_archived'] = 1;
