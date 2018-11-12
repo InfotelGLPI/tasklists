@@ -78,8 +78,27 @@ if (isset($_GET['id'])) {
          'visibility'                     => $task->fields['visibility'],
          'withtemplate'                   => 0
       ];
-      $task    = new PluginTasklistsTask();
       $task->showForm(0, $options);
+   }
+} else if (isset($_GET['task_id'])) {
+   $id   = $_GET['task_id'];
+   $task = new PluginTasklistsTask();
+   if ($task->getFromDB($id)) {
+      $options = [
+         'from_edit_ajax'                 => true,
+         //'plugin_tasklists_tasktypes_id'  => $task->fields['plugin_tasklists_tasktypes_id'],
+         //'plugin_tasklists_taskstates_id' => $task->fields['plugin_tasklists_taskstates_id'],
+         //'priority'                       => $task->fields['priority'],
+         //'users_id'                       => Session::getLoginUserID(),
+         //'groups_id'                      => $task->fields['groups_id'],
+         //'client'                         => $task->fields['client'],
+         'entities_id'                    => $task->fields['entities_id'],
+         'name'                     => $task->fields['name'],
+         'content'                     => $task->fields['comment'],
+         'withtemplate'                   => 0
+      ];
+      $ticket = new Ticket();
+      $ticket->showForm(0, $options);
    }
 }
 Html::ajaxFooter();

@@ -336,6 +336,8 @@ class PluginTasklistsKanban extends CommonGLPI {
       $lang['see_archived_tasks']      = __('See archived tasks', 'tasklists');
       $lang['hide_archived_tasks']     = __('Hide archived tasks', 'tasklists');
       $lang['clone_task']              = __('Clone task', 'tasklists');
+      //$lang['create_ticket']           = __('Create ticket an link task', 'tasklists');
+      $lang['see_progress_tasks']      = __('See tasks in progress', 'tasklists');
       $lang['see_my_tasks']            = __('See tasks of', 'tasklists');
       $lang['see_all_tasks']           = __('See all tasks', 'tasklists');
       $lang['alert_archive_task']      = __('Are you sure you want to archive this task ?', 'tasklists');
@@ -370,6 +372,11 @@ class PluginTasklistsKanban extends CommonGLPI {
          $seearchivedtasks = $_SESSION["glpi_plugin_tasklists_archivedtasks"];
       }
 
+      $seeprogresstasks = 0;
+      if (isset($_SESSION["glpi_plugin_tasklists_progresstasks"])) {
+         $seeprogresstasks = $_SESSION["glpi_plugin_tasklists_progresstasks"];
+      }
+
       echo "<script>$('#kanban$rand').kanban({
            context: $plugin_tasklists_tasktypes_id,
            titles: $states,
@@ -381,7 +388,8 @@ class PluginTasklistsKanban extends CommonGLPI {
            max_priority: 5,
            users_id:$users,
            seemytasks:$seemytasks,
-           seearchivedtasks:$seearchivedtasks
+           seearchivedtasks:$seearchivedtasks,
+           seeprogresstasks:$seeprogresstasks
        });</script>";
 
    }

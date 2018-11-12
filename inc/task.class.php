@@ -390,10 +390,10 @@ class PluginTasklistsTask extends CommonDBTM {
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
+      Html::initEditorSystem('comment');
+
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
-
-      Html::initEditorSystem('comment');
 
       echo "<tr class='tab_bg_1'>";
 
