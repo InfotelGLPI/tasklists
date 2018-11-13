@@ -42,8 +42,8 @@ function plugin_tasklists_install() {
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
 
-      $mig = new Migration("1.4.0");
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.0.sql");
+      $mig = new Migration("1.4.1");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.1.sql");
       $mig->executeMigration();
    }
    // Add record notification
@@ -90,19 +90,19 @@ function plugin_tasklists_uninstall() {
    $notif = new Notification();
 
    $options = ['itemtype' => 'PluginTasklistsTask',
-               'FIELDS' => 'id'];
+               'FIELDS'   => 'id'];
    foreach ($DB->request('glpi_notifications', $options) as $data) {
       $notif->delete($data);
    }
 
    //templates
-   $template = new NotificationTemplate();
+   $template    = new NotificationTemplate();
    $translation = new NotificationTemplateTranslation();
-   $options = ['itemtype' => 'PluginTasklistsTask',
-               'FIELDS' => 'id'];
+   $options     = ['itemtype' => 'PluginTasklistsTask',
+                   'FIELDS'   => 'id'];
    foreach ($DB->request('glpi_notificationtemplates', $options) as $data) {
       $options_template = ['notificationtemplates_id' => $data['id'],
-                           'FIELDS' => 'id'];
+                           'FIELDS'                   => 'id'];
 
       foreach ($DB->request('glpi_notificationtemplatetranslations', $options_template) as $data_template) {
          $translation->delete($data_template);
