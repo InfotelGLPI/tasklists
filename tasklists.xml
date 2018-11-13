@@ -19,7 +19,7 @@
     <homepage>https://github.com/InfotelGLPI/tasklists</homepage>
     <download>https://github.com/InfotelGLPI/tasklists/releases</download>
     <issues>https://github.com/InfotelGLPI/tasklists/issues</issues>
-    <readme>https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/README.md</readme>
+    <readme>https://raw.githubusercontent.com/InfotelGLPI/tasklists/wiki</readme>
     <authors>
         <author>Xavier Caillaud</author>
         <author>Infotel</author>
@@ -54,14 +54,17 @@
         <lang>fr_FR</lang>
         <lang>en_GB</lang>
         <lang>cs_CZ</lang>
+        <lang>fi_FI</lang>
     </langs>
     <license><![CDATA[GPL v2+]]></license>
     <tags>
         <fr>
             <tag>Taches</tag>
+            <tag>Kanban</tag>
         </fr>
         <en>
             <tag>Tasks</tag>
+            <tag>Kanban</tag>
         </en>
         <cs>
             <tag>Úkoly</tag>
@@ -70,8 +73,6 @@
     <screenshots>
         <screenshot>https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/kanban.png</screenshot>
         <screenshot>https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/addTask.png</screenshot>
-        <screenshot>
-            https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/Tasks%20list%20from%20Dashboard.png
-        </screenshot>
+        <screenshot> https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/Tasks%20list%20from%20Dashboard.png</screenshot>
     </screenshots>
 </root>
