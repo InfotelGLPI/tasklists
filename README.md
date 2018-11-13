@@ -1,17 +1,32 @@
 # tasklists
 Plugin Tasklists for GLPI
 
-Ce plugin est sur Transifex - Aidez-nous à le traduire :
-https://www.transifex.com/tsmr/GLPI_tasklists/
+![Plugin tasklists](https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/kanban.png "Plugin tasklists")
 
 This plugin is on Transifex - Help us to translate :
 https://www.transifex.com/tsmr/GLPI_tasklists/
 
-Ajout d'une gestion de tâches simples. Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples.
-> * Peut être utilisé avec le collecteur de mail pour créer des tâches.
+Adding a management of tasks & a kanban. This plugin adds in GLPI, an interface to add tasks & manage them into a kanban
 
-Adding a management of simple tasks. This plugin adds in GLPI, an interface to input simple tasks.
-> * Can be used with mail collector to create tasks.
+Last features :
+
+- [X] Clone task
+- [X] Add comments for task
+- [X] See archived tasks 
+- [X] See my tasks 
+- [X] Send notifications for add / change / delete task
+- [X] Use richtext on tasks
+- [X] Add templates by context
+- [X] Add entity pre-selection
+- [X] Use a default Backlog from list
+- [X] Link to tickets
+- [X] Preference : contexte by default
+- [X] See graph percent from tasks
+- [X] Order States
+- [X] Add context to States
+- [X] Add color to States
+- [X] Minimize closed tasks
+- [X] Can be used with mail collector to create tasks.
 
 For GLPI versions <9.1, for use it with mail collector you must to modify "inc/rulemailcollector.class.php" file, into  "executeActions" fonction, into switch : switch ($action->fields["action_type"]), add a default case  : 
 
