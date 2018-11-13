@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <name>Tasks List</name>
+    <name>Tasks List (Kanban)</name>
     <key>tasklists</key>
     <state>stable</state>
     <logo>https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/tasklists.png</logo>
     <description>
         <short>
-            <fr>
-                <![CDATA[Ajout d'une gestion de tâches & kanban. Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples et de les gérer dans un kanban.]]></fr>
-            <en>
-                <![CDATA[Adding a management of tasks & kanban. This plugin adds in GLPI, an interface to input simple tasks & manage them in a kanban.]]></en>
-            <cs>
-                <![CDATA[Přidání správy jednoduchých úkolů. Tento zásuvný modul do GLPI přidá rozhraní pro zadávání jednoduchých úkolů.]]></cs>
+            <fr><![CDATA[Ajout d'une gestion de tâches & kanban. Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples et de les gérer dans un kanban.]]></fr>
+            <en><![CDATA[Adding a management of tasks & kanban. This plugin adds in GLPI, an interface to input simple tasks & manage them in a kanban.]]></en>
+            <cs><![CDATA[Přidání správy jednoduchých úkolů. Tento zásuvný modul do GLPI přidá rozhraní pro zadávání jednoduchých úkolů.]]></cs>
         </short>
         <long>
-            <fr>
-                <![CDATA[Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples et de les gérer dans un kanban.<br />- Ajout de commentaires sur les tâches.<br />- Lien avec les tickets.<br />- Utilisation de gabarits<br />- Gestion des tâches archivées.<br />- Ajout de notes possibles sur les tâches.<br />- Peut être utilisé avec le collecteur de mail pour créer des tâches.<br />- Peut être utilisé avec le plugin mydashboard d'Infotel.]]></fr>
-            <en>
-                <![CDATA[This plugin adds in GLPI, an interface to input simple tasks & manage them in a kanban.<br />- Can add comments on tasks.<br />- Link with tickets.<br />- Can use templates.<br />- Manage archived tasks.<br />- Can add notes on tasks.<br />- Can be used with mail collector to create tasks.<br />- Can be used with mydashboard plugin of Infotel]]></en>
-            <cs>
-                <![CDATA[Tento zásuvný modul do GLPI přidá rozhraní pro zadávání jednoduchých úkolů.<br />- K úkolům je možné přidávat poznámky.<br />- Je možné použít s přivaděčem e-mailů a vytvářet úkoly skrze něj.<br />- Je možné použít se zásuvným modulem Moje nástěnka]]></cs>
+            <fr><![CDATA[Ce plugin permet d'ajouter dans GLPI, une interface pour saisir des tâches simples et de les gérer dans un kanban.<br />- Ajout de commentaires sur les tâches.<br />- Lien avec les tickets.<br />- Utilisation de gabarits<br />- Gestion des tâches archivées.<br />- Ajout de notes possibles sur les tâches.<br />- Peut être utilisé avec le collecteur de mail pour créer des tâches.<br />- Peut être utilisé avec le plugin mydashboard d'Infotel.]]></fr>
+            <en><![CDATA[This plugin adds in GLPI, an interface to input simple tasks & manage them in a kanban.<br />- Can add comments on tasks.<br />- Link with tickets.<br />- Can use templates.<br />- Manage archived tasks.<br />- Can add notes on tasks.<br />- Can be used with mail collector to create tasks.<br />- Can be used with mydashboard plugin of Infotel]]></en>
+            <cs><![CDATA[Tento zásuvný modul do GLPI přidá rozhraní pro zadávání jednoduchých úkolů.<br />- K úkolům je možné přidávat poznámky.<br />- Je možné použít s přivaděčem e-mailů a vytvářet úkoly skrze něj.<br />- Je možné použít se zásuvným modulem Moje nástěnka]]></cs>
         </long>
     </description>
     <homepage>https://github.com/InfotelGLPI/tasklists</homepage>
