@@ -1,5 +1,4 @@
-# tasklists
-Plugin Tasklists for GLPI
+# Plugin Tasklists for GLPI
 
 ![Plugin tasklists](https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/kanban.png "Plugin tasklists")
 
@@ -29,7 +28,10 @@ Last features :
 - [X] Add context to States
 - [X] Add color to States
 - [X] Minimize closed tasks
-- [X] Can be used with mail collector to create tasks.
+- [X] Can be used with mail collector to create tasks
+- [ ] Add notification for revive user in charge
+- [ ] Add min - max by state
+- [ ] Add notifications to comments
 
 For GLPI versions <9.1, for use it with mail collector you must to modify "inc/rulemailcollector.class.php" file, into  "executeActions" fonction, into switch : switch ($action->fields["action_type"]), add a default case  : 
 
