@@ -11,17 +11,18 @@ Adding a management of tasks & a kanban. This plugin adds in GLPI, an interface 
 Last features :
 
 - [X] Clone task
-- [X] Add comments for task
-- [X] See archived tasks 
-- [X] See my tasks 
+- [X] Add comments to tasks
+- [X] See authors tasks filter
+- [X] See archived tasks filter
+- [X] See in progress tasks filter
 - [X] Send notifications for add / change / delete task
 - [X] Use richtext on tasks
 - [X] Add templates by context
 - [X] Add entity pre-selection
 - [X] Use a default Backlog from list
 - [X] Link to tickets
-- [X] Preference : contexte by default
-- [X] See graph percent from tasks
+- [X] Preference : context by default
+- [X] See percentage of completion from tasks
 - [X] Order States
 - [X] Add context to States
 - [X] Add color to States
