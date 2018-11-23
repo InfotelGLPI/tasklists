@@ -55,7 +55,7 @@ class PluginTasklistsTicket extends CommonDBTM {
     */
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       $dbu = new DbUtils();
-      if (Session::getCurrentInterface() == 'central') {
+      if (Session::getCurrentInterface() == 'central' && Session::haveRight(self::$rightname, READ)) {
          switch ($item->getType()) {
             case "PluginTasklistsTask":
                $nb = 0;
