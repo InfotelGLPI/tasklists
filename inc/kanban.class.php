@@ -236,8 +236,14 @@ class PluginTasklistsKanban extends CommonGLPI {
                   if ($nb > 0) {
                      $nbcomments = " (" . $nb . ") ";
                   }
+                  $linkname = $data["name"];
+                  if ($_SESSION["glpiis_ids_visible"]
+                      || empty($data["name"])) {
+                     $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
+                  }
+
                   $tasks[] = ['id'             => $data['id'],
-                              'title'          => $data['name'] . $nbcomments,
+                              'title'          => $linkname . $nbcomments,
                               'block'          => ($plugin_tasklists_taskstates_id > 0 ? $plugin_tasklists_taskstates_id : 0),
                               'link'           => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
                               'description'    => Html::resume_text($comment, 80),
