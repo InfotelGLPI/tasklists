@@ -299,7 +299,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          $html .= "</div>"; // h_user
          $html .= "</div>"; //h_info
 
-         $html .= "<div class='h_content TicketFollowup'>";
+         $html .= "<div class='h_content ItilFollowup'>";
          $html .= "<div class='displayed_content'>";
 
          if ($cancomment) {

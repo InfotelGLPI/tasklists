@@ -272,7 +272,7 @@ class PluginTasklistsTicket extends CommonDBTM {
       echo "</div>";
 
       $task_ticket = new PluginTasklistsTicket();
-      $tickets              = $task_ticket->find("`glpi_plugin_tasklists_tickets`.`plugin_tasklists_tasks_id` = '" . $task->fields['id'] . "'");
+      $tickets              = $task_ticket->find(['plugin_tasklists_tasks_id' => $task->fields['id']]);
 
       if (count($tickets) > 0) {
 

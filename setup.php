@@ -27,6 +27,8 @@
  --------------------------------------------------------------------------
  */
 
+define('PLUGIN_TASKLISTS_VERSION', '1.5.0');
+
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
    global $PLUGIN_HOOKS, $CFG_GLPI;
@@ -85,11 +87,16 @@ function plugin_version_tasklists() {
 
    return [
       'name'           => __('Tasks list', 'tasklists'),
-      'version'        => '1.4.1',
+      'version'        => PLUGIN_TASKLISTS_VERSION,
       'license'        => 'GPLv2+',
       'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/tasklists',
-      'minGlpiVersion' => '9.3',// For compatibility / no install in version < 9.3
+      'requirements'   => [
+         'glpi' => [
+            'min' => '9.4',
+            'dev' => false
+         ]
+      ]
    ];
 
 }
@@ -99,10 +106,14 @@ function plugin_version_tasklists() {
  * @return bool
  */
 function plugin_tasklists_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.3', 'lt') || version_compare(GLPI_VERSION, '9.4', 'ge')) {
-      echo __('This plugin requires GLPI >= 9.3');
+   if (version_compare(GLPI_VERSION, '9.4', 'lt') 
+         || version_compare(GLPI_VERSION, '9.5', 'ge')) {
+      if (method_exists('Plugin', 'messageIncompatible')) {
+         echo Plugin::messageIncompatible('core', '9.4');
+      }
       return false;
    }
+
    return true;
 }
 

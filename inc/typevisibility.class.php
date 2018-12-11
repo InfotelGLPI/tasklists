@@ -98,7 +98,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
 
       $used_groups = [];
 
-      $dataGroups = $this->find('`plugin_tasklists_tasktypes_id` = '.$item->fields['id']);
+      $dataGroups = $this->find(['plugin_tasklists_tasktypes_id' => $item->fields['id']]);
 
       $type = new PluginTasklistsTaskType();
       $canedit = $type->can($item->fields['id'], UPDATE);
@@ -118,6 +118,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
          $op = "AND";
       }
       $dbu = new DbUtils();
+      //TODO Find
       $condition .= $dbu->getEntitiesRestrictRequest($op, $group->getTable(), null, null,
                                                      $group->maybeRecursive());
       $dataGroup = $group->find($condition, 'name');

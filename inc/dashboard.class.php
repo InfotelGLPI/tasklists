@@ -80,7 +80,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
 
                $st             = new PluginTasklistsTaskState();
                $states_founded = [];
-               $states         = $st->find("`is_finished` = 0");
+               $states         = $st->find(['is_finished' => 0]);
                foreach ($states as $state) {
                   $states_founded[] = $state["id"];
                }

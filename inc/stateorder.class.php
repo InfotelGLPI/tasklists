@@ -83,7 +83,7 @@ class PluginTasklistsStateOrder extends CommonDBTM {
 //      $dbu = new DbUtils();
       //      $condition = $dbu->getEntitiesRestrictRequest(" AND ", 'glpi_plugin_tasklists_stateorders', '', $_SESSION["glpiactive_entity"]);
       //   true);
-      $condition = "`plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
+      $condition = ['plugin_tasklists_tasktypes_id' => $plugin_tasklists_tasktypes_id];
       $order     = new self();
       $result    = $order->find($condition, "ranking");
 

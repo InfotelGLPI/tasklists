@@ -420,7 +420,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $rand_type = Dropdown::show('PluginTasklistsTaskType', ['name'      => "plugin_tasklists_tasktypes_id",
                                                               'value'     => $plugin_tasklists_tasktypes_id,
                                                               'entity'    => $this->fields["entities_id"],
-                                                              'condition' => "id IN (" . implode(",", $types) . ")",
+                                                              'condition' => ['id' => $types],
                                                               'on_change' => "plugin_tasklists_load_states();",]);
       echo "</td>";
       echo "</tr>";
@@ -537,7 +537,7 @@ class PluginTasklistsTask extends CommonDBTM {
       Dropdown::show('Group', ['name'      => "groups_id",
                                'value'     => $groups_id,
                                'entity'    => $this->fields["entities_id"],
-                               'condition' => '`is_usergroup`'
+                               'condition' => ['is_usergroup' => 1]
       ]);
       echo "</td>";
 
@@ -578,7 +578,7 @@ class PluginTasklistsTask extends CommonDBTM {
                       'value'           => $this->fields["comment"],
                       'rand'            => $rand_text,
                       'editor_id'       => $content_id,
-                      'enable_richtext' => $CFG_GLPI["use_rich_text"],
+                      'enable_richtext' => true,
                       'cols'            => $cols,
                       'rows'            => $rows]);
       echo "</td>";
@@ -631,8 +631,8 @@ class PluginTasklistsTask extends CommonDBTM {
             if (is_array($tasktypes)) {
                if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
 
-                  $condition = "`plugin_tasklists_taskstates_id` = '" . $datastate['id'] . "'
-                                          AND `plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
+                  $condition = ['plugin_tasklists_taskstates_id' => $datastate['id'],
+                                'plugin_tasklists_tasktypes_id' =>$plugin_tasklists_tasktypes_id];
                   $order     = new PluginTasklistsStateOrder();
                   $ranks     = $order->find($condition);
                   $ranking   = 0;

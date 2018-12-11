@@ -295,8 +295,8 @@ class PluginTasklistsKanban extends CommonGLPI {
             $tasktypes = json_decode($datastate['tasktypes']);
             if (is_array($tasktypes)) {
                if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
-                  $condition = "`plugin_tasklists_taskstates_id` = '" . $datastate['id'] . "'
-                                          AND `plugin_tasklists_tasktypes_id` = '" . $plugin_tasklists_tasktypes_id . "'";
+                  $condition = ['plugin_tasklists_taskstates_id' => $datastate['id'],
+                                'plugin_tasklists_tasktypes_id' =>$plugin_tasklists_tasktypes_id];
                   $order     = new PluginTasklistsStateOrder();
                   $ranks     = $order->find($condition);
                   $ranking   = 0;
