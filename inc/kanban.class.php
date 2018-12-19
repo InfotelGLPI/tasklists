@@ -212,6 +212,12 @@ class PluginTasklistsKanban extends CommonGLPI {
                       || Session::haveRight("plugin_tasklists_see_all", 1)) {
                      $right = 1;
                   }
+
+                  if($data['users_id'] == 0){
+                     $right = 1;
+                     $finished_style = 'style="display: inline;"';
+                  }
+
                   $entity      = new Entity();
                   $entity_name = __('None');
                   if ($entity->getFromDB($data['entities_id'])) {

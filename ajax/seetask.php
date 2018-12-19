@@ -34,7 +34,8 @@ Session::checkLoginUser();
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
-Html::requireJs('tinymce');
+//Html::requireJs('tinymce');
+echo "<script type='text/javascript'  src='../../../lib/tiny_mce/lib/tinymce.min.js'></script>";
 
 if (isset($_GET['id'])) {
    $options = [
