@@ -63,7 +63,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
             if ($_SESSION['glpishow_count_on_tabs']) {
                return self::createTabEntry(self::getTypeName(),
                                            $dbu->countElementsInTable($this->getTable(),
-                                                                      ["`plugin_tasklists_tasktypes_id`" => $item->getID()]));
+                                                                      ["plugin_tasklists_tasktypes_id" => $item->getID()]));
             }
             return self::getTypeName();
          }

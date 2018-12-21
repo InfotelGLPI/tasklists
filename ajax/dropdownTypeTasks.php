@@ -60,5 +60,5 @@ if (isset($_POST["tasktypes"])) {
          'width' => '50%',
          'entity' => $_POST['entity'],
          'rand' => $_POST['rand'],
-         'condition' => "glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id='" . $_POST["tasktypes"] . "'"]);
+         'condition' => ["glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id" => $_POST["tasktypes"]]]);
 }

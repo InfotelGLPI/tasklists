@@ -80,7 +80,7 @@ class PluginTasklistsPreference extends CommonDBTM
       $types     = PluginTasklistsTypeVisibility::seeAllowedTypes();
       Dropdown::show('PluginTasklistsTaskType', ['name'      => "default_type",
                                                  'value'     => $this->fields['default_type'],
-                                                 'condition' => "id IN (" . implode(",", $types) . ")"]);
+                                                 'condition' => ["id" => $types]]);
       echo "</td>";
       echo "</tr>";
 
