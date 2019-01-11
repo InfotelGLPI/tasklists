@@ -284,7 +284,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                      "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
                      "is_deleted"                     => 0,
                      "is_template"                    => 0,
-                     "is_archived"                    => 0];
+                     "is_archived"                    => 0]
+      + $dbu->getEntitiesRestrictCriteria('glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
       $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                                $cond);
 
@@ -315,7 +316,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                                  "plugin_tasklists_tasktypes_id"  => $plugin_tasklists_tasktypes_id,
                                  "is_template"                    => 0,
                                  "is_deleted"                     => 0,
-                                 "is_archived"                    => 0];
+                                 "is_archived"                    => 0]
+                                + $dbu->getEntitiesRestrictCriteria('glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
                   $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                                            $cond);
 
