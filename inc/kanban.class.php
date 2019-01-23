@@ -109,7 +109,7 @@ class PluginTasklistsKanban extends CommonGLPI {
             }
          }
          if (count($tabs) == 0) {
-            echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
+            echo "<div align='center'><br><br><i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
             echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
             return false;
          }
@@ -146,7 +146,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       global $DB, $CFG_GLPI;
 
       if (!PluginTasklistsTypeVisibility::isUserHaveRight($plugin_tasklists_tasktypes_id)) {
-         echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
+         echo "<div align='center'><br><br><i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
          echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
          return false;
       }
