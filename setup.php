@@ -89,7 +89,7 @@ function plugin_version_tasklists() {
       'name'           => __('Tasks list', 'tasklists'),
       'version'        => PLUGIN_TASKLISTS_VERSION,
       'license'        => 'GPLv2+',
-      'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
+      'author'         => "<a href='http://blogglpi.infotel.com'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/tasklists',
       'requirements'   => [
          'glpi' => [
