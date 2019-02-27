@@ -3,7 +3,7 @@
 ![Plugin tasklists](https://raw.githubusercontent.com/InfotelGLPI/tasklists/master/screenshots/kanban.png "Plugin tasklists")
 
 This plugin is on Transifex - Help us to translate :
-https://www.transifex.com/tsmr/GLPI_tasklists/
+https://www.transifex.com/infotelGLPI/GLPI_tasklists/
 
 See wiki for use it ? https://github.com/InfotelGLPI/tasklists/wiki
 
