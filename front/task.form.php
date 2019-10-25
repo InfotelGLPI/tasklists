@@ -29,6 +29,8 @@
 
 include('../../../inc/includes.php');
 
+Session::checkRight("plugin_tasklists", READ);
+
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
 }
