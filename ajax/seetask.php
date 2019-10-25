@@ -79,7 +79,8 @@ if (isset($_GET['id'])) {
          'visibility'                     => $task->fields['visibility'],
          'withtemplate'                   => 0
       ];
-      $task->showForm(0, $options);
+      $taskcloned = new PluginTasklistsTask();
+      $taskcloned->showForm(0, $options);
    }
 } else if (isset($_GET['task_id'])) {
    $id   = $_GET['task_id'];
