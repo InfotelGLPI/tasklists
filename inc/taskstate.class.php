@@ -213,7 +213,6 @@ class PluginTasklistsTaskState extends CommonDropdown {
        $dbu = new DbUtils();
        switch ($field) {
           case 'tasktypes':
-             $possible_values = ['' => Dropdown::EMPTY_VALUE];
              $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
              if (!empty($datatypes)) {
                 foreach ($datatypes as $datatype) {
