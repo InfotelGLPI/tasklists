@@ -206,30 +206,30 @@ class PluginTasklistsTaskState extends CommonDropdown {
     * @param $values (default '')
     * @param $options      array
     **/
-   //   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
-   //      if (!is_array($values)) {
-   //         $values = [$field => $values];
-   //      }
-   //      $dbu = new DbUtils();
-   //      switch ($field) {
-   //         case 'tasktypes':
-   //            $possible_values = ['' => Dropdown::EMPTY_VALUE];
-   //            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
-   //            if (!empty($datatypes)) {
-   //               foreach ($datatypes as $datatype) {
-   //                  $possible_values[$datatype['id']] = $datatype['name'];
-   //               }
-   //            }
-   //
-   //            return Dropdown::showFromArray($name, $possible_values,
-   //                                           ['display' => false,
-   //                                            'value'   => $values[$field]]);
-   //
-   //            break;
-   //      }
-   //
-   //      return parent::getSpecificValueToSelect($field, $name, $values, $options);
-   //   }
+    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+       if (!is_array($values)) {
+          $values = [$field => $values];
+       }
+       $dbu = new DbUtils();
+       switch ($field) {
+          case 'tasktypes':
+             $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+             if (!empty($datatypes)) {
+                foreach ($datatypes as $datatype) {
+                   $possible_values[$datatype['id']] = $datatype['name'];
+                }
+             }
+
+             return Dropdown::showFromArray($name, $possible_values,
+                                            ['display'  => false,
+                                            'value'     => $values[$field],
+                                            'multiple'  => 'multiples']);
+
+             break;
+         }
+
+       return parent::getSpecificValueToSelect($field, $name, $values, $options);
+    }
 
 
    /**
