@@ -213,8 +213,8 @@ class PluginTasklistsKanban extends CommonGLPI {
                      $right = 1;
                   }
 
-                  if($data['users_id'] == 0){
-                     $right = 1;
+                  if ($data['users_id'] == 0) {
+                     $right          = 1;
                      $finished_style = 'style="display: inline;"';
                   }
 
@@ -285,7 +285,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                      "is_deleted"                     => 0,
                      "is_template"                    => 0,
                      "is_archived"                    => 0]
-      + $dbu->getEntitiesRestrictCriteria('glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
+                    + $dbu->getEntitiesRestrictCriteria('glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
       $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
                                                $cond);
 
@@ -303,7 +303,7 @@ class PluginTasklistsKanban extends CommonGLPI {
             if (is_array($tasktypes)) {
                if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
                   $condition = ['plugin_tasklists_taskstates_id' => $datastate['id'],
-                                'plugin_tasklists_tasktypes_id' =>$plugin_tasklists_tasktypes_id];
+                                'plugin_tasklists_tasktypes_id'  => $plugin_tasklists_tasktypes_id];
                   $order     = new PluginTasklistsStateOrder();
                   $ranks     = $order->find($condition);
                   $ranking   = 0;
@@ -345,11 +345,11 @@ class PluginTasklistsKanban extends CommonGLPI {
             }
          }
       }
-      $lang['add_tasks']               = __('Add task', 'tasklists');
-      $lang['archive_all_tasks']       = __('Archive all tasks of this state', 'tasklists');
-      $lang['see_archived_tasks']      = __('See archived tasks', 'tasklists');
-      $lang['hide_archived_tasks']     = __('Hide archived tasks', 'tasklists');
-      $lang['clone_task']              = __('Clone task', 'tasklists');
+      $lang['add_tasks']           = __('Add task', 'tasklists');
+      $lang['archive_all_tasks']   = __('Archive all tasks of this state', 'tasklists');
+      $lang['see_archived_tasks']  = __('See archived tasks', 'tasklists');
+      $lang['hide_archived_tasks'] = __('Hide archived tasks', 'tasklists');
+      $lang['clone_task']          = __('Clone task', 'tasklists');
       //$lang['create_ticket']           = __('Create ticket an link task', 'tasklists');
       $lang['see_progress_tasks']      = __('See tasks in progress', 'tasklists');
       $lang['see_my_tasks']            = __('See tasks of', 'tasklists');
@@ -390,8 +390,9 @@ class PluginTasklistsKanban extends CommonGLPI {
       if (isset($_SESSION["glpi_plugin_tasklists_progresstasks"])) {
          $seeprogresstasks = $_SESSION["glpi_plugin_tasklists_progresstasks"];
       }
-
+      $id = "kanban$rand";
       echo "<script>$('#kanban$rand').kanban({
+           id: '$id',
            context: $plugin_tasklists_tasktypes_id,
            titles: $states,
            colours: $colors,
