@@ -66,6 +66,24 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       return $ong;
    }
 
+
+   static function getAllForKanban(){
+      $self = new self();
+      $list = $self->find();
+      $items = [
+
+      ];
+
+      foreach ($list as $key=>$value){
+         $items[$value['id']] = $value['completename'];
+      }
+      return $items;
+   }
+   public function forceGlobalState() {
+      // All users must be using the global state unless viewing the global Kanban
+      return $this->getID() > 0;
+   }
+
    /**
     * @param $ID
     * @param $entity
@@ -104,4 +122,207 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       }
       return 0;
    }
+   static function getKanbanColumns($ID, $column_field, $column_ids = [], $get_default = false) {
+
+      $dbu   = new DbUtils();
+      $cond       = ["plugin_tasklists_taskstates_id" => 0,
+            "plugin_tasklists_tasktypes_id"  => $ID,
+            "is_deleted"                     => 0,
+            "is_template"                    => 0,
+            "is_archived"                    => isset($_SESSION["archive"][Session::getLoginUserID()])?json_decode($_SESSION["archive"][Session::getLoginUserID()]):0]
+         + $dbu->getEntitiesRestrictCriteria('glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
+      $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
+         $cond);
+      $states[]   = ['id'       => 0,
+         'name'    => __('Backlog', 'tasklists'),
+         'rank'     => 0,
+         'count'    => $countTasks,
+         'finished' => 0];
+      $nb         = 1;
+      $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
+      if (!empty($datastates)) {
+         foreach ($datastates as $datastate) {
+            $tasktypes = json_decode($datastate['tasktypes']);
+            if (is_array($tasktypes)) {
+               if (in_array($ID, $tasktypes)) {
+                  $condition = ['plugin_tasklists_taskstates_id' => $datastate['id'],
+                     'plugin_tasklists_tasktypes_id'  => $ID];
+                  $order     = new PluginTasklistsStateOrder();
+                  $ranks     = $order->find($condition);
+                  $ranking   = 0;
+                  if (count($ranks) > 0) {
+                     foreach ($ranks as $rank) {
+                        $ranking = $rank['ranking'];
+                     }
+                  }
+                  $cond       = ["plugin_tasklists_taskstates_id" => $datastate['id'],
+                        "plugin_tasklists_tasktypes_id"  => $ID,
+                        "is_template"                    => 0,
+                        "is_deleted"                     => 0,
+                        "is_archived"                    => isset($_SESSION["archive"][Session::getLoginUserID()])?json_decode($_SESSION["archive"][Session::getLoginUserID()]):0]
+                     + $dbu->getEntitiesRestrictCriteria('glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
+                  $countTasks = $dbu->countElementsInTable($dbu->getTableForItemType('PluginTasklistsTasks'),
+                     $cond);
+
+                  if (empty($name = DropdownTranslation::getTranslatedValue($datastate['id'], 'PluginTasklistsTaskState', 'name', $_SESSION['glpilanguage']))) {
+                     $name = $datastate['name'];
+                  }
+
+                  $states[] = ['id'       => $datastate['id'],
+                     'color' => $datastate['color'],
+                     'name'    => $name,
+                     'rank'     => $ranking,
+                     'count'    => $countTasks,
+                     'finished' => $datastate['is_finished']];
+
+                  $states_ranked = [];
+                  foreach ($states as $key => $row) {
+                     $states_ranked[$key] = $row['rank'];
+                  }
+                  array_multisort($states_ranked, SORT_ASC, $states);
+
+                  $colors[$datastate['id']] = $datastate['color'];
+
+                  $nb++;
+
+               }
+            }
+         }
+      }
+      $nstates = [];
+      $task = new PluginTasklistsTask();
+      foreach ($states as $state) {
+
+         $tasks = [];
+         $datas = $task->find(["plugin_tasklists_tasktypes_id" => $ID, "plugin_tasklists_taskstates_id" => $state["id"]]);
+
+         foreach ($datas as $data) {
+            $array = isset($_SESSION["archive"][Session::getLoginUserID()])?json_decode($_SESSION["archive"][Session::getLoginUserID()]):[0];
+            if(!in_array($data["is_archived"],$array)){
+               continue;
+            }
+         $user = new User();
+         $link = "";
+         if ($user->getFromDB($data['users_id'])) {
+            $link = "<div class='kanban_user_picture_border_verysmall'>";
+            $link .= "<a target='_blank' href='" . Toolbox::getItemTypeFormURL('User') . "?id=" . $data['users_id'] . "'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
+               User::getThumbnailURLForPicture($user->fields['picture']) . "'></a>";
+            $link .= "</div>";
+         }
+         $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
+         $finished = 0;
+         $finished_style = 'style="display: inline;"';
+         $stateT = new PluginTasklistsTaskState();
+         if ($stateT->getFromDB($plugin_tasklists_taskstates_id)) {
+            if ($stateT->getFinishedState()) {
+               $finished_style = 'style="display: none;"';
+               $finished = 1;
+            }
+         }
+         $task = new PluginTasklistsTask();
+         if ($task->checkVisibility($data['id']) == true) {
+            $duedate = '';
+            if (!empty($data['due_date'])) {
+               $duedate = __('Due date', 'tasklists') . " " . Html::convDate($data['due_date']);
+            }
+            $actiontime = '';
+            if ($data['actiontime'] != 0) {
+               $actiontime = Html::timestampToString($data['actiontime'], false, true);
+            }
+            $archived = $data['is_archived'];
+
+            if (isset($data['users_id'])
+               && $data['users_id'] != Session::getLoginUserID()) {
+               $finished_style = 'style="display: none;"';
+            }
+
+            $right = 0;
+            if (($data['users_id'] == Session::getLoginUserID() && Session::haveRight("plugin_tasklists", UPDATE))
+               || Session::haveRight("plugin_tasklists_see_all", 1)) {
+               $right = 1;
+            }
+
+            if ($data['users_id'] == 0) {
+               $right = 1;
+               $finished_style = 'style="display: inline;"';
+            }
+
+            $entity = new Entity();
+            $entity_name = __('None');
+            if ($entity->getFromDB($data['entities_id'])) {
+               $entity_name = $entity->fields['name'];
+            }
+            $client = (empty($data['client'])) ? $entity_name : $data['client'];
+
+            $comment = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode($data["comment"],
+               ENT_QUOTES,
+               "UTF-8"));
+
+            $nbcomments = "";
+            $nb = 0;
+            $where = [
+               'plugin_tasklists_tasks_id' => $data['id'],
+               'language' => null
+            ];
+            $nb = countElementsInTable(
+               'glpi_plugin_tasklists_tasks_comments',
+               $where
+            );
+            if ($nb > 0) {
+               $nbcomments = " (" . $nb . ") ";
+            }
+            $linkname = $data["name"];
+            if ($_SESSION["glpiis_ids_visible"]
+               || empty($data["name"])) {
+               $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
+            }
+
+            $tasks[] = ['id' => $data['id'],
+               'title' => $linkname . $nbcomments,
+               'block' => ($ID > 0 ? $ID : 0),
+               'link' => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
+               'description' => Html::resume_text($comment, 80),
+               'priority' => CommonITILObject::getPriorityName($data['priority']),
+               'priority_id' => $data['priority'],
+               'bgcolor' => $_SESSION["glpipriority_" . $data['priority']],
+               'percent' => $data['percent_done'],
+               'actiontime' => $actiontime,
+               'duedate' => $duedate,
+               'user' => $link,
+               'client' => $client,
+               'finished' => $finished,
+               'archived' => $archived,
+               'finished_style' => $finished_style,
+               'right' => $right,
+               'users_id' => $data['users_id'],
+               '_readonly' =>false
+            ];
+
+            if ($archived != 1) {
+               $users_array[] = $data['users_id'];
+            }
+         }
+      }
+         $state["items"] = $tasks;
+         $nstates[] = $state;
+      }
+     return $nstates;
+
+   }
+
+   static function findUsers($plugin_tasklists_tasktypes_id){
+      $dbu   = new DbUtils();
+      $users = [];
+      $task = new PluginTasklistsTask();
+      $tasks = $task->find(["plugin_tasklists_tasktypes_id"=>$plugin_tasklists_tasktypes_id,"is_archived"=>0]);
+      foreach ($tasks as $t){
+         $users[$t["users_id"]] =$dbu->getUserName($t["users_id"]);
+      }
+      $users = array_unique($users);
+      $users[-1] = "All";
+
+
+      return $users;
+   }
+
 }

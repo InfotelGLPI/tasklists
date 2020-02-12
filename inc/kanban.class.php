@@ -44,6 +44,12 @@ class PluginTasklistsKanban extends CommonGLPI {
    static function canView() {
       return Session::haveRight(self::$rightname, READ);
    }
+   /**
+    * @return bool
+    */
+   static function canCreate() {
+      return Session::haveRight(self::$rightname, CREATE);
+   }
 
    /**
     * @param int $nb
@@ -150,7 +156,6 @@ class PluginTasklistsKanban extends CommonGLPI {
          echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
          return false;
       }
-
       $dbu   = new DbUtils();
       $rand  = mt_rand();
       $query = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
@@ -407,5 +412,92 @@ class PluginTasklistsKanban extends CommonGLPI {
            seeprogresstasks:$seeprogresstasks
        });</script>";
 
+   }
+   static function showKanban2($ID) {
+      $project = new Project();
+      
+   /*   if (($ID <= 0 && !Project::canView()) ||
+         ($ID > 0 && (!$project->getFromDB($ID) || !$project->canView()))) {
+         return false;
+      }
+*/
+      $supported_itemtypes = [];
+      if (PluginTasklistsTask::canCreate()) {
+         $supported_itemtypes['PluginTasklistsTask'] = [
+            'name' => PluginTasklistsTask::getTypeName(1),
+            'fields' => [
+               'name'   => [
+                  'placeholder'  => __('Name')
+               ],
+               'content'   => [
+                  'placeholder'  => __('Content'),
+                  'type'         => 'textarea'
+               ]
+            ]
+         ];
+      }
+
+      $column_field = [
+         'id' => 'projectstates_id',
+         'extra_fields' => [
+            'color'  => [
+               'type'   => 'color'
+            ]
+         ]
+      ];
+      if($ID != -1){
+         $item_id = $ID;
+      }else{
+         $item_id = PluginTasklistsPreference::checkPreferenceValue("default_type",Session::getLoginUserID());
+      }
+
+      $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
+      $column_field = json_encode($column_field, JSON_FORCE_OBJECT);
+
+      echo "<div id='kanban' class='kanban'></div>";
+      $darkmode = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
+      $canadd_item = json_encode(self::canCreate() || ProjectTask::canCreate());
+      $canmodify_view = json_encode(true);
+//      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
+      $cancreate_column = json_encode((bool) PluginTasklistsTask::canCreate());
+      $limit_addcard_columns = $canmodify_view !== 'false' ? '[]' : json_encode([0]);
+      $can_order_item = json_encode((bool)$project->canOrderKanbanCard($ID));
+
+
+
+
+
+
+      $js = <<<JAVASCRIPT
+         $(function(){
+            // Create Kanban
+            var kanban = new GLPIKanban({
+               element: "#kanban",
+               allow_add_item: $canadd_item,
+               allow_modify_view: $canmodify_view,
+               allow_create_column: $cancreate_column,
+               limit_addcard_columns: $limit_addcard_columns,
+               allow_order_card: $can_order_item,
+               supported_itemtypes: $supported_itemtypes,
+               dark_theme: {$darkmode},
+               max_team_images: 3,
+               column_field: $column_field,
+               item: {
+                  itemtype: 'PluginTasklistsTaskType',
+                  items_id: $item_id
+               }
+            });
+            // Create kanban elements and add data
+            kanban.init();
+         });
+JAVASCRIPT;
+      echo Html::scriptBlock($js);
+   }
+
+   public function canOrderKanbanCard($ID) {
+      if ($ID > 0) {
+         $this->getFromDB($ID);
+      }
+      return ($ID <= 0 || $this->canModifyGlobalState());
    }
 }

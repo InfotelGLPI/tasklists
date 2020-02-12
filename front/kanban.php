@@ -38,7 +38,10 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
    echo Html::script('/plugins/tasklists/lib/kanban/js/kanban.js');
    echo Html::css('/plugins/tasklists/lib/kanban/css/kanban.css');
 
-   $kanban->display();
+   //$kanban->display();
+   if(!isset($_GET["context_id"]))
+      $_GET["context_id"] = -1;
+   $kanban->showKanban2($_GET["context_id"]);
 
 } else {
    Html::displayRightError();
