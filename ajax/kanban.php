@@ -52,11 +52,11 @@ if (!isset($_REQUEST['action'])) {
 }
 $action = $_REQUEST['action'];
 
-if ($action === 'get_translated_strings') {
-   header("Content-Type: application/json; charset=UTF-8", true);
-   echo json_encode((Kanban::getLocalizedKanbanStrings()), JSON_FORCE_OBJECT);
-   return;
-}
+//if ($action === 'get_translated_strings') {
+//   header("Content-Type: application/json; charset=UTF-8", true);
+//   echo json_encode((Kanban::getLocalizedKanbanStrings()), JSON_FORCE_OBJECT);
+//   return;
+//}
 
 $nonkanban_actions = ['update', 'add_item', 'move_item'];
 if (isset($_REQUEST['itemtype'])) {
@@ -157,8 +157,7 @@ if ($_REQUEST['action'] == 'update') {
    $checkParams(['column_field']);
    // Get all columns to refresh the kanban
    header("Content-Type: application/json; charset=UTF-8", true);
-   $force_columns = Item_Kanban::getAllShownColumns($itemtype, $_REQUEST['items_id']);
-   $columns = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], $force_columns, true);
+   $columns = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], [], true);
    echo json_encode($columns, JSON_FORCE_OBJECT);
 } else if ($_REQUEST['action'] == 'get_switcher_dropdown') {
    $values = $itemtype::getAllForKanban();
@@ -181,7 +180,7 @@ if ($_REQUEST['action'] == 'update') {
 //      return;
 //   }
 //   echo $itemtype::getFormURLWithID($_REQUEST['items_id'], true)."&forcetab={$tab_id}";
-} else if ($_REQUEST['action'] == 'create_column') {
+/*} else if ($_REQUEST['action'] == 'create_column') {
    $checkParams(['column_field', 'items_id', 'column_name']);
    $column_field = $_REQUEST['column_field'];
    $column_itemtype = getItemtypeForForeignKeyField($column_field);
@@ -197,15 +196,15 @@ if ($_REQUEST['action'] == 'update') {
       ] + $params);
    header("Content-Type: application/json; charset=UTF-8", true);
    $column = $itemtype::getKanbanColumns($_REQUEST['items_id'], $column_field, [$column_id]);
-   echo json_encode($column);
-} else if ($_REQUEST['action'] == 'save_column_state') {
-   $checkParams(['items_id', 'state']);
-   Item_Kanban::saveStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['state']);
+   echo json_encode($column);*/
+//} else if ($_REQUEST['action'] == 'save_column_state') {
+//   $checkParams(['items_id', 'state']);
+//   Item_Kanban::saveStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['state']);
 } else if ($_REQUEST['action'] == 'load_column_state') {
    $checkParams(['items_id', 'last_load']);
    header("Content-Type: application/json; charset=UTF-8", true);
    $response = [
-      'state'     => Item_Kanban::loadStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['last_load']),
+      'state'     => [],
       'timestamp' => $_SESSION['glpi_currenttime']
    ];
    echo json_encode($response, JSON_FORCE_OBJECT);

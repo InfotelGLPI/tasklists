@@ -74,6 +74,7 @@ function plugin_init_tasklists() {
       $CFG_GLPI['javascript']['config']['commondropdown']['PluginTasklistsTaskState'] = ['colorpicker'];
       $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/lib/redips/redips-drag-min.js";
       $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/scripts/plugin_tasklists_drag-field-row.js";
+      $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/lib/kanban/js/kanban.js";
       //$PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/lib/jqueryplugins/spectrum";
 
 

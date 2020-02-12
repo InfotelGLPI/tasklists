@@ -87,4 +87,8 @@ if ($_REQUEST['action'] == 'addArchived') {
    }
 
    echo json_encode($arch, JSON_FORCE_OBJECT);
+}else if ($_REQUEST['action'] == 'changeUsers') {
+   if(!empty($_REQUEST['vals']))
+      $_SESSION["usersKanban"][Session::getLoginUserID()] = json_encode($_REQUEST['vals']);
+
 }
