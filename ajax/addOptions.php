@@ -53,8 +53,8 @@ if ($_REQUEST['action'] == 'addArchived') {
 
    header("Content-Type: application/json; charset=UTF-8", true);
    $states = [];
-   $states[0] = "Non archive";
-   $states[1] = "Archive";
+   $states[0] = __("Not archived",'tasklists');
+   $states[1] = __("Archived",'tasklists');
 
 
 //

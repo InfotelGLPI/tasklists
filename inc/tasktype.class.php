@@ -124,6 +124,9 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
    }
    static function getKanbanColumns($ID, $column_field, $column_ids = [], $get_default = false) {
 
+      if(!PluginTasklistsTypeVisibility::isUserHaveRight($ID)){
+         return [];
+      }
       $dbu   = new DbUtils();
       $cond       = ["plugin_tasklists_taskstates_id" => 0,
             "plugin_tasklists_tasktypes_id"  => $ID,
@@ -194,11 +197,15 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       foreach ($states as $state) {
 
          $tasks = [];
-         $datas = $task->find(["plugin_tasklists_tasktypes_id" => $ID, "plugin_tasklists_taskstates_id" => $state["id"]]);
+         $datas = $task->find(["plugin_tasklists_tasktypes_id" => $ID, "plugin_tasklists_taskstates_id" => $state["id"]],['priority DESC']);
 
          foreach ($datas as $data) {
             $array = isset($_SESSION["archive"][Session::getLoginUserID()])?json_decode($_SESSION["archive"][Session::getLoginUserID()]):[0];
             if(!in_array($data["is_archived"],$array)){
+               continue;
+            }
+            $usersallowed = isset($_SESSION["usersKanban"][Session::getLoginUserID()])?json_decode($_SESSION["usersKanban"][Session::getLoginUserID()]):[-1];
+            if(!in_array(-1,$usersallowed) && !in_array($data['users_id'],$usersallowed)){
                continue;
             }
          $user = new User();
@@ -324,5 +331,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
       return $users;
    }
+
+
 
 }

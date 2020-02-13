@@ -459,7 +459,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       $canadd_item = json_encode(self::canCreate() || ProjectTask::canCreate());
       $canmodify_view = json_encode(true);
 //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
-      $cancreate_column = json_encode((bool) PluginTasklistsTask::canCreate());
+      $cancreate_column = json_encode((bool) PluginTasklistsTaskType::canCreate());
       $limit_addcard_columns = $canmodify_view !== 'false' ? '[]' : json_encode([0]);
       $can_order_item = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
 
@@ -499,5 +499,35 @@ JAVASCRIPT;
          $this->getFromDB($ID);
       }
       return ($ID <= 0 || $this->canModifyGlobalState());
+   }
+
+   public static function getLocalizedKanbanStrings() {
+      $strings = [
+         'Add'                               => __('Add'),
+         'Delete'                            => __('Delete'),
+         'Close'                             => __('Close'),
+         'Toggle collapse'                   => __('Toggle collapse'),
+         'Search'                            => __('Search'),
+         'Search or filter results'          => __('Search or filter results'),
+         'Add column'                        => __('Add column'),
+         'Create status'                     => __('Create status'),
+         '%d other team members'             => __('%d other team members'),
+         'Add a column from existing status' => __('Add a column from existing status'),
+         'Or add a new status'               => __('Or add a new status'),
+         'add_tasks'          => __('Add task', 'tasklists'),
+     'archive_all_tasks'   => __('Archive all tasks of this state', 'tasklists'),
+      'see_archived_tasks'  => __('See archived tasks', 'tasklists'),
+      'hide_archived_tasks' => __('Hide archived tasks', 'tasklists'),
+      'clone_task'          => __('Clone task', 'tasklists'),
+     'see_progress_tasks'     => __('See tasks in progress', 'tasklists'),
+      'see_my_tasks'           => __('See tasks of', 'tasklists'),
+     'see_all_tasks'           => __('See all tasks', 'tasklists'),
+      'alert_archive_task'      =>__('Are you sure you want to archive this task ?', 'tasklists'),
+      'alert_archive_all_tasks' => __('Are you sure you want to archive all tasks ?', 'tasklists'),
+      'archive_task'            => __('Archive this task', 'tasklists'),
+     'update_priority'         => __('Update priority of task', 'tasklists'),
+     'see_details'            => __('Details of task', 'tasklists'),
+      ];
+      return $strings;
    }
 }

@@ -276,4 +276,20 @@ class PluginTasklistsTaskState extends CommonDropdown {
    function getFinishedState() {
       return $this->fields['is_finished'];
    }
+
+   static function getAllKanbanColumns() {
+
+      $taskStates = new self();
+      $columns = ['plugin_tasklists_taskstates_id' => []];
+      $restrict = [];
+      $allstates = $taskStates->find($restrict, ['is_finished ASC', 'id']);
+      foreach ($allstates as $state) {
+         $columns['plugin_tasklists_taskstates_id'][$state['id']] = [
+            'name'         => $state['name'],
+            'header_color' => $state['color']
+         ];
+      }
+      return $columns['plugin_tasklists_taskstates_id'];
+
+   }
 }

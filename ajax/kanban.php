@@ -52,11 +52,11 @@ if (!isset($_REQUEST['action'])) {
 }
 $action = $_REQUEST['action'];
 
-//if ($action === 'get_translated_strings') {
-//   header("Content-Type: application/json; charset=UTF-8", true);
-//   echo json_encode((Kanban::getLocalizedKanbanStrings()), JSON_FORCE_OBJECT);
-//   return;
-//}
+if ($action === 'get_translated_strings') {
+   header("Content-Type: application/json; charset=UTF-8", true);
+   echo json_encode((PluginTasklistsKanban::getLocalizedKanbanStrings()), JSON_FORCE_OBJECT);
+   return;
+}
 
 $nonkanban_actions = ['update', 'add_item', 'move_item'];
 if (isset($_REQUEST['itemtype'])) {
@@ -149,10 +149,48 @@ if ($_REQUEST['action'] == 'update') {
 } else if ($_REQUEST['action'] == 'expand_column') {
    $checkParams(['column', 'kanban']);
    Item_Kanban::expandColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
-//} else if ($_REQUEST['action'] == 'move_column') {
-//   $checkParams(['column', 'kanban', 'position']);
-//   Item_Kanban::moveColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'],
-//      $_REQUEST['column'], $_REQUEST['position']);
+} else if ($_REQUEST['action'] == 'move_column') {
+   global $DB;
+   $checkParams(['column', 'kanban', 'position']);
+   $dbu   = new DbUtils();
+   $table = $dbu->getTableForItemType('PluginTasklistsStateOrder');
+
+
+
+
+
+   $stateorder = new PluginTasklistsStateOrder();
+   $stateorder->getFromDBByCrit(["plugin_tasklists_taskstates_id"=>$_REQUEST["column"],"plugin_tasklists_tasktypes_id"=>$_REQUEST["kanban"]["items_id"]]);
+
+   $id_item = $stateorder->getID();
+   $_POST['new_order'] =  $_REQUEST['position'];
+   $_POST['old_order'] =  $stateorder->getField('ranking');
+// Réorganisation de tout les champs
+   if ($_POST['old_order'] < $_POST['new_order']) {
+
+      $DB->query("UPDATE $table SET
+               `ranking` = `ranking`-1
+               WHERE `plugin_tasklists_tasktypes_id` = {$_REQUEST["kanban"]["items_id"]}
+               AND `ranking` > {$_POST['old_order']}
+               AND `ranking` <= {$_POST['new_order']}");
+   } else {
+
+      $DB->query("UPDATE $table SET
+               `ranking` = `ranking`+1
+               WHERE `plugin_tasklists_tasktypes_id` = {$_REQUEST["kanban"]["items_id"]}
+               AND `ranking` < {$_POST['old_order']}
+               AND `ranking` >= {$_POST['new_order']}");
+   }
+
+   if (isset($id_item) && $id_item > 0) {
+      $DB->query("UPDATE $table SET
+               `ranking` = {$_POST['new_order']}
+               WHERE id = $id_item");
+   }
+/*
+   Item_Kanban::moveColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'],
+      $_REQUEST['column'], $_REQUEST['position']);
+*/
 } else if ($_REQUEST['action'] == 'refresh') {
    $checkParams(['column_field']);
    // Get all columns to refresh the kanban
@@ -161,7 +199,13 @@ if ($_REQUEST['action'] == 'update') {
    echo json_encode($columns, JSON_FORCE_OBJECT);
 } else if ($_REQUEST['action'] == 'get_switcher_dropdown') {
    $values = $itemtype::getAllForKanban();
-   Dropdown::showFromArray('kanban-board-switcher', $values, [
+   $vals = [];
+   foreach ($values as $key =>$value){
+      if(PluginTasklistsTypeVisibility::isUserHaveRight($key)){
+         $vals[$key] = $value;
+      }
+   }
+   Dropdown::showFromArray('kanban-board-switcher', $vals, [
       'value'  => isset($_REQUEST['items_id']) ? $_REQUEST['items_id'] : ''
    ]);
 } else if ($_REQUEST['action'] == 'get_url') {
@@ -211,10 +255,36 @@ if ($_REQUEST['action'] == 'update') {
 } else if ($_REQUEST['action'] == 'list_columns') {
    $checkParams(['column_field']);
    header("Content-Type: application/json; charset=UTF-8", true);
-   echo json_encode($itemtype::getAllKanbanColumns($_REQUEST['column_field']));
+   echo json_encode(PluginTasklistsTaskState::getAllKanbanColumns());
 } else if ($_REQUEST['action'] == 'get_column') {
    $checkParams(['column_id', 'column_field', 'items_id']);
    header("Content-Type: application/json; charset=UTF-8", true);
    $column = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], [$_REQUEST['column_id']]);
    echo json_encode($column, JSON_FORCE_OBJECT);
+} else if ($_REQUEST['action'] == 'add_status_context') {
+   header("Content-Type: application/json; charset=UTF-8", true);
+   $taskState = new PluginTasklistsTaskState();
+   $taskState->getFromDB($_REQUEST['column']);
+   $contexts = json_decode($taskState->getField('tasktypes'));
+   $contexts[] = $_REQUEST['context_id'];
+   $input = [];
+   $input["tasktypes"] = $contexts;
+   $input["id"] = $_REQUEST['column'];
+   $taskState->update($input);
+   PluginTasklistsStateOrder::addStateContext($_REQUEST['context_id'],$_REQUEST['column']);
+   echo json_encode(true, JSON_FORCE_OBJECT);
+}else if ($_REQUEST['action'] == 'remove_status_context') {
+   header("Content-Type: application/json; charset=UTF-8", true);
+   $taskState = new PluginTasklistsTaskState();
+   $taskState->getFromDB($_REQUEST['column']);
+   $contexts = json_decode($taskState->getField('tasktypes'));
+   if (($key = array_search( $_REQUEST['context_id'], $contexts)) !== false) {
+      unset($contexts[$key]);
+   }
+   $input = [];
+   $input["tasktypes"] = $contexts;
+   $input["id"] = $_REQUEST['column'];
+   $taskState->update($input);
+   PluginTasklistsStateOrder::removeStateContext($_REQUEST['context_id'],$_REQUEST['column']);
+   echo json_encode(true, JSON_FORCE_OBJECT);
 }

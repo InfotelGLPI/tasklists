@@ -693,6 +693,10 @@
  #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-item .kanban-item-content, #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-add-form .kanban-item-content {
 	 padding: 0 10px 0 10px;
 }
+#page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-item .kanban-item-client, #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-add-form .kanban-item-client {
+    padding: 0 10px 0 10px;
+}
+
  #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-item .kanban-item-content .kanban-core-content, #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-add-form .kanban-item-content .kanban-core-content {
 	 display: flex;
 	 flex-wrap: wrap;
