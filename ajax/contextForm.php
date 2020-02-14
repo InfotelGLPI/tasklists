@@ -27,24 +27,24 @@
  --------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+include("../../../inc/includes.php");
 
-Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+Session::checkLoginUser();
 
-$kanban = new PluginTasklistsKanban();
+Html::header_nocache();
+header("Content-Type: text/html; charset=UTF-8");
 
-if ($kanban->canView() || Session::haveRight("config", CREATE)) {
+//Html::requireJs('tinymce');
+echo "<script type='text/javascript'  src='../../../lib/tiny_mce/lib/tinymce.min.js'></script>";
 
-   echo Html::script('/plugins/tasklists/lib/kanban/js/kanban.js');
-   echo Html::css('/plugins/tasklists/lib/kanban/css/kanban.css');
+if (isset($_GET['newContext'])) {
+   $options = [
+      'from_edit_ajax'                 => true,
 
-   //$kanban->display();
-   if(!isset($_GET["context_id"]))
-      $_GET["context_id"] = -1;
-   $kanban->showKanban2($_GET["context_id"]);
+      'withtemplate'                   => 0
+   ];
+   $task    = new PluginTasklistsTaskState();
+   $task->showForm(0, $options);
 
-} else {
-   Html::displayRightError();
 }
-
-Html::footer();
+Html::ajaxFooter();

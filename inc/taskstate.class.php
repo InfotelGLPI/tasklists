@@ -70,8 +70,8 @@ class PluginTasklistsTaskState extends CommonDropdown {
       echo "<td rowspan='4'>" . __('Description') . "</td>";
       echo "<td rowspan='4'>";
       echo "<textarea name='comment' id ='comment' cols='45' rows='3'>" .
-           $this->fields['comment'] .
-           "</textarea>";
+         $this->fields['comment'] .
+         "</textarea>";
       echo "</td>";
       echo "</tr>";
 
@@ -88,32 +88,38 @@ class PluginTasklistsTaskState extends CommonDropdown {
       Dropdown::showYesNo('is_finished', $this->fields['is_finished']);
       echo "</td>";
       echo "</tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>"
-           . _n('Context', 'Contexts', 1, 'tasklists') . "</td>";
-      echo "</td>";
-      echo "<td>";
-      echo Html::hidden("tasktypes");
-      $possible_values = [];
-      $dbu             = new DbUtils();
-      $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
-      if (!empty($datatypes)) {
-         foreach ($datatypes as $datatype) {
-            $possible_values[$datatype['id']] = $datatype['name'];
+      if (isset($options["from_edit_ajax"]) && $options["from_edit_ajax"]) {
+         echo Html::hidden("tasktypes");
+      } else {
+         echo "<tr class='tab_bg_1'>";
+         echo "<td>"
+            . _n('Context', 'Contexts', 1, 'tasklists') . "</td>";
+         echo "</td>";
+         echo "<td>";
+         echo Html::hidden("tasktypes");
+         $possible_values = [];
+         $dbu = new DbUtils();
+         $datatypes = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+         if (!empty($datatypes)) {
+            foreach ($datatypes as $datatype) {
+               $possible_values[$datatype['id']] = $datatype['name'];
+            }
          }
-      }
-      $values = json_decode($this->fields['tasktypes']);
-      if (!is_array($values)) {
-         $values = [];
-      }
-      Dropdown::showFromArray("tasktypes",
-                              $possible_values,
-                              ['values'   => $values,
-                               'multiple' => 'multiples']);
+         $values = json_decode($this->fields['tasktypes']);
+         if (!is_array($values)) {
+            $values = [];
+         }
+
+         Dropdown::showFromArray("tasktypes",
+            $possible_values,
+            ['values' => $values,
+               'multiple' => 'multiples']);
+
+
 
       echo "</td>";
       echo "</tr>";
+   }
 
       $this->showFormButtons($options);
 
@@ -275,5 +281,21 @@ class PluginTasklistsTaskState extends CommonDropdown {
     */
    function getFinishedState() {
       return $this->fields['is_finished'];
+   }
+
+   static function getAllKanbanColumns() {
+
+      $taskStates = new self();
+      $columns = ['plugin_tasklists_taskstates_id' => []];
+      $restrict = [];
+      $allstates = $taskStates->find($restrict, ['is_finished ASC', 'id']);
+      foreach ($allstates as $state) {
+         $columns['plugin_tasklists_taskstates_id'][$state['id']] = [
+            'name'         => $state['name'],
+            'header_color' => $state['color']
+         ];
+      }
+      return $columns['plugin_tasklists_taskstates_id'];
+
    }
 }

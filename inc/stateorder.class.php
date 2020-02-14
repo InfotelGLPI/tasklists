@@ -188,4 +188,40 @@ class PluginTasklistsStateOrder extends CommonDBTM {
          }
       }
    }
+   static function addStateContext($plugin_tasklists_tasktypes_id,$plugin_tasklists_taskstates_id){
+      $stateorder = new self();
+      $stateorders = $stateorder->find(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id]);
+      $max = 0;
+      foreach ($stateorders as $order){
+         if($order["ranking"] > $max){
+            $max = $order["ranking"];
+         }
+      }
+      $input = [];
+      $input["plugin_tasklists_tasktypes_id"] = $plugin_tasklists_tasktypes_id;
+      $input["plugin_tasklists_taskstates_id"] = $plugin_tasklists_taskstates_id;
+      $input["ranking"] = $max+1;
+      $stateorder->add($input);
+
+   }
+
+   static function removeStateContext($plugin_tasklists_tasktypes_id,$plugin_tasklists_taskstates_id){
+      $stateorder = new self();
+      $stateorder->getFromDBByCrit(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id,"plugin_tasklists_taskstates_id" => $plugin_tasklists_taskstates_id]);
+      $id = $stateorder->getID();
+      $ranking = $stateorder->getField('ranking');
+      $stateorders = $stateorder->find(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id]);
+
+      foreach ($stateorders as $order){
+         $input = [];
+         if($order["ranking"]>$ranking){
+            $input["ranking"] = $order["ranking"]-1;
+            $input["id"] = $order["id"];
+         }
+      }
+
+      $stateorder->getFromDB($id);
+      $stateorder->delete($stateorder->fields);
+
+   }
 }
