@@ -287,4 +287,16 @@ if ($_REQUEST['action'] == 'update') {
    $taskState->update($input);
    PluginTasklistsStateOrder::removeStateContext($_REQUEST['context_id'],$_REQUEST['column']);
    echo json_encode(true, JSON_FORCE_OBJECT);
+}else if ($_REQUEST['action'] == 'user_picture'){
+   header("Content-Type: application/json; charset=UTF-8", true);
+   $link = "";
+   $dbu = new DbUtils();
+   $user = new User();
+   if ($user->getFromDB($_REQUEST['users_id'])) {
+      $link = "<div class='kanban_user_picture_border_verysmall'>";
+      $link .= "<a target='_blank' href='" . Toolbox::getItemTypeFormURL('User') . "?id=" . $data['users_id'] . "'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
+         User::getThumbnailURLForPicture($user->fields['picture']) . "'></a>";
+      $link .= "</div>";
+   }
+   echo json_encode($link, JSON_FORCE_OBJECT);
 }
