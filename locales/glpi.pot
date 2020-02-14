@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-14 15:06+0100\n"
+"POT-Creation-Date: 2019-02-25 09:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,127 +18,91 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:91 inc/dashboard.class.php:58 inc/dashboard.class.php:178
+#: setup.php:89 inc/dashboard.class.php:58 inc/dashboard.class.php:178
 #: inc/dashboard.class.php:183 inc/menu.class.php:44
 #: inc/preference.class.php:45 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr ""
 
-#: ajax/addOptions.php:56
-msgid "Not archived"
-msgstr ""
-
-#: ajax/addOptions.php:57 inc/task.class.php:181 inc/task.class.php:599
-msgid "Archived"
-msgstr ""
-
 #: inc/dashboard.class.php:93 inc/task.class.php:80 inc/task.class.php:418
-#: inc/taskstate.class.php:96 inc/taskstate.class.php:149
+#: inc/taskstate.class.php:94 inc/taskstate.class.php:143
 #: inc/tasktype.class.php:48
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/dashboard.class.php:93 inc/kanban.class.php:202
+#: inc/dashboard.class.php:93 inc/kanban.class.php:197
 #: inc/notificationtargettask.class.php:203
 #: inc/notificationtargettask.class.php:247 inc/task.class.php:118
-#: inc/task.class.php:496 inc/tasktype.class.php:233
+#: inc/task.class.php:496
 msgid "Due date"
 msgstr ""
 
 #: inc/dashboard.class.php:164 inc/dashboard.class.php:172
-#: inc/kanban.class.php:353 inc/kanban.class.php:519 inc/ticket.class.php:154
+#: inc/kanban.class.php:348 inc/ticket.class.php:154
 msgid "Add task"
 msgstr ""
 
-#: inc/kanban.class.php:60
+#: inc/kanban.class.php:54
 msgid "Kanban"
 msgstr ""
 
-#: inc/kanban.class.php:119 inc/kanban.class.php:156
+#: inc/kanban.class.php:113 inc/kanban.class.php:150
 msgid "You don't have the right to see any context"
 msgstr ""
 
-#: inc/kanban.class.php:299 inc/task.class.php:622 inc/task.class.php:709
-#: inc/task.class.php:985 inc/tasktype.class.php:140
+#: inc/kanban.class.php:294 inc/task.class.php:622 inc/task.class.php:709
+#: inc/task.class.php:985
 msgid "Backlog"
 msgstr ""
 
-#: inc/kanban.class.php:354 inc/kanban.class.php:521
+#: inc/kanban.class.php:349
 msgid "Archive all tasks of this state"
 msgstr ""
 
-#: inc/kanban.class.php:355 inc/kanban.class.php:522
+#: inc/kanban.class.php:350
 msgid "See archived tasks"
 msgstr ""
 
-#: inc/kanban.class.php:356 inc/kanban.class.php:523
+#: inc/kanban.class.php:351
 msgid "Hide archived tasks"
 msgstr ""
 
-#: inc/kanban.class.php:357 inc/kanban.class.php:524
+#: inc/kanban.class.php:352
 msgid "Clone task"
 msgstr ""
 
-#: inc/kanban.class.php:359 inc/kanban.class.php:525
+#: inc/kanban.class.php:354
 msgid "See tasks in progress"
 msgstr ""
 
-#: inc/kanban.class.php:360 inc/kanban.class.php:526
+#: inc/kanban.class.php:355
 msgid "See tasks of"
 msgstr ""
 
-#: inc/kanban.class.php:361 inc/kanban.class.php:527
+#: inc/kanban.class.php:356
 msgid "See all tasks"
 msgstr ""
 
-#: inc/kanban.class.php:362 inc/kanban.class.php:528
+#: inc/kanban.class.php:357
 msgid "Are you sure you want to archive this task ?"
 msgstr ""
 
-#: inc/kanban.class.php:363 inc/kanban.class.php:529
+#: inc/kanban.class.php:358
 msgid "Are you sure you want to archive all tasks ?"
 msgstr ""
 
-#: inc/kanban.class.php:364 inc/kanban.class.php:530
+#: inc/kanban.class.php:359
 msgid "Archive this task"
 msgstr ""
 
-#: inc/kanban.class.php:365 inc/kanban.class.php:531
+#: inc/kanban.class.php:360
 msgid "Update priority of task"
 msgstr ""
 
-#: inc/kanban.class.php:366 inc/kanban.class.php:532
+#: inc/kanban.class.php:361
 msgid "Details of task"
-msgstr ""
-
-#: inc/kanban.class.php:509
-msgid "Toggle collapse"
-msgstr ""
-
-#: inc/kanban.class.php:510
-msgid "Search"
-msgstr ""
-
-#: inc/kanban.class.php:511
-msgid "Search or filter results"
-msgstr ""
-
-#: inc/kanban.class.php:512
-msgid "Add status"
-msgstr ""
-
-#: inc/kanban.class.php:513
-msgid "Create status"
-msgstr ""
-
-#: inc/kanban.class.php:515
-msgid "Add a column from existing status"
-msgstr ""
-
-#: inc/kanban.class.php:516
-msgid "Or add a new status"
 msgstr ""
 
 #: inc/notificationtargettask.class.php:50
@@ -177,6 +141,10 @@ msgstr ""
 
 #: inc/stateorder.class.php:155
 msgid "Add states from GLPI"
+msgstr ""
+
+#: inc/task.class.php:181 inc/task.class.php:599
+msgid "Archived"
 msgstr ""
 
 #: inc/task.class.php:333
