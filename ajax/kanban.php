@@ -145,10 +145,10 @@ if ($_REQUEST['action'] == 'update') {
    Item_Kanban::hideColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
 } else if ($_REQUEST['action'] == 'collapse_column') {
    $checkParams(['column', 'kanban']);
-   Item_Kanban::collapseColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
+//   Item_Kanban::collapseColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
 } else if ($_REQUEST['action'] == 'expand_column') {
    $checkParams(['column', 'kanban']);
-   Item_Kanban::expandColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
+//   Item_Kanban::expandColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
 } else if ($_REQUEST['action'] == 'move_column') {
    global $DB;
    $checkParams(['column', 'kanban', 'position']);
