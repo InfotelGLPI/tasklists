@@ -66,6 +66,10 @@ class PluginTasklistsTaskState extends CommonDropdown {
       echo "<td>";
       Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
       echo "</td>";
+      if (isset($options['from_edit_ajax'])
+         && $options['from_edit_ajax']) {
+         echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
+      }
 
       echo "<td rowspan='4'>" . __('Description') . "</td>";
       echo "<td rowspan='4'>";
