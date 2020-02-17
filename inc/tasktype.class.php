@@ -326,7 +326,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
          $users[$t["users_id"]] =$dbu->getUserName($t["users_id"]);
       }
       $users = array_unique($users);
-      $users[-1] = "All";
+      $users[-1] = __("All");
 
 
       return $users;
