@@ -69,7 +69,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
    static function getAllForKanban(){
       $self = new self();
-      $list = $self->find();
+      $list = $self->find([],["completename ASC"]);
       $items = [
 
       ];
@@ -321,7 +321,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       $dbu   = new DbUtils();
       $users = [];
       $task = new PluginTasklistsTask();
-      $tasks = $task->find(["plugin_tasklists_tasktypes_id"=>$plugin_tasklists_tasktypes_id,"is_archived"=>0]);
+      $tasks = $task->find(["plugin_tasklists_tasktypes_id"=>$plugin_tasklists_tasktypes_id,"is_archived"=>0,"is_deleted"=>0]);
       foreach ($tasks as $t){
          $users[$t["users_id"]] =$dbu->getUserName($t["users_id"]);
       }
