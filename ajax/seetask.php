@@ -95,7 +95,7 @@ if (isset($_GET['id'])) {
          //'groups_id'                      => $task->fields['groups_id'],
          //'client'                         => $task->fields['client'],
          'entities_id'                    => $task->fields['entities_id'],
-         'name'                     => $task->fields['name'],
+         'name'                        => $task->fields['name'],
          'content'                     => $task->fields['comment'],
          'withtemplate'                   => 0
       ];

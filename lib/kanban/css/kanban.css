@@ -413,7 +413,7 @@
    color: #000;
 }
 
-@import 'impact';
+
 /** Kanban */
 #page .kanban {
    position: relative;
@@ -447,7 +447,7 @@
    align-items: center;
 }
 #opt-archive .select2-selection {
-   height: 40px !important;
+   height: auto !important;
 }
 #opt-archive .select2-selection__rendered{
    line-height: 15px !important;
@@ -458,7 +458,7 @@
    align-items: center;
 }
 #opt-users .select2-selection{
-   height: 40px !important;
+   height: auto !important;
 }
 #opt-users .select2-selection__rendered{
    line-height: 15px !important;
