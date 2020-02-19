@@ -69,13 +69,18 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
    static function getAllForKanban(){
       $self = new self();
+
       $list = $self->find([],["completename ASC"]);
       $items = [
 
       ];
 
       foreach ($list as $key=>$value){
-         $items[$value['id']] = $value['completename'];
+         $self->getFromDB($value['id']);
+         if(!$self->haveChildren()){
+            $items[$value['id']] = $value['completename'];
+         }
+
       }
       return $items;
    }
