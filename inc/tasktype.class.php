@@ -140,6 +140,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
          'name'    => __('Backlog', 'tasklists'),
          'rank'     => 0,
          'count'    => $countTasks,
+         'folded'   => PluginTasklistsItem_Kanban::loadStateForItem(PluginTasklistsTaskType::getType(),$ID,0),
          'finished' => 0];
       $nb         = 1;
       $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
@@ -176,6 +177,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                      'name'    => $name,
                      'rank'     => $ranking,
                      'count'    => $countTasks,
+                     'folded'   => PluginTasklistsItem_Kanban::loadStateForItem(PluginTasklistsTaskType::getType(),$ID,$datastate['id']),
                      'finished' => $datastate['is_finished']];
 
                   $states_ranked = [];

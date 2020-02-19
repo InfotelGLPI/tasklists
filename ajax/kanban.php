@@ -145,19 +145,15 @@ if ($_REQUEST['action'] == 'update') {
    Item_Kanban::hideColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
 } else if ($_REQUEST['action'] == 'collapse_column') {
    $checkParams(['column', 'kanban']);
-//   Item_Kanban::collapseColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
+   PluginTasklistsItem_Kanban::collapseColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
 } else if ($_REQUEST['action'] == 'expand_column') {
    $checkParams(['column', 'kanban']);
-//   Item_Kanban::expandColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
+   PluginTasklistsItem_Kanban::expandColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
 } else if ($_REQUEST['action'] == 'move_column') {
    global $DB;
    $checkParams(['column', 'kanban', 'position']);
    $dbu   = new DbUtils();
    $table = $dbu->getTableForItemType('PluginTasklistsStateOrder');
-
-
-
-
 
    $stateorder = new PluginTasklistsStateOrder();
    $stateorder->getFromDBByCrit(["plugin_tasklists_taskstates_id"=>$_REQUEST["column"],"plugin_tasklists_tasktypes_id"=>$_REQUEST["kanban"]["items_id"]]);
@@ -210,40 +206,11 @@ if ($_REQUEST['action'] == 'update') {
    ]);
 } else if ($_REQUEST['action'] == 'get_url') {
    $checkParams(['items_id']);
-//   if ($_REQUEST['items_id'] == -1) {
+
    $kb = new PluginTasklistsKanban();
       echo $kb->getSearchURL().'?context_id='.$_REQUEST['items_id'];
       return;
-//   }
-//   $item->getFromDB($_REQUEST['items_id']);
-//   $tabs = $item->defineTabs();
-//   $tab_id = array_search(__('Kanban'), $tabs);
-//   if (is_null($tab_id) || false === $tab_id) {
-//      Toolbox::logError("Itemtype does not have a Kanban tab!");
-//      http_response_code(400);
-//      return;
-//   }
-//   echo $itemtype::getFormURLWithID($_REQUEST['items_id'], true)."&forcetab={$tab_id}";
-/*} else if ($_REQUEST['action'] == 'create_column') {
-   $checkParams(['column_field', 'items_id', 'column_name']);
-   $column_field = $_REQUEST['column_field'];
-   $column_itemtype = getItemtypeForForeignKeyField($column_field);
-   if (!$column_itemtype::canCreate() || !$column_itemtype::canView()) {
-      // Missing rights
-      http_response_code(403);
-      return;
-   }
-   $params = $_REQUEST['params'] ?? [];
-   $column_item = new $column_itemtype();
-   $column_id = $column_item->add([
-         'name'   => $_REQUEST['column_name']
-      ] + $params);
-   header("Content-Type: application/json; charset=UTF-8", true);
-   $column = $itemtype::getKanbanColumns($_REQUEST['items_id'], $column_field, [$column_id]);
-   echo json_encode($column);*/
-//} else if ($_REQUEST['action'] == 'save_column_state') {
-//   $checkParams(['items_id', 'state']);
-//   Item_Kanban::saveStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['state']);
+
 } else if ($_REQUEST['action'] == 'load_column_state') {
    $checkParams(['items_id', 'last_load']);
    header("Content-Type: application/json; charset=UTF-8", true);
@@ -287,16 +254,4 @@ if ($_REQUEST['action'] == 'update') {
    $taskState->update($input);
    PluginTasklistsStateOrder::removeStateContext($_REQUEST['context_id'],$_REQUEST['column']);
    echo json_encode(true, JSON_FORCE_OBJECT);
-}else if ($_REQUEST['action'] == 'user_picture'){
-   header("Content-Type: application/json; charset=UTF-8", true);
-   $link = "";
-   $dbu = new DbUtils();
-   $user = new User();
-   if ($user->getFromDB($_REQUEST['users_id'])) {
-      $link = "<div class='kanban_user_picture_border_verysmall'>";
-      $link .= "<a target='_blank' href='" . Toolbox::getItemTypeFormURL('User') . "?id=" . $data['users_id'] . "'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
-         User::getThumbnailURLForPicture($user->fields['picture']) . "'></a>";
-      $link .= "</div>";
-   }
-   echo json_encode($link, JSON_FORCE_OBJECT);
 }

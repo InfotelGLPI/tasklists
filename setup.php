@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_TASKLISTS_VERSION', '1.5.0');
+define('PLUGIN_TASKLISTS_VERSION', '1.5.1');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
@@ -47,6 +47,7 @@ function plugin_init_tasklists() {
          'document_types'              => true,
          'notificationtemplates_types' => true
       ]);
+
 
       Plugin::registerClass('PluginTasklistsTicket',
                             ['addtabon' => 'Ticket']);

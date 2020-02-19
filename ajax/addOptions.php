@@ -48,27 +48,6 @@ if ($_REQUEST['action'] == 'addArchived') {
    if(!empty($_REQUEST['vals']))
       $_SESSION["archive"][Session::getLoginUserID()] = json_encode($_REQUEST['vals']);
 
-} else if ($_REQUEST['action'] == 'addArchived') {
-
-
-   header("Content-Type: application/json; charset=UTF-8", true);
-   $states = [];
-   $states[0] = __("Not archived",'tasklists');
-   $states[1] = __("Archived",'tasklists');
-
-
-//
-   if(!isset( $_SESSION["archive"][Session::getLoginUserID()])){
-      $_SESSION["archive"][Session::getLoginUserID()] = json_encode([0]);
-   }
-   if($_SESSION["archive"][Session::getLoginUserID()] != "" && $_SESSION["archive"][Session::getLoginUserID()] != "null" ){
-      $arch = Dropdown::showFromArray("archive", $states, array('id'=> 'archive','multiple' => true, 'values' => json_decode($_SESSION["archive"][Session::getLoginUserID()],true),"display" => false));
-   }else{
-      $arch = Dropdown::showFromArray("archive", $states, array('id'=> 'archive','multiple' => true, 'value' => 0,"display" => false));
-
-   }
-
-   echo json_encode($arch, JSON_FORCE_OBJECT);
 }if ($_REQUEST['action'] == 'addUsers') {
 
 

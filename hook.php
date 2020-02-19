@@ -37,13 +37,18 @@ function plugin_tasklists_install() {
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/task.class.php");
    if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
 
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.4.0.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.5.1.sql");
 
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
 
       $mig = new Migration("1.4.1");
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.1.sql");
+      $mig->executeMigration();
+   }
+   if(!$DB->tableExists("glpi_plugin_tasklists_items_kanbans")){
+      $mig = new Migration("1.5.1");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.5.1.sql");
       $mig->executeMigration();
    }
    // Add record notification
@@ -72,7 +77,8 @@ function plugin_tasklists_uninstall() {
               "glpi_plugin_tasklists_typevisibilities",
               "glpi_plugin_tasklists_preferences",
               "glpi_plugin_tasklists_tasks_comments",
-              "glpi_plugin_tasklists_tickets"];
+              "glpi_plugin_tasklists_tickets",
+               "glpi_plugin_tasklists_items_kanbans"];
 
    foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
