@@ -456,10 +456,10 @@ class PluginTasklistsKanban extends CommonGLPI {
 
       echo "<div id='kanban' class='kanban'></div>";
       $darkmode = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
-      $canadd_item = json_encode(self::canCreate() || ProjectTask::canCreate());
-      $canmodify_view = json_encode(true);
+      $canadd_item = json_encode(self::canCreate());
+      $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
 //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
-      $cancreate_column = json_encode((bool) PluginTasklistsTaskType::canCreate());
+      $cancreate_column = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
       $limit_addcard_columns = $canmodify_view !== 'false' ? '[]' : json_encode([0]);
       $can_order_item = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
 

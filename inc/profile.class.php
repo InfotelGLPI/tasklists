@@ -70,7 +70,8 @@ class PluginTasklistsProfile extends Profile {
 
          self::addDefaultProfileInfos($ID,
                                       ['plugin_tasklists' => 0,
-                                       'plugin_tasklists_see_all' => 0]);
+                                       'plugin_tasklists_see_all' => 0,
+                                         'plugin_tasklists_config' => 0]);
          $prof->showForm($ID);
       }
       return true;
@@ -83,7 +84,8 @@ class PluginTasklistsProfile extends Profile {
       //85
       self::addDefaultProfileInfos($ID,
                                    ['plugin_tasklists' => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE,
-                                    'plugin_tasklists_see_all' => 1], true);
+                                    'plugin_tasklists_see_all' => 1,
+                                      'plugin_tasklists_config' => 1], true);
    }
 
    /**
@@ -153,6 +155,16 @@ class PluginTasklistsProfile extends Profile {
       Html::showCheckbox(['name'    => '_plugin_tasklists_see_all',
                           'checked' => $effective_rights['plugin_tasklists_see_all']]);
       echo "</td></tr>\n";
+
+      $effective_rights = ProfileRight::getProfileRights($profiles_id, ['plugin_tasklists_config']);
+
+      echo "<tr class='tab_bg_2'>";
+      echo "<td width='20%'>" . __('Configure contexts and statuses ', 'tasklists') . "</td>";
+      echo "<td colspan='5'>";
+      Html::showCheckbox(['name'    => '_plugin_tasklists_config',
+         'checked' => $effective_rights['plugin_tasklists_config']]);
+      echo "</td></tr>\n";
+
       echo "</table>";
 
       if ($canedit
@@ -183,6 +195,9 @@ class PluginTasklistsProfile extends Profile {
          $rights[] = ['itemtype' => 'PluginTasklistsTask',
                       'label'    => __('See and update all tasks', 'tasklists'),
                       'field'    => 'plugin_tasklists_see_all'];
+         $rights[] = ['itemtype' => 'PluginTasklistsTask',
+            'label'    => __('Configure contexts and statuses', 'tasklists'),
+            'field'    => 'plugin_tasklists_config'];
       }
       return $rights;
    }
