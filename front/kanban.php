@@ -41,7 +41,7 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
    //$kanban->display();
    if(!isset($_GET["context_id"]))
       $_GET["context_id"] = -1;
-   $kanban->showKanban2($_GET["context_id"]);
+   $kanban->showKanban($_GET["context_id"]);
 
 } else {
    Html::displayRightError();
