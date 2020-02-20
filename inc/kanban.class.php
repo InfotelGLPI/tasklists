@@ -143,8 +143,6 @@ class PluginTasklistsKanban extends CommonGLPI {
    }
 
 
-
-
    static function showKanban($ID) {
       $project = new Project();
 

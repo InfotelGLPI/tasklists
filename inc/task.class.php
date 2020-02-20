@@ -462,7 +462,7 @@ class PluginTasklistsTask extends CommonDBTM {
             $entities_id = $options['entities_id'];
          }
          $rand_entity = Dropdown::show('Entity', ['name'         => "entities_id",
-                                                  'value' => $entities_id,
+                                                  'value'        => $entities_id,
                                                   'entity'       => $_SESSION["glpiactiveentities"],
                                                   'is_recursive' => true,
                                                   'on_change'    => "plugin_tasklists_load_entities();",]);
@@ -632,7 +632,7 @@ class PluginTasklistsTask extends CommonDBTM {
                if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
 
                   $condition = ['plugin_tasklists_taskstates_id' => $datastate['id'],
-                                'plugin_tasklists_tasktypes_id' =>$plugin_tasklists_tasktypes_id];
+                                'plugin_tasklists_tasktypes_id'  => $plugin_tasklists_tasktypes_id];
                   $order     = new PluginTasklistsStateOrder();
                   $ranks     = $order->find($condition);
                   $ranking   = 0;
@@ -818,13 +818,13 @@ class PluginTasklistsTask extends CommonDBTM {
    }
 
    /**
+    * @param MassiveAction $ma
+    *
+    * @return bool|false
     * @since version 0.85
     *
     * @see CommonDBTM::showMassiveActionsSubForm()
     *
-    * @param MassiveAction $ma
-    *
-    * @return bool|false
     */
    static function showMassiveActionsSubForm(MassiveAction $ma) {
 
@@ -839,16 +839,16 @@ class PluginTasklistsTask extends CommonDBTM {
    }
 
    /**
-    * @since version 0.85
-    *
-    * @see CommonDBTM::processMassiveActionsForOneItemtype()
-    *
     * @param MassiveAction $ma
     * @param CommonDBTM    $item
     * @param array         $ids
     *
     * @return nothing|void
     * @throws \GlpitestSQLError
+    * @see CommonDBTM::processMassiveActionsForOneItemtype()
+    *
+    * @since version 0.85
+    *
     */
    static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
 
@@ -884,10 +884,10 @@ class PluginTasklistsTask extends CommonDBTM {
    /**
     * For other plugins, add a type to the linkable types
     *
-    * @since version 1.3.0
-    *
     * @param $type string class name
-    * */
+    * *@since version 1.3.0
+    *
+    */
    static function registerType($type) {
       if (!in_array($type, self::$types)) {
          self::$types[] = $type;
@@ -926,14 +926,14 @@ class PluginTasklistsTask extends CommonDBTM {
    /**
     * display a value according to a field
     *
-    * @since version 0.83
-    *
     * @param $field     String         name of the field
     * @param $values    String / Array with the value to display
     * @param $options   Array          of option
     *
     * @return a string
-    **/
+    **@since version 0.83
+    *
+    */
    static function getSpecificValueToDisplay($field, $values, array $options = []) {
 
       if (!is_array($values)) {
@@ -951,15 +951,15 @@ class PluginTasklistsTask extends CommonDBTM {
    }
 
    /**
-    * @since version 0.84
-    *
     * @param $field
     * @param $name (default '')
     * @param $values (default '')
     * @param $options   array
     *
     * @return string
-    **/
+    **@since version 0.84
+    *
+    */
    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
 
       if (!is_array($values)) {

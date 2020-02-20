@@ -39,7 +39,7 @@ $query = "SELECT id FROM $table
             WHERE `plugin_tasklists_tasktypes_id` = {$_POST['plugin_tasklists_tasktypes_id']}
                AND `ranking` = {$_POST['old_order']}";
 
-$result  = $DB->queryOrDie($query, 'Error');
+$result = $DB->queryOrDie($query, 'Error');
 //$result  = $DB->query($query);
 $first   = $result->fetch_assoc();
 $id_item = $first['id'];

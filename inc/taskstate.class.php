@@ -67,15 +67,15 @@ class PluginTasklistsTaskState extends CommonDropdown {
       Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
       echo "</td>";
       if (isset($options['from_edit_ajax'])
-         && $options['from_edit_ajax']) {
+          && $options['from_edit_ajax']) {
          echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
       }
 
       echo "<td rowspan='4'>" . __('Description') . "</td>";
       echo "<td rowspan='4'>";
       echo "<textarea name='comment' id ='comment' cols='45' rows='3'>" .
-         $this->fields['comment'] .
-         "</textarea>";
+           $this->fields['comment'] .
+           "</textarea>";
       echo "</td>";
       echo "</tr>";
 
@@ -97,13 +97,13 @@ class PluginTasklistsTaskState extends CommonDropdown {
       } else {
          echo "<tr class='tab_bg_1'>";
          echo "<td>"
-            . _n('Context', 'Contexts', 1, 'tasklists') . "</td>";
+              . _n('Context', 'Contexts', 1, 'tasklists') . "</td>";
          echo "</td>";
          echo "<td>";
          echo Html::hidden("tasktypes");
          $possible_values = [];
-         $dbu = new DbUtils();
-         $datatypes = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+         $dbu             = new DbUtils();
+         $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
          if (!empty($datatypes)) {
             foreach ($datatypes as $datatype) {
                $possible_values[$datatype['id']] = $datatype['name'];
@@ -115,15 +115,14 @@ class PluginTasklistsTaskState extends CommonDropdown {
          }
 
          Dropdown::showFromArray("tasktypes",
-            $possible_values,
-            ['values' => $values,
-               'multiple' => 'multiples']);
+                                 $possible_values,
+                                 ['values'   => $values,
+                                  'multiple' => 'multiples']);
 
 
-
-      echo "</td>";
-      echo "</tr>";
-   }
+         echo "</td>";
+         echo "</tr>";
+      }
 
       $this->showFormButtons($options);
 
@@ -209,48 +208,48 @@ class PluginTasklistsTaskState extends CommonDropdown {
    }
 
    /**
-    * @since 0.84
-    *
     * @param $field
     * @param $name (default '')
     * @param $values (default '')
     * @param $options      array
-    **/
-    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
-       if (!is_array($values)) {
-          $values = [$field => $values];
-       }
-       $dbu = new DbUtils();
-       switch ($field) {
-          case 'tasktypes':
-             $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
-             if (!empty($datatypes)) {
-                foreach ($datatypes as $datatype) {
-                   $possible_values[$datatype['id']] = $datatype['name'];
-                }
-             }
+    **@since 0.84
+    *
+    */
+   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
+      if (!is_array($values)) {
+         $values = [$field => $values];
+      }
+      $dbu = new DbUtils();
+      switch ($field) {
+         case 'tasktypes':
+            $datatypes = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskType'));
+            if (!empty($datatypes)) {
+               foreach ($datatypes as $datatype) {
+                  $possible_values[$datatype['id']] = $datatype['name'];
+               }
+            }
 
-             return Dropdown::showFromArray($name, $possible_values,
-                                            ['display'  => false,
-                                            'value'     => $values[$field],
-                                            'multiple'  => 'multiples']);
+            return Dropdown::showFromArray($name, $possible_values,
+                                           ['display'  => false,
+                                            'value'    => $values[$field],
+                                            'multiple' => 'multiples']);
 
-             break;
-         }
+            break;
+      }
 
-       return parent::getSpecificValueToSelect($field, $name, $values, $options);
-    }
+      return parent::getSpecificValueToSelect($field, $name, $values, $options);
+   }
 
 
    /**
-    * @since 0.84
-    *
     * @param $field
     * @param $values
     * @param $options   array
     **
     *
     * @return string
+    * @since 0.84
+    *
     */
    static function getSpecificValueToDisplay($field, $values, array $options = []) {
 
@@ -290,9 +289,9 @@ class PluginTasklistsTaskState extends CommonDropdown {
    static function getAllKanbanColumns() {
 
       $taskStates = new self();
-      $columns = ['plugin_tasklists_taskstates_id' => []];
-      $restrict = [];
-      $allstates = $taskStates->find($restrict, ['is_finished ASC', 'id']);
+      $columns    = ['plugin_tasklists_taskstates_id' => []];
+      $restrict   = [];
+      $allstates  = $taskStates->find($restrict, ['is_finished ASC', 'id']);
       foreach ($allstates as $state) {
          $columns['plugin_tasklists_taskstates_id'][$state['id']] = [
             'name'         => $state['name'],

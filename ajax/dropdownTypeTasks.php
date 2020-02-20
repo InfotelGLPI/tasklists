@@ -55,10 +55,10 @@ if (isset($_POST["tasktypes"])) {
    }
 
    Dropdown::show('PluginTasklistsTask',
-      ['name' => $_POST['myname'],
-         'used' => $used,
-         'width' => '50%',
-         'entity' => $_POST['entity'],
-         'rand' => $_POST['rand'],
-         'condition' => ["glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id" => $_POST["tasktypes"]]]);
+                  ['name'      => $_POST['myname'],
+                   'used'      => $used,
+                   'width'     => '50%',
+                   'entity'    => $_POST['entity'],
+                   'rand'      => $_POST['rand'],
+                   'condition' => ["glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id" => $_POST["tasktypes"]]]);
 }

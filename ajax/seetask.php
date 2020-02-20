@@ -67,7 +67,7 @@ if (isset($_GET['id'])) {
    $id   = $_GET['clone_id'];
    $task = new PluginTasklistsTask();
    if ($task->getFromDB($id)) {
-      $options = [
+      $options    = [
          'from_edit_ajax'                 => true,
          'plugin_tasklists_tasktypes_id'  => $task->fields['plugin_tasklists_tasktypes_id'],
          'plugin_tasklists_taskstates_id' => $task->fields['plugin_tasklists_taskstates_id'],
@@ -87,19 +87,19 @@ if (isset($_GET['id'])) {
    $task = new PluginTasklistsTask();
    if ($task->getFromDB($id)) {
       $options = [
-         'from_edit_ajax'                 => true,
+         'from_edit_ajax' => true,
          //'plugin_tasklists_tasktypes_id'  => $task->fields['plugin_tasklists_tasktypes_id'],
          //'plugin_tasklists_taskstates_id' => $task->fields['plugin_tasklists_taskstates_id'],
          //'priority'                       => $task->fields['priority'],
          //'users_id'                       => Session::getLoginUserID(),
          //'groups_id'                      => $task->fields['groups_id'],
          //'client'                         => $task->fields['client'],
-         'entities_id'                    => $task->fields['entities_id'],
-         'name'                        => $task->fields['name'],
-         'content'                     => $task->fields['comment'],
-         'withtemplate'                   => 0
+         'entities_id'    => $task->fields['entities_id'],
+         'name'           => $task->fields['name'],
+         'content'        => $task->fields['comment'],
+         'withtemplate'   => 0
       ];
-      $ticket = new Ticket();
+      $ticket  = new Ticket();
       $ticket->showForm(0, $options);
    }
 }

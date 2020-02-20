@@ -26,7 +26,7 @@
  along with Tasklists. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 Session::checkLoginUser();
 

@@ -30,14 +30,14 @@
 /**
  * Class PluginTasklistsPreference
  */
-class PluginTasklistsPreference extends CommonDBTM
-{
+class PluginTasklistsPreference extends CommonDBTM {
 
    static $rightname = 'plugin_tasklists';
 
    /**
     * @param CommonGLPI $item
-    * @param int $withtemplate
+    * @param int        $withtemplate
+    *
     * @return string|translated
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -49,8 +49,9 @@ class PluginTasklistsPreference extends CommonDBTM
 
    /**
     * @param CommonGLPI $item
-    * @param int $tabnum
-    * @param int $withtemplate
+    * @param int        $tabnum
+    * @param int        $withtemplate
+    *
     * @return bool
     */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
@@ -70,14 +71,14 @@ class PluginTasklistsPreference extends CommonDBTM
       }
 
       //Preferences are not deletable
-      $options['candel'] = false;
+      $options['candel']  = false;
       $options['colspan'] = 1;
 
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'><td>" . __("Context by default", "tasklists") . "</td>";
       echo "<td>";
-      $types     = PluginTasklistsTypeVisibility::seeAllowedTypes();
+      $types = PluginTasklistsTypeVisibility::seeAllowedTypes();
       Dropdown::show('PluginTasklistsTaskType', ['name'      => "default_type",
                                                  'value'     => $this->fields['default_type'],
                                                  'condition' => ["id" => $types]]);
@@ -92,8 +93,8 @@ class PluginTasklistsPreference extends CommonDBTM
     */
    public function initPreferences($users_id) {
 
-      $input = [];
-      $input['id'] = $users_id;
+      $input                 = [];
+      $input['id']           = $users_id;
       $input['default_type'] = "0";
       $this->add($input);
 
@@ -115,7 +116,7 @@ class PluginTasklistsPreference extends CommonDBTM
     * @return int
     */
    public static function checkPreferenceValue($field, $users_id = 0) {
-      $dbu        = new DbUtils();
+      $dbu  = new DbUtils();
       $data = $dbu->getAllDataFromTable($dbu->getTableForItemType(__CLASS__), ["id" => $users_id]);
       if (!empty($data)) {
 

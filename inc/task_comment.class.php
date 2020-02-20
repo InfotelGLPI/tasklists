@@ -51,12 +51,12 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          if ($item->getType() == PluginTasklistsTask::getType()) {
             $where = [
                'plugin_tasklists_tasks_id' => $item->getID(),
-               'language'         => null
+               'language'                  => null
             ];
          } else {
             $where = [
                'plugin_tasklists_tasks_id' => $item->fields['plugin_tasklists_tasks_id'],
-               'language'         => $item->fields['language']
+               'language'                  => $item->fields['language']
             ];
          }
 
@@ -78,13 +78,13 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
     *
     * @param $item                     CommonDBTM object
     * @param $withtemplate    integer  withtemplate param (default 0)
-   **/
+    **/
    static function showForItem(CommonDBTM $item, $withtemplate = 0) {
       global $DB, $CFG_GLPI;
 
       $plugin_tasklists_tasks_id = null;
-      $item_id = $item->getID();
-      $item_type = $item::getType();
+      $item_id                   = $item->getID();
+      $item_type                 = $item::getType();
       if (isset($_GET["start"])) {
          $start = intval($_GET["start"]);
       } else {
@@ -93,15 +93,15 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
 
       // Total Number of comments
       if ($item->getType() == PluginTasklistsTask::getType()) {
-         $where = [
+         $where                     = [
             'plugin_tasklists_tasks_id' => $item->getID(),
-            'language'         => null
+            'language'                  => null
          ];
          $plugin_tasklists_tasks_id = $where['plugin_tasklists_tasks_id'];
       } else {
-         $where = [
+         $where                     = [
             'plugin_tasklists_tasks_id' => $item->fields['plugin_tasklists_tasks_id'],
-            'language'         => $item->fields['language']
+            'language'                  => $item->fields['language']
          ];
          $plugin_tasklists_tasks_id = $where['plugin_tasklists_tasks_id'];
       }
@@ -112,7 +112,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       $number = countElementsInTable(
          'glpi_plugin_tasklists_tasks_comments',
          $where
-       );
+      );
 
       $entry = new PluginTasklistsTask();
       $entry->getFromDB($task->fields['id']);
@@ -121,9 +121,9 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          echo "<div class='firstbloc'>";
 
          $lang = null;
-//         if ($item->getType() == PluginTasklistsTaskTranslation::getType()) {
-//            $lang = $item->fields['language'];
-//         }
+         //         if ($item->getType() == PluginTasklistsTaskTranslation::getType()) {
+         //            $lang = $item->fields['language'];
+         //         }
 
          echo self::getCommentForm($plugin_tasklists_tasks_id, $lang);
          echo "</div>";
@@ -144,7 +144,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       echo "<div class='forcomments timeline_history'>";
       echo "<ul class='comments left'>";
       $comments = self::getCommentsForTaskItem($plugin_tasklists_tasks_id, $where['language']);
-      
+
       $html = self::displayComments($comments, $cancomment);
       echo $html;
 
@@ -184,8 +184,8 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
                           _bindForm(_form);
                           _this.parents('.h_item').after(_form);
                        },
-                       error: function() { ".
-                          Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load comment!'))."
+                       error: function() { " .
+           Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load comment!')) . "
                        }
                     });
                  });
@@ -218,8 +218,8 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
                            .parent()
                            .append(_form);
                        },
-                       error: function() { ".
-                          Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load comment!'))."
+                       error: function() { " .
+           Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load comment!')) . "
                        }
                     });
                  });
@@ -228,15 +228,15 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
               });
             </script>";
 
-            echo "</div>";
+      echo "</div>";
    }
 
    /**
     * Gat all comments for specified Task entry
     *
     * @param integer $plugin_tasklists_tasks_id Task entry ID
-    * @param string  $lang      Requested language
-    * @param integer $parent    Parent ID (defaults to 0)
+    * @param string  $lang Requested language
+    * @param integer $parent Parent ID (defaults to 0)
     *
     * @return array
     */
@@ -244,9 +244,9 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       global $DB;
 
       $where = [
-         'plugin_tasklists_tasks_id'  => $plugin_tasklists_tasks_id,
-         'language'          => $lang,
-         'parent_comment_id' => $parent
+         'plugin_tasklists_tasks_id' => $plugin_tasklists_tasks_id,
+         'language'                  => $lang,
+         'parent_comment_id'         => $parent
       ];
 
       $db_comments = $DB->request(
@@ -257,7 +257,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       $comments = [];
       foreach ($db_comments as $db_comment) {
          $db_comment['answers'] = self::getCommentsForTaskItem($plugin_tasklists_tasks_id, $lang, $db_comment['id']);
-         $comments[] = $db_comment;
+         $comments[]            = $db_comment;
       }
 
       return $comments;
@@ -266,9 +266,9 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
    /**
     * Display comments
     *
-    * @param array   $comments   Comments
+    * @param array   $comments Comments
     * @param boolean $cancomment Whether user can comment or not
-    * @param integer $level      Current level, defaults to 0
+    * @param integer $level Current level, defaults to 0
     *
     * @return string
     */
@@ -283,21 +283,21 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          if ($level === 0) {
             $html .= '<hr/>';
          }
-         $html .= "<div class='h_info'>";
-         $html .= "<div class='h_date'>".Html::convDateTime($comment['date_creation'])."</div>";
-         $html .= "<div class='h_user'>";
-         $html .= "<div class='tooltip_picture_border'>";
-         $html .= "<img class='user_picture' alt='' src='".
-                User::getThumbnailURLForPicture($user->fields['picture'])."'>";
-         $html .= "</div>";
-         $html .= "<span class='h_user_name'>";
+         $html     .= "<div class='h_info'>";
+         $html     .= "<div class='h_date'>" . Html::convDateTime($comment['date_creation']) . "</div>";
+         $html     .= "<div class='h_user'>";
+         $html     .= "<div class='tooltip_picture_border'>";
+         $html     .= "<img class='user_picture' alt='' src='" .
+                      User::getThumbnailURLForPicture($user->fields['picture']) . "'>";
+         $html     .= "</div>";
+         $html     .= "<span class='h_user_name'>";
          $userdata = getUserName($user->getID(), 2);
-         $html .= $user->getLink()."&nbsp;";
-         $html .= Html::showToolTip($userdata["comment"],
-                                ['link' => $userdata['link'], 'display' => false]);
-         $html .= "</span>";
-         $html .= "</div>"; // h_user
-         $html .= "</div>"; //h_info
+         $html     .= $user->getLink() . "&nbsp;";
+         $html     .= Html::showToolTip($userdata["comment"],
+                                        ['link' => $userdata['link'], 'display' => false]);
+         $html     .= "</span>";
+         $html     .= "</div>"; // h_user
+         $html     .= "</div>"; //h_info
 
          $html .= "<div class='h_content ItilFollowup'>";
          $html .= "<div class='displayed_content'>";
@@ -347,13 +347,14 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
     * Get comment form
     *
     * @param integer       $plugin_tasklists_tasks_id PluginTasklistsTask item ID
-    * @param string        $lang      Related item language
-    * @param false|integer $edit      Comment id to edit, or false
-    * @param false|integer $answer    Comment id to answer to, or false
+    * @param string        $lang Related item language
+    * @param false|integer $edit Comment id to edit, or false
+    * @param false|integer $answer Comment id to answer to, or false
+    *
     * @return string
     */
    static public function getCommentForm($plugin_tasklists_tasks_id, $lang = null, $edit = false, $answer = false) {
-      $rand   = mt_rand();
+      $rand = mt_rand();
 
       $content = '';
       if ($edit !== false) {
@@ -365,12 +366,12 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       $html = '';
       $html .= "<form name='taskcomment_form$rand' id='taskcomment_form$rand'
                       class='comment_form' method='post'
-            action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+            action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
 
       $html .= "<table class='tab_cadre_fixe'>";
 
       $form_title = ($edit === false ? __('New comment') : __('Edit comment'));
-      $html .= "<tr class='tab_bg_2'><th colspan='3'>$form_title</th></tr>";
+      $html       .= "<tr class='tab_bg_2'><th colspan='3'>$form_title</th></tr>";
 
       $html .= "<tr class='tab_bg_1'><td><label for='comment'>" . __('Comment') . "</label>
          &nbsp;<span class='red'>*</span></td><td>";

@@ -27,14 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 $task = new PluginTasklistsTask();
 
 if ($task->canView() || Session::haveRight("config", UPDATE)) {
    Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
-   $task->listOfTemplates($CFG_GLPI["root_doc"]."/plugins/tasklists/front/task.form.php", $_GET["add"]);
+   $task->listOfTemplates($CFG_GLPI["root_doc"] . "/plugins/tasklists/front/task.form.php", $_GET["add"]);
 
    Html::footer();
 }

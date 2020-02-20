@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
@@ -38,7 +38,7 @@ if (!isset($_POST['plugin_tasklists_tasks_id'])) {
 }
 
 $plugin_tasklists_tasks_id = $_POST['plugin_tasklists_tasks_id'];
-$lang = null;
+$lang                      = null;
 if (isset($_POST['language'])) {
    $lang = $_POST['language'];
 }

@@ -69,9 +69,9 @@ class PluginTasklistsProfile extends Profile {
          $prof = new self();
 
          self::addDefaultProfileInfos($ID,
-                                      ['plugin_tasklists' => 0,
+                                      ['plugin_tasklists'         => 0,
                                        'plugin_tasklists_see_all' => 0,
-                                         'plugin_tasklists_config' => 0]);
+                                       'plugin_tasklists_config'  => 0]);
          $prof->showForm($ID);
       }
       return true;
@@ -83,9 +83,9 @@ class PluginTasklistsProfile extends Profile {
    static function createFirstAccess($ID) {
       //85
       self::addDefaultProfileInfos($ID,
-                                   ['plugin_tasklists' => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE,
+                                   ['plugin_tasklists'         => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE,
                                     'plugin_tasklists_see_all' => 1,
-                                      'plugin_tasklists_config' => 1], true);
+                                    'plugin_tasklists_config'  => 1], true);
    }
 
    /**
@@ -142,8 +142,8 @@ class PluginTasklistsProfile extends Profile {
       if ($profile->getField('interface') == 'central') {
          $rights = $this->getAllRights();
          $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
-                                                            'default_class' => 'tab_bg_2',
-                                                            'title'         => __('General')]);
+                                                       'default_class' => 'tab_bg_2',
+                                                       'title'         => __('General')]);
       }
 
       echo "<table class='tab_cadre_fixehov'>";
@@ -162,7 +162,7 @@ class PluginTasklistsProfile extends Profile {
       echo "<td width='20%'>" . __('Configure contexts and statuses ', 'tasklists') . "</td>";
       echo "<td colspan='5'>";
       Html::showCheckbox(['name'    => '_plugin_tasklists_config',
-         'checked' => $effective_rights['plugin_tasklists_config']]);
+                          'checked' => $effective_rights['plugin_tasklists_config']]);
       echo "</td></tr>\n";
 
       echo "</table>";
@@ -187,8 +187,8 @@ class PluginTasklistsProfile extends Profile {
    static function getAllRights($all = false) {
       $rights = [
          ['itemtype' => 'PluginTasklistsTask',
-               'label'    => PluginTasklistsTask::getTypeName(2),
-               'field'    => 'plugin_tasklists'
+          'label'    => PluginTasklistsTask::getTypeName(2),
+          'field'    => 'plugin_tasklists'
          ],
       ];
       if ($all) {
@@ -196,8 +196,8 @@ class PluginTasklistsProfile extends Profile {
                       'label'    => __('See and update all tasks', 'tasklists'),
                       'field'    => 'plugin_tasklists_see_all'];
          $rights[] = ['itemtype' => 'PluginTasklistsTask',
-            'label'    => __('Configure contexts and statuses', 'tasklists'),
-            'field'    => 'plugin_tasklists_config'];
+                      'label'    => __('Configure contexts and statuses', 'tasklists'),
+                      'field'    => 'plugin_tasklists_config'];
       }
       return $rights;
    }

@@ -31,7 +31,7 @@ include('../../../inc/includes.php');
 
 Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
-$task      = new PluginTasklistsTask();
+$task = new PluginTasklistsTask();
 
 if ($task->canView() || Session::haveRight("config", CREATE)) {
 

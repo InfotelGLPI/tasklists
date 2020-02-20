@@ -80,8 +80,8 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["done"])) {
    $task->check($_POST['id'], UPDATE);
-   $options['id'] = $_POST['id'];
-   $options['state'] = 2;
+   $options['id']           = $_POST['id'];
+   $options['state']        = 2;
    $options['percent_done'] = 100;
    $task->update($options);
    Html::back();
@@ -89,10 +89,10 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["ticket_link"])) {
 
    $ticket = new PluginTasklistsTicket();
-   $task = new PluginTasklistsTask();
+   $task   = new PluginTasklistsTask();
    $task->check($_POST['plugin_tasklists_tasks_id'], UPDATE);
-   $ticket->add(['tickets_id' => $_POST['tickets_id'],
-      'plugin_tasklists_tasks_id' => $_POST['plugin_tasklists_tasks_id']]);
+   $ticket->add(['tickets_id'                => $_POST['tickets_id'],
+                 'plugin_tasklists_tasks_id' => $_POST['plugin_tasklists_tasks_id']]);
    Html::back();
 
 } else {

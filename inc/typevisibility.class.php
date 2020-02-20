@@ -48,11 +48,13 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
    }
 
    static $types = ['PluginTasklistsTaskType'];
+
    /**
     * Display tab for each users
     *
     * @param CommonGLPI $item
-    * @param int $withtemplate
+    * @param int        $withtemplate
+    *
     * @return array|string
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -75,9 +77,11 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
     * Display content for each users
     *
     * @static
+    *
     * @param CommonGLPI $item
-    * @param int $tabnum
-    * @param int $withtemplate
+    * @param int        $tabnum
+    * @param int        $withtemplate
+    *
     * @return bool|true
     */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
@@ -94,13 +98,13 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
     *
     * @param $item
     */
-    function showVisibilities($item) {
+   function showVisibilities($item) {
 
       $used_groups = [];
 
       $dataGroups = $this->find(['plugin_tasklists_tasktypes_id' => $item->fields['id']]);
 
-      $type = new PluginTasklistsTaskType();
+      $type    = new PluginTasklistsTaskType();
       $canedit = $type->can($item->fields['id'], UPDATE);
 
       if ($dataGroups) {
@@ -109,13 +113,13 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
          }
       }
 
-      $groups = [];
-      $group = new Group();
-      $op = "";
+      $groups    = [];
+      $group     = new Group();
+      $op        = "";
       $condition = "";
       if (count($used_groups) > 0) {
          $condition .= "`id` NOT IN (" . implode(',', $used_groups) . ")";
-         $op = "AND";
+         $op        = "AND";
       }
       $dbu = new DbUtils();
       //TODO Find
@@ -129,16 +133,16 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       }
 
       if ($canedit) {
-         echo "<form name='form' method='post' action='".
-              Toolbox::getItemTypeFormURL('PluginTasklistsTypeVisibility')."'>";
+         echo "<form name='form' method='post' action='" .
+              Toolbox::getItemTypeFormURL('PluginTasklistsTypeVisibility') . "'>";
 
          echo "<div align='center'><table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='6'>".__('Add a group', 'tasklists')."</th></tr>";
+         echo "<tr><th colspan='6'>" . __('Add a group', 'tasklists') . "</th></tr>";
 
          echo "<tr class='tab_bg_1'>";
          // Dropdown group
          echo "<td class='center'>";
-         echo __('Group').'&nbsp;';
+         echo __('Group') . '&nbsp;';
          Dropdown::showFromArray("groups_id", $groups, ['name'     => 'groups_id',
                                                         'width'    => '150',
                                                         'multiple' => true]);
@@ -147,8 +151,8 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
 
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='6'>";
-         echo "<input type='submit' name='add_groups' class='submit' value='"._sx('button', 'Add')."' >";
-         echo "<input type='hidden' name='plugin_tasklists_tasktypes_id' class='submit' value='".$item->fields['id']."' >";
+         echo "<input type='submit' name='add_groups' class='submit' value='" . _sx('button', 'Add') . "' >";
+         echo "<input type='hidden' name='plugin_tasklists_tasktypes_id' class='submit' value='" . $item->fields['id'] . "' >";
          echo "</td>";
          echo "</tr>";
          echo "</table></div>";
@@ -168,21 +172,21 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       $rand = mt_rand();
       echo "<div class='center'>";
       if ($canedit) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-         $massiveactionparams = ['item' => __CLASS__, 'container' => 'mass'.__CLASS__.$rand];
+         Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+         $massiveactionparams = ['item' => __CLASS__, 'container' => 'mass' . __CLASS__ . $rand];
          Html::showMassiveActions($massiveactionparams);
       }
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr>";
-      echo "<th colspan='3'>".__('Groups allowed to use context', 'tasklists')."</th>";
+      echo "<th colspan='3'>" . __('Groups allowed to use context', 'tasklists') . "</th>";
       echo "</tr>";
       echo "<tr>";
       echo "<th width='10'>";
       if ($canedit) {
-         echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+         echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
       }
       echo "</th>";
-      echo "<th>".__('Name')."</th>";
+      echo "<th>" . __('Name') . "</th>";
       echo "</tr>";
       foreach ($fields as $field) {
          echo "<tr class='tab_bg_1'>";
@@ -192,7 +196,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
          }
          echo "</td>";
          //DATA LINE
-         echo "<td>".Dropdown::getDropdownName('glpi_groups', $field['groups_id'])."</td>";
+         echo "<td>" . Dropdown::getDropdownName('glpi_groups', $field['groups_id']) . "</td>";
          echo "</tr>";
       }
 
@@ -220,7 +224,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
 
       // Only allowed types
       $types = self::$types;
-      $dbu = new DbUtils();
+      $dbu   = new DbUtils();
       foreach ($types as $key => $type) {
          if (!($item = $dbu->getItemForItemtype($type))) {
             continue;
@@ -242,7 +246,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       $dbu = new DbUtils();
       // Get type groups
       $groups_data = $dbu->getAllDataFromTable('glpi_plugin_tasklists_typevisibilities',
-                                                           ['`plugin_tasklists_tasktypes_id`' => $plugin_tasklists_tasktypes_id]);
+                                               ['`plugin_tasklists_tasktypes_id`' => $plugin_tasklists_tasktypes_id]);
 
       if (!empty($groups_data)) {
          $groups_id = [];
@@ -268,11 +272,11 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
    /**
     * @return array
     */
-   static function seeAllowedTypes(){
+   static function seeAllowedTypes() {
 
       $allowed_types = [];
-      $dbu = new DbUtils();
-      $types = $dbu->getAllDataFromTable('glpi_plugin_tasklists_tasktypes');
+      $dbu           = new DbUtils();
+      $types         = $dbu->getAllDataFromTable('glpi_plugin_tasklists_tasktypes');
 
       if (!empty($types)) {
          foreach ($types as $type) {
@@ -360,12 +364,12 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       $msg     = [];
       $checkKo = false;
 
-      $mandatory_fields = ['groups_id'  => __('Group')];
+      $mandatory_fields = ['groups_id' => __('Group')];
 
       foreach ($input as $key => $value) {
          if (array_key_exists($key, $mandatory_fields)) {
             if (empty($value)) {
-               $msg[] = $mandatory_fields[$key];
+               $msg[]   = $mandatory_fields[$key];
                $checkKo = true;
             }
          }

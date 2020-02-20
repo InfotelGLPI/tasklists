@@ -68,7 +68,6 @@
 }
 
 
-
 .cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title p {
    position: relative;
    z-index: 10;
@@ -435,32 +434,41 @@
 }
 
 #page .kanban .kanban-toolbar .select2-selection .select2-selection__rendered {
-   font-size: 13px;
+   font-size: 11px;
    line-height: 29px;
 }
-#opt-kanban{
+
+#opt-kanban {
    margin-left: 5px;
    display: flex;
+   font-size: 11px;
 }
-#opt-archive{
+
+#opt-archive {
    display: flex;
    align-items: center;
+   font-size: 11px;
 }
+
 #opt-archive .select2-selection {
    height: auto !important;
 }
-#opt-archive .select2-selection__rendered{
+
+#opt-archive .select2-selection__rendered {
    line-height: 15px !important;
 }
 
-#opt-users{
+#opt-users {
    display: flex;
    align-items: center;
+   font-size: 11px;
 }
-#opt-users .select2-selection{
+
+#opt-users .select2-selection {
    height: auto !important;
 }
-#opt-users .select2-selection__rendered{
+
+#opt-users .select2-selection__rendered {
    line-height: 15px !important;
 }
 
@@ -746,8 +754,8 @@
    border-radius: 5px;
    border: #d3d3d3 1px solid;
    width: 250px;
-  padding-right: 5px;
-  padding-bottom: 5px;
+   padding-right: 5px;
+   padding-bottom: 5px;
 }
 
 #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-item.filtered-out, #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-add-form.filtered-out {
@@ -849,14 +857,17 @@
    background: #ff7370;
    color: #792220;
 }
-.prioContent{
+
+.prioContent {
    display: flex;
    margin-right: 2px;
 }
-.priority{
+
+.priority {
    width: 5.5%;
 }
-.content_card{
+
+.content_card {
    width: 94.5%;
 }
 

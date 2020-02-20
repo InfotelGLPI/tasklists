@@ -106,12 +106,12 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       if (isset($this->obj->fields[$group_field])
           && $this->obj->fields[$group_field] > 0) {
 
-         $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
-         $criteria['FROM'] = User::getTable();
-         $criteria['LEFT JOIN'] = ['glpi_groups_users' => ['ON' => ['glpi_groups_users' => 'users_id',
-                                                                    'glpi_users'        => 'id']]];
+         $criteria                                         = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
+         $criteria['FROM']                                 = User::getTable();
+         $criteria['LEFT JOIN']                            = ['glpi_groups_users' => ['ON' => ['glpi_groups_users' => 'users_id',
+                                                                                               'glpi_users'        => 'id']]];
          $criteria['WHERE']['glpi_groups_users.groups_id'] = $this->obj->fields[$group_field];
-         $iterator = $DB->request($criteria);
+         $iterator                                         = $DB->request($criteria);
 
          while ($data = $iterator->next()) {
             //Add the user email and language in the notified users list
@@ -203,16 +203,16 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       $this->data['##lang.task.duedate##']     = __('Due date', 'tasklists');
       $this->data['##lang.task.comment##']     = __('Description');
       $this->data['##lang.task.priority##']    = __('Priority');
-      $this->data['##lang.task.status##']       = __('Status');
+      $this->data['##lang.task.status##']      = __('Status');
       $this->data['##lang.task.otherclient##'] = __('Other client', 'tasklists');
 
-      $this->data['##task.name##']   = $this->obj->getField("name");
-      $entity_name = __('None');
-      $entity = new Entity();
+      $this->data['##task.name##'] = $this->obj->getField("name");
+      $entity_name                 = __('None');
+      $entity                      = new Entity();
       if ($entity->getFromDB($this->obj->getField('entities_id'))) {
          $entity_name = $entity->fields['name'];
       }
-      $this->data['##task.client##'] = $entity_name;
+      $this->data['##task.client##']      = $entity_name;
       $this->data['##task.type##']        = Dropdown::getDropdownName('glpi_plugin_tasklists_tasktypes',
                                                                       $this->obj->getField('plugin_tasklists_tasktypes_id'));
       $this->data['##task.users##']       = Html::clean($dbu->getUserName($this->obj->getField("users_id")));
@@ -224,7 +224,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       $comment                            = stripslashes(str_replace(['\r\n', '\n', '\r'], "<br/>", $this->obj->getField("comment")));
       $this->data['##task.comment##']     = Html::clean($comment);
       $this->data['##task.priority##']    = CommonITILObject::getPriorityName($this->obj->getField("priority"));
-      $this->data['##task.status##']       = PluginTasklistsTask::getStateName($this->obj->getField('plugin_tasklists_taskstates_id'));
+      $this->data['##task.status##']      = PluginTasklistsTask::getStateName($this->obj->getField('plugin_tasklists_taskstates_id'));
       $this->data['##task.otherclient##'] = $this->obj->getField("client");
 
       $this->data['##lang.task.url##'] = __('URL');

@@ -39,12 +39,12 @@ class PluginTasklistsStateOrder extends CommonDBTM {
    static $rightname = 'plugin_tasklists';
 
    /**
-    * @see CommonGLPI::getTabNameForItem()
-    *
     * @param \CommonGLPI $item
     * @param int         $withtemplate
     *
     * @return string|\translated
+    * @see CommonGLPI::getTabNameForItem()
+    *
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
@@ -55,12 +55,13 @@ class PluginTasklistsStateOrder extends CommonDBTM {
    }
 
    /**
-    * @see CommonGLPI::displayTabContentForItem()
     * @param \CommonGLPI $item
     * @param int         $tabnum
     * @param int         $withtemplate
+    *
     * @return bool
-*/
+    * @see CommonGLPI::displayTabContentForItem()
+    */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       if ($item->getType() == 'PluginTasklistsTaskType') {
@@ -74,13 +75,13 @@ class PluginTasklistsStateOrder extends CommonDBTM {
     * Display form
     *
     * @param $plugin_tasklists_tasktypes_id
-*/
+    */
    static function showOrderStates($plugin_tasklists_tasktypes_id) {
       global $CFG_GLPI;
 
       Html::requireJs('tasklists');
 
-//      $dbu = new DbUtils();
+      //      $dbu = new DbUtils();
       //      $condition = $dbu->getEntitiesRestrictRequest(" AND ", 'glpi_plugin_tasklists_stateorders', '', $_SESSION["glpiactive_entity"]);
       //   true);
       $condition = ['plugin_tasklists_tasktypes_id' => $plugin_tasklists_tasktypes_id];
@@ -162,16 +163,16 @@ class PluginTasklistsStateOrder extends CommonDBTM {
 
    /**
     * @param $plugin_tasklists_tasktypes_id
-*/
+    */
    function addNewStates($plugin_tasklists_tasktypes_id) {
-//      global $DB;
+      //      global $DB;
 
       $this->deleteByCriteria(['plugin_tasklists_tasktypes_id' => $plugin_tasklists_tasktypes_id,
                                //                               'entities_id' => $_SESSION["glpiactive_entity"]
                               ]);
-      $dbu     = new DbUtils();
+      $dbu = new DbUtils();
 
-      $states = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskStates'));
+      $states  = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskStates'));
       $ranking = 1;
 
       foreach ($states as $state) {
@@ -188,35 +189,36 @@ class PluginTasklistsStateOrder extends CommonDBTM {
          }
       }
    }
-   static function addStateContext($plugin_tasklists_tasktypes_id,$plugin_tasklists_taskstates_id){
-      $stateorder = new self();
+
+   static function addStateContext($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id) {
+      $stateorder  = new self();
       $stateorders = $stateorder->find(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id]);
-      $max = 0;
-      foreach ($stateorders as $order){
-         if($order["ranking"] > $max){
+      $max         = 0;
+      foreach ($stateorders as $order) {
+         if ($order["ranking"] > $max) {
             $max = $order["ranking"];
          }
       }
-      $input = [];
-      $input["plugin_tasklists_tasktypes_id"] = $plugin_tasklists_tasktypes_id;
+      $input                                   = [];
+      $input["plugin_tasklists_tasktypes_id"]  = $plugin_tasklists_tasktypes_id;
       $input["plugin_tasklists_taskstates_id"] = $plugin_tasklists_taskstates_id;
-      $input["ranking"] = $max+1;
+      $input["ranking"]                        = $max + 1;
       $stateorder->add($input);
 
    }
 
-   static function removeStateContext($plugin_tasklists_tasktypes_id,$plugin_tasklists_taskstates_id){
+   static function removeStateContext($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id) {
       $stateorder = new self();
-      $stateorder->getFromDBByCrit(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id,"plugin_tasklists_taskstates_id" => $plugin_tasklists_taskstates_id]);
-      $id = $stateorder->getID();
-      $ranking = $stateorder->getField('ranking');
+      $stateorder->getFromDBByCrit(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id, "plugin_tasklists_taskstates_id" => $plugin_tasklists_taskstates_id]);
+      $id          = $stateorder->getID();
+      $ranking     = $stateorder->getField('ranking');
       $stateorders = $stateorder->find(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id]);
 
-      foreach ($stateorders as $order){
+      foreach ($stateorders as $order) {
          $input = [];
-         if($order["ranking"]>$ranking){
-            $input["ranking"] = $order["ranking"]-1;
-            $input["id"] = $order["id"];
+         if ($order["ranking"] > $ranking) {
+            $input["ranking"] = $order["ranking"] - 1;
+            $input["id"]      = $order["id"];
          }
       }
 

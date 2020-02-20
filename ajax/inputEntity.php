@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
@@ -35,5 +35,5 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (isset($_POST["entities_id"])) {
-   echo "<input type='hidden' name='entities_id' value='".$_POST["entities_id"]."' />";
+   echo "<input type='hidden' name='entities_id' value='" . $_POST["entities_id"] . "' />";
 }

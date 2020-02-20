@@ -39,9 +39,9 @@ echo "<script type='text/javascript'  src='../../../lib/tiny_mce/lib/tinymce.min
 
 if (isset($_GET['newContext'])) {
    $options = [
-      'from_edit_ajax'                 => true,
+      'from_edit_ajax' => true,
 
-      'withtemplate'                   => 0
+      'withtemplate' => 0
    ];
    $task    = new PluginTasklistsTaskState();
    $task->showForm(0, $options);

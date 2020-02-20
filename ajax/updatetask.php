@@ -57,7 +57,7 @@ if (isset($_POST['data_id'])
       $task->update($input);
    }
 }*/ else if (isset($_POST['data_id'])
-           && isset($_POST['archivetask'])) {
+             && isset($_POST['archivetask'])) {
    $task                 = new PluginTasklistsTask();
    $input['is_archived'] = 1;
    $input['id']          = $_POST['data_id'];

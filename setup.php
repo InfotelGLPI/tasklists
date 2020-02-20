@@ -76,7 +76,7 @@ function plugin_init_tasklists() {
       $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/lib/redips/redips-drag-min.js";
       $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/scripts/plugin_tasklists_drag-field-row.js";
       $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/lib/kanban/js/kanban.js";
-      $CFG_GLPI['javascript']['helpdesk']['plugintasklistsmenu']                    = ['colorpicker'];
+      $CFG_GLPI['javascript']['helpdesk']['plugintasklistsmenu']                      = ['colorpicker'];
 
 
    }
@@ -89,12 +89,12 @@ function plugin_init_tasklists() {
 function plugin_version_tasklists() {
 
    return [
-      'name'           => __('Tasks list', 'tasklists'),
-      'version'        => PLUGIN_TASKLISTS_VERSION,
-      'license'        => 'GPLv2+',
-      'author'         => "<a href='http://blogglpi.infotel.com'>Infotel</a>",
-      'homepage'       => 'https://github.com/InfotelGLPI/tasklists',
-      'requirements'   => [
+      'name'         => __('Tasks list', 'tasklists'),
+      'version'      => PLUGIN_TASKLISTS_VERSION,
+      'license'      => 'GPLv2+',
+      'author'       => "<a href='http://blogglpi.infotel.com'>Infotel</a>",
+      'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
+      'requirements' => [
          'glpi' => [
             'min' => '9.4',
             'dev' => false
@@ -109,8 +109,8 @@ function plugin_version_tasklists() {
  * @return bool
  */
 function plugin_tasklists_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.4', 'lt') 
-         || version_compare(GLPI_VERSION, '9.5', 'ge')) {
+   if (version_compare(GLPI_VERSION, '9.4', 'lt')
+       || version_compare(GLPI_VERSION, '9.5', 'ge')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
          echo Plugin::messageIncompatible('core', '9.4');
       }

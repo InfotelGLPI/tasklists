@@ -29,7 +29,7 @@
 
 use Glpi\Event;
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 Session::checkLoginUser();
 

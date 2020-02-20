@@ -17,17 +17,17 @@ plugin_tasklists_redipsInit = function () {
         var new_index = pos[1];
         var type = document.getElementById('plugin_tasklists_tasktypes_id').value;
         // var state = document.getElementById('plugin_tasklists_taskstates_id').value;
-      //console.log(container);
+        //console.log(container);
         jQuery.ajax({
             type: "POST",
             url: "../ajax/reorder.php",
             data: {
-               old_order: old_index+1,
-               new_order: new_index+1,
+                old_order: old_index + 1,
+                new_order: new_index + 1,
                 plugin_tasklists_tasktypes_id: type,
                 // plugin_tasklists_taskstates_id: state
             }
-         })
+        })
             .fail(function () {
                 return false;
             });

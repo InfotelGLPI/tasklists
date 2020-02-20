@@ -46,7 +46,7 @@ function plugin_tasklists_install() {
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.1.sql");
       $mig->executeMigration();
    }
-   if(!$DB->tableExists("glpi_plugin_tasklists_items_kanbans")){
+   if (!$DB->tableExists("glpi_plugin_tasklists_items_kanbans")) {
       $mig = new Migration("1.5.1");
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.5.1.sql");
       $mig->executeMigration();
@@ -78,7 +78,7 @@ function plugin_tasklists_uninstall() {
               "glpi_plugin_tasklists_preferences",
               "glpi_plugin_tasklists_tasks_comments",
               "glpi_plugin_tasklists_tickets",
-               "glpi_plugin_tasklists_items_kanbans"];
+              "glpi_plugin_tasklists_items_kanbans"];
 
    foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");

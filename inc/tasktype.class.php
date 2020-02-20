@@ -67,6 +67,9 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
    }
 
 
+   /**
+    * @return array
+    */
    static function getAllForKanban() {
       $self = new self();
 
@@ -85,6 +88,9 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       return $items;
    }
 
+   /**
+    * @return bool
+    */
    public function forceGlobalState() {
       // All users must be using the global state unless viewing the global Kanban
       return $this->getID() > 0;
@@ -129,6 +135,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       return 0;
    }
 
+   /**
+    * @param       $ID
+    * @param       $column_field
+    * @param array $column_ids
+    * @param bool  $get_default
+    *
+    * @return array
+    */
    static function getKanbanColumns($ID, $column_field, $column_ids = [], $get_default = false) {
 
       if (!PluginTasklistsTypeVisibility::isUserHaveRight($ID)) {
@@ -326,6 +340,11 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
    }
 
+   /**
+    * @param $plugin_tasklists_tasktypes_id
+    *
+    * @return array
+    */
    static function findUsers($plugin_tasklists_tasktypes_id) {
       $dbu   = new DbUtils();
       $users = [];
