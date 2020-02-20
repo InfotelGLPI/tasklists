@@ -85,7 +85,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                   $states_founded[] = $state["id"];
                }
                $groups_founded = [];
-               $groups         = Group_User::getUserGroups(Session::getLoginUserID());
+               $groups = Group_User::getUserGroups(Session::getLoginUserID());
                foreach ($groups as $group) {
                   $groups_founded[] = $group["id"];
                }
@@ -98,7 +98,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                if (is_array($states) && count($states) > 0) {
                   $query .= " AND `glpi_plugin_tasklists_tasks`.`plugin_tasklists_taskstates_id` IN (" . implode(",", $states_founded) . ") ";
                }
-               $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '" . Session::getLoginUserID() . "'";
+               $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '".Session::getLoginUserID()."'";
                //if (count($groups) > 0){
                //   $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
                //}
@@ -111,14 +111,14 @@ class PluginTasklistsDashboard extends CommonGLPI {
                if ($result = $DB->query($query)) {
                   if ($DB->numrows($result)) {
                      while ($data = $DB->fetch_array($result)) {
-                        $ID   = $data['id'];
+                        $ID                    = $data['id'];
                         $task = new PluginTasklistsTask();
                         if ($task->checkVisibility($ID) == true) {
                            $rand                  = mt_rand();
                            $url                   = Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'];
                            $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
 
-                           $tasks[$data['id']][0] .= Html::showToolTip($data['comment'],
+                           $tasks[$data['id']][0] .= Html::showToolTip(Html::clean($data['comment']),
                                                                        ['applyto' => 'task' . $data["id"] . $rand,
                                                                         'display' => false]);
 
@@ -134,29 +134,29 @@ class PluginTasklistsDashboard extends CommonGLPI {
                            }
                            $tasks[$data['id']][5] = $display;
 
-                           //                           if (Session::haveRight("plugin_tasklists", UPDATENOTE)) {
-                           //                              $link = Ajax::createIframeModalWindow('comment' . $rand,
-                           //                                                                    $CFG_GLPI["root_doc"] . "/plugins/tasklists/front/comment.form.php?id=" . $ID,
-                           //                                                                    ['title'         => __('Add comment', 'tasklists'),
-                           //                                                                     'reloadonclose' => false,
-                           //                                                                     'width'         => 1100,
-                           //                                                                     'display'       => false,
-                           //                                                                     'height'        => 300
-                           //                                                                    ]);
-                           //                              $link .= "<div align='center'><a href='#' onClick=\"javascript:" . Html::jsGetElementbyID('comment' . $rand) . ".dialog('open');\">";
-                           //                              $link .= "<img class='pointer' src='" . $CFG_GLPI['root_doc'] . "/plugins/tasklists/pics/plus.png' title='" . __('Add comment', 'tasklists') . "'>";
-                           //                              $link .= "</a></div>";
-                           //
-                           //
-                           //                              $tasks[$data['id']][6] .= $link;
-                           //                           }
+//                           if (Session::haveRight("plugin_tasklists", UPDATENOTE)) {
+//                              $link = Ajax::createIframeModalWindow('comment' . $rand,
+//                                                                    $CFG_GLPI["root_doc"] . "/plugins/tasklists/front/comment.form.php?id=" . $ID,
+//                                                                    ['title'         => __('Add comment', 'tasklists'),
+//                                                                     'reloadonclose' => false,
+//                                                                     'width'         => 1100,
+//                                                                     'display'       => false,
+//                                                                     'height'        => 300
+//                                                                    ]);
+//                              $link .= "<div align='center'><a href='#' onClick=\"javascript:" . Html::jsGetElementbyID('comment' . $rand) . ".dialog('open');\">";
+//                              $link .= "<img class='pointer' src='" . $CFG_GLPI['root_doc'] . "/plugins/tasklists/pics/plus.png' title='" . __('Add comment', 'tasklists') . "'>";
+//                              $link .= "</a></div>";
+//
+//
+//                              $tasks[$data['id']][6] .= $link;
+//                           }
                         }
                      }
                   }
                }
                $widget->setTabDatas($tasks);
                $widget->setTabNames($headers);
-               $widget->setOption("bSort", false);
+               //$widget->setOption("bSort", false);
                $widget->toggleWidgetRefresh();
 
                $link = Ajax::createIframeModalWindow('task',
