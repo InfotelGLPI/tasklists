@@ -44,6 +44,7 @@ class PluginTasklistsKanban extends CommonGLPI {
    static function canView() {
       return Session::haveRight(self::$rightname, READ);
    }
+
    /**
     * @return bool
     */
@@ -413,59 +414,56 @@ class PluginTasklistsKanban extends CommonGLPI {
        });</script>";
 
    }
+
    static function showKanban2($ID) {
       $project = new Project();
-      
-   /*   if (($ID <= 0 && !Project::canView()) ||
-         ($ID > 0 && (!$project->getFromDB($ID) || !$project->canView()))) {
-         return false;
-      }
-*/
+
+      /*   if (($ID <= 0 && !Project::canView()) ||
+            ($ID > 0 && (!$project->getFromDB($ID) || !$project->canView()))) {
+            return false;
+         }
+   */
       $supported_itemtypes = [];
       if (PluginTasklistsTask::canCreate()) {
          $supported_itemtypes['PluginTasklistsTask'] = [
-            'name' => PluginTasklistsTask::getTypeName(1),
+            'name'   => PluginTasklistsTask::getTypeName(1),
             'fields' => [
-               'name'   => [
-                  'placeholder'  => __('Name')
+               'name'    => [
+                  'placeholder' => __('Name')
                ],
-               'content'   => [
-                  'placeholder'  => __('Content'),
-                  'type'         => 'textarea'
+               'content' => [
+                  'placeholder' => __('Content'),
+                  'type'        => 'textarea'
                ]
             ]
          ];
       }
 
       $column_field = [
-         'id' => 'projectstates_id',
+         'id'           => 'projectstates_id',
          'extra_fields' => [
-            'color'  => [
-               'type'   => 'color'
+            'color' => [
+               'type' => 'color'
             ]
          ]
       ];
-      if($ID != -1){
-         $item_id = $ID;
-      }else{
-         $item_id = PluginTasklistsPreference::checkPreferenceValue("default_type",Session::getLoginUserID());
-      }
 
+      if ($ID > 0) {
+         $item_id = $ID;
+      } else {
+         $item_id = PluginTasklistsPreference::checkPreferenceValue("default_type", Session::getLoginUserID());
+      }
       $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
-      $column_field = json_encode($column_field, JSON_FORCE_OBJECT);
+      $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
 
       echo "<div id='kanban' class='kanban'></div>";
-      $darkmode = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
-      $canadd_item = json_encode(self::canCreate());
+      $darkmode       = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
+      $canadd_item    = json_encode(self::canCreate());
       $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
-//      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
-      $cancreate_column = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
+      //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
+      $cancreate_column      = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
       $limit_addcard_columns = $canmodify_view !== 'false' ? '[]' : json_encode([0]);
-      $can_order_item = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
-
-
-
-
+      $can_order_item        = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
 
 
       $js = <<<JAVASCRIPT
@@ -514,22 +512,22 @@ JAVASCRIPT;
          '%d other team members'             => __('%d other team members'),
          'Add a column from existing status' => __('Add a column from existing status', 'tasklists'),
          'Or add a new status'               => __('Or add a new status', 'tasklists'),
-         'users'          => _n('User', 'Users', 2),
-         'status' =>__('Status'),
-         'add_tasks'          => __('Add task', 'tasklists'),
+         'users'                             => _n('User', 'Users', 2),
+         'status'                            => __('Status'),
+         'add_tasks'                         => __('Add task', 'tasklists'),
 
-     'archive_all_tasks'   => __('Archive all tasks of this state', 'tasklists'),
-      'see_archived_tasks'  => __('See archived tasks', 'tasklists'),
-      'hide_archived_tasks' => __('Hide archived tasks', 'tasklists'),
-      'clone_task'          => __('Clone task', 'tasklists'),
-     'see_progress_tasks'     => __('See tasks in progress', 'tasklists'),
-      'see_my_tasks'           => __('See tasks of', 'tasklists'),
-     'see_all_tasks'           => __('See all tasks', 'tasklists'),
-      'alert_archive_task'      =>__('Are you sure you want to archive this task ?', 'tasklists'),
-      'alert_archive_all_tasks' => __('Are you sure you want to archive all tasks ?', 'tasklists'),
-      'archive_task'            => __('Archive this task', 'tasklists'),
-     'update_priority'         => __('Update priority of task', 'tasklists'),
-     'see_details'            => __('Details of task', 'tasklists'),
+         'archive_all_tasks'       => __('Archive all tasks of this state', 'tasklists'),
+         'see_archived_tasks'      => __('See archived tasks', 'tasklists'),
+         'hide_archived_tasks'     => __('Hide archived tasks', 'tasklists'),
+         'clone_task'              => __('Clone task', 'tasklists'),
+         'see_progress_tasks'      => __('See tasks in progress', 'tasklists'),
+         'see_my_tasks'            => __('See tasks of', 'tasklists'),
+         'see_all_tasks'           => __('See all tasks', 'tasklists'),
+         'alert_archive_task'      => __('Are you sure you want to archive this task ?', 'tasklists'),
+         'alert_archive_all_tasks' => __('Are you sure you want to archive all tasks ?', 'tasklists'),
+         'archive_task'            => __('Archive this task', 'tasklists'),
+         'update_priority'         => __('Update priority of task', 'tasklists'),
+         'see_details'             => __('Details of task', 'tasklists'),
       ];
       return $strings;
    }

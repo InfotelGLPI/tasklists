@@ -118,10 +118,40 @@ class PluginTasklistsPreference extends CommonDBTM
       $dbu        = new DbUtils();
       $data = $dbu->getAllDataFromTable($dbu->getTableForItemType(__CLASS__), ["id" => $users_id]);
       if (!empty($data)) {
+
          $first = array_pop($data);
-         return $first[$field];
+         if ($first[$field] > 0) {
+            return $first[$field];
+         } else {
+            $values = PluginTasklistsTaskType::getAllForKanban();
+            $data   = [];
+            foreach ($values as $key => $value) {
+               if (PluginTasklistsTypeVisibility::isUserHaveRight($key)) {
+                  $data[] = $key;
+               }
+            }
+            if (!empty($data)) {
+               $first = reset($data);
+               return $first;
+            } else {
+               return 0;
+            }
+         }
+
       } else {
-         return 0;
+         $values = PluginTasklistsTaskType::getAllForKanban();
+         $data   = [];
+         foreach ($values as $key => $value) {
+            if (PluginTasklistsTypeVisibility::isUserHaveRight($key)) {
+               $data[] = $key;
+            }
+         }
+         if (!empty($data)) {
+            $first = reset($data);
+            return $first;
+         } else {
+            return 0;
+         }
       }
    }
 }

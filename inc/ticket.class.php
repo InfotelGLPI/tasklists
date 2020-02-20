@@ -48,8 +48,8 @@ class PluginTasklistsTicket extends CommonDBTM {
    /**
     * Return the name of the tab for item including forms like the config page
     *
-    * @param  CommonGLPI $item Instance of a CommonGLPI Item (The Config Item)
-    * @param  integer    $withtemplate
+    * @param CommonGLPI $item Instance of a CommonGLPI Item (The Config Item)
+    * @param integer    $withtemplate
     *
     * @return String                   Name to be displayed
     */
@@ -61,7 +61,7 @@ class PluginTasklistsTicket extends CommonDBTM {
                $nb = 0;
                if ($_SESSION['glpishow_count_on_tabs']) {
                   $nb = $dbu->countElementsInTable('glpi_plugin_tasklists_tickets',
-                                             ["plugin_tasklists_tasks_id" => $item->getID()]);
+                                                   ["plugin_tasklists_tasks_id" => $item->getID()]);
                }
                return self::createTabEntry(self::getTypeName(2), $nb);
                break;
@@ -91,7 +91,7 @@ class PluginTasklistsTicket extends CommonDBTM {
 
       switch ($item->getType()) {
          case "PluginTasklistsTask":
-            $ID     = $item->getField('id');
+            $ID = $item->getField('id');
             $ticket->showForTask($ID);
             break;
          case "Ticket":
@@ -131,7 +131,7 @@ class PluginTasklistsTicket extends CommonDBTM {
                 FROM `glpi_plugin_tasklists_tickets`
                 LEFT JOIN `glpi_plugin_tasklists_tasks`
                  ON (`glpi_plugin_tasklists_tickets`.`plugin_tasklists_tasks_id`=`glpi_plugin_tasklists_tasks`.`id`)
-                WHERE `glpi_plugin_tasklists_tickets`.`tickets_id` = '$ID'
+                WHERE `glpi_plugin_tasklists_tickets`.`tickets_id` = '$ID' 
                 ORDER BY `glpi_plugin_tasklists_tasks`.`date_creation`";
 
       $result = $DB->query($query);
@@ -142,22 +142,25 @@ class PluginTasklistsTicket extends CommonDBTM {
       if ($numrows = $DB->numrows($result)) {
          while ($data = $DB->fetch_assoc($result)) {
             $tickets[$data['id']] = $data;
-            $used[$data['id']] = $data['id'];
+            $used[$data['id']]    = $data['id'];
          }
       }
       if ($canedit) {
          echo "<div class='firstbloc'>";
          echo "<form name='taskticket_form$rand' id='taskticket_form$rand' method='post'
-               action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+               action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
 
          echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th colspan='3'>".__('Add task', 'tasklists')."</th></tr>";
+         echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add task', 'tasklists') . "</th></tr>";
          echo "<tr class='tab_bg_2'><td>";
          echo "<input type='hidden' name='tickets_id' value='$ID'>";
-         PluginTasklistsTask::dropdown(['used'        => $used,
-                                        'entity'      => $ticket->getEntityID()]);
+         PluginTasklistsTask::dropdown(['used'      => $used,
+                                        'entity'    => $ticket->getEntityID(),
+                                        'condition' => ['is_archived' => 0,
+                                                        'is_deleted'  => 0,
+                                                        'is_template' => 0]]);
          echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
+         echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
          echo "</td>";
          echo "</tr></table>";
          Html::closeForm();
@@ -166,7 +169,7 @@ class PluginTasklistsTicket extends CommonDBTM {
 
       echo "<div class='spaced'>";
       if ($canedit && $numrows) {
-         Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+         Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
          $massiveactionparams
             = ['num_displayed'    => min($_SESSION['glpilist_limit'], $numrows),
                'specific_actions' => ['purge' => _x('button', 'Delete permanently')],
@@ -182,11 +185,11 @@ class PluginTasklistsTicket extends CommonDBTM {
 
       if ($number > 0) {
          echo "<tr>";
-         echo "<th width='10'>" .Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand). "</th>";
+         echo "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
          echo "<th>" . __('Name') . "</th>";
          echo "<th>" . __('Date') . "</th>";
-//         echo "<th>" . _n('Context', 'Contexts', 1, 'tasklists') . "</th>";
-//         echo "<th>" . __('Status') . "</th>";
+         //         echo "<th>" . _n('Context', 'Contexts', 1, 'tasklists') . "</th>";
+         //         echo "<th>" . __('Status') . "</th>";
          echo "<th>" . __('Priority') . "</th>";
          echo "<th>" . __('Description') . "</th>";
          echo "</tr>";
@@ -207,7 +210,7 @@ class PluginTasklistsTicket extends CommonDBTM {
             echo html::convDateTime($data['date_creation'], 1);
             echo "</td>";
 
-            $style = "style=\"background-color:".$_SESSION["glpipriority_".$data['priority']].";\" ";
+            $style = "style=\"background-color:" . $_SESSION["glpipriority_" . $data['priority']] . ";\" ";
             echo "<td $style>";
             echo CommonITILObject::getPriorityName($data['priority']);
             echo "</td>";
@@ -242,7 +245,7 @@ class PluginTasklistsTicket extends CommonDBTM {
     */
    function showForTask($ID) {
 
-      $task  = new PluginTasklistsTask();
+      $task   = new PluginTasklistsTask();
       $ticket = new Ticket();
 
       $task->getFromDB($ID);
@@ -256,9 +259,9 @@ class PluginTasklistsTicket extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
       Ticket::dropdown(['name'        => "tickets_id",
-                             'entity'      => $task->getEntityID(),
-                             'entity_sons' => $task->isRecursive(),
-                             'displaywith' => ['id']]);
+                        'entity'      => $task->getEntityID(),
+                        'entity_sons' => $task->isRecursive(),
+                        'displaywith' => ['id']]);
 
       echo "</td></tr>";
 
@@ -272,7 +275,7 @@ class PluginTasklistsTicket extends CommonDBTM {
       echo "</div>";
 
       $task_ticket = new PluginTasklistsTicket();
-      $tickets              = $task_ticket->find(['plugin_tasklists_tasks_id' => $task->fields['id']]);
+      $tickets     = $task_ticket->find(['plugin_tasklists_tasks_id' => $task->fields['id']]);
 
       if (count($tickets) > 0) {
 
@@ -286,7 +289,7 @@ class PluginTasklistsTicket extends CommonDBTM {
          echo "<th>" . __('Date') . "</th>";
          echo "<th>" . __('Status') . "</th>";
          echo "<th>" . __('Priority') . "</th>";
-//         echo "<th>" . __('Associated element', 'tasklists') . "</th>";
+         //         echo "<th>" . __('Associated element', 'tasklists') . "</th>";
          echo "</tr>";
 
          foreach ($tickets as $data) {
@@ -302,24 +305,24 @@ class PluginTasklistsTicket extends CommonDBTM {
                echo "<td class='center'>";
                echo Ticket::getStatus($ticket->fields["status"]);
                echo "</td>";
-               $style = "style=\"background-color:".$_SESSION["glpipriority_".$ticket->fields['priority']].";\" ";
+               $style = "style=\"background-color:" . $_SESSION["glpipriority_" . $ticket->fields['priority']] . ";\" ";
                echo "<td class='center' $style>";
                echo CommonITILObject::getPriorityName($ticket->fields["priority"]);
                echo "</td>";
-//               echo "<td class='center'>";
-//               $item_ticket = new Item_Ticket();
-//               $items       = $item_ticket->getUsedItems($ticket->fields["id"]);
-//               foreach ($items as $itemtype => $items_id) {
-//                  $item = new $itemtype();
-//                  foreach ($items_id as $item_id) {
-//                     echo $item::getTypeName();
-//                  }
-//                  $item->getFromDB($item_id);
-//                  echo "<br>";
-//                  echo $item->getLink();
-//                  echo "<br>";
-//               }
-//               echo "</td>";
+               //               echo "<td class='center'>";
+               //               $item_ticket = new Item_Ticket();
+               //               $items       = $item_ticket->getUsedItems($ticket->fields["id"]);
+               //               foreach ($items as $itemtype => $items_id) {
+               //                  $item = new $itemtype();
+               //                  foreach ($items_id as $item_id) {
+               //                     echo $item::getTypeName();
+               //                  }
+               //                  $item->getFromDB($item_id);
+               //                  echo "<br>";
+               //                  echo $item->getLink();
+               //                  echo "<br>";
+               //               }
+               //               echo "</td>";
                echo "</tr>";
             }
          }
