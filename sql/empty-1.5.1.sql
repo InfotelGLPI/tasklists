@@ -109,6 +109,8 @@ CREATE TABLE `glpi_plugin_tasklists_preferences`
 (
     `id`           int(11) NOT NULL COMMENT 'RELATION to glpi_users(id)',
     `default_type` int(11) NOT NULL DEFAULT 0,
+    `automatic_refresh`       TINYINT(1) NOT NULL DEFAULT '0',
+    `automatic_refresh_delay` INT(11)    NOT NULL DEFAULT '10',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8

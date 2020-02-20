@@ -185,6 +185,10 @@ class PluginTasklistsKanban extends CommonGLPI {
       $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
 
       echo "<div id='kanban' class='kanban'></div>";
+      $refresh = 0;
+      if(PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0){
+         $refresh = PluginTasklistsPreference::checkPreferenceValue("automatic_refresh_delay", Session::getLoginUserID());
+      }
       $darkmode       = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
       $canadd_item    = json_encode(self::canCreate());
       $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
@@ -208,6 +212,7 @@ class PluginTasklistsKanban extends CommonGLPI {
                dark_theme: {$darkmode},
                max_team_images: 3,
                column_field: $column_field,
+               background_refresh_interval:  $refresh,
                item: {
                   itemtype: 'PluginTasklistsTaskType',
                   items_id: $item_id
