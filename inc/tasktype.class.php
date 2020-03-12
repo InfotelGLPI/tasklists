@@ -312,6 +312,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                            'block'          => ($ID > 0 ? $ID : 0),
                            'link'           => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
                            'description'    => Html::resume_text(Html::clean($comment), 80),
+                           'descriptionfull' => $comment,
                            'priority'       => CommonITILObject::getPriorityName($data['priority']),
                            'priority_id'    => $data['priority'],
                            'bgcolor'        => $_SESSION["glpipriority_" . $data['priority']],
