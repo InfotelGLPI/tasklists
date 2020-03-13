@@ -286,6 +286,9 @@ class PluginTasklistsTaskState extends CommonDropdown {
       return $this->fields['is_finished'];
    }
 
+   /**
+    * @return mixed
+    */
    static function getAllKanbanColumns() {
 
       $taskStates = new self();

@@ -84,7 +84,8 @@ class PluginTasklistsKanban extends CommonGLPI {
    static function countTasksForKanban($id) {
       $dbu = new DbUtils();
       return $dbu->countElementsInTable('glpi_plugin_tasklists_tasks',
-                                        ["plugin_tasklists_tasktypes_id" => $id]);
+                                        ["plugin_tasklists_tasktypes_id" => $id,
+                                         "is_template"                   => 0]);
    }
 
    /**
@@ -186,7 +187,7 @@ class PluginTasklistsKanban extends CommonGLPI {
 
       echo "<div id='kanban' class='kanban'></div>";
       $refresh = 0;
-      if(PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0){
+      if (PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0) {
          $refresh = PluginTasklistsPreference::checkPreferenceValue("automatic_refresh_delay", Session::getLoginUserID());
       }
       $darkmode       = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
