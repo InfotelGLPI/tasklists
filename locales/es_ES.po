@@ -2,16 +2,17 @@
 # Copyright (C) YEAR Tasklists Development Team
 # This file is distributed under the same license as the GLPI - Tasklists plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # FranciscoFJ <dev-ooo@satel-sa.com>, 2019
-#
+# 
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-14 15:45+0100\n"
-"PO-Revision-Date: 2020-02-14 19:47+0100\n"
+"POT-Creation-Date: 2020-03-16 12:13+0100\n"
+"PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: FranciscoFJ <dev-ooo@satel-sa.com>, 2019\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/infotelGLPI/teams/79675/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -19,130 +20,123 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.3\n"
 
-#: setup.php:91 inc/dashboard.class.php:58 inc/dashboard.class.php:178
+#: setup.php:92 inc/dashboard.class.php:58 inc/dashboard.class.php:178
 #: inc/dashboard.class.php:183 inc/menu.class.php:44
 #: inc/preference.class.php:45 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Lista de tareas"
 
-#: ajax/addOptions.php:56
+#: ajax/addOptions.php:31
 msgid "Not archived"
 msgstr ""
 
-#: ajax/addOptions.php:57 inc/task.class.php:181 inc/task.class.php:599
+#: ajax/addOptions.php:32 inc/task.class.php:181 inc/task.class.php:599
 msgid "Archived"
 msgstr "Archivado"
 
 #: inc/dashboard.class.php:93 inc/task.class.php:80 inc/task.class.php:418
-#: inc/taskstate.class.php:96 inc/taskstate.class.php:149
+#: inc/taskstate.class.php:100 inc/taskstate.class.php:152
 #: inc/tasktype.class.php:48
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Contexto"
 msgstr[1] "Contextos"
 
-#: inc/dashboard.class.php:93 inc/kanban.class.php:202
-#: inc/notificationtargettask.class.php:203
+#: inc/dashboard.class.php:93 inc/notificationtargettask.class.php:203
 #: inc/notificationtargettask.class.php:247 inc/task.class.php:118
-#: inc/task.class.php:496 inc/tasktype.class.php:233
+#: inc/task.class.php:496 inc/tasktype.class.php:256
 msgid "Due date"
 msgstr "Fecha de vencimiento"
 
 #: inc/dashboard.class.php:164 inc/dashboard.class.php:172
-#: inc/kanban.class.php:353 inc/kanban.class.php:519 inc/ticket.class.php:154
+#: inc/kanban.class.php:251 inc/ticket.class.php:154
 msgid "Add task"
 msgstr "Agregar tarea"
 
-#: inc/kanban.class.php:60
+#: inc/kanban.class.php:61
 msgid "Kanban"
 msgstr "Kanban"
 
-#: inc/kanban.class.php:119 inc/kanban.class.php:156
+#: inc/kanban.class.php:121
 msgid "You don't have the right to see any context"
 msgstr "Usted no tiene privilegios para ver ningún contexto "
 
-#: inc/kanban.class.php:299 inc/task.class.php:622 inc/task.class.php:709
-#: inc/task.class.php:985 inc/tasktype.class.php:140
-msgid "Backlog"
-msgstr "Reserva"
-
-#: inc/kanban.class.php:354 inc/kanban.class.php:521
-msgid "Archive all tasks of this state"
-msgstr "Archivar todas las tareas en este estado."
-
-#: inc/kanban.class.php:355 inc/kanban.class.php:522
-msgid "See archived tasks"
-msgstr "Ver tareas archivadas."
-
-#: inc/kanban.class.php:356 inc/kanban.class.php:523
-msgid "Hide archived tasks"
-msgstr "Ocultar tareas archivadas"
-
-#: inc/kanban.class.php:357 inc/kanban.class.php:524
-msgid "Clone task"
-msgstr "Copiar tarea"
-
-#: inc/kanban.class.php:359 inc/kanban.class.php:525
-msgid "See tasks in progress"
-msgstr "Ver tareas en progreso"
-
-#: inc/kanban.class.php:360 inc/kanban.class.php:526
-msgid "See tasks of"
-msgstr "Ver tareas de"
-
-#: inc/kanban.class.php:361 inc/kanban.class.php:527
-msgid "See all tasks"
-msgstr "Ver todas las tareas"
-
-#: inc/kanban.class.php:362 inc/kanban.class.php:528
-msgid "Are you sure you want to archive this task ?"
-msgstr "¿Seguro que quieres archivar esta tarea?"
-
-#: inc/kanban.class.php:363 inc/kanban.class.php:529
-msgid "Are you sure you want to archive all tasks ?"
-msgstr "¿Seguro que quieres archivar todas las tareas?"
-
-#: inc/kanban.class.php:364 inc/kanban.class.php:530
-msgid "Archive this task"
-msgstr "Archivar esta tarea"
-
-#: inc/kanban.class.php:365 inc/kanban.class.php:531
-msgid "Update priority of task"
-msgstr "Actualizar prioridad de tarea "
-
-#: inc/kanban.class.php:366 inc/kanban.class.php:532
-msgid "Details of task"
-msgstr "Detalles de la tarea"
-
-#: inc/kanban.class.php:509
+#: inc/kanban.class.php:241
 msgid "Toggle collapse"
 msgstr ""
 
-#: inc/kanban.class.php:510
+#: inc/kanban.class.php:242
 msgid "Search"
 msgstr ""
 
-#: inc/kanban.class.php:511
+#: inc/kanban.class.php:243
 msgid "Search or filter results"
 msgstr ""
 
-#: inc/kanban.class.php:512
+#: inc/kanban.class.php:244
 msgid "Add status"
 msgstr ""
 
-#: inc/kanban.class.php:513
+#: inc/kanban.class.php:245
 msgid "Create status"
 msgstr ""
 
-#: inc/kanban.class.php:515
+#: inc/kanban.class.php:247
 msgid "Add a column from existing status"
 msgstr ""
 
-#: inc/kanban.class.php:516
+#: inc/kanban.class.php:248
 msgid "Or add a new status"
 msgstr ""
+
+#: inc/kanban.class.php:253
+msgid "Archive all tasks of this state"
+msgstr "Archivar todas las tareas en este estado."
+
+#: inc/kanban.class.php:254
+msgid "See archived tasks"
+msgstr "Ver tareas archivadas."
+
+#: inc/kanban.class.php:255
+msgid "Hide archived tasks"
+msgstr "Ocultar tareas archivadas"
+
+#: inc/kanban.class.php:256
+msgid "Clone task"
+msgstr "Copiar tarea"
+
+#: inc/kanban.class.php:257
+msgid "See tasks in progress"
+msgstr "Ver tareas en progreso"
+
+#: inc/kanban.class.php:258
+msgid "See tasks of"
+msgstr "Ver tareas de"
+
+#: inc/kanban.class.php:259
+msgid "See all tasks"
+msgstr "Ver todas las tareas"
+
+#: inc/kanban.class.php:260
+msgid "Are you sure you want to archive this task ?"
+msgstr "¿Seguro que quieres archivar esta tarea?"
+
+#: inc/kanban.class.php:261
+msgid "Are you sure you want to archive all tasks ?"
+msgstr "¿Seguro que quieres archivar todas las tareas?"
+
+#: inc/kanban.class.php:262
+msgid "Archive this task"
+msgstr "Archivar esta tarea"
+
+#: inc/kanban.class.php:263
+msgid "Update priority of task"
+msgstr "Actualizar prioridad de tarea "
+
+#: inc/kanban.class.php:264
+msgid "Details of task"
+msgstr "Detalles de la tarea"
 
 #: inc/notificationtargettask.class.php:50
 msgid "A task has been added"
@@ -166,19 +160,35 @@ msgstr "Otro cliente"
 msgid "At creation, update, removal of a task"
 msgstr "En la creación, actualización, eliminación de una tarea"
 
-#: inc/preference.class.php:78
+#: inc/preference.class.php:79
 msgid "Context by default"
 msgstr "Contexto predefinido"
 
-#: inc/profile.class.php:151 inc/profile.class.php:184
+#: inc/preference.class.php:87
+msgid "Automatic refreshing of the widgets that can be refreshed"
+msgstr ""
+
+#: inc/preference.class.php:93
+msgid "Refresh every "
+msgstr ""
+
+#: inc/preference.class.php:97
+msgid "minute(s)"
+msgstr ""
+
+#: inc/profile.class.php:153 inc/profile.class.php:196
 msgid "See and update all tasks"
 msgstr "Ver y actualizar todas las tareas"
 
-#: inc/stateorder.class.php:95
+#: inc/profile.class.php:162 inc/profile.class.php:199
+msgid "Configure contexts and statuses"
+msgstr ""
+
+#: inc/stateorder.class.php:96
 msgid "States ordering"
 msgstr "Ordenación de estados "
 
-#: inc/stateorder.class.php:155
+#: inc/stateorder.class.php:156
 msgid "Add states from GLPI"
 msgstr "Añadir estados desde GLPI"
 
@@ -189,6 +199,11 @@ msgstr "No puedes archivar una tarea con este estado"
 #: inc/task.class.php:457
 msgid "Existing client"
 msgstr "Cliente existente"
+
+#: inc/task.class.php:622 inc/task.class.php:709 inc/task.class.php:985
+#: inc/tasktype.class.php:161
+msgid "Backlog"
+msgstr "Reserva"
 
 #: inc/task.class.php:1045
 msgctxt "visibility"
@@ -209,28 +224,28 @@ msgstr "Todos"
 msgid "Affect entity for create task"
 msgstr "Afecta a la entidad para crear la tarea"
 
-#: inc/ticket.class.php:74 inc/ticket.class.php:180
+#: inc/ticket.class.php:74 inc/ticket.class.php:183
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Tarea vinculada"
 msgstr[1] "Tareas vinculadas"
 
-#: inc/ticket.class.php:224
+#: inc/ticket.class.php:227
 msgid "No task linked to this ticket yet"
 msgstr "Aún no hay ninguna tarea vinculada a esta petición"
 
-#: inc/ticket.class.php:255
+#: inc/ticket.class.php:258
 msgid "Link a existant ticket"
 msgstr "Vincula una petición existente"
 
-#: inc/ticket.class.php:281
+#: inc/ticket.class.php:284
 msgid "Linked tickets"
 msgstr "Peticiones vinculadas"
 
-#: inc/typevisibility.class.php:136
+#: inc/typevisibility.class.php:140
 msgid "Add a group"
 msgstr "Agregar un grupo"
 
-#: inc/typevisibility.class.php:177
+#: inc/typevisibility.class.php:181
 msgid "Groups allowed to use context"
 msgstr "Grupos permitidos para usar el contexto"
