@@ -60,6 +60,9 @@ if ($_REQUEST['action'] == 'addUsers') {
    if (!isset($_SESSION["usersKanban"][Session::getLoginUserID()])) {
       $_SESSION["usersKanban"][Session::getLoginUserID()] = json_encode([-1]);
    }
+   if (!isset($_SESSION["archive"][Session::getLoginUserID()])) {
+      $_SESSION["archive"][Session::getLoginUserID()] = json_encode([0]);
+   }
    if ($_SESSION["usersKanban"][Session::getLoginUserID()] != "" && $_SESSION["archive"][Session::getLoginUserID()] != "null") {
       $arch = Dropdown::showFromArray("usersKanban", $users, array('id' => 'users', 'multiple' => true, 'values' => json_decode($_SESSION["usersKanban"][Session::getLoginUserID()], true), "display" => false));
    } else {

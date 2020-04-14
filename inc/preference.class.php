@@ -41,7 +41,8 @@ class PluginTasklistsPreference extends CommonDBTM {
     * @return string|translated
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if ($item->getType() == 'Preference') {
+      if (Session::haveRight('plugin_tasklists', READ)
+            && $item->getType() == 'Preference') {
          return __('Tasks list', 'tasklists');
       }
       return '';
