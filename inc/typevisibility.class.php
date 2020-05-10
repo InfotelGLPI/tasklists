@@ -115,16 +115,13 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
 
       $groups    = [];
       $group     = new Group();
-      $op        = "";
-      $condition = "";
+      $condition = [];
       if (count($used_groups) > 0) {
-         $condition .= "`id` NOT IN (" . implode(',', $used_groups) . ")";
-         $op        = "AND";
+         $condition [] = ["NOT" => [
+            "id" => implode(',', $used_groups)
+         ]];
       }
-      $dbu = new DbUtils();
-      //TODO Find
-      $condition .= $dbu->getEntitiesRestrictRequest($op, $group->getTable(), null, null,
-                                                     $group->maybeRecursive());
+      $condition [] = getEntitiesRestrictCriteria($group->getTable());
       $dataGroup = $group->find($condition, 'name');
       if ($dataGroup) {
          foreach ($dataGroup as $field) {

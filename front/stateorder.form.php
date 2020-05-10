@@ -33,37 +33,16 @@ $plugin = new Plugin();
 
 if ($plugin->isActivated("tasklists")) {
 
-   //   if (Session::haveRight("tasklists", CREATE)) {
-
    Html::header(__('Setup'), '', "config", "plugins");
 
    $order = new PluginTasklistsStateOrder();
 
-   //      if (isset($_GET['reload'])
-   //          && isset($_GET['plugin_tasklists_tasktypes_id'])
-   //      ) {
-   //
-   //         $order->loadCategories($_GET['plugin_tasklists_tasktypes_id']);
-   //         Html::back();
-   //
-   //      } else
    if (isset($_GET['addnew'])
-       && isset($_GET['plugin_tasklists_tasktypes_id'])
-   ) {
+       && isset($_GET['plugin_tasklists_tasktypes_id'])) {
 
       $order->addNewStates($_GET['plugin_tasklists_tasktypes_id']);
       Html::back();
-
    }
-   //      else if (isset($_GET['plugin_tasklists_tasktypes_id'])) {
-   //
-   //
-   //         $order->showOrderStates($_GET['plugin_tasklists_tasktypes_id']);
-   //      }
-
-   //   } else {
-   //      Html::displayRightError();
-   //   }
 
 } else {
    Html::displayRightError();

@@ -169,7 +169,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       }
 
       $column_field = [
-         'id'           => 'projectstates_id',
+         'id'           => 'plugin_tasklists_taskstates_id',
          'extra_fields' => [
             'color' => [
                'type' => 'color'
@@ -182,24 +182,29 @@ class PluginTasklistsKanban extends CommonGLPI {
       } else {
          $item_id = PluginTasklistsPreference::checkPreferenceValue("default_type", Session::getLoginUserID());
       }
-      $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
-      $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
+      if ($item_id == 0) {
+         echo "<div align='center'><br><br>";
+         echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
+         echo "<b>" . __("There is no accessible context", "tasklists") . "</b></div>";
+      } else {
+         $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
+         $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
 
-      echo "<div id='kanban' class='kanban'></div>";
-      $refresh = 0;
-      if (PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0) {
-         $refresh = PluginTasklistsPreference::checkPreferenceValue("automatic_refresh_delay", Session::getLoginUserID());
-      }
-      $darkmode       = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
-      $canadd_item    = json_encode(self::canCreate());
-      $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
-      //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
-      $cancreate_column      = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
-      $limit_addcard_columns = $canmodify_view !== 'false' ? '[]' : json_encode([0]);
-      $can_order_item        = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
+         echo "<div id='kanban' class='kanban'></div>";
+         $refresh = 0;
+         if (PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0) {
+            $refresh = PluginTasklistsPreference::checkPreferenceValue("automatic_refresh_delay", Session::getLoginUserID());
+         }
+         $darkmode       = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
+         $canadd_item    = json_encode(self::canCreate());
+         $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
+         //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
+         $cancreate_column      = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
+         $limit_addcard_columns = $canmodify_view !== 'false' ? '[]' : json_encode([0]);
+         $can_order_item        = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
 
 
-      $js = <<<JAVASCRIPT
+         $js = <<<JAVASCRIPT
          $(function(){
             // Create Kanban
             var kanban = new GLPIKanban({
@@ -223,7 +228,8 @@ class PluginTasklistsKanban extends CommonGLPI {
             kanban.init();
          });
 JAVASCRIPT;
-      echo Html::scriptBlock($js);
+         echo Html::scriptBlock($js);
+      }
    }
 
    public function canOrderKanbanCard($ID) {

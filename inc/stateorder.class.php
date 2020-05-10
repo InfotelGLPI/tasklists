@@ -153,7 +153,7 @@ class PluginTasklistsStateOrder extends CommonDBTM {
       echo "<tr class='tab_bg_2'>";
       echo "<td class='center'>";
       echo "<a href='" . $CFG_GLPI['root_doc'] . "/plugins/tasklists/front/stateorder.form.php?addnew=1&plugin_tasklists_tasktypes_id=" . $plugin_tasklists_tasktypes_id . "'>";
-      echo __('Add states from GLPI', 'tasklists');
+      echo __('Add states from linked Kanban', 'tasklists');
       echo "</a>";
       echo "</td>";
       echo "<tr>";
@@ -165,7 +165,6 @@ class PluginTasklistsStateOrder extends CommonDBTM {
     * @param $plugin_tasklists_tasktypes_id
     */
    function addNewStates($plugin_tasklists_tasktypes_id) {
-      //      global $DB;
 
       $this->deleteByCriteria(['plugin_tasklists_tasktypes_id' => $plugin_tasklists_tasktypes_id,
                                //                               'entities_id' => $_SESSION["glpiactive_entity"]
