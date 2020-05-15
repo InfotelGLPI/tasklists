@@ -38,7 +38,7 @@ if (!defined('GLPI_ROOT')) {
  */
 class PluginTasklistsTaskState extends CommonDropdown {
 
-   static $rightname = 'plugin_tasklists';
+   static $rightname = 'plugin_tasklists_config';
 
 
    /**

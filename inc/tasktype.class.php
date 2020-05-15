@@ -48,7 +48,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       return _n('Context', 'Contexts', $nb, 'tasklists');
    }
 
-   static $rightname = 'plugin_tasklists';
+   static $rightname = 'plugin_tasklists_config';
 
    /**
     * @param array $options
