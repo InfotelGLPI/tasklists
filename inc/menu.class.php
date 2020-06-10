@@ -69,7 +69,16 @@ class PluginTasklistsMenu extends CommonGLPI {
       }
       $menu['links']['summary'] = PluginTasklistsKanban::getSearchURL(false);
 
+      $menu['icon']    = self::getIcon();
+
       return $menu;
+   }
+
+   /**
+    * @return string
+    */
+   static function getIcon() {
+      return "fas fa-tasks";
    }
 
    static function removeRightsFromSession() {

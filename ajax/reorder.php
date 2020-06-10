@@ -41,7 +41,7 @@ $query = "SELECT id FROM $table
 
 $result = $DB->queryOrDie($query, 'Error');
 //$result  = $DB->query($query);
-$first   = $result->fetch_assoc();
+$first   = $result->fetchAssoc();
 $id_item = $first['id'];
 
 // Réorganisation de tout les champs

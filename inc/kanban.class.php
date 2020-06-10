@@ -107,7 +107,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       if ($item->getType() == __CLASS__) {
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
-               while ($data = $DB->fetch_array($result)) {
+               while ($data = $DB->fetchArray($result)) {
                   //                  if (self::countTasksForKanban($data["id"]) > 0) {
                   if (PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
                      $tabs[$data["id"]] = $data["completename"];

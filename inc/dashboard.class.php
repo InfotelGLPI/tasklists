@@ -110,7 +110,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                $tasks = [];
                if ($result = $DB->query($query)) {
                   if ($DB->numrows($result)) {
-                     while ($data = $DB->fetch_array($result)) {
+                     while ($data = $DB->fetchArray($result)) {
                         $ID                    = $data['id'];
                         $task = new PluginTasklistsTask();
                         if ($task->checkVisibility($ID) == true) {

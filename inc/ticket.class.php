@@ -140,7 +140,7 @@ class PluginTasklistsTicket extends CommonDBTM {
       $tickets = [];
       $used    = [];
       if ($numrows = $DB->numrows($result)) {
-         while ($data = $DB->fetch_assoc($result)) {
+         while ($data = $DB->fetchAssoc($result)) {
             $tickets[$data['id']] = $data;
             $used[$data['id']]    = $data['id'];
          }

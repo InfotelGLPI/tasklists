@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_TASKLISTS_VERSION', '1.5.1');
+define('PLUGIN_TASKLISTS_VERSION', '1.6.0');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
@@ -35,9 +35,7 @@ function plugin_init_tasklists() {
 
    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
    $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
-
    $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
-
 
    if (Session::getLoginUserID()) {
 
@@ -47,7 +45,6 @@ function plugin_init_tasklists() {
          'document_types'              => true,
          'notificationtemplates_types' => true
       ]);
-
 
       Plugin::registerClass('PluginTasklistsTicket',
                             ['addtabon' => 'Ticket']);
@@ -72,11 +69,11 @@ function plugin_init_tasklists() {
          $PLUGIN_HOOKS['use_massive_action']['tasklists'] = 1;
       }
       // require spectrum (for glpi >= 9.2)
-      $CFG_GLPI['javascript']['config']['commondropdown']['PluginTasklistsTaskState'] = ['colorpicker'];
+//      $CFG_GLPI['javascript']['config']['commondropdown']['PluginTasklistsTaskState'] = ['colorpicker'];
       $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/lib/redips/redips-drag-min.js";
       $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/scripts/plugin_tasklists_drag-field-row.js";
-      $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/lib/kanban/js/kanban.js";
-      $CFG_GLPI['javascript']['helpdesk']['plugintasklistsmenu']                      = ['colorpicker'];
+//      $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = "/plugins/tasklists/lib/kanban/js/kanban.js";
+//      $CFG_GLPI['javascript']['helpdesk']['plugintasklistsmenu']                      = ['colorpicker'];
 
 
    }
@@ -96,7 +93,7 @@ function plugin_version_tasklists() {
       'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
       'requirements' => [
          'glpi' => [
-            'min' => '9.4',
+            'min' => '9.5',
             'dev' => false
          ]
       ]
@@ -109,10 +106,10 @@ function plugin_version_tasklists() {
  * @return bool
  */
 function plugin_tasklists_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.4', 'lt')
-       || version_compare(GLPI_VERSION, '9.5', 'ge')) {
+   if (version_compare(GLPI_VERSION, '9.5', 'lt')
+       || version_compare(GLPI_VERSION, '9.6', 'ge')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.4');
+         echo Plugin::messageIncompatible('core', '9.5');
       }
       return false;
    }
