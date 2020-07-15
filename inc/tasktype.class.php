@@ -220,7 +220,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       foreach ($states as $state) {
 
          $tasks = [];
-         $datas = $task->find(["plugin_tasklists_tasktypes_id" => $ID, "plugin_tasklists_taskstates_id" => $state["id"], 'is_deleted' => 0, 'is_template' => 0], ['priority DESC']);
+         $datas = $task->find(["plugin_tasklists_tasktypes_id" => $ID, "plugin_tasklists_taskstates_id" => $state["id"], 'is_deleted' => 0, 'is_template' => 0], ['priority DESC,name']);
 
          foreach ($datas as $data) {
             $array = isset($_SESSION["archive"][Session::getLoginUserID()]) ? json_decode($_SESSION["archive"][Session::getLoginUserID()]) : [0];
@@ -360,6 +360,33 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
       return $users;
    }
+
+   /**
+    * Have I the global right to "create" the Object
+    * May be overloaded if needed (ex KnowbaseItem)
+    *
+    * @return boolean
+    **/
+   static function canCreate() {
+      if (static::$rightname) {
+         return Session::haveRight(static::$rightname, 1);
+      }
+      return false;
+   }
+   static function canUpdate() {
+      if (static::$rightname) {
+         return Session::haveRight(static::$rightname, 1);
+      }
+      return false;
+   }
+
+   static function canDelete() {
+      if (static::$rightname) {
+         return Session::haveRight(static::$rightname, 1);
+      }
+      return false;
+   }
+
 
 
 }

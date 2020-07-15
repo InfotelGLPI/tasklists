@@ -121,8 +121,9 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
             "id" => implode(',', $used_groups)
          ]];
       }
-      $condition [] = getEntitiesRestrictCriteria($group->getTable());
-      $dataGroup = $group->find($condition, 'name');
+      $condition [] = getEntitiesRestrictCriteria($group->getTable(),'',$_SESSION["glpiactiveentities"],true);
+
+      $dataGroup = $group->find($condition, ['name']);
       if ($dataGroup) {
          foreach ($dataGroup as $field) {
             $groups[$field['id']] = $field['completename'];
