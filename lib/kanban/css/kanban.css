@@ -224,6 +224,7 @@
    -moz-border-radius: 50%;
    -webkit-border-radius: 50%;
    vertical-align: top;
+   font-size: 9px;
 }
 
 .kanban_user_verysmall {
@@ -681,6 +682,7 @@
    margin-left: 15px;
    padding: 3px 12px;
    border-radius: 50px;
+   font-size: 12px;
 }
 
 #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-column-header .kanban-column-title.kanban-text-light {
@@ -769,7 +771,7 @@
 #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-item .kanban-item-header, #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-add-form .kanban-item-header, #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-item .kanban-item-header a, #page .kanban .kanban-container .kanban-columns .kanban-column .kanban-body .kanban-add-form .kanban-item-header a {
    padding: 5px 10px 0;
    color: black;
-   /*font-size: 1.1em;*/
+   font-size: 12px;
    font-weight: bold;
 }
 
