@@ -50,7 +50,7 @@ function plugin_tasklists_install() {
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.5.1.sql");
       $mig->executeMigration();
    }
-   if (!$DB->fieldExists("glpi_plugin_tasklists_items_kanbans", "automatic_refresh")) {
+   if (!$DB->fieldExists("glpi_plugin_tasklists_preferences", "automatic_refresh")) {
       $mig = new Migration("1.6.0");
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.6.0.sql");
       $mig->executeMigration();

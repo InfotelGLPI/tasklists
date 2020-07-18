@@ -85,13 +85,13 @@ class PluginTasklistsPreference extends CommonDBTM {
                                                  'condition' => ["id" => $types]]);
       echo "</td>";
       echo "</tr>";
-      echo "<tr class='tab_bg_1'><td>" . __("Automatic refreshing of the widgets that can be refreshed", "mydashboard") . "</td>";
+      echo "<tr class='tab_bg_1'><td>" . __("Automatic refreshing of tasklist", "tasklists") . "</td>";
       echo "<td>";
       Dropdown::showYesNo("automatic_refresh", $this->fields['automatic_refresh']);
       echo "</td>";
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'><td>" . __("Refresh every ", "mydashboard") . "</td>";
+      echo "<tr class='tab_bg_1'><td>" . __("Refresh every ", "tasklists") . "</td>";
       echo "<td>";
       Dropdown::showFromArray("automatic_refresh_delay", [1 => 1, 2 => 2, 5 => 5, 10 => 10, 30 => 30, 60 => 60],
                               ["value" => $this->fields['automatic_refresh_delay']]);
