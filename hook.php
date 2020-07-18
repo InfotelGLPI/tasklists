@@ -41,7 +41,6 @@ function plugin_tasklists_install() {
 
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
-
       $mig = new Migration("1.4.1");
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.1.sql");
       $mig->executeMigration();
@@ -49,6 +48,11 @@ function plugin_tasklists_install() {
    if (!$DB->tableExists("glpi_plugin_tasklists_items_kanbans")) {
       $mig = new Migration("1.5.1");
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.5.1.sql");
+      $mig->executeMigration();
+   }
+   if (!$DB->fieldExists("glpi_plugin_tasklists_items_kanbans", "automatic_refresh")) {
+      $mig = new Migration("1.6.0");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.6.0.sql");
       $mig->executeMigration();
    }
    // Add record notification
