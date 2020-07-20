@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-16 12:13+0100\n"
+"POT-Creation-Date: 2020-07-20 15:07+0200\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>, 2018\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/infotelGLPI/teams/79675/cs_CZ/)\n"
@@ -21,9 +21,9 @@ msgstr ""
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: setup.php:92 inc/dashboard.class.php:58 inc/dashboard.class.php:178
+#: setup.php:89 inc/dashboard.class.php:58 inc/dashboard.class.php:178
 #: inc/dashboard.class.php:183 inc/menu.class.php:44
-#: inc/preference.class.php:45 inc/profile.class.php:52
+#: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Seznam úkolů"
 
@@ -52,7 +52,7 @@ msgid "Due date"
 msgstr "Termín"
 
 #: inc/dashboard.class.php:164 inc/dashboard.class.php:172
-#: inc/kanban.class.php:251 inc/ticket.class.php:154
+#: inc/kanban.class.php:257 inc/ticket.class.php:154
 msgid "Add task"
 msgstr "Přidat úkol"
 
@@ -64,79 +64,83 @@ msgstr "Kanban"
 msgid "You don't have the right to see any context"
 msgstr "Nemáte oprávnění pro zobrazení žádného kontextu"
 
-#: inc/kanban.class.php:241
-msgid "Toggle collapse"
-msgstr ""
-
-#: inc/kanban.class.php:242
-msgid "Search"
-msgstr ""
-
-#: inc/kanban.class.php:243
-msgid "Search or filter results"
-msgstr ""
-
-#: inc/kanban.class.php:244
-msgid "Add status"
-msgstr ""
-
-#: inc/kanban.class.php:245
-msgid "Create status"
+#: inc/kanban.class.php:188
+msgid "There is no accessible context"
 msgstr ""
 
 #: inc/kanban.class.php:247
-msgid "Add a column from existing status"
+msgid "Toggle collapse"
 msgstr ""
 
 #: inc/kanban.class.php:248
-msgid "Or add a new status"
+msgid "Search"
+msgstr ""
+
+#: inc/kanban.class.php:249
+msgid "Search or filter results"
+msgstr ""
+
+#: inc/kanban.class.php:250
+msgid "Add status"
+msgstr ""
+
+#: inc/kanban.class.php:251
+msgid "Create status"
 msgstr ""
 
 #: inc/kanban.class.php:253
+msgid "Add a column from existing status"
+msgstr ""
+
+#: inc/kanban.class.php:254
+msgid "Or add a new status"
+msgstr ""
+
+#: inc/kanban.class.php:259
 msgid "Archive all tasks of this state"
 msgstr "Archivovat všechny úkoly, které mají tento stav"
 
-#: inc/kanban.class.php:254
+#: inc/kanban.class.php:260
 msgid "See archived tasks"
 msgstr "Zobrazit archivované úkoly"
 
-#: inc/kanban.class.php:255
+#: inc/kanban.class.php:261
 msgid "Hide archived tasks"
 msgstr "Skrýt archivované úkoly"
 
-#: inc/kanban.class.php:256
+#: inc/kanban.class.php:262
 msgid "Clone task"
 msgstr "Klonovat úkol"
 
-#: inc/kanban.class.php:257
+#: inc/kanban.class.php:263
 msgid "See tasks in progress"
 msgstr "Zobrazit všechny rozpracované úkoly"
 
-#: inc/kanban.class.php:258
+#: inc/kanban.class.php:264
 msgid "See tasks of"
 msgstr "Zobrazit úkoly"
 
-#: inc/kanban.class.php:259
+#: inc/kanban.class.php:265
 msgid "See all tasks"
 msgstr "Zobrazit všechny úkoly"
 
-#: inc/kanban.class.php:260
+#: inc/kanban.class.php:266
 msgid "Are you sure you want to archive this task ?"
 msgstr "Opravdu chcete tento úkol zaarchivovat?"
 
-#: inc/kanban.class.php:261
+#: inc/kanban.class.php:267
 msgid "Are you sure you want to archive all tasks ?"
 msgstr "Opravdu chcete zaarchivovat všechny úkoly?"
 
-#: inc/kanban.class.php:262
+#: inc/kanban.class.php:268
 msgid "Archive this task"
 msgstr "Zaarchivovat tento úkol"
 
-#: inc/kanban.class.php:263
+#: inc/kanban.class.php:269
 msgid "Update priority of task"
 msgstr "Změnit prioritu úkolu"
 
-#: inc/kanban.class.php:264
+#: inc/kanban.class.php:270
 msgid "Details of task"
 msgstr "Podrobnosti úkolu"
 
@@ -162,19 +166,19 @@ msgstr "Jiný klint"
 msgid "At creation, update, removal of a task"
 msgstr "Při vytvoření, aktualizaci a odebrání úkolu"
 
-#: inc/preference.class.php:79
+#: inc/preference.class.php:80
 msgid "Context by default"
 msgstr "Kontext ve výchozím stavu"
 
-#: inc/preference.class.php:87
-msgid "Automatic refreshing of the widgets that can be refreshed"
+#: inc/preference.class.php:88
+msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: inc/preference.class.php:93
+#: inc/preference.class.php:94
 msgid "Refresh every "
 msgstr ""
 
-#: inc/preference.class.php:97
+#: inc/preference.class.php:98
 msgid "minute(s)"
 msgstr ""
 
@@ -191,8 +195,8 @@ msgid "States ordering"
 msgstr "Řazení vztahů"
 
 #: inc/stateorder.class.php:156
-msgid "Add states from GLPI"
-msgstr "Přidat stavy z GLPI"
+msgid "Add states from linked Kanban"
+msgstr ""
 
 #: inc/task.class.php:333
 msgid "You cannot archive a task with this state"
@@ -246,10 +250,10 @@ msgstr "Propojit s existujícím požadavkem"
 msgid "Linked tickets"
 msgstr "Připojené požadavky"
 
-#: inc/typevisibility.class.php:140
+#: inc/typevisibility.class.php:138
 msgid "Add a group"
 msgstr "Přidat skupinu"
 
-#: inc/typevisibility.class.php:181
+#: inc/typevisibility.class.php:179
 msgid "Groups allowed to use context"
 msgstr "Skupiny kterým je umožněno používat kontext"

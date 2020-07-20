@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-14 15:45+0100\n"
-"PO-Revision-Date: 2020-03-16 12:19+0100\n"
+"POT-Creation-Date: 2020-07-20 15:07+0200\n"
+"PO-Revision-Date: 2020-07-20 15:19+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 
-#: setup.php:92 inc/dashboard.class.php:58 inc/dashboard.class.php:178
+#: setup.php:89 inc/dashboard.class.php:58 inc/dashboard.class.php:178
 #: inc/dashboard.class.php:183 inc/menu.class.php:44
-#: inc/preference.class.php:45 inc/profile.class.php:52
+#: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Tasks list"
 
@@ -47,7 +47,7 @@ msgid "Due date"
 msgstr "Due date"
 
 #: inc/dashboard.class.php:164 inc/dashboard.class.php:172
-#: inc/kanban.class.php:251 inc/ticket.class.php:154
+#: inc/kanban.class.php:257 inc/ticket.class.php:154
 msgid "Add task"
 msgstr "Add task"
 
@@ -59,79 +59,83 @@ msgstr "Kanban"
 msgid "You don't have the right to see any context"
 msgstr "You don't have the right to see any context"
 
-#: inc/kanban.class.php:241
+#: inc/kanban.class.php:188
+msgid "There is no accessible context"
+msgstr "There is no accessible context"
+
+#: inc/kanban.class.php:247
 msgid "Toggle collapse"
 msgstr "Toggle collapse"
 
-#: inc/kanban.class.php:242
+#: inc/kanban.class.php:248
 msgid "Search"
 msgstr "Search"
 
-#: inc/kanban.class.php:243
+#: inc/kanban.class.php:249
 msgid "Search or filter results"
 msgstr "Search or filter results"
 
-#: inc/kanban.class.php:244
+#: inc/kanban.class.php:250
 msgid "Add status"
 msgstr "Add status"
 
-#: inc/kanban.class.php:245
+#: inc/kanban.class.php:251
 msgid "Create status"
 msgstr "Create status"
 
-#: inc/kanban.class.php:247
+#: inc/kanban.class.php:253
 msgid "Add a column from existing status"
 msgstr "Add a column from existing status"
 
-#: inc/kanban.class.php:248
+#: inc/kanban.class.php:254
 msgid "Or add a new status"
 msgstr "Or add a new status"
 
-#: inc/kanban.class.php:253
+#: inc/kanban.class.php:259
 msgid "Archive all tasks of this state"
 msgstr "Archive all tasks of this state"
 
-#: inc/kanban.class.php:254
+#: inc/kanban.class.php:260
 msgid "See archived tasks"
 msgstr "See archived tasks"
 
-#: inc/kanban.class.php:255
+#: inc/kanban.class.php:261
 msgid "Hide archived tasks"
 msgstr "Hide archived tasks"
 
-#: inc/kanban.class.php:256
+#: inc/kanban.class.php:262
 msgid "Clone task"
 msgstr "Clone task"
 
-#: inc/kanban.class.php:257
+#: inc/kanban.class.php:263
 msgid "See tasks in progress"
 msgstr "See tasks in progress"
 
-#: inc/kanban.class.php:258
+#: inc/kanban.class.php:264
 msgid "See tasks of"
 msgstr "See tasks of"
 
-#: inc/kanban.class.php:259
+#: inc/kanban.class.php:265
 msgid "See all tasks"
 msgstr "See all tasks"
 
-#: inc/kanban.class.php:260
+#: inc/kanban.class.php:266
 msgid "Are you sure you want to archive this task ?"
 msgstr "Are you sure you want to archive this task ?"
 
-#: inc/kanban.class.php:261
+#: inc/kanban.class.php:267
 msgid "Are you sure you want to archive all tasks ?"
 msgstr "Are you sure you want to archive all tasks ?"
 
-#: inc/kanban.class.php:262
+#: inc/kanban.class.php:268
 msgid "Archive this task"
 msgstr "Archive this task"
 
-#: inc/kanban.class.php:263
+#: inc/kanban.class.php:269
 msgid "Update priority of task"
 msgstr "Update priority of task"
 
-#: inc/kanban.class.php:264
+#: inc/kanban.class.php:270
 msgid "Details of task"
 msgstr "Details of task"
 
@@ -157,19 +161,19 @@ msgstr "Other client"
 msgid "At creation, update, removal of a task"
 msgstr "At creation, update, removal of a task"
 
-#: inc/preference.class.php:79
+#: inc/preference.class.php:80
 msgid "Context by default"
 msgstr "Context by default"
 
-#: inc/preference.class.php:87
-msgid "Automatic refreshing of the widgets that can be refreshed"
-msgstr "Automatic refreshing of the widgets that can be refreshed"
+#: inc/preference.class.php:88
+msgid "Automatic refreshing of tasklist"
+msgstr "Automatic refreshing of tasklist"
 
-#: inc/preference.class.php:93
+#: inc/preference.class.php:94
 msgid "Refresh every "
 msgstr "Refresh every "
 
-#: inc/preference.class.php:97
+#: inc/preference.class.php:98
 msgid "minute(s)"
 msgstr "minute(s)"
 
@@ -186,8 +190,8 @@ msgid "States ordering"
 msgstr "States ordering"
 
 #: inc/stateorder.class.php:156
-msgid "Add states from GLPI"
-msgstr "Add states from GLPI"
+msgid "Add states from linked Kanban"
+msgstr "Add states from linked Kanban"
 
 #: inc/task.class.php:333
 msgid "You cannot archive a task with this state"
@@ -239,10 +243,10 @@ msgstr "Link a existant ticket"
 msgid "Linked tickets"
 msgstr "Linked tickets"
 
-#: inc/typevisibility.class.php:140
+#: inc/typevisibility.class.php:138
 msgid "Add a group"
 msgstr "Add a group"
 
-#: inc/typevisibility.class.php:181
+#: inc/typevisibility.class.php:179
 msgid "Groups allowed to use context"
 msgstr "Groups allowed to use context"
