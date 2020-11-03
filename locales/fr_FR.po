@@ -9,9 +9,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
+"Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-20 15:07+0200\n"
+"POT-Creation-Date: 2020-11-02 18:00+0100\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2020\n"
 "Language-Team: French (France) (https://www.transifex.com/infotelGLPI/teams/79675/fr_FR/)\n"
@@ -227,6 +227,12 @@ msgstr "Tout le monde"
 #: inc/task.class.php:1093
 msgid "Affect entity for create task"
 msgstr "Affecter une entité pour une création de tâche"
+
+#: inc/taskstate.class.php:50
+msgid "Status"
+msgid_plural "Statuses"
+msgstr[0] "Statut"
+msgstr[1] "Statuts"
 
 #: inc/ticket.class.php:74 inc/ticket.class.php:183
 msgid "Linked task"
