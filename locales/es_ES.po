@@ -4,15 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2020
 # FranciscoFJ <dev-ooo@satel-sa.com>, 2020
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
+"Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-20 15:07+0200\n"
-"PO-Revision-Date: 2017-10-18 16:45+0000\n"
+"POT-Creation-Date: 2020-11-03 12:59+0000\n"
+"PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: FranciscoFJ <dev-ooo@satel-sa.com>, 2020\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/infotelGLPI/teams/79675/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +65,7 @@ msgstr "Usted no tiene privilegios para ver ningún contexto "
 
 #: inc/kanban.class.php:188
 msgid "There is no accessible context"
-msgstr ""
+msgstr "No hay contexto accesible"
 
 #: inc/kanban.class.php:247
 msgid "Toggle collapse"
@@ -170,7 +171,7 @@ msgstr "Contexto predefinido"
 
 #: inc/preference.class.php:88
 msgid "Automatic refreshing of tasklist"
-msgstr ""
+msgstr "Actualización automática de la lista de tareas"
 
 #: inc/preference.class.php:94
 msgid "Refresh every "
@@ -194,7 +195,7 @@ msgstr "Ordenación de estados "
 
 #: inc/stateorder.class.php:156
 msgid "Add states from linked Kanban"
-msgstr ""
+msgstr "Agregar estados desde vinculos Kanban"
 
 #: inc/task.class.php:333
 msgid "You cannot archive a task with this state"
