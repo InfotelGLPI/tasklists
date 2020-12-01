@@ -79,7 +79,11 @@ if (isset($_REQUEST['itemtype'])) {
 // Rights Checks
 if (isset($itemtype)) {
    if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column'])) {
-      if (!$item->canView()) {
+      $itemtoV = $item;
+      if ($itemtype == PluginTasklistsTaskType::getType()){
+         $itemtoV = new PluginTasklistsTask();
+      }
+      if (!$itemtoV->canView()) {
          // Missing rights
          http_response_code(403);
          return;
