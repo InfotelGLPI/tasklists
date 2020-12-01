@@ -47,7 +47,7 @@ class PluginTasklistsTaskState extends CommonDropdown {
     * @return translated
     */
    static function getTypeName($nb = 0) {
-      return _n('Status', 'Statuses', $nb);
+      return _n('Status', 'Statuses', $nb, 'tasklists');
    }
 
    /**
