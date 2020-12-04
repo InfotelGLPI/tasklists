@@ -35,7 +35,7 @@ Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
 //Html::requireJs('tinymce');
-echo "<script type='text/javascript'  src='../../../lib/tiny_mce/lib/tinymce.min.js'></script>";
+echo "<script type='text/javascript'  src='../../../public/lib/tinymce.js'></script>";
 
 if (isset($_GET['newContext'])) {
    $options = [

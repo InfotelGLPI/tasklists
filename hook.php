@@ -37,7 +37,7 @@ function plugin_tasklists_install() {
    include_once(GLPI_ROOT . "/plugins/tasklists/inc/task.class.php");
    if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
 
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.6.0.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.6.1.sql");
 
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
@@ -53,6 +53,11 @@ function plugin_tasklists_install() {
    if (!$DB->fieldExists("glpi_plugin_tasklists_preferences", "automatic_refresh")) {
       $mig = new Migration("1.6.0");
       $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.6.0.sql");
+      $mig->executeMigration();
+   }
+   if (!$DB->fieldExists("glpi_plugin_tasklists_tasks", "users_id_requester")) {
+      $mig = new Migration("1.6.1");
+      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.6.1.sql");
       $mig->executeMigration();
    }
    // Add record notification

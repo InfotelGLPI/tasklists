@@ -222,6 +222,14 @@ class PluginTasklistsTask extends CommonDBTM {
          'name'     => __('Entity'),
          'datatype' => 'dropdown'
       ];
+      $tab[] = [
+         'id'        => '81',
+         'table'     => 'glpi_users',
+         'field'     => 'name',
+         'linkfield' => 'users_id_requester',
+         'name'      => _n('Requester', 'Requesters', 1),
+         'datatype'  => 'dropdown'
+      ];
       return $tab;
    }
 
@@ -253,6 +261,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->fields['priority']     = 3;
       $this->fields['percent_done'] = 0;
       $this->fields['users_id']     = Session::getLoginUserID();
+      $this->fields['users_id_requester']     = Session::getLoginUserID();
       $this->fields['visibility']   = 2;
    }
 
@@ -524,7 +533,26 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "</td>";
 
       echo "</tr>";
+      echo "<tr class='tab_bg_1'>";
 
+      echo "<td>" . _n('Requester', 'Requesters', 1) . "</td><td>";
+      $users_id_requester = $this->fields['users_id_requester'];
+      if (isset($options['users_id_requester'])
+          && $options['users_id_requester']) {
+         $users_id_requester = $options['users_id_requester'];
+      }
+
+      User::dropdown(['name'   => "users_id_requester",
+                      'value'  => $users_id_requester,
+                      'entity' => $this->fields["entities_id"],
+                      'right'  => 'all']);
+      echo "</td>";
+
+      echo "<td></td>";
+      echo "<td>";
+      echo "</td>";
+
+      echo "</tr>";
       echo "<tr class='tab_bg_1'>";
 
       echo "<td>" . __('Group') . "</td>";
@@ -1073,8 +1101,8 @@ class PluginTasklistsTask extends CommonDBTM {
          foreach ($groupusers as $groupuser) {
             $groups[] = $groupuser["id"];
          }
-         if (($this->fields['visibility'] == 1 && $this->fields['users_id'] == Session::getLoginUserID())
-             || ($this->fields['visibility'] == 2 && ($this->fields['users_id'] == Session::getLoginUserID()
+         if (($this->fields['visibility'] == 1 && ($this->fields['users_id'] == Session::getLoginUserID()||$this->fields['users_id_requester'] == Session::getLoginUserID()))
+             || ($this->fields['visibility'] == 2 && ($this->fields['users_id'] == Session::getLoginUserID() || $this->fields['users_id_requester'] == Session::getLoginUserID()
                                                       || in_array(Session::getLoginUserID(), $groups)))
              || ($this->fields['visibility'] == 3)) {
             return true;
