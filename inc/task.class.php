@@ -260,8 +260,6 @@ class PluginTasklistsTask extends CommonDBTM {
 
       $this->fields['priority']     = 3;
       $this->fields['percent_done'] = 0;
-      $this->fields['users_id']     = Session::getLoginUserID();
-      $this->fields['users_id_requester']     = Session::getLoginUserID();
       $this->fields['visibility']   = 2;
    }
 
@@ -1101,7 +1099,7 @@ class PluginTasklistsTask extends CommonDBTM {
          foreach ($groupusers as $groupuser) {
             $groups[] = $groupuser["id"];
          }
-         if (($this->fields['visibility'] == 1 && ($this->fields['users_id'] == Session::getLoginUserID()||$this->fields['users_id_requester'] == Session::getLoginUserID()))
+         if (($this->fields['visibility'] == 1 && ($this->fields['users_id'] == Session::getLoginUserID() || $this->fields['users_id_requester'] == Session::getLoginUserID()))
              || ($this->fields['visibility'] == 2 && ($this->fields['users_id'] == Session::getLoginUserID() || $this->fields['users_id_requester'] == Session::getLoginUserID()
                                                       || in_array(Session::getLoginUserID(), $groups)))
              || ($this->fields['visibility'] == 3)) {

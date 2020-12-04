@@ -34,7 +34,7 @@ CREATE TABLE `glpi_plugin_tasklists_tasks`
     KEY `groups_id` (`groups_id`),
     KEY `date_mod` (`date_mod`),
     KEY `is_deleted` (`is_deleted`),
-    KEY `is_archived` (`is_archived`)
+    KEY `is_archived` (`is_archived`),
     KEY `users_id_requester` (`users_id_requester`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
