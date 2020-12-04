@@ -505,10 +505,29 @@ class PluginTasklistsTask extends CommonDBTM {
       Html::showDateField("due_date", ['value' => $this->fields["due_date"]]);
       echo "</td>";
       echo "</tr>";
-
       echo "<tr class='tab_bg_1'>";
 
-      echo "<td>" . __('User') . "</td><td>";
+      echo "<td>" . _n('Requester', 'Requesters', 1) . "</td><td>";
+      $users_id_requester = $this->fields['users_id_requester'];
+      if (isset($options['users_id_requester'])
+          && $options['users_id_requester']) {
+         $users_id_requester = $options['users_id_requester'];
+      }
+
+      User::dropdown(['name'   => "users_id_requester",
+                      'value'  => $users_id_requester,
+                      'entity' => $this->fields["entities_id"],
+                      'right'  => 'all']);
+      echo "</td>";
+
+      echo "<td></td>";
+      echo "<td>";
+      echo "</td>";
+
+      echo "</tr>";
+      echo "<tr class='tab_bg_1'>";
+
+      echo "<td>" . __('Technician') . "</td><td>";
       $users_id = $this->fields['users_id'];
       if (isset($options['users_id'])
           && $options['users_id']) {
@@ -531,26 +550,7 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "</td>";
 
       echo "</tr>";
-      echo "<tr class='tab_bg_1'>";
 
-      echo "<td>" . _n('Requester', 'Requesters', 1) . "</td><td>";
-      $users_id_requester = $this->fields['users_id_requester'];
-      if (isset($options['users_id_requester'])
-          && $options['users_id_requester']) {
-         $users_id_requester = $options['users_id_requester'];
-      }
-
-      User::dropdown(['name'   => "users_id_requester",
-                      'value'  => $users_id_requester,
-                      'entity' => $this->fields["entities_id"],
-                      'right'  => 'all']);
-      echo "</td>";
-
-      echo "<td></td>";
-      echo "<td>";
-      echo "</td>";
-
-      echo "</tr>";
       echo "<tr class='tab_bg_1'>";
 
       echo "<td>" . __('Group') . "</td>";
