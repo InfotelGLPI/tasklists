@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 09:51+0000\n"
+"POT-Creation-Date: 2020-12-04 08:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,11 +28,11 @@ msgstr ""
 msgid "Not archived"
 msgstr ""
 
-#: ajax/addOptions.php:32 inc/task.class.php:181 inc/task.class.php:599
+#: ajax/addOptions.php:32 inc/task.class.php:181 inc/task.class.php:627
 msgid "Archived"
 msgstr ""
 
-#: inc/dashboard.class.php:93 inc/task.class.php:80 inc/task.class.php:418
+#: inc/dashboard.class.php:93 inc/task.class.php:80 inc/task.class.php:427
 #: inc/taskstate.class.php:100 inc/taskstate.class.php:152
 #: inc/tasktype.class.php:48
 msgid "Context"
@@ -40,9 +40,9 @@ msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/dashboard.class.php:93 inc/notificationtargettask.class.php:203
-#: inc/notificationtargettask.class.php:247 inc/task.class.php:118
-#: inc/task.class.php:496 inc/tasktype.class.php:256
+#: inc/dashboard.class.php:93 inc/notificationtargettask.class.php:212
+#: inc/notificationtargettask.class.php:258 inc/task.class.php:118
+#: inc/task.class.php:505 inc/tasktype.class.php:256
 msgid "Due date"
 msgstr ""
 
@@ -139,25 +139,25 @@ msgstr ""
 msgid "Details of task"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:50
+#: inc/notificationtargettask.class.php:51
 msgid "A task has been added"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:51
+#: inc/notificationtargettask.class.php:52
 msgid "A task has been updated"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:52
+#: inc/notificationtargettask.class.php:53
 msgid "A task has been removed"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:207
-#: inc/notificationtargettask.class.php:251 inc/task.class.php:189
-#: inc/task.class.php:486
+#: inc/notificationtargettask.class.php:216
+#: inc/notificationtargettask.class.php:262 inc/task.class.php:189
+#: inc/task.class.php:495
 msgid "Other client"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:259
+#: inc/notificationtargettask.class.php:270
 msgid "At creation, update, removal of a task"
 msgstr ""
 
@@ -193,35 +193,35 @@ msgstr ""
 msgid "Add states from linked Kanban"
 msgstr ""
 
-#: inc/task.class.php:333
+#: inc/task.class.php:342
 msgid "You cannot archive a task with this state"
 msgstr ""
 
-#: inc/task.class.php:457
+#: inc/task.class.php:466
 msgid "Existing client"
 msgstr ""
 
-#: inc/task.class.php:622 inc/task.class.php:709 inc/task.class.php:985
+#: inc/task.class.php:650 inc/task.class.php:737 inc/task.class.php:1013
 #: inc/tasktype.class.php:161
 msgid "Backlog"
 msgstr ""
 
-#: inc/task.class.php:1045
+#: inc/task.class.php:1073
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: inc/task.class.php:1048
+#: inc/task.class.php:1076
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
 
-#: inc/task.class.php:1051
+#: inc/task.class.php:1079
 msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: inc/task.class.php:1093
+#: inc/task.class.php:1121
 msgid "Affect entity for create task"
 msgstr ""
 
