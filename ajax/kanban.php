@@ -118,7 +118,7 @@ $checkParams = function ($required) {
 };
 
 // Action Processing
-if ($_REQUEST['action'] == 'update') {
+if ($_REQUEST['action'] == 'update' && isset($_REQUEST['items_id'])) {
    $checkParams(['column_field', 'column_value']);
    // Update project or task based on changes made in the Kanban
    $item->update([
