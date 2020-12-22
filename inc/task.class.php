@@ -35,6 +35,7 @@ if (!defined('GLPI_ROOT')) {
  * Class PluginTasklistsTask
  */
 class PluginTasklistsTask extends CommonDBTM {
+   use Glpi\Features\Clonable;
 
    public    $dohistory  = true;
    static    $rightname  = 'plugin_tasklists';
@@ -263,6 +264,14 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->fields['visibility']   = 2;
    }
 
+
+   public function getCloneRelations() :array {
+      return [
+         Document_Item::class,
+         Notepad::class
+      ];
+   }
+
    /**
     * @see CommonDBTM::cleanDBonPurge()
     *
@@ -295,15 +304,6 @@ class PluginTasklistsTask extends CommonDBTM {
 
    function post_addItem() {
       global $CFG_GLPI;
-
-      // Manage add from template
-      if (isset($this->input["_oldID"])) {
-         // ADD Documents
-         Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
-
-         //Add notepad
-         Notepad::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
-      }
 
       if (isset($this->input['withtemplate'])
           && $this->input["withtemplate"] != 1
@@ -403,7 +403,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
-
+      echo Html::hidden('id',['value'=>$ID]);
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
       Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
