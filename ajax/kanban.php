@@ -89,7 +89,7 @@ if (isset($itemtype)) {
          return;
       }
    }
-   if (in_array($action, ['update'])) {
+   if (in_array($action, ['update']) && isset($_REQUEST['items_id'])) {
       $item->getFromDB($_REQUEST['items_id']);
       if (!$item->canUpdateItem()) {
          // Missing rights

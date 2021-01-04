@@ -235,7 +235,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
             $link = "";
             if ($user->getFromDB($data['users_id'])) {
                $link = "<div class='kanban_user_picture_border_verysmall'>";
-               $link .= "<a target='_blank' href='" . Toolbox::getItemTypeFormURL('User') . "?id=" . $data['users_id'] . "'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall' alt=\"" . $dbu->getUserName($data['users_id']) . "\" src='" .
+               $link .= "<a target='_blank' href='" . Toolbox::getItemTypeFormURL('User') . "?id=" . $data['users_id'] . "'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall'  src='" .
                         User::getThumbnailURLForPicture($user->fields['picture']) . "'></a>";
                $link .= "</div>";
             }
