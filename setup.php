@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_TASKLISTS_VERSION', '1.6.1');
+define('PLUGIN_TASKLISTS_VERSION', '1.6.2');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
