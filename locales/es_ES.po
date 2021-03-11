@@ -5,16 +5,16 @@
 # 
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2020
-# FranciscoFJ <dev-ooo@satel-sa.com>, 2020
+# FranciscoFJ <dev-ooo@satel-sa.com>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-03 12:59+0000\n"
+"POT-Creation-Date: 2021-01-06 12:30+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
-"Last-Translator: FranciscoFJ <dev-ooo@satel-sa.com>, 2020\n"
+"Last-Translator: FranciscoFJ <dev-ooo@satel-sa.com>, 2021\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/infotelGLPI/teams/79675/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,11 +32,11 @@ msgstr "Lista de tareas"
 msgid "Not archived"
 msgstr "No archivado"
 
-#: ajax/addOptions.php:32 inc/task.class.php:181 inc/task.class.php:599
+#: ajax/addOptions.php:32 inc/task.class.php:182 inc/task.class.php:625
 msgid "Archived"
 msgstr "Archivado"
 
-#: inc/dashboard.class.php:93 inc/task.class.php:80 inc/task.class.php:418
+#: inc/dashboard.class.php:93 inc/task.class.php:81 inc/task.class.php:425
 #: inc/taskstate.class.php:100 inc/taskstate.class.php:152
 #: inc/tasktype.class.php:48
 msgid "Context"
@@ -44,9 +44,9 @@ msgid_plural "Contexts"
 msgstr[0] "Contexto"
 msgstr[1] "Contextos"
 
-#: inc/dashboard.class.php:93 inc/notificationtargettask.class.php:203
-#: inc/notificationtargettask.class.php:247 inc/task.class.php:118
-#: inc/task.class.php:496 inc/tasktype.class.php:256
+#: inc/dashboard.class.php:93 inc/notificationtargettask.class.php:212
+#: inc/notificationtargettask.class.php:258 inc/task.class.php:119
+#: inc/task.class.php:503 inc/tasktype.class.php:256
 msgid "Due date"
 msgstr "Fecha de vencimiento"
 
@@ -143,25 +143,25 @@ msgstr "Actualizar prioridad de tarea "
 msgid "Details of task"
 msgstr "Detalles de la tarea"
 
-#: inc/notificationtargettask.class.php:50
+#: inc/notificationtargettask.class.php:51
 msgid "A task has been added"
 msgstr "Se ha añadido una tarea."
 
-#: inc/notificationtargettask.class.php:51
+#: inc/notificationtargettask.class.php:52
 msgid "A task has been updated"
 msgstr "Se ha actualizado una tarea"
 
-#: inc/notificationtargettask.class.php:52
+#: inc/notificationtargettask.class.php:53
 msgid "A task has been removed"
 msgstr "Se ha borrado una tarea"
 
-#: inc/notificationtargettask.class.php:207
-#: inc/notificationtargettask.class.php:251 inc/task.class.php:189
-#: inc/task.class.php:486
+#: inc/notificationtargettask.class.php:216
+#: inc/notificationtargettask.class.php:262 inc/task.class.php:190
+#: inc/task.class.php:493
 msgid "Other client"
 msgstr "Otro cliente"
 
-#: inc/notificationtargettask.class.php:259
+#: inc/notificationtargettask.class.php:270
 msgid "At creation, update, removal of a task"
 msgstr "En la creación, actualización, eliminación de una tarea"
 
@@ -197,37 +197,43 @@ msgstr "Ordenación de estados "
 msgid "Add states from linked Kanban"
 msgstr "Agregar estados desde vinculos Kanban"
 
-#: inc/task.class.php:333
+#: inc/task.class.php:340
 msgid "You cannot archive a task with this state"
 msgstr "No puedes archivar una tarea con este estado"
 
-#: inc/task.class.php:457
+#: inc/task.class.php:464
 msgid "Existing client"
 msgstr "Cliente existente"
 
-#: inc/task.class.php:622 inc/task.class.php:709 inc/task.class.php:985
+#: inc/task.class.php:648 inc/task.class.php:735 inc/task.class.php:1011
 #: inc/tasktype.class.php:161
 msgid "Backlog"
 msgstr "Reserva"
 
-#: inc/task.class.php:1045
+#: inc/task.class.php:1071
 msgctxt "visibility"
 msgid "This user"
 msgstr "Este usuario"
 
-#: inc/task.class.php:1048
+#: inc/task.class.php:1074
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Este usuario y este grupo"
 
-#: inc/task.class.php:1051
+#: inc/task.class.php:1077
 msgctxt "visibility"
 msgid "All"
 msgstr "Todos"
 
-#: inc/task.class.php:1093
+#: inc/task.class.php:1119
 msgid "Affect entity for create task"
 msgstr "Afecta a la entidad para crear la tarea"
+
+#: inc/taskstate.class.php:50
+msgid "Status"
+msgid_plural "Statuses"
+msgstr[0] "Estado"
+msgstr[1] "Estados"
 
 #: inc/ticket.class.php:74 inc/ticket.class.php:183
 msgid "Linked task"
