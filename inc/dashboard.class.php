@@ -50,13 +50,18 @@ class PluginTasklistsDashboard extends CommonGLPI {
 
    }
 
-   /**
-    * @return array
-    */
+
    function getWidgetsForItem() {
-      return [
-         $this->getType() . "1" => __("Tasks list", 'tasklists'),
+
+      $widgets = [
+         __('Tables', "mydashboard") => [
+            $this->getType() . "1" => ["title"   => __("Tasks list", 'tasklists'),
+                                       "icon"    => "fas fa-table",
+                                       "comment" => ""],
+         ],
       ];
+      return $widgets;
+
    }
 
    /**
@@ -168,7 +173,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                                                       'height'        => 600
                                                      ]);
                $link .= "<div align='right'>";
-               $link .= "<a href='#' class='vsubmit' onClick=\"javascript:" . Html::jsGetElementbyID('task') . ".dialog('open');\">";
+               $link .= "<a href='#' class='btn btn-info' onClick=\"javascript:" . Html::jsGetElementbyID('task') . ".dialog('open');\">";
                $link .= __('Add task', 'tasklists');
                $link .= "</a></div>";
 

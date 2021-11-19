@@ -64,7 +64,7 @@ class PluginTasklistsTaskState extends CommonDropdown {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
+      echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
       echo "</td>";
       if (isset($options['from_edit_ajax'])
           && $options['from_edit_ajax']) {
@@ -73,9 +73,12 @@ class PluginTasklistsTaskState extends CommonDropdown {
 
       echo "<td rowspan='4'>" . __('Description') . "</td>";
       echo "<td rowspan='4'>";
-      echo "<textarea name='comment' id ='comment' cols='45' rows='3'>" .
-           $this->fields['comment'] .
-           "</textarea>";
+      Html::textarea(['name'            => 'comment',
+                      'value'           => $this->fields['comment'],
+                      'id'           => 'comment',
+                      'cols'       => 45,
+                      'rows'       => 3,
+                      'enable_richtext' => false]);
       echo "</td>";
       echo "</tr>";
 

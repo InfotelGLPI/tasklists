@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_TASKLISTS_VERSION', '1.6.2');
+define('PLUGIN_TASKLISTS_VERSION', '2.0.0');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
@@ -40,8 +40,8 @@ function plugin_init_tasklists() {
    if (Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginTasklistsTask', [
-         'linkuser_types'              => true,
-         'linkgroup_types'             => true,
+//         'linkuser_types'              => true,
+//         'linkgroup_types'             => true,
          'document_types'              => true,
          'notificationtemplates_types' => true
       ]);
@@ -93,34 +93,11 @@ function plugin_version_tasklists() {
       'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
       'requirements' => [
          'glpi' => [
-            'min' => '9.5',
+            'min' => '10.0',
+            'max' => '11.0',
             'dev' => false
          ]
       ]
    ];
 
-}
-
-// Optional : check prerequisites before install : may print errors or add to message after redirect
-/**
- * @return bool
- */
-function plugin_tasklists_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.5', 'lt')
-       || version_compare(GLPI_VERSION, '9.6', 'ge')) {
-      if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.5');
-      }
-      return false;
-   }
-
-   return true;
-}
-
-// Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
-/**
- * @return bool
- */
-function plugin_tasklists_check_config() {
-   return true;
 }

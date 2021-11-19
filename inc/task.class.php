@@ -406,7 +406,7 @@ class PluginTasklistsTask extends CommonDBTM {
       echo Html::hidden('id',['value'=>$ID]);
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "name", ['option' => "size='40'"]);
+      echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
       if (isset($options['from_edit_ajax'])
           && $options['from_edit_ajax']) {
          echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
@@ -497,8 +497,7 @@ class PluginTasklistsTask extends CommonDBTM {
           && $options['client']) {
          $client = $options['client'];
       }
-      Html::autocompletionTextField($this, "client", ['option' => "size='40'",
-                                                      'value'  => $client]);
+      echo Html::input('client', ['value' => $client, 'size' => 40]);
       echo "</td>";
       echo "<td>" . __("Due date", "tasklists") . "</td>";
       echo "<td>";

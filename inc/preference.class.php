@@ -57,14 +57,14 @@ class PluginTasklistsPreference extends CommonDBTM {
     */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       $pref = new self();
-      $pref->showForm(Session::getLoginUserID());
+      $pref->showPreferenceForm(Session::getLoginUserID());
       return true;
    }
 
    /**
     * @param $user_id
     */
-   function showForm($user_id) {
+   function showPreferenceForm($user_id) {
       //If user has no preferences yet, we set default values
       if (!$this->getFromDB($user_id)) {
          $this->initPreferences($user_id);
