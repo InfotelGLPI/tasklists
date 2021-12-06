@@ -4,16 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2020
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-02 18:00+0100\n"
+"POT-Creation-Date: 2021-11-19 10:56+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
-"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2020\n"
+"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2021\n"
 "Language-Team: French (France) (https://www.transifex.com/infotelGLPI/teams/79675/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,8 +21,8 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: setup.php:89 inc/dashboard.class.php:58 inc/dashboard.class.php:178
-#: inc/dashboard.class.php:183 inc/menu.class.php:44
+#: setup.php:89 inc/dashboard.class.php:58 inc/dashboard.class.php:183
+#: inc/dashboard.class.php:188 inc/menu.class.php:44
 #: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr "Liste des tâches"
@@ -31,25 +31,29 @@ msgstr "Liste des tâches"
 msgid "Not archived"
 msgstr "Non archivé"
 
-#: ajax/addOptions.php:32 inc/task.class.php:181 inc/task.class.php:599
+#: ajax/addOptions.php:32 inc/task.class.php:182 inc/task.class.php:624
 msgid "Archived"
 msgstr "Archivé"
 
-#: inc/dashboard.class.php:93 inc/task.class.php:80 inc/task.class.php:418
-#: inc/taskstate.class.php:100 inc/taskstate.class.php:152
+#: inc/dashboard.class.php:57
+msgid "Tables"
+msgstr "Tableaux"
+
+#: inc/dashboard.class.php:98 inc/task.class.php:81 inc/task.class.php:425
+#: inc/taskstate.class.php:103 inc/taskstate.class.php:155
 #: inc/tasktype.class.php:48
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Contexte"
 msgstr[1] "Contextes"
 
-#: inc/dashboard.class.php:93 inc/notificationtargettask.class.php:203
-#: inc/notificationtargettask.class.php:247 inc/task.class.php:118
-#: inc/task.class.php:496 inc/tasktype.class.php:256
+#: inc/dashboard.class.php:98 inc/notificationtargettask.class.php:212
+#: inc/notificationtargettask.class.php:258 inc/task.class.php:119
+#: inc/task.class.php:502 inc/tasktype.class.php:256
 msgid "Due date"
 msgstr "Date d'échéance"
 
-#: inc/dashboard.class.php:164 inc/dashboard.class.php:172
+#: inc/dashboard.class.php:169 inc/dashboard.class.php:177
 #: inc/kanban.class.php:257 inc/ticket.class.php:154
 msgid "Add task"
 msgstr "Ajouter une tâche"
@@ -142,25 +146,25 @@ msgstr "Augmenter la priorité de la tâche"
 msgid "Details of task"
 msgstr "Détails de la tâche"
 
-#: inc/notificationtargettask.class.php:50
+#: inc/notificationtargettask.class.php:51
 msgid "A task has been added"
 msgstr "Une tâche a été ajoutée"
 
-#: inc/notificationtargettask.class.php:51
+#: inc/notificationtargettask.class.php:52
 msgid "A task has been updated"
 msgstr "Une tâche a été mise à jour"
 
-#: inc/notificationtargettask.class.php:52
+#: inc/notificationtargettask.class.php:53
 msgid "A task has been removed"
 msgstr "Une tâche a été supprimée"
 
-#: inc/notificationtargettask.class.php:207
-#: inc/notificationtargettask.class.php:251 inc/task.class.php:189
-#: inc/task.class.php:486
+#: inc/notificationtargettask.class.php:216
+#: inc/notificationtargettask.class.php:262 inc/task.class.php:190
+#: inc/task.class.php:493
 msgid "Other client"
 msgstr "Autre client"
 
-#: inc/notificationtargettask.class.php:259
+#: inc/notificationtargettask.class.php:270
 msgid "At creation, update, removal of a task"
 msgstr "A la création, mise à jour et suppression d'un tâche"
 
@@ -196,35 +200,35 @@ msgstr "Ordonner les statuts"
 msgid "Add states from linked Kanban"
 msgstr "Ajouter les statuts depuis les Kanban associés"
 
-#: inc/task.class.php:333
+#: inc/task.class.php:340
 msgid "You cannot archive a task with this state"
 msgstr "Vous ne pouvez pas archiver une tâche ayant ce statut"
 
-#: inc/task.class.php:457
+#: inc/task.class.php:464
 msgid "Existing client"
 msgstr "Client existant"
 
-#: inc/task.class.php:622 inc/task.class.php:709 inc/task.class.php:985
+#: inc/task.class.php:647 inc/task.class.php:734 inc/task.class.php:1010
 #: inc/tasktype.class.php:161
 msgid "Backlog"
 msgstr "Backlog"
 
-#: inc/task.class.php:1045
+#: inc/task.class.php:1070
 msgctxt "visibility"
 msgid "This user"
 msgstr "Cet utilisateur"
 
-#: inc/task.class.php:1048
+#: inc/task.class.php:1073
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Cet utilisateur et ce groupe"
 
-#: inc/task.class.php:1051
+#: inc/task.class.php:1076
 msgctxt "visibility"
 msgid "All"
 msgstr "Tout le monde"
 
-#: inc/task.class.php:1093
+#: inc/task.class.php:1118
 msgid "Affect entity for create task"
 msgstr "Affecter une entité pour une création de tâche"
 
