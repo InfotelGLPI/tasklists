@@ -121,9 +121,11 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
          $criteria['WHERE']['glpi_groups_users.groups_id'] = $this->obj->fields[$group_field];
          $iterator                                         = $DB->request($criteria);
 
-         while ($data = $iterator->next()) {
+         foreach ($iterator as $data) {
+//         while ($data = $iterator->next()) {
             //Add the user email and language in the notified users list
             $this->addToRecipientsList($data);
+            $iterator->next();
          }
       }
    }
@@ -224,15 +226,15 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       $this->data['##task.client##']      = $entity_name;
       $this->data['##task.type##']        = Dropdown::getDropdownName('glpi_plugin_tasklists_tasktypes',
                                                                       $this->obj->getField('plugin_tasklists_tasktypes_id'));
-      $this->data['##task.users##']       = Html::clean($dbu->getUserName($this->obj->getField("users_id")));
-      $this->data['##task.requester##']       = Html::clean($dbu->getUserName($this->obj->getField("users_id_requester")));
+      $this->data['##task.users##']       = getUserName($this->obj->getField("users_id"));
+      $this->data['##task.requester##']       = getUserName($this->obj->getField("users_id_requester"));
       $this->data['##task.groups##']      = Dropdown::getDropdownName('glpi_groups',
                                                                       $this->obj->getField("groups_id"));
       $this->data['##task.actiontime##']  = Html::timestampToString($this->obj->getField('actiontime'), false, true);
       $this->data['##task.percentdone##'] = Dropdown::getValueWithUnit($this->obj->getField('percent_done'), "%");
       $this->data['##task.duedate##']     = Html::convDate($this->obj->getField('due_date'));
       $comment                            = stripslashes(str_replace(['\r\n', '\n', '\r'], "<br/>", $this->obj->getField("comment")));
-      $this->data['##task.comment##']     = Html::clean($comment);
+      $this->data['##task.comment##']     = Glpi\Toolbox\RichText::getTextFromHtml($comment);
       $this->data['##task.priority##']    = CommonITILObject::getPriorityName($this->obj->getField("priority"));
       $this->data['##task.status##']      = PluginTasklistsTask::getStateName($this->obj->getField('plugin_tasklists_taskstates_id'));
       $this->data['##task.otherclient##'] = $this->obj->getField("client");

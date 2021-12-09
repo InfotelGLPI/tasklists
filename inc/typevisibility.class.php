@@ -149,8 +149,8 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
 
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='6'>";
-         echo "<input type='submit' name='add_groups' class='submit' value='" . _sx('button', 'Add') . "' >";
-         echo "<input type='hidden' name='plugin_tasklists_tasktypes_id' class='submit' value='" . $item->fields['id'] . "' >";
+         echo Html::hidden('plugin_tasklists_tasktypes_id', ['value' => $item->fields['id']]);
+         echo Html::submit(_sx('button', 'Add'), ['name' => 'add_groups', 'class' => 'btn btn-primary']);
          echo "</td>";
          echo "</tr>";
          echo "</table></div>";

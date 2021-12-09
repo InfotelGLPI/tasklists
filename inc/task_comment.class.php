@@ -385,9 +385,9 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          $btn_text = _sx('button', 'Edit');
          $btn_name = 'edit';
       }
-      $html .= "<input type='submit' name='$btn_name' value='{$btn_text}' class='submit'>";
+      $html .= "<input type='submit' name='$btn_name' value='{$btn_text}' class='btn btn-primary'>";
       if ($edit !== false || $answer !== false) {
-         $html .= "<input type='reset' name='cancel' value='" . __('Cancel') . "' class='submit'>";
+         $html .= "<input type='reset' name='cancel' value='" . __('Cancel') . "' class='btn btn-primary'>";
       }
 
       $html .= "<input type='hidden' name='plugin_tasklists_tasks_id' value='$plugin_tasklists_tasks_id'>";

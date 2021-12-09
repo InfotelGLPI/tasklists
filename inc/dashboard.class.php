@@ -123,7 +123,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                            $url                   = Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'];
                            $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
 
-                           $tasks[$data['id']][0] .= Html::showToolTip(Html::clean($data['comment']),
+                           $tasks[$data['id']][0] .= Html::showToolTip(Glpi\Toolbox\RichText::getSafeHtml($data['comment']),
                                                                        ['applyto' => 'task' . $data["id"] . $rand,
                                                                         'display' => false]);
 

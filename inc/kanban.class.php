@@ -117,7 +117,7 @@ class PluginTasklistsKanban extends CommonGLPI {
             }
          }
          if (count($tabs) == 0) {
-            echo "<div align='center'><br><br><i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
+            echo "<div class='alert alert-important alert-warning d-flex'>";
             echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
             return false;
          }
@@ -183,8 +183,7 @@ class PluginTasklistsKanban extends CommonGLPI {
          $item_id = PluginTasklistsPreference::checkPreferenceValue("default_type", Session::getLoginUserID());
       }
       if ($item_id == 0) {
-         echo "<div align='center'><br><br>";
-         echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
+         echo "<div class='alert alert-important alert-warning d-flex'>";
          echo "<b>" . __("There is no accessible context", "tasklists") . "</b></div>";
       } else {
          $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);

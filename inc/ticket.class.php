@@ -160,7 +160,7 @@ class PluginTasklistsTicket extends CommonDBTM {
                                                         'is_deleted'  => 0,
                                                         'is_template' => 0]]);
          echo "</td><td class='center'>";
-         echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
+         echo Html::submit(_sx('button', 'Add'), ['name' => 'add', 'class' => 'btn btn-primary']);
          echo "</td>";
          echo "</tr></table>";
          Html::closeForm();
@@ -216,7 +216,7 @@ class PluginTasklistsTicket extends CommonDBTM {
             echo "</td>";
 
             echo "<td>";
-            echo Html::resume_text(Html::Clean($data['comment']), 80);
+            echo Html::resume_text(Glpi\Toolbox\RichText::getTextFromHtml($data['comment']), 80);
             echo "</td>";
 
             echo "</tr>";
@@ -266,8 +266,8 @@ class PluginTasklistsTicket extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 center'><td>";
-      echo "<input type='submit' name='ticket_link' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
-      echo "<input type='hidden' name='plugin_tasklists_tasks_id' value=" . $ID . ">";
+      echo Html::hidden('plugin_tasklists_tasks_id', ['value' => $ID]);
+      echo Html::submit(_sx('button', 'Save'), ['name' => 'ticket_link', 'class' => 'btn btn-primary']);
       echo "</td></tr>";
 
       echo "</table>";

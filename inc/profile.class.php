@@ -172,7 +172,7 @@ class PluginTasklistsProfile extends Profile {
       ) {
          echo "<div class='center'>";
          echo Html::hidden('id', ['value' => $profiles_id]);
-         echo Html::submit(_sx('button', 'Save'), ['name' => 'update']);
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update', 'class' => 'btn btn-primary']);
          echo "</div>\n";
          Html::closeForm();
       }
