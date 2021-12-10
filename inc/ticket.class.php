@@ -216,7 +216,7 @@ class PluginTasklistsTicket extends CommonDBTM {
             echo "</td>";
 
             echo "<td>";
-            echo Html::resume_text(Glpi\Toolbox\RichText::getTextFromHtml($data['comment']), 80);
+            echo Html::resume_text(Glpi\RichText\RichText::getTextFromHtml($data['comment']), 80);
             echo "</td>";
 
             echo "</tr>";

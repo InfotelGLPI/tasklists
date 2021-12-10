@@ -234,7 +234,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       $this->data['##task.percentdone##'] = Dropdown::getValueWithUnit($this->obj->getField('percent_done'), "%");
       $this->data['##task.duedate##']     = Html::convDate($this->obj->getField('due_date'));
       $comment                            = stripslashes(str_replace(['\r\n', '\n', '\r'], "<br/>", $this->obj->getField("comment")));
-      $this->data['##task.comment##']     = Glpi\Toolbox\RichText::getTextFromHtml($comment);
+      $this->data['##task.comment##']     = Glpi\RichText\RichText::getTextFromHtml($comment);
       $this->data['##task.priority##']    = CommonITILObject::getPriorityName($this->obj->getField("priority"));
       $this->data['##task.status##']      = PluginTasklistsTask::getStateName($this->obj->getField('plugin_tasklists_taskstates_id'));
       $this->data['##task.otherclient##'] = $this->obj->getField("client");

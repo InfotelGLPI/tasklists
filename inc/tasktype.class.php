@@ -284,9 +284,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                }
                $client = (empty($data['client'])) ? $entity_name : $data['client'];
 
-               $comment = Toolbox::unclean_cross_side_scripting_deep(html_entity_decode($data["comment"],
-                                                                                        ENT_QUOTES,
-                                                                                        "UTF-8"));
+               $comment = Glpi\Toolbox\Sanitizer::unsanitize($data["comment"]);
 
                $nbcomments = "";
                $nb         = 0;
@@ -311,7 +309,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                            'title'          => $linkname . $nbcomments,
                            'block'          => ($ID > 0 ? $ID : 0),
                            'link'           => Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'],
-                           'description'    => Html::resume_text(Glpi\Toolbox\RichText::getTextFromHtml($comment), 80),
+                           'description'    => Html::resume_text(Glpi\RichText\RichText::getTextFromHtml($comment), 80),
                            'descriptionfull' => $comment,
                            'priority'       => CommonITILObject::getPriorityName($data['priority']),
                            'priority_id'    => $data['priority'],

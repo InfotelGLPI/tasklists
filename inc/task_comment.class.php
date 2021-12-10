@@ -313,7 +313,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
 
          $html .= "<div class='item_content'>";
          $html .= "<p>";
-         $html .= Toolbox::unclean_cross_side_scripting_deep($comment['comment']);
+         $html .= Glpi\Toolbox\Sanitizer::unsanitize($comment['comment']);
          $html .= "</p>";
          $html .= "</div>";
          $html .= "</div>"; // displayed_content
