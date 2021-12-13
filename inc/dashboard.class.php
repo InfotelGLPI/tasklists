@@ -56,7 +56,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
       $widgets = [
          __('Tables', "mydashboard") => [
             $this->getType() . "1" => ["title"   => __("Tasks list", 'tasklists'),
-                                       "icon"    => "fas fa-table",
+                                       "icon"    => "ti ti-table",
                                        "comment" => ""],
          ],
       ];
@@ -141,7 +141,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
 
 //                           if (Session::haveRight("plugin_tasklists", UPDATENOTE)) {
 //                              $link = Ajax::createIframeModalWindow('comment' . $rand,
-//                                                                    $CFG_GLPI["root_doc"] . "/plugins/tasklists/front/comment.form.php?id=" . $ID,
+//                                                                    PLUGIN_TASKLISTS_WEBDIR . "/front/comment.form.php?id=" . $ID,
 //                                                                    ['title'         => __('Add comment', 'tasklists'),
 //                                                                     'reloadonclose' => false,
 //                                                                     'width'         => 1100,
@@ -149,7 +149,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
 //                                                                     'height'        => 300
 //                                                                    ]);
 //                              $link .= "<div align='center'><a href='#' onClick=\"javascript:" . Html::jsGetElementbyID('comment' . $rand) . ".dialog('open');\">";
-//                              $link .= "<img class='pointer' src='" . $CFG_GLPI['root_doc'] . "/plugins/tasklists/pics/plus.png' title='" . __('Add comment', 'tasklists') . "'>";
+//                              $link .= "<img class='pointer' src='" .PLUGIN_TASKLISTS_WEBDIR . "/pics/plus.png' title='" . __('Add comment', 'tasklists') . "'>";
 //                              $link .= "</a></div>";
 //
 //
@@ -165,7 +165,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                $widget->toggleWidgetRefresh();
 
                $link = Ajax::createIframeModalWindow('task',
-                                                     $CFG_GLPI["root_doc"] . "/plugins/tasklists/front/task.form.php",
+                                                     PLUGIN_TASKLISTS_WEBDIR . "/front/task.form.php",
                                                      ['title'         => __('Add task', 'tasklists'),
                                                       'reloadonclose' => false,
                                                       'width'         => 1180,

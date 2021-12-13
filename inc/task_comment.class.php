@@ -147,7 +147,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
 
       $html = self::displayComments($comments, $cancomment);
       echo $html;
-
+$root_doc = PLUGIN_TASKLISTS_WEBDIR;
       echo "</ul>";
       echo "<script type='text/javascript'>
               $(function() {
@@ -175,7 +175,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
                     }
 
                     $.ajax({
-                       url: '{$CFG_GLPI["root_doc"]}/plugins/tasklists/ajax/getTaskComment.php',
+                       url: '$root_doc/ajax/getTaskComment.php',
                        method: 'post',
                        cache: false,
                        data: _data,
@@ -206,7 +206,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
                     }
 
                     $.ajax({
-                       url: '{$CFG_GLPI["root_doc"]}/plugins/tasklists/ajax/getTaskComment.php',
+                       url: '$root_doc/ajax/getTaskComment.php',
                        method: 'post',
                        cache: false,
                        data: _data,

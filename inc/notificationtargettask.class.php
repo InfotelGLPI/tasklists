@@ -122,7 +122,6 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
          $iterator                                         = $DB->request($criteria);
 
          foreach ($iterator as $data) {
-//         while ($data = $iterator->next()) {
             //Add the user email and language in the notified users list
             $this->addToRecipientsList($data);
             $iterator->next();

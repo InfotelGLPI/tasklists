@@ -152,7 +152,7 @@ class PluginTasklistsStateOrder extends CommonDBTM {
       echo "<table class='tab_cadre_fixehov'>";
       echo "<tr class='tab_bg_2'>";
       echo "<td class='center'>";
-      echo "<a href='" . $CFG_GLPI['root_doc'] . "/plugins/tasklists/front/stateorder.form.php?addnew=1&plugin_tasklists_tasktypes_id=" . $plugin_tasklists_tasktypes_id . "'>";
+      echo "<a href='" . PLUGIN_TASKLISTS_WEBDIR . "/front/stateorder.form.php?addnew=1&plugin_tasklists_tasktypes_id=" . $plugin_tasklists_tasktypes_id . "'>";
       echo __('Add states from linked Kanban', 'tasklists');
       echo "</a>";
       echo "</td>";

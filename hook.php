@@ -33,35 +33,35 @@
 function plugin_tasklists_install() {
    global $DB;
 
-   include_once(GLPI_ROOT . "/plugins/tasklists/inc/profile.class.php");
-   include_once(GLPI_ROOT . "/plugins/tasklists/inc/task.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR. "/inc/profile.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR. "/inc/task.class.php");
    if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
 
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/empty-1.6.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/empty-1.6.1.sql");
 
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
       $mig = new Migration("1.4.1");
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.4.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.4.1.sql");
       $mig->executeMigration();
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_items_kanbans")) {
       $mig = new Migration("1.5.1");
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.5.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.5.1.sql");
       $mig->executeMigration();
    }
    if (!$DB->fieldExists("glpi_plugin_tasklists_preferences", "automatic_refresh")) {
       $mig = new Migration("1.6.0");
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.6.0.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.6.0.sql");
       $mig->executeMigration();
    }
    if (!$DB->fieldExists("glpi_plugin_tasklists_tasks", "users_id_requester")) {
       $mig = new Migration("1.6.1");
-      $DB->runFile(GLPI_ROOT . "/plugins/tasklists/sql/update-1.6.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.6.1.sql");
       $mig->executeMigration();
    }
    // Add record notification
-   include_once(GLPI_ROOT . "/plugins/tasklists/inc/notificationtargettask.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR. "/inc/notificationtargettask.class.php");
    call_user_func(["PluginTasklistsNotificationTargetTask", 'install']);
 
    PluginTasklistsProfile::initProfile();
@@ -76,8 +76,8 @@ function plugin_tasklists_install() {
 function plugin_tasklists_uninstall() {
    global $DB;
 
-   include_once(GLPI_ROOT . "/plugins/tasklists/inc/profile.class.php");
-   include_once(GLPI_ROOT . "/plugins/tasklists/inc/menu.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR. "/inc/profile.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR. "/inc/menu.class.php");
 
    $tables = ["glpi_plugin_tasklists_tasks",
               "glpi_plugin_tasklists_tasktypes",

@@ -35,5 +35,5 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (isset($_POST["entities_id"])) {
-   echo "<input type='hidden' name='entities_id' value='" . $_POST["entities_id"] . "' />";
+   echo Html::hidden('entities_id', ['value' => $_POST["entities_id"]]);
 }

@@ -153,7 +153,7 @@ class PluginTasklistsTicket extends CommonDBTM {
          echo "<table class='tab_cadre_fixe'>";
          echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add task', 'tasklists') . "</th></tr>";
          echo "<tr class='tab_bg_2'><td>";
-         echo "<input type='hidden' name='tickets_id' value='$ID'>";
+         echo Html::hidden('tickets_id', ['value' => $ID]);
          PluginTasklistsTask::dropdown(['used'      => $used,
                                         'entity'    => $ticket->getEntityID(),
                                         'condition' => ['is_archived' => 0,

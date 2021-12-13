@@ -46,9 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 if (!isset($_REQUEST['action'])) {
-   Toolbox::logError("Missing action parameter");
-   http_response_code(400);
-   return;
+   $ele = key($_REQUEST);
+   $_REQUEST = json_decode($ele,true);
+   if (!isset($_REQUEST['action'])) {
+      Toolbox::logError("Missing action parameter");
+      http_response_code(400);
+      return;
+   }
 }
 $action = $_REQUEST['action'];
 

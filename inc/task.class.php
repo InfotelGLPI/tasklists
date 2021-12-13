@@ -480,7 +480,7 @@ class PluginTasklistsTask extends CommonDBTM {
          $params = ['entities_id' => '__VALUE__',
                     'entity'      => $this->fields["entities_id"]];
          $JS     .= Ajax::updateItemJsCode("plugin_tasklists_entity",
-                                           $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/inputEntity.php",
+                                           PLUGIN_TASKLISTS_WEBDIR . "/ajax/inputEntity.php",
                                            $params, 'dropdown_entities_id' . $rand_entity, false);
          $JS     .= "}";
          echo Html::scriptBlock($JS);
@@ -581,7 +581,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $params = ['plugin_tasklists_tasktypes_id' => '__VALUE__',
                  'entity'                        => $this->fields["entities_id"]];
       $JS     .= Ajax::updateItemJsCode("plugin_tasklists_state",
-                                        $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownState.php",
+                                        PLUGIN_TASKLISTS_WEBDIR . "/ajax/dropdownState.php",
                                         $params, 'dropdown_plugin_tasklists_tasktypes_id' . $rand_type, false);
       $JS     .= "}";
       echo Html::scriptBlock($JS);
@@ -805,13 +805,13 @@ class PluginTasklistsTask extends CommonDBTM {
                  'used'      => $p['used']
       ];
 
-      $out .= Ajax::updateItemOnSelectEvent($field_id, "show_" . $p['name'] . $rand, $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownTypeTasks.php", $params, false);
+      $out .= Ajax::updateItemOnSelectEvent($field_id, "show_" . $p['name'] . $rand, PLUGIN_TASKLISTS_WEBDIR . "/ajax/dropdownTypeTasks.php", $params, false);
 
       $out .= "<span id='show_" . $p['name'] . "$rand'>";
       $out .= "</span>\n";
 
       $params['tasktype'] = 0;
-      $out                .= Ajax::updateItem("show_" . $p['name'] . $rand, $CFG_GLPI["root_doc"] . "/plugins/tasklists/ajax/dropdownTypeTasks.php", $params, false);
+      $out                .= Ajax::updateItem("show_" . $p['name'] . $rand, PLUGIN_TASKLISTS_WEBDIR . "/ajax/dropdownTypeTasks.php", $params, false);
       if ($p['display']) {
          echo $out;
          return $rand;
