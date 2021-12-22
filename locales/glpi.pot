@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-10 16:01+0000\n"
+"POT-Creation-Date: 2021-12-13 07:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:89 inc/dashboard.class.php:58 inc/dashboard.class.php:183
+#: setup.php:95 inc/dashboard.class.php:58 inc/dashboard.class.php:183
 #: inc/dashboard.class.php:188 inc/menu.class.php:44
 #: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
@@ -44,8 +44,8 @@ msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/dashboard.class.php:98 inc/notificationtargettask.class.php:214
-#: inc/notificationtargettask.class.php:260 inc/task.class.php:119
+#: inc/dashboard.class.php:98 inc/notificationtargettask.class.php:213
+#: inc/notificationtargettask.class.php:259 inc/task.class.php:119
 #: inc/task.class.php:502 inc/tasktype.class.php:256
 msgid "Due date"
 msgstr ""
@@ -155,13 +155,13 @@ msgstr ""
 msgid "A task has been removed"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:218
-#: inc/notificationtargettask.class.php:264 inc/task.class.php:190
+#: inc/notificationtargettask.class.php:217
+#: inc/notificationtargettask.class.php:263 inc/task.class.php:190
 #: inc/task.class.php:493
 msgid "Other client"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:272
+#: inc/notificationtargettask.class.php:271
 msgid "At creation, update, removal of a task"
 msgstr ""
 
