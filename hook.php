@@ -37,7 +37,7 @@ function plugin_tasklists_install() {
    include_once(PLUGIN_TASKLISTS_DIR. "/inc/task.class.php");
    if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
 
-      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/empty-1.6.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/empty-2.0.0.sql");
 
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
