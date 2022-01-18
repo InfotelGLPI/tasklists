@@ -31,6 +31,8 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+use Glpi\Application\View\TemplateRenderer;
+
 /**
  * Class PluginTasklistsKanban
  */
@@ -145,37 +147,6 @@ class PluginTasklistsKanban extends CommonGLPI {
 
 
    static function showKanban($ID) {
-      $project = new Project();
-
-      /*   if (($ID <= 0 && !Project::canView()) ||
-            ($ID > 0 && (!$project->getFromDB($ID) || !$project->canView()))) {
-            return false;
-         }
-   */
-      $supported_itemtypes = [];
-      if (PluginTasklistsTask::canCreate()) {
-         $supported_itemtypes['PluginTasklistsTask'] = [
-            'name'   => PluginTasklistsTask::getTypeName(1),
-            'fields' => [
-               'name'    => [
-                  'placeholder' => __('Name')
-               ],
-               'content' => [
-                  'placeholder' => __('Content'),
-                  'type'        => 'textarea'
-               ]
-            ]
-         ];
-      }
-
-      $column_field = [
-         'id'           => 'plugin_tasklists_taskstates_id',
-         'extra_fields' => [
-            'color' => [
-               'type' => 'color'
-            ]
-         ]
-      ];
 
       if ($ID > 0) {
          $item_id = $ID;
@@ -186,49 +157,158 @@ class PluginTasklistsKanban extends CommonGLPI {
          echo "<div class='alert alert-important alert-warning d-flex'>";
          echo "<b>" . __("There is no accessible context", "tasklists") . "</b></div>";
       } else {
-         $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
-         $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
+         //         $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
+         //         $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
 
-         echo "<div id='kanban' class='kanban'></div>";
+         $supported_itemtypes = [];
+
+         //         $team_itemtypes = static::getTeamItemtypes();
+         $team_itemtypes = [];
+         $team_roles     = [];
+
+         if (PluginTasklistsTask::canCreate()) {
+            $supported_itemtypes['PluginTasklistsTask'] = [
+               'name'           => PluginTasklistsTask::getTypeName(1),
+               'icon'           => PluginTasklistsTask::getIcon(),
+               'fields'         => [
+                  'name'     => [
+                     'placeholder' => __('Name')
+                  ],
+                  'content'  => [
+                     'placeholder' => __('Content'),
+                     'type'        => 'textarea'
+                  ],
+                  'users_id' => [
+                     'type'  => 'hidden',
+                     'value' => $_SESSION['glpiID']
+                  ]
+               ],
+               'team_itemtypes' => $team_itemtypes,
+               'team_roles'     => $team_roles,
+            ];
+         }
+         //
+         //         $column_field = [
+         //            'id'           => 'plugin_tasklists_taskstates_id',
+         //            'extra_fields' => [
+         //               'color' => [
+         //                  'type' => 'color'
+         //               ]
+         //            ]
+         //         ];
+
+         $column_field = [
+            'id'           => 'plugin_tasklists_taskstates_id',
+            'extra_fields' => []
+         ];
+
+         //         echo "<div id='kanban' class='kanban'></div>";
          $refresh = 0;
          if (PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0) {
             $refresh = PluginTasklistsPreference::checkPreferenceValue("automatic_refresh_delay", Session::getLoginUserID());
          }
          $darkmode       = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
          $canadd_item    = json_encode(self::canCreate());
+         $candelete_item = json_encode(self::canDelete());
          $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
          //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
          $cancreate_column      = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
-         $limit_addcard_columns = $canmodify_view !== 'false' ? '[]' : json_encode([0]);
+         $limit_addcard_columns = [];
          $can_order_item        = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
 
 
-         $js = <<<JAVASCRIPT
-         $(function(){
-            // Create Kanban
-            var kanban = new GLPIKanban({
-               element: "#kanban",
-               allow_add_item: $canadd_item,
-               allow_modify_view: $canmodify_view,
-               allow_create_column: $cancreate_column,
-               limit_addcard_columns: $limit_addcard_columns,
-               allow_order_card: $can_order_item,
-               supported_itemtypes: $supported_itemtypes,
-               dark_theme: {$darkmode},
-               max_team_images: 3,
-               column_field: $column_field,
-               background_refresh_interval:  $refresh,
-               item: {
-                  itemtype: 'PluginTasklistsTaskType',
-                  items_id: $item_id
-               }
-            });
-            // Create kanban elements and add data
-            kanban.init();
-         });
-JAVASCRIPT;
-         echo Html::scriptBlock($js);
+         //         $js = <<<JAVASCRIPT
+         //         $(function(){
+         //            // Create Kanban
+         //            var kanban = new GLPIKanban({
+         //               element: "#kanban",
+         //               create_item: $canadd_item,
+         //               delete_item: $candelete_item,
+         //               modify_view: $canmodify_view,
+         //               create_column: $cancreate_column,
+         //               create_card_limited_columns: $limit_addcard_columns,
+         //               order_card: $can_order_item,
+         //               supported_itemtypes: $supported_itemtypes,
+         //               dark_theme: {$darkmode},
+         //               max_team_images: 3,
+         //               column_field: $column_field,
+         //               background_refresh_interval:  $refresh,
+         //               item: {
+         //                  itemtype: 'PluginTasklistsTaskType',
+         //                  items_id: $item_id
+         //               }
+         //            });
+         //            // Create kanban elements and add data
+         //            kanban.init();
+         //         });
+         //JAVASCRIPT;
+         //         echo Html::scriptBlock($js);
+
+         $itemtype = PluginTasklistsTaskType::class;
+
+         $rights = [
+            'create_item'                 => $canadd_item,
+            'delete_item'                 => $candelete_item,
+            'create_column'               => $cancreate_column,
+            'modify_view'                 => $canmodify_view,
+            'order_card'                  => $can_order_item,
+            'create_card_limited_columns' => $limit_addcard_columns
+         ];
+
+         TemplateRenderer::getInstance()->display('@tasklists/kanban.html.twig', [
+            'kanban_id'           => 'kanban',
+            'rights'              => $rights,
+            'supported_itemtypes' => $supported_itemtypes,
+            'max_team_images'     => 3,
+            'column_field'        => $column_field,
+            'item'                => [
+               'itemtype' => $itemtype,
+               'items_id' => $item_id
+            ],
+            'supported_filters'   => [
+                                        'title'    => [
+                                           'description'        => _x('filters', 'The title of the item'),
+                                           'supported_prefixes' => ['!', '#'] // Support exclusions and regex
+                                        ],
+                                        'type'     => [
+                                           'description'        => _x('filters', 'The type of the item'),
+                                           'supported_prefixes' => ['!']
+                                        ],
+                                        'content'  => [
+                                           'description'        => _x('filters', 'The content of the item'),
+                                           'supported_prefixes' => ['!', '#'] // Support exclusions and regex
+                                        ],
+                                        'team'     => [
+                                           'description'        => _x('filters', 'A team member for the item'),
+                                           'supported_prefixes' => ['!']
+                                        ],
+                                        'user'     => [
+                                           'description'        => _x('filters', 'A user in the team of the item'),
+                                           'supported_prefixes' => ['!']
+                                        ],
+                                        'group'    => [
+                                           'description'        => _x('filters', 'A group in the team of the item'),
+                                           'supported_prefixes' => ['!']
+                                        ],
+                                        'supplier' => [
+                                           'description'        => _x('filters', 'A supplier in the team of the item'),
+                                           'supported_prefixes' => ['!']
+                                        ],
+                                     ] + self::getKanbanPluginFilters(static::getType()),
+         ]);
       }
+   }
+
+   public static function getKanbanPluginFilters($itemtype) {
+      global $PLUGIN_HOOKS;
+      $filters = [];
+
+      //      if (isset($PLUGIN_HOOKS[Hooks::KANBAN_FILTERS])) {
+      //         foreach ($PLUGIN_HOOKS[Hooks::KANBAN_FILTERS] as $plugin => $itemtype_filters) {
+      //            $filters = array_merge($filters, $itemtype_filters[$itemtype] ?? []);
+      //         }
+      //      }
+      return $filters;
    }
 
    public function canOrderKanbanCard($ID) {

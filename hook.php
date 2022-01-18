@@ -60,6 +60,11 @@ function plugin_tasklists_install() {
       $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.6.1.sql");
       $mig->executeMigration();
    }
+   if (!$DB->fieldExists("glpi_plugin_tasklists_tasks", "content")) {
+      $mig = new Migration("2.0.0");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-2.0.0.sql");
+      $mig->executeMigration();
+   }
    // Add record notification
    include_once(PLUGIN_TASKLISTS_DIR. "/inc/notificationtargettask.class.php");
    call_user_func(["PluginTasklistsNotificationTargetTask", 'install']);

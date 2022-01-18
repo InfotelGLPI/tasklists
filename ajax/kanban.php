@@ -39,61 +39,53 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-   // Get AJAX input and load it into $_REQUEST
-   $input = file_get_contents('php://input');
-   parse_str($input, $_REQUEST);
-}
+use Glpi\Application\View\TemplateRenderer;
+
+//if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+//   // Get AJAX input and load it into $_REQUEST
+//   $input = file_get_contents('php://input');
+//   parse_str($input, $_REQUEST);
+//}
 
 if (!isset($_REQUEST['action'])) {
-   $ele = key($_REQUEST);
-   $_REQUEST = json_decode($ele,true);
-   if (!isset($_REQUEST['action'])) {
-      Toolbox::logError("Missing action parameter");
-      http_response_code(400);
-      return;
-   }
+   Glpi\Http\Response::sendError(400, "Missing action parameter", Glpi\Http\Response::CONTENT_TYPE_TEXT_HTML);
 }
+
 $action = $_REQUEST['action'];
 
-if ($action === 'get_translated_strings') {
-   header("Content-Type: application/json; charset=UTF-8", true);
-   echo json_encode((PluginTasklistsKanban::getLocalizedKanbanStrings()), JSON_FORCE_OBJECT);
-   return;
-}
-
-$nonkanban_actions = ['update', 'add_item', 'move_item'];
+//Infotel add get_url && get_switcher_dropdown into array
+$nonkanban_actions = ['update', 'bulk_add_item', 'add_item', 'move_item', 'show_card_edit_form', 'delete_item', 'load_item_panel',
+                      'add_teammember', 'delete_teammember', 'get_url', 'get_switcher_dropdown'];
 if (isset($_REQUEST['itemtype'])) {
 
    $traits = class_uses($_REQUEST['itemtype'], true);
-   if (!in_array($_REQUEST['action'], $nonkanban_actions)
-       && (!$traits || !in_array('Kanban', $traits))
-       && $_REQUEST['itemtype'] != "PluginTasklistsTaskType") {
+   if (!in_array($_REQUEST['action'], $nonkanban_actions) && !Toolbox::hasTrait($_REQUEST['itemtype'], Kanban::class)) {
       // Bad request
       // For all actions, except those in $nonkanban_actions, we expect to be manipulating the Kanban itself.
-      Toolbox::logError("Invalid itemtype parameter");
-      http_response_code(400);
-      return;
+      Glpi\Http\Response::sendError(400, "Invalid itemtype parameter", Glpi\Http\Response::CONTENT_TYPE_TEXT_HTML);
    }
    /** @var CommonDBTM $item */
    $itemtype = $_REQUEST['itemtype'];
    $item     = new $itemtype();
 }
 
+if ($action === 'get_translated_strings') {
+   //Infotel
+   header("Content-Type: application/json; charset=UTF-8", true);
+   echo json_encode((PluginTasklistsKanban::getLocalizedKanbanStrings()), JSON_FORCE_OBJECT);
+   return;
+}
+
 // Rights Checks
 if (isset($itemtype)) {
-   if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column'])) {
-      $itemtoV = $item;
-      if ($itemtype == PluginTasklistsTaskType::getType()){
-         $itemtoV = new PluginTasklistsTask();
-      }
-      if (!$itemtoV->canView()) {
+   if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column', 'load_item_panel'])) {
+      if (!$item->canView()) {
          // Missing rights
          http_response_code(403);
          return;
       }
    }
-   if (in_array($action, ['update']) && isset($_REQUEST['items_id'])) {
+   if (in_array($action, ['update', 'add_teammember', 'delete_teammember', 'load_item_panel'])) {
       $item->getFromDB($_REQUEST['items_id']);
       if (!$item->canUpdateItem()) {
          // Missing rights
@@ -101,8 +93,16 @@ if (isset($itemtype)) {
          return;
       }
    }
-   if (in_array($action, ['add_item'])) {
+   if (in_array($action, ['bulk_add_item', 'add_item'])) {
       if (!$item->canCreate()) {
+         // Missing rights
+         http_response_code(403);
+         return;
+      }
+   }
+   if (in_array($action, ['delete_item'])) {
+      $maybe_deleted = $item->maybeDeleted();
+      if (($maybe_deleted && !$item::canDelete()) && (!$maybe_deleted && $item::canPurge())) {
          // Missing rights
          http_response_code(403);
          return;
@@ -111,117 +111,83 @@ if (isset($itemtype)) {
 }
 
 // Helper to check required parameters
-$checkParams = function ($required) {
+$checkParams = static function ($required) {
    foreach ($required as $param) {
       if (!isset($_REQUEST[$param])) {
-         Toolbox::logError("Missing $param parameter");
-         http_response_code(400);
-         die();
+         Glpi\Http\Response::sendError(400, "Missing $param parameter");
       }
    }
 };
 
 // Action Processing
-if ($_REQUEST['action'] == 'update' && isset($_REQUEST['items_id'])) {
+if (($_POST['action'] ?? null) === 'update') {
    $checkParams(['column_field', 'column_value']);
    // Update project or task based on changes made in the Kanban
    $item->update([
-                    'id'                      => $_REQUEST['items_id'],
-                    $_REQUEST['column_field'] => $_REQUEST['column_value']
+                    'id'                   => $_POST['items_id'],
+                    $_POST['column_field'] => $_POST['column_value']
                  ]);
-
-} else if ($_REQUEST['action'] == 'add_item') {
-
+} else if (($_POST['action'] ?? null) === 'add_item') {
    $checkParams(['inputs']);
    $item   = new $itemtype();
    $inputs = [];
-   parse_str($_REQUEST['inputs'], $inputs);
-   $item->add($inputs);
+   parse_str($_UPOST['inputs'], $inputs);
 
-} else if ($_REQUEST['action'] == 'move_item') {
+   $item->add(Sanitizer::sanitize($inputs));
+} else if (($_POST['action'] ?? null) === 'bulk_add_item') {
+   $checkParams(['inputs']);
+   $item   = new $itemtype();
+   $inputs = [];
+   parse_str($_UPOST['inputs'], $inputs);
 
-   $checkParams(['card', 'column', 'position', 'kanban']);
-   $task = new PluginTasklistsTask();
-   if ($task->getFromDB($_REQUEST['card'])) {
-      $d                                   = [];
-      $d['plugin_tasklists_taskstates_id'] = $_REQUEST['column'];
-      $d['id']                             = $_REQUEST['card'];
-
-      if (($task->fields['users_id'] == Session::getLoginUserID() && Session::haveRight("plugin_tasklists", UPDATE))
-          || Session::haveRight("plugin_tasklists_see_all", 1)) {
-         $task->update($d);
+   $bulk_item_list = preg_split('/\r\n|[\r\n]/', $inputs['bulk_item_list']);
+   if (!empty($bulk_item_list)) {
+      unset($inputs['bulk_item_list']);
+      foreach ($bulk_item_list as $item_entry) {
+         $item_entry = trim($item_entry);
+         if (!empty($item_entry)) {
+            $item->add(Sanitizer::sanitize($inputs + ['name' => $item_entry, 'content' => '']));
+         }
       }
    }
-
-} else if ($_REQUEST['action'] == 'show_column') {
-
+} else if (($_POST['action'] ?? null) === 'move_item') {
+   $checkParams(['card', 'column', 'position', 'kanban']);
+   /** @var Kanban|CommonDBTM $kanban */
+   $kanban   = new $_POST['kanban']['itemtype']();
+   $can_move = $kanban->canOrderKanbanCard($_POST['kanban']['items_id']);
+   if ($can_move) {
+      Item_Kanban::moveCard(
+         $_POST['kanban']['itemtype'],
+         $_POST['kanban']['items_id'],
+         $_POST['card'],
+         $_POST['column'],
+         $_POST['position']
+      );
+   }
+} else if (($_POST['action'] ?? null) === 'show_column') {
    $checkParams(['column', 'kanban']);
-   Item_Kanban::showColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
-
-} else if ($_REQUEST['action'] == 'hide_column') {
-
+   Item_Kanban::showColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+} else if (($_POST['action'] ?? null) === 'hide_column') {
    $checkParams(['column', 'kanban']);
-   Item_Kanban::hideColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
-
-} else if ($_REQUEST['action'] == 'collapse_column') {
-
+   Item_Kanban::hideColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+} else if (($_POST['action'] ?? null) === 'collapse_column') {
    $checkParams(['column', 'kanban']);
-   PluginTasklistsItem_Kanban::collapseColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
-
-} else if ($_REQUEST['action'] == 'expand_column') {
-
+   Item_Kanban::collapseColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+} else if (($_POST['action'] ?? null) === 'expand_column') {
    $checkParams(['column', 'kanban']);
-   PluginTasklistsItem_Kanban::expandColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'], $_REQUEST['column']);
-
-} else if ($_REQUEST['action'] == 'move_column') {
-
-   global $DB;
+   Item_Kanban::expandColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+} else if (($_POST['action'] ?? null) === 'move_column') {
    $checkParams(['column', 'kanban', 'position']);
-   $dbu   = new DbUtils();
-   $table = $dbu->getTableForItemType('PluginTasklistsStateOrder');
-
-   $stateorder = new PluginTasklistsStateOrder();
-   $stateorder->getFromDBByCrit(["plugin_tasklists_taskstates_id" => $_REQUEST["column"], "plugin_tasklists_tasktypes_id" => $_REQUEST["kanban"]["items_id"]]);
-
-   $id_item            = $stateorder->getID();
-   $_POST['new_order'] = $_REQUEST['position'];
-   $_POST['old_order'] = $stateorder->getField('ranking');
-   // Réorganisation de tout les champs
-   if ($_POST['old_order'] < $_POST['new_order']) {
-
-      $DB->query("UPDATE $table SET
-               `ranking` = `ranking`-1
-               WHERE `plugin_tasklists_tasktypes_id` = {$_REQUEST["kanban"]["items_id"]}
-               AND `ranking` > {$_POST['old_order']}
-               AND `ranking` <= {$_POST['new_order']}");
-   } else {
-
-      $DB->query("UPDATE $table SET
-               `ranking` = `ranking`+1
-               WHERE `plugin_tasklists_tasktypes_id` = {$_REQUEST["kanban"]["items_id"]}
-               AND `ranking` < {$_POST['old_order']}
-               AND `ranking` >= {$_POST['new_order']}");
-   }
-
-   if (isset($id_item) && $id_item > 0) {
-      $DB->query("UPDATE $table SET
-               `ranking` = {$_POST['new_order']}
-               WHERE id = $id_item");
-   }
-   /*
-      Item_Kanban::moveColumn($_REQUEST['kanban']['itemtype'], $_REQUEST['kanban']['items_id'],
-         $_REQUEST['column'], $_REQUEST['position']);
-   */
-} else if ($_REQUEST['action'] == 'refresh') {
-
+   Item_Kanban::moveColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column'], $_POST['position']);
+} else if ($_REQUEST['action'] === 'refresh') {
    $checkParams(['column_field']);
    // Get all columns to refresh the kanban
    header("Content-Type: application/json; charset=UTF-8", true);
-   $columns = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], [], true);
+   $force_columns = Item_Kanban::getAllShownColumns($itemtype, $_REQUEST['items_id']);
+   $columns       = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], $force_columns, true);
    echo json_encode($columns, JSON_FORCE_OBJECT);
-
 } else if ($_REQUEST['action'] == 'get_switcher_dropdown') {
-
+   //Infotel
    $values = $itemtype::getAllForKanban();
    $vals   = [];
    foreach ($values as $key => $value) {
@@ -234,63 +200,122 @@ if ($_REQUEST['action'] == 'update' && isset($_REQUEST['items_id'])) {
    ]);
 
 } else if ($_REQUEST['action'] == 'get_url') {
-
+   //Infotel
    $checkParams(['items_id']);
-
    $kb = new PluginTasklistsKanban();
    echo $kb->getSearchURL() . '?context_id=' . $_REQUEST['items_id'];
    return;
 
-} else if ($_REQUEST['action'] == 'load_column_state') {
-
+} else if (($_POST['action'] ?? null) === 'create_column') {
+   $checkParams(['column_field', 'items_id', 'column_name']);
+   $column_field = $_POST['column_field'];
+   $column_itemtype = getItemtypeForForeignKeyField($column_field);
+   if (!$column_itemtype::canCreate() || !$column_itemtype::canView()) {
+      // Missing rights
+      http_response_code(403);
+      return;
+   }
+   $params = $_POST['params'] ?? [];
+   $column_item = new $column_itemtype();
+   $column_id = $column_item->add([
+                                     'name'   => $_POST['column_name']
+                                  ] + $params);
+   header("Content-Type: application/json; charset=UTF-8", true);
+   $column = $itemtype::getKanbanColumns($_POST['items_id'], $column_field, [$column_id]);
+   echo json_encode($column);
+} else if (($_POST['action'] ?? null) === 'save_column_state') {
+   $checkParams(['items_id', 'state']);
+   Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], $_POST['state']);
+} else if ($_REQUEST['action'] === 'load_column_state') {
    $checkParams(['items_id', 'last_load']);
    header("Content-Type: application/json; charset=UTF-8", true);
    $response = [
-      'state'     => [],
+      'state'     => Item_Kanban::loadStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['last_load']),
       'timestamp' => $_SESSION['glpi_currenttime']
    ];
    echo json_encode($response, JSON_FORCE_OBJECT);
-
-} else if ($_REQUEST['action'] == 'list_columns') {
-
+} else if ($_REQUEST['action'] === 'list_columns') {
    $checkParams(['column_field']);
    header("Content-Type: application/json; charset=UTF-8", true);
-   echo json_encode(PluginTasklistsTaskState::getAllKanbanColumns());
-
-} else if ($_REQUEST['action'] == 'get_column') {
-
+   echo json_encode($itemtype::getAllKanbanColumns($_REQUEST['column_field']));
+} else if ($_REQUEST['action'] === 'get_column') {
    $checkParams(['column_id', 'column_field', 'items_id']);
    header("Content-Type: application/json; charset=UTF-8", true);
    $column = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], [$_REQUEST['column_id']]);
    echo json_encode($column, JSON_FORCE_OBJECT);
-
-} else if ($_REQUEST['action'] == 'add_status_context') {
-
-   header("Content-Type: application/json; charset=UTF-8", true);
-   $taskState = new PluginTasklistsTaskState();
-   $taskState->getFromDB($_REQUEST['column']);
-   $contexts           = json_decode($taskState->getField('tasktypes'));
-   $contexts[]         = $_REQUEST['context_id'];
-   $input              = [];
-   $input["tasktypes"] = $contexts;
-   $input["id"]        = $_REQUEST['column'];
-   $taskState->update($input);
-   PluginTasklistsStateOrder::addStateContext($_REQUEST['context_id'], $_REQUEST['column']);
-   echo json_encode(true, JSON_FORCE_OBJECT);
-
-} else if ($_REQUEST['action'] == 'remove_status_context') {
-
-   header("Content-Type: application/json; charset=UTF-8", true);
-   $taskState = new PluginTasklistsTaskState();
-   $taskState->getFromDB($_REQUEST['column']);
-   $contexts = json_decode($taskState->getField('tasktypes'));
-   if (($key = array_search($_REQUEST['context_id'], $contexts)) !== false) {
-      unset($contexts[$key]);
+} else if ($_REQUEST['action'] === 'show_card_edit_form') {
+   $checkParams(['card']);
+   $item->getFromDB($_REQUEST['card']);
+   if ($item->canViewItem() && $item->canUpdateItem()) {
+      $item->showForm($_REQUEST['card']);
+   } else {
+      http_response_code(403);
+      return;
    }
-   $input              = [];
-   $input["tasktypes"] = $contexts;
-   $input["id"]        = $_REQUEST['column'];
-   $taskState->update($input);
-   PluginTasklistsStateOrder::removeStateContext($_REQUEST['context_id'], $_REQUEST['column']);
-   echo json_encode(true, JSON_FORCE_OBJECT);
+} else if (($_POST['action'] ?? null) === 'delete_item') {
+   $checkParams(['items_id']);
+   $item->getFromDB($_POST['items_id']);
+   // Check if the item can be trashed and if the request isn't forcing deletion (purge)
+   $maybe_deleted = $item->maybeDeleted() && !($_REQUEST['force'] ?? false);
+   if (($maybe_deleted && $item->canDeleteItem()) || (!$maybe_deleted && $item->canPurgeItem())) {
+      $item->delete(['id' => $_POST['items_id']], !$maybe_deleted);
+   } else {
+      http_response_code(403);
+      return;
+   }
+} else if (($_POST['action'] ?? null) === 'add_teammember') {
+   $checkParams(['itemtype_teammember', 'items_id_teammember']);
+   $item->addTeamMember($_POST['itemtype_teammember'], (int) $_POST['items_id_teammember'], [
+      'role'   => (int) $_POST['role']
+   ]);
+} else if (($_POST['action'] ?? null) === 'delete_teammember') {
+   $checkParams(['itemtype_teammember', 'items_id_teammember']);
+   $item->deleteTeamMember($_POST['itemtype_teammember'], (int) $_POST['items_id_teammember'], [
+      'role'   => (int) $_POST['role']
+   ]);
+} else if (($_REQUEST['action'] ?? null) === 'load_item_panel') {
+   if (isset($itemtype, $item)) {
+      //Infotel
+      TemplateRenderer::getInstance()->display('@tasklists/item_panels/default_panel.html.twig', [
+         'itemtype'     => $itemtype,
+         'item_fields'  => $item->fields,
+         'team'         => Toolbox::hasTrait($item, Teamwork::class) ? $item->getTeam() : []
+      ]);
+   } else {
+      http_response_code(400);
+      return;
+   }
+} else {
+   http_response_code(400);
+   return;
 }
+//else if ($_REQUEST['action'] == 'add_status_context') {
+//
+//   header("Content-Type: application/json; charset=UTF-8", true);
+//   $taskState = new PluginTasklistsTaskState();
+//   $taskState->getFromDB($_REQUEST['column']);
+//   $contexts           = json_decode($taskState->getField('tasktypes'));
+//   $contexts[]         = $_REQUEST['context_id'];
+//   $input              = [];
+//   $input["tasktypes"] = $contexts;
+//   $input["id"]        = $_REQUEST['column'];
+//   $taskState->update($input);
+//   PluginTasklistsStateOrder::addStateContext($_REQUEST['context_id'], $_REQUEST['column']);
+//   echo json_encode(true, JSON_FORCE_OBJECT);
+//
+//} else if ($_REQUEST['action'] == 'remove_status_context') {
+//
+//   header("Content-Type: application/json; charset=UTF-8", true);
+//   $taskState = new PluginTasklistsTaskState();
+//   $taskState->getFromDB($_REQUEST['column']);
+//   $contexts = json_decode($taskState->getField('tasktypes'));
+//   if (($key = array_search($_REQUEST['context_id'], $contexts)) !== false) {
+//      unset($contexts[$key]);
+//   }
+//   $input              = [];
+//   $input["tasktypes"] = $contexts;
+//   $input["id"]        = $_REQUEST['column'];
+//   $taskState->update($input);
+//   PluginTasklistsStateOrder::removeStateContext($_REQUEST['context_id'], $_REQUEST['column']);
+//   echo json_encode(true, JSON_FORCE_OBJECT);
+//}

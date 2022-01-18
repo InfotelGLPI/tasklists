@@ -31,6 +31,8 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+use Glpi\Plugin\Hooks;
+
 /**
  * Class PluginTasklistsTask
  */
@@ -52,6 +54,13 @@ class PluginTasklistsTask extends CommonDBTM {
       return _n('Task', 'Tasks', $nb);
    }
 
+
+   /**
+    * @return string
+    */
+   static function getIcon() {
+      return "ti ti-layout-kanban";
+   }
 
    /**
     * @return array
@@ -265,7 +274,7 @@ class PluginTasklistsTask extends CommonDBTM {
    }
 
 
-   public function getCloneRelations() :array {
+   public function getCloneRelations(): array {
       return [
          Document_Item::class,
          Notepad::class
@@ -403,7 +412,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
-      echo Html::hidden('id',['value'=>$ID]);
+      echo Html::hidden('id', ['value' => $ID]);
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
       echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
@@ -599,8 +608,8 @@ class PluginTasklistsTask extends CommonDBTM {
       $content_id = "comment$rand_text";
       $cols       = 100;
       $rows       = 15;
-      Html::textarea(['name'            => 'comment',
-                      'value'           => $this->fields["comment"],
+      Html::textarea(['name'            => 'content',
+                      'value'           => $this->fields["content"],
                       'rand'            => $rand_text,
                       'editor_id'       => $content_id,
                       'enable_richtext' => true,
@@ -1272,5 +1281,4 @@ class PluginTasklistsTask extends CommonDBTM {
       }
       echo "</table></div>";
    }
-
 }

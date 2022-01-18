@@ -374,7 +374,7 @@ $root_doc = PLUGIN_TASKLISTS_WEBDIR;
       $html       .= "<tr class='tab_bg_2'><th colspan='3'>$form_title</th></tr>";
 
       $html .= "<tr class='tab_bg_1'><td><label for='comment'>" . __('Comment') . "</label>
-         &nbsp;<span class='red'>*</span></td><td>";
+         &nbsp;<span style='color:red'>*</span></td><td>";
       $html .= "<textarea name='comment' id='comment' required='required'>{$content}</textarea>";
       $html .= "</td><td class='center'>";
 

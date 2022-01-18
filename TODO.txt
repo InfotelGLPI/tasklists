@@ -5,29 +5,9 @@ Add notifications to comments ?
 **************
 ordonner les contextes - pref ?
 **************
-Clone task : OK
-Add comments ? or Number of notes of task ? : OK
-See archived tasks : OK
-See my tasks : OK
-Send notification for add / change / delete task : OK
-Add tinymce tasks : OK
-Add templates by context : OK
-Add entity pre-selection : OK
-Backlog from list : OK
-Link to tickets : OK
-Planning : hours : OK
-Rights : OK
-Check transfer : OK
-Add client field : OK
-Preference : contexte by default : OK
-Check visibility : OK
-See graph percent from div tasks ? or move percent ? OK
-Add tasks from title : OK
-See state from context into task form : OK
-State migration : OK
-Open popup for see tasks : OK
-Order States : OK
-Hide All tab : OK
-Add context to States : OK
-Add color to States : OK
-Minimize closed tasks : OK
+
+GLPI 10
+Drop context for states
+move teams to specific table ?
+See archive tasks ? & search on it
+drop clone
