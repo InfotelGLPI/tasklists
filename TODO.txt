@@ -8,6 +8,5 @@ ordonner les contextes - pref ?
 
 GLPI 10
 Drop context for states
-move teams to specific table ?
-See archive tasks ? & search on it
+move teams to specific table for display
 drop clone

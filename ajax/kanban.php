@@ -69,13 +69,6 @@ if (isset($_REQUEST['itemtype'])) {
    $item     = new $itemtype();
 }
 
-if ($action === 'get_translated_strings') {
-   //Infotel
-   header("Content-Type: application/json; charset=UTF-8", true);
-   echo json_encode((PluginTasklistsKanban::getLocalizedKanbanStrings()), JSON_FORCE_OBJECT);
-   return;
-}
-
 // Rights Checks
 if (isset($itemtype)) {
    if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column', 'load_item_panel'])) {

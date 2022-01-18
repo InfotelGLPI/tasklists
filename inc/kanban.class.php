@@ -54,6 +54,14 @@ class PluginTasklistsKanban extends CommonGLPI {
       return Session::haveRight(self::$rightname, CREATE);
    }
 
+
+   public function canOrderKanbanCard($ID) {
+      if ($ID > 0) {
+         $this->getFromDB($ID);
+      }
+      return ($ID <= 0 || $this->canModifyGlobalState());
+   }
+
    /**
     * @param int $nb
     *
@@ -202,12 +210,11 @@ class PluginTasklistsKanban extends CommonGLPI {
             'extra_fields' => []
          ];
 
-         //         echo "<div id='kanban' class='kanban'></div>";
          $refresh = 0;
          if (PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0) {
             $refresh = PluginTasklistsPreference::checkPreferenceValue("automatic_refresh_delay", Session::getLoginUserID());
          }
-         $darkmode       = ($_SESSION['glpipalette'] === 'darker') ? 'true' : 'false';
+
          $canadd_item    = json_encode(self::canCreate());
          $candelete_item = json_encode(self::canDelete());
          $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
@@ -215,34 +222,6 @@ class PluginTasklistsKanban extends CommonGLPI {
          $cancreate_column      = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
          $limit_addcard_columns = [];
          $can_order_item        = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
-
-
-         //         $js = <<<JAVASCRIPT
-         //         $(function(){
-         //            // Create Kanban
-         //            var kanban = new GLPIKanban({
-         //               element: "#kanban",
-         //               create_item: $canadd_item,
-         //               delete_item: $candelete_item,
-         //               modify_view: $canmodify_view,
-         //               create_column: $cancreate_column,
-         //               create_card_limited_columns: $limit_addcard_columns,
-         //               order_card: $can_order_item,
-         //               supported_itemtypes: $supported_itemtypes,
-         //               dark_theme: {$darkmode},
-         //               max_team_images: 3,
-         //               column_field: $column_field,
-         //               background_refresh_interval:  $refresh,
-         //               item: {
-         //                  itemtype: 'PluginTasklistsTaskType',
-         //                  items_id: $item_id
-         //               }
-         //            });
-         //            // Create kanban elements and add data
-         //            kanban.init();
-         //         });
-         //JAVASCRIPT;
-         //         echo Html::scriptBlock($js);
 
          $itemtype = PluginTasklistsTaskType::class;
 
@@ -256,45 +235,46 @@ class PluginTasklistsKanban extends CommonGLPI {
          ];
 
          TemplateRenderer::getInstance()->display('@tasklists/kanban.html.twig', [
-            'kanban_id'           => 'kanban',
-            'rights'              => $rights,
-            'supported_itemtypes' => $supported_itemtypes,
-            'max_team_images'     => 3,
-            'column_field'        => $column_field,
-            'item'                => [
+            'kanban_id'                   => 'kanban',
+            'rights'                      => $rights,
+            'supported_itemtypes'         => $supported_itemtypes,
+            'max_team_images'             => 3,
+            'background_refresh_interval' => $refresh,
+            'column_field'                => $column_field,
+            'item'                        => [
                'itemtype' => $itemtype,
                'items_id' => $item_id
             ],
-            'supported_filters'   => [
-                                        'title'    => [
-                                           'description'        => _x('filters', 'The title of the item'),
-                                           'supported_prefixes' => ['!', '#'] // Support exclusions and regex
-                                        ],
-                                        'type'     => [
-                                           'description'        => _x('filters', 'The type of the item'),
-                                           'supported_prefixes' => ['!']
-                                        ],
-                                        'content'  => [
-                                           'description'        => _x('filters', 'The content of the item'),
-                                           'supported_prefixes' => ['!', '#'] // Support exclusions and regex
-                                        ],
-                                        'team'     => [
-                                           'description'        => _x('filters', 'A team member for the item'),
-                                           'supported_prefixes' => ['!']
-                                        ],
-                                        'user'     => [
-                                           'description'        => _x('filters', 'A user in the team of the item'),
-                                           'supported_prefixes' => ['!']
-                                        ],
-                                        'group'    => [
-                                           'description'        => _x('filters', 'A group in the team of the item'),
-                                           'supported_prefixes' => ['!']
-                                        ],
-                                        'supplier' => [
-                                           'description'        => _x('filters', 'A supplier in the team of the item'),
-                                           'supported_prefixes' => ['!']
-                                        ],
-                                     ] + self::getKanbanPluginFilters(static::getType()),
+            'supported_filters'           => [
+                                                'title'    => [
+                                                   'description'        => _x('filters', 'The title of the item'),
+                                                   'supported_prefixes' => ['!', '#'] // Support exclusions and regex
+                                                ],
+                                                'type'     => [
+                                                   'description'        => _x('filters', 'The type of the item'),
+                                                   'supported_prefixes' => ['!']
+                                                ],
+                                                'content'  => [
+                                                   'description'        => _x('filters', 'The content of the item'),
+                                                   'supported_prefixes' => ['!', '#'] // Support exclusions and regex
+                                                ],
+                                                'team'     => [
+                                                   'description'        => _x('filters', 'A team member for the item'),
+                                                   'supported_prefixes' => ['!']
+                                                ],
+                                                'user'     => [
+                                                   'description'        => _x('filters', 'A user in the team of the item'),
+                                                   'supported_prefixes' => ['!']
+                                                ],
+                                                'group'    => [
+                                                   'description'        => _x('filters', 'A group in the team of the item'),
+                                                   'supported_prefixes' => ['!']
+                                                ],
+                                                'supplier' => [
+                                                   'description'        => _x('filters', 'A supplier in the team of the item'),
+                                                   'supported_prefixes' => ['!']
+                                                ],
+                                             ] + self::getKanbanPluginFilters(static::getType()),
          ]);
       }
    }
@@ -309,45 +289,5 @@ class PluginTasklistsKanban extends CommonGLPI {
       //         }
       //      }
       return $filters;
-   }
-
-   public function canOrderKanbanCard($ID) {
-      if ($ID > 0) {
-         $this->getFromDB($ID);
-      }
-      return ($ID <= 0 || $this->canModifyGlobalState());
-   }
-
-   public static function getLocalizedKanbanStrings() {
-      $strings = [
-         'Add'                               => __('Add'),
-         'Delete'                            => __('Delete'),
-         'Close'                             => __('Close'),
-         'Toggle collapse'                   => __('Toggle collapse', 'tasklists'),
-         'Search'                            => __('Search', 'tasklists'),
-         'Search or filter results'          => __('Search or filter results', 'tasklists'),
-         'Add column'                        => __('Add status', 'tasklists'),
-         'Create status'                     => __('Create status', 'tasklists'),
-         '%d other team members'             => __('%d other team members'),
-         'Add a column from existing status' => __('Add a column from existing status', 'tasklists'),
-         'Or add a new status'               => __('Or add a new status', 'tasklists'),
-         'users'                             => _n('User', 'Users', 2),
-         'status'                            => __('Status'),
-         'add_tasks'                         => __('Add task', 'tasklists'),
-
-         'archive_all_tasks'       => __('Archive all tasks of this state', 'tasklists'),
-         'see_archived_tasks'      => __('See archived tasks', 'tasklists'),
-         'hide_archived_tasks'     => __('Hide archived tasks', 'tasklists'),
-         'clone_task'              => __('Clone task', 'tasklists'),
-         'see_progress_tasks'      => __('See tasks in progress', 'tasklists'),
-         'see_my_tasks'            => __('See tasks of', 'tasklists'),
-         'see_all_tasks'           => __('See all tasks', 'tasklists'),
-         'alert_archive_task'      => __('Are you sure you want to archive this task ?', 'tasklists'),
-         'alert_archive_all_tasks' => __('Are you sure you want to archive all tasks ?', 'tasklists'),
-         'archive_task'            => __('Archive this task', 'tasklists'),
-         'update_priority'         => __('Update priority of task', 'tasklists'),
-         'see_details'             => __('Details of task', 'tasklists'),
-      ];
-      return $strings;
    }
 }
