@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-18 10:48+0000\n"
+"POT-Creation-Date: 2022-01-18 11:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,11 +24,11 @@ msgstr ""
 msgid "Tasks list"
 msgstr ""
 
-#: ajax/addOptions.php:31
+#: ajax/addOptions.php:30
 msgid "Not archived"
 msgstr ""
 
-#: ajax/addOptions.php:32 inc/task.class.php:191 inc/task.class.php:633
+#: ajax/addOptions.php:31 inc/task.class.php:191 inc/task.class.php:633
 msgid "Archived"
 msgstr ""
 
@@ -51,96 +51,20 @@ msgid "Due date"
 msgstr ""
 
 #: inc/dashboard.class.php:169 inc/dashboard.class.php:177
-#: inc/kanban.class.php:336 inc/ticket.class.php:154
+#: inc/ticket.class.php:154
 msgid "Add task"
 msgstr ""
 
-#: inc/kanban.class.php:63
+#: inc/kanban.class.php:71
 msgid "Kanban"
 msgstr ""
 
-#: inc/kanban.class.php:123
+#: inc/kanban.class.php:131
 msgid "You don't have the right to see any context"
 msgstr ""
 
-#: inc/kanban.class.php:158
+#: inc/kanban.class.php:166
 msgid "There is no accessible context"
-msgstr ""
-
-#: inc/kanban.class.php:326
-msgid "Toggle collapse"
-msgstr ""
-
-#: inc/kanban.class.php:327
-msgid "Search"
-msgstr ""
-
-#: inc/kanban.class.php:328
-msgid "Search or filter results"
-msgstr ""
-
-#: inc/kanban.class.php:329
-msgid "Add status"
-msgstr ""
-
-#: inc/kanban.class.php:330
-msgid "Create status"
-msgstr ""
-
-#: inc/kanban.class.php:332
-msgid "Add a column from existing status"
-msgstr ""
-
-#: inc/kanban.class.php:333
-msgid "Or add a new status"
-msgstr ""
-
-#: inc/kanban.class.php:338
-msgid "Archive all tasks of this state"
-msgstr ""
-
-#: inc/kanban.class.php:339
-msgid "See archived tasks"
-msgstr ""
-
-#: inc/kanban.class.php:340
-msgid "Hide archived tasks"
-msgstr ""
-
-#: inc/kanban.class.php:341
-msgid "Clone task"
-msgstr ""
-
-#: inc/kanban.class.php:342
-msgid "See tasks in progress"
-msgstr ""
-
-#: inc/kanban.class.php:343
-msgid "See tasks of"
-msgstr ""
-
-#: inc/kanban.class.php:344
-msgid "See all tasks"
-msgstr ""
-
-#: inc/kanban.class.php:345
-msgid "Are you sure you want to archive this task ?"
-msgstr ""
-
-#: inc/kanban.class.php:346
-msgid "Are you sure you want to archive all tasks ?"
-msgstr ""
-
-#: inc/kanban.class.php:347
-msgid "Archive this task"
-msgstr ""
-
-#: inc/kanban.class.php:348
-msgid "Update priority of task"
-msgstr ""
-
-#: inc/kanban.class.php:349
-msgid "Details of task"
 msgstr ""
 
 #: inc/notificationtargettask.class.php:51
