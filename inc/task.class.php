@@ -38,6 +38,7 @@ use Glpi\Plugin\Hooks;
  */
 class PluginTasklistsTask extends CommonDBTM {
    use Glpi\Features\Clonable;
+   use Glpi\Features\Teamwork;
 
    public    $dohistory  = true;
    static    $rightname  = 'plugin_tasklists';
@@ -1281,4 +1282,167 @@ class PluginTasklistsTask extends CommonDBTM {
       }
       echo "</table></div>";
    }
+
+   /**
+    * @since 0.84
+    **/
+   public function loadActors() {
+
+      //      if (!empty($this->grouplinkclass)) {
+      //         $class        = new $this->grouplinkclass();
+      $this->groups = [$this->fields['groups_id']];
+      //      }
+
+      //      if (!empty($this->userlinkclass)) {
+      //         $class        = new $this->userlinkclass();
+      $this->users = [$this->fields['users_id']];
+      //      }
+      //
+      //      if (!empty($this->supplierlinkclass)) {
+      //         $class            = new $this->supplierlinkclass();
+      //         $this->suppliers  = $class->getActors($this->fields['id']);
+      //      }
+   }
+
+   public static function getTeamItemtypes(): array {
+      return ['User', 'Group'];
+   }
+
+   public function getTeam(): array {
+      global $DB;
+
+      $team = [];
+
+      $team_itemtypes = static::getTeamItemtypes();
+
+      /** @var CommonDBTM $itemtype */
+      foreach ($team_itemtypes as $itemtype) {
+         /** @var CommonDBTM $link_class */
+         $link_class = null;
+         switch ($itemtype) {
+            case 'User':
+               $link_class = "PluginTasklistsTask";
+               break;
+            case 'Group':
+               $link_class = "PluginTasklistsTask";
+               break;
+         }
+
+         if ($link_class === null) {
+            continue;
+         }
+
+         $select = [];
+         if ($itemtype === 'User') {
+            $select = [$link_class::getTable() . '.' . $itemtype::getForeignKeyField(), $itemtype::getTable() . '.' . 'name', 'realname', 'firstname'];
+         } else {
+            $select = [
+               $link_class::getTable() . '.' . $itemtype::getForeignKeyField(), $itemtype::getTable() . '.' . 'name',
+               new QueryExpression('NULL as realname'),
+               new QueryExpression('NULL as firstname')
+            ];
+         }
+
+         $it = $DB->request([
+                               'SELECT'    => $select,
+                               'FROM'      => $link_class::getTable(),
+                               'WHERE'     => [$link_class::getTable() . '.' . 'id' => $this->getID()],
+                               'LEFT JOIN' => [
+                                  $itemtype::getTable() => [
+                                     'ON' => [
+                                        $itemtype::getTable()   => 'id',
+                                        $link_class::getTable() => $itemtype::getForeignKeyField()
+                                     ]
+                                  ]
+                               ]
+                            ]);
+         foreach ($it as $data) {
+            $items_id = $data[$itemtype::getForeignKeyField()];
+            $member   = [
+               'itemtype'     => $itemtype,
+               'items_id'     => $items_id,
+               'id'           => $items_id,
+               'role'         => 2,
+               'name'         => $data['name'],
+               'realname'     => $data['realname'],
+               'firstname'    => $data['firstname'],
+               'display_name' => formatUserName($items_id, $data['name'], $data['realname'], $data['firstname'])
+            ];
+            $team[]   = $member;
+         }
+      }
+
+      return $team;
+   }
+
+
+   public static function getTeamRoles(): array {
+      return [
+         \CommonITILActor::ASSIGN,
+      ];
+   }
+
+   public static function getTeamRoleName(int $role, int $nb = 1): string {
+      switch ($role) {
+         case \CommonITILActor::ASSIGN:
+            return _n('Assignee', 'Assignees', $nb);
+      }
+      return '';
+   }
+
+
+   public function addTeamMember(string $itemtype, int $items_id, array $params = []): bool {
+      $role = CommonITILActor::ASSIGN;
+
+      /** @var CommonDBTM $link_class */
+      $link_class = null;
+      switch ($itemtype) {
+         case 'User':
+            $link_class = "PluginTasklistsTask";
+            $field      = "users_id";
+            break;
+         case 'Group':
+            $link_class = "PluginTasklistsTask";
+            $field      = "groups_id";
+            break;
+      }
+
+      if ($link_class === null) {
+         return false;
+      }
+
+      $link_item = new $link_class();
+      /** @var CommonDBTM $itemtype */
+      $result = $link_item->update([$field => $items_id,
+                                    'id'   => $this->getID()]);
+      return (bool)$result;
+   }
+
+   public function deleteTeamMember(string $itemtype, int $items_id, array $params = []): bool {
+      $role = CommonITILActor::ASSIGN;
+
+      /** @var CommonDBTM $link_class */
+      $link_class = null;
+      switch ($itemtype) {
+         case 'User':
+            $link_class = "PluginTasklistsTask";
+            $field      = "users_id";
+            break;
+         case 'Group':
+            $link_class = "PluginTasklistsTask";
+            $field      = "groups_id";
+            break;
+      }
+
+      if ($link_class === null) {
+         return false;
+      }
+
+      $link_item = new $link_class();
+      /** @var CommonDBTM $itemtype */
+      $result = $link_item->update([$field => '0',
+                                    'id'   => $this->getID()]);
+      return (bool)$result;
+   }
+
 }

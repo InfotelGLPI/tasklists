@@ -7,6 +7,12 @@ ordonner les contextes - pref ?
 **************
 
 GLPI 10
-Drop context for states
+
 move teams to specific table for display
+Drop context for states
 drop clone
+drop glpi_plugin_tasklists_stateorders
+drop glpi_plugin_tasklists_items_kanbans
+drop addoptions.php
+
+fix see archived

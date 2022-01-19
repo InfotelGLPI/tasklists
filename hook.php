@@ -33,40 +33,95 @@
 function plugin_tasklists_install() {
    global $DB;
 
-   include_once(PLUGIN_TASKLISTS_DIR. "/inc/profile.class.php");
-   include_once(PLUGIN_TASKLISTS_DIR. "/inc/task.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR . "/inc/profile.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR . "/inc/task.class.php");
    if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
 
-      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/empty-2.0.0.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/empty-2.0.0.sql");
 
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
       $mig = new Migration("1.4.1");
-      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.4.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-1.4.1.sql");
       $mig->executeMigration();
    }
    if (!$DB->tableExists("glpi_plugin_tasklists_items_kanbans")) {
       $mig = new Migration("1.5.1");
-      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.5.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-1.5.1.sql");
       $mig->executeMigration();
    }
    if (!$DB->fieldExists("glpi_plugin_tasklists_preferences", "automatic_refresh")) {
       $mig = new Migration("1.6.0");
-      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.6.0.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-1.6.0.sql");
       $mig->executeMigration();
    }
    if (!$DB->fieldExists("glpi_plugin_tasklists_tasks", "users_id_requester")) {
       $mig = new Migration("1.6.1");
-      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-1.6.1.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-1.6.1.sql");
       $mig->executeMigration();
    }
    if (!$DB->fieldExists("glpi_plugin_tasklists_tasks", "content")) {
       $mig = new Migration("2.0.0");
-      $DB->runFile(PLUGIN_TASKLISTS_DIR. "/sql/update-2.0.0.sql");
+      $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.0.0.sql");
       $mig->executeMigration();
+
+      //Migrate glpi_plugin_tasklists_items_kanbans to Item_Kanban
+      $lists_unique_kanban = [];
+      $query               = "SELECT * FROM `glpi_plugin_tasklists_items_kanbans`
+                            WHERE `items_id` > 0
+                            GROUP BY `items_id`";
+      if ($result = $DB->query($query)) {
+         if ($DB->numrows($result)) {
+            while ($data = $DB->fetchArray($result)) {
+               $lists_unique_kanban[] = $data['items_id'];
+            }
+         }
+      }
+      $tasklist_item_kanban = new PluginTasklistsItem_Kanban();
+      $lists_kanban         = $tasklist_item_kanban->find();
+      $states_by_kanban     = [];
+      foreach ($lists_unique_kanban as $kanban) {
+         $states_by_kanban[$kanban] = [];
+         foreach ($lists_kanban as $columns) {
+            if ($columns['items_id'] > 0
+                && $columns['items_id'] == $kanban
+                && isset($states_by_kanban[$kanban])
+                && !(in_array($columns['plugin_tasklists_taskstates_id'], $states_by_kanban[$kanban]))) {
+               $states_by_kanban[$kanban][] = $columns['plugin_tasklists_taskstates_id'];
+            }
+         }
+      }
+      $state = [];
+      foreach ($states_by_kanban as $kanban => $states) {
+         foreach ($states as $k => $v) {
+            $state[$kanban][$v] =["column" => $v,
+                                  "visible" => true,
+                                  "folded" => false,
+                                  "cards" => []];
+         }
+      }
+
+      $query = "SELECT * FROM `glpi_plugin_tasklists_items_kanbans`
+                            WHERE `items_id` > 0
+                            GROUP BY `items_id`";
+      if ($result = $DB->query($query)) {
+         if ($DB->numrows($result)) {
+            while ($data = $DB->fetchArray($result)) {
+               $item_kanban            = new Item_Kanban();
+               $input['itemtype']      = $data['itemtype'];
+               $input['items_id']      = $data['items_id'];
+               $input['users_id']      = 0;
+               $input['date_mod']      = $data['date_mod'];
+               $input['date_creation'] = $data['date_creation'];
+               $input['state']         = json_encode($state[$data['items_id']]);
+
+               $item_kanban->add($input);
+            }
+         }
+      }
    }
    // Add record notification
-   include_once(PLUGIN_TASKLISTS_DIR. "/inc/notificationtargettask.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR . "/inc/notificationtargettask.class.php");
    call_user_func(["PluginTasklistsNotificationTargetTask", 'install']);
 
    PluginTasklistsProfile::initProfile();
@@ -81,8 +136,8 @@ function plugin_tasklists_install() {
 function plugin_tasklists_uninstall() {
    global $DB;
 
-   include_once(PLUGIN_TASKLISTS_DIR. "/inc/profile.class.php");
-   include_once(PLUGIN_TASKLISTS_DIR. "/inc/menu.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR . "/inc/profile.class.php");
+   include_once(PLUGIN_TASKLISTS_DIR . "/inc/menu.class.php");
 
    $tables = ["glpi_plugin_tasklists_tasks",
               "glpi_plugin_tasklists_tasktypes",
@@ -101,6 +156,7 @@ function plugin_tasklists_uninstall() {
    $tables_glpi = ["glpi_displaypreferences",
                    "glpi_notepads",
                    "glpi_savedsearches",
+                   "glpi_items_kanbans",
                    "glpi_logs",
                    "glpi_documents_items"];
 

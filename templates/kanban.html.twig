@@ -61,6 +61,7 @@
    $(function(){
       // Create Kanban
       var kanban = new GLPIKanban({
+         root_taslists: "{{ root_tasklists }}",
          element: "#{{ kanban_id|default('kanban') }}",
          rights: {{ rights|json_encode|raw }},
          supported_itemtypes: {{ supported_itemtypes|json_encode|raw }},

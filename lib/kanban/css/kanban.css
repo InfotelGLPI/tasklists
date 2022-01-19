@@ -5,6 +5,10 @@
 .endfooter {
    width: 98%;
 }
+
+.kanban .kanban-container .kanban-columns .kanban-column{
+   height: unset!important;
+}
 /*!**/
 /*    ---------------------------*/
 /*    BOARD STYLES*/

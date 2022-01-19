@@ -269,10 +269,11 @@ if (($_POST['action'] ?? null) === 'update') {
 } else if (($_REQUEST['action'] ?? null) === 'load_item_panel') {
    if (isset($itemtype, $item)) {
       //Infotel
+      $team = Toolbox::hasTrait($item, Glpi\Features\Teamwork::class) ? $item->getTeam() : [];
       TemplateRenderer::getInstance()->display('@tasklists/item_panels/default_panel.html.twig', [
          'itemtype'     => $itemtype,
          'item_fields'  => $item->fields,
-         'team'         => Toolbox::hasTrait($item, Teamwork::class) ? $item->getTeam() : []
+         'team'         => $team
       ]);
    } else {
       http_response_code(400);
@@ -282,33 +283,3 @@ if (($_POST['action'] ?? null) === 'update') {
    http_response_code(400);
    return;
 }
-//else if ($_REQUEST['action'] == 'add_status_context') {
-//
-//   header("Content-Type: application/json; charset=UTF-8", true);
-//   $taskState = new PluginTasklistsTaskState();
-//   $taskState->getFromDB($_REQUEST['column']);
-//   $contexts           = json_decode($taskState->getField('tasktypes'));
-//   $contexts[]         = $_REQUEST['context_id'];
-//   $input              = [];
-//   $input["tasktypes"] = $contexts;
-//   $input["id"]        = $_REQUEST['column'];
-//   $taskState->update($input);
-//   PluginTasklistsStateOrder::addStateContext($_REQUEST['context_id'], $_REQUEST['column']);
-//   echo json_encode(true, JSON_FORCE_OBJECT);
-//
-//} else if ($_REQUEST['action'] == 'remove_status_context') {
-//
-//   header("Content-Type: application/json; charset=UTF-8", true);
-//   $taskState = new PluginTasklistsTaskState();
-//   $taskState->getFromDB($_REQUEST['column']);
-//   $contexts = json_decode($taskState->getField('tasktypes'));
-//   if (($key = array_search($_REQUEST['context_id'], $contexts)) !== false) {
-//      unset($contexts[$key]);
-//   }
-//   $input              = [];
-//   $input["tasktypes"] = $contexts;
-//   $input["id"]        = $_REQUEST['column'];
-//   $taskState->update($input);
-//   PluginTasklistsStateOrder::removeStateContext($_REQUEST['context_id'], $_REQUEST['column']);
-//   echo json_encode(true, JSON_FORCE_OBJECT);
-//}

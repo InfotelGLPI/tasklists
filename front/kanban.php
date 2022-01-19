@@ -37,7 +37,7 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
    //AS module for SearchTokenizer
    echo "<script type='module' src='../lib/kanban/js/Kanban.js'></script>";
    Html::requireJs('sortable');
-   echo Html::css(PLUGIN_TASKLISTS_NOTFULL_DIR.'/lib/kanban/css/kanban.css');
+   echo Html::css(PLUGIN_TASKLISTS_NOTFULL_DIR . '/lib/kanban/css/kanban.css');
    echo Html::css(PLUGIN_TASKLISTS_NOTFULL_DIR . "/lib/jquery-ui/jquery-ui.min.css");
    echo Html::script(PLUGIN_TASKLISTS_NOTFULL_DIR . "/lib/jquery-ui/jquery-ui.min.js");
    if (!isset($_GET["context_id"])) {

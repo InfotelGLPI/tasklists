@@ -170,9 +170,13 @@ class PluginTasklistsKanban extends CommonGLPI {
 
          $supported_itemtypes = [];
 
-         //         $team_itemtypes = static::getTeamItemtypes();
-         $team_itemtypes = [];
+         $team_itemtypes = PluginTasklistsTask::getTeamItemtypes();
+         $team_role_ids  = PluginTasklistsTask::getTeamRoles();
          $team_roles     = [];
+
+         foreach ($team_role_ids as $role_id) {
+            $team_roles[$role_id] = PluginTasklistsTask::getTeamRoleName($role_id);
+         }
 
          if (PluginTasklistsTask::canCreate()) {
             $supported_itemtypes['PluginTasklistsTask'] = [
@@ -235,6 +239,7 @@ class PluginTasklistsKanban extends CommonGLPI {
          ];
 
          TemplateRenderer::getInstance()->display('@tasklists/kanban.html.twig', [
+            'root_tasklists'              => PLUGIN_TASKLISTS_WEBDIR,
             'kanban_id'                   => 'kanban',
             'rights'                      => $rights,
             'supported_itemtypes'         => $supported_itemtypes,
@@ -246,34 +251,34 @@ class PluginTasklistsKanban extends CommonGLPI {
                'items_id' => $item_id
             ],
             'supported_filters'           => [
-                                                'title'    => [
+                                                'title'   => [
                                                    'description'        => _x('filters', 'The title of the item'),
                                                    'supported_prefixes' => ['!', '#'] // Support exclusions and regex
                                                 ],
-                                                'type'     => [
+                                                'type'    => [
                                                    'description'        => _x('filters', 'The type of the item'),
                                                    'supported_prefixes' => ['!']
                                                 ],
-                                                'content'  => [
+                                                'content' => [
                                                    'description'        => _x('filters', 'The content of the item'),
                                                    'supported_prefixes' => ['!', '#'] // Support exclusions and regex
                                                 ],
-                                                'team'     => [
+                                                'team'    => [
                                                    'description'        => _x('filters', 'A team member for the item'),
                                                    'supported_prefixes' => ['!']
                                                 ],
-                                                'user'     => [
+                                                'user'    => [
                                                    'description'        => _x('filters', 'A user in the team of the item'),
                                                    'supported_prefixes' => ['!']
                                                 ],
-                                                'group'    => [
+                                                'group'   => [
                                                    'description'        => _x('filters', 'A group in the team of the item'),
                                                    'supported_prefixes' => ['!']
                                                 ],
-                                                'supplier' => [
-                                                   'description'        => _x('filters', 'A supplier in the team of the item'),
-                                                   'supported_prefixes' => ['!']
-                                                ],
+                                                //                                                'supplier' => [
+                                                //                                                   'description'        => _x('filters', 'A supplier in the team of the item'),
+                                                //                                                   'supported_prefixes' => ['!']
+                                                //                                                ],
                                              ] + self::getKanbanPluginFilters(static::getType()),
          ]);
       }
