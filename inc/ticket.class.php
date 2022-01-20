@@ -127,7 +127,7 @@ class PluginTasklistsTicket extends CommonDBTM {
       $canedit = $ticket->canEdit($ID);
       $rand    = mt_rand();
 
-      $query = "SELECT DISTINCT `glpi_plugin_tasklists_tasks`.* 
+      $query = "SELECT DISTINCT `glpi_plugin_tasklists_tasks`.* , `glpi_plugin_tasklists_tickets`.`id` AS LinkID
                 FROM `glpi_plugin_tasklists_tickets`
                 LEFT JOIN `glpi_plugin_tasklists_tasks`
                  ON (`glpi_plugin_tasklists_tickets`.`plugin_tasklists_tasks_id`=`glpi_plugin_tasklists_tasks`.`id`)
@@ -174,7 +174,8 @@ class PluginTasklistsTicket extends CommonDBTM {
             = ['num_displayed'    => min($_SESSION['glpilist_limit'], $numrows),
                'specific_actions' => ['purge' => _x('button', 'Delete permanently')],
                'container'        => 'mass' . __CLASS__ . $rand,
-               'extraparams'      => ['tickets_id' => $ticket->getID()]];
+//               'extraparams'      => ['tickets_id' => $ticket->getID()]
+         ];
          Html::showMassiveActions($massiveactionparams);
       }
 
@@ -198,7 +199,7 @@ class PluginTasklistsTicket extends CommonDBTM {
 
             echo "<tr class='tab_bg_1'>";
             echo "<td>";
-            echo Html::getMassiveActionCheckBox(__CLASS__, $data['id']);
+            echo Html::getMassiveActionCheckBox(__CLASS__, $data['LinkID']);
             echo "</td>";
 
             echo "<td>";
@@ -216,7 +217,7 @@ class PluginTasklistsTicket extends CommonDBTM {
             echo "</td>";
 
             echo "<td>";
-            echo Html::resume_text(Glpi\RichText\RichText::getTextFromHtml($data['comment']), 80);
+            echo Html::resume_text(Glpi\RichText\RichText::getTextFromHtml($data['content']), 80);
             echo "</td>";
 
             echo "</tr>";
