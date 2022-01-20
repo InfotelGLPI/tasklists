@@ -557,9 +557,9 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       if ($column_field === null || $column_field === 'plugin_tasklists_taskstates_id') {
          $columns  = ['plugin_tasklists_taskstates_id' => []];
          $restrict = [];
-         if (!empty($column_ids) && !$get_default) {
-            $restrict = ['id' => $column_ids];
-         }
+//         if (!empty($column_ids) && !$get_default) {
+//            $restrict = ['id' => $column_ids];
+//         }
 
          $Taskstate    = new PluginTasklistsTaskState();
          $all_statuses = $Taskstate->find($restrict, ['is_finished ASC', 'id']);

@@ -268,12 +268,10 @@ if (($_POST['action'] ?? null) === 'update') {
    ]);
 } else if (($_REQUEST['action'] ?? null) === 'load_item_panel') {
    if (isset($itemtype, $item)) {
-      //Infotel
-      $team = Toolbox::hasTrait($item, Glpi\Features\Teamwork::class) ? $item->getTeam() : [];
-      TemplateRenderer::getInstance()->display('@tasklists/item_panels/default_panel.html.twig', [
+      TemplateRenderer::getInstance()->display('components/kanban/item_panels/default_panel.html.twig', [
          'itemtype'     => $itemtype,
          'item_fields'  => $item->fields,
-         'team'         => $team
+         'team'         => Toolbox::hasTrait($item, Teamwork::class) ? $item->getTeam() : []
       ]);
    } else {
       http_response_code(400);

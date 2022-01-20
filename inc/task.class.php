@@ -39,6 +39,8 @@ use Glpi\Plugin\Hooks;
 class PluginTasklistsTask extends CommonDBTM {
    use Glpi\Features\Clonable;
    use Glpi\Features\Teamwork;
+   //Needed for save cards
+   use Glpi\Features\Kanban;
 
    public    $dohistory  = true;
    static    $rightname  = 'plugin_tasklists';
@@ -1445,4 +1447,23 @@ class PluginTasklistsTask extends CommonDBTM {
       return (bool)$result;
    }
 
+   public static function getDataToDisplayOnKanban($ID, $criteria = []) {
+      // TODO: Implement getDataToDisplayOnKanban() method.
+   }
+
+   public static function getKanbanColumns($ID, $column_field = null, $column_ids = [], $get_default = false) {
+      // TODO: Implement getKanbanColumns() method.
+   }
+
+   public static function showKanban($ID) {
+      // TODO: Implement showKanban() method.
+   }
+
+   public static function getAllForKanban($active = true, $current_id = -1) {
+      // TODO: Implement getAllForKanban() method.
+   }
+
+   public static function getAllKanbanColumns($column_field = null, $column_ids = [], $get_default = false) {
+      // TODO: Implement getAllKanbanColumns() method.
+   }
 }
