@@ -90,20 +90,27 @@ class PluginTasklistsDashboard extends CommonGLPI {
                   $states_founded[] = $state["id"];
                }
                $groups_founded = [];
-               $groups = Group_User::getUserGroups(Session::getLoginUserID());
+               $groups         = Group_User::getUserGroups(Session::getLoginUserID());
                foreach ($groups as $group) {
                   $groups_founded[] = $group["id"];
                }
 
-               $headers = [__('Name'), __('Priority'), _n('Context', 'Contexts', 1, 'tasklists'), __('User'), __('Percent done'), __('Due date', 'tasklists')];//, __('Action')
+               $headers = [__('Name'),
+                           __('Priority'),
+                           _n('Context',
+                              'Contexts', 1, 'tasklists'),
+                           __('User'), __('Percent done'),
+                           __('Due date', 'tasklists')];//, __('Action')
                $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
                             FROM `glpi_plugin_tasklists_tasks`
-                            LEFT JOIN `glpi_plugin_tasklists_tasktypes` ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
-                            WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 ";
+                            LEFT JOIN `glpi_plugin_tasklists_tasktypes` 
+                            ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
+                            WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 
+                              AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 ";
                if (is_array($states) && count($states) > 0) {
                   $query .= " AND `glpi_plugin_tasklists_tasks`.`plugin_tasklists_taskstates_id` IN (" . implode(",", $states_founded) . ") ";
                }
-               $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '".Session::getLoginUserID()."'";
+               $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '" . Session::getLoginUserID() . "'";
                //if (count($groups) > 0){
                //   $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
                //}
@@ -116,14 +123,14 @@ class PluginTasklistsDashboard extends CommonGLPI {
                if ($result = $DB->query($query)) {
                   if ($DB->numrows($result)) {
                      while ($data = $DB->fetchArray($result)) {
-                        $ID                    = $data['id'];
+                        $ID   = $data['id'];
                         $task = new PluginTasklistsTask();
                         if ($task->checkVisibility($ID) == true) {
                            $rand                  = mt_rand();
                            $url                   = Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'];
                            $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
 
-                           $tasks[$data['id']][0] .= Html::showToolTip(Glpi\RichText\RichText::getSafeHtml($data['comment']),
+                           $tasks[$data['id']][0] .= Html::showToolTip(Glpi\RichText\RichText::getSafeHtml($data['content']),
                                                                        ['applyto' => 'task' . $data["id"] . $rand,
                                                                         'display' => false]);
 
@@ -138,23 +145,6 @@ class PluginTasklistsDashboard extends CommonGLPI {
                               $display = "<div class='deleted'>" . Html::convDate($data['due_date']) . "</div>";
                            }
                            $tasks[$data['id']][5] = $display;
-
-//                           if (Session::haveRight("plugin_tasklists", UPDATENOTE)) {
-//                              $link = Ajax::createIframeModalWindow('comment' . $rand,
-//                                                                    PLUGIN_TASKLISTS_WEBDIR . "/front/comment.form.php?id=" . $ID,
-//                                                                    ['title'         => __('Add comment', 'tasklists'),
-//                                                                     'reloadonclose' => false,
-//                                                                     'width'         => 1100,
-//                                                                     'display'       => false,
-//                                                                     'height'        => 300
-//                                                                    ]);
-//                              $link .= "<div align='center'><a href='#' onClick=\"javascript:" . Html::jsGetElementbyID('comment' . $rand) . ".dialog('open');\">";
-//                              $link .= "<img class='pointer' src='" .PLUGIN_TASKLISTS_WEBDIR . "/pics/plus.png' title='" . __('Add comment', 'tasklists') . "'>";
-//                              $link .= "</a></div>";
-//
-//
-//                              $tasks[$data['id']][6] .= $link;
-//                           }
                         }
                      }
                   }
@@ -163,21 +153,17 @@ class PluginTasklistsDashboard extends CommonGLPI {
                $widget->setTabNames($headers);
                //$widget->setOption("bSort", false);
                $widget->toggleWidgetRefresh();
-
-               $link = Ajax::createIframeModalWindow('task',
-                                                     PLUGIN_TASKLISTS_WEBDIR . "/front/task.form.php",
-                                                     ['title'         => __('Add task', 'tasklists'),
-                                                      'reloadonclose' => false,
-                                                      'width'         => 1180,
-                                                      'display'       => false,
-                                                      'height'        => 600
-                                                     ]);
-               $link .= "<div align='right'>";
-               $link .= "<a href='#' class='btn btn-info' onClick=\"javascript:" . Html::jsGetElementbyID('task') . ".dialog('open');\">";
+               $link = "<div align='right'><a href='#' data-bs-toggle='modal' data-bs-target='#task' class='btn btn-primary' title='" . __('Add task', 'tasklists') . "' >";
                $link .= __('Add task', 'tasklists');
                $link .= "</a></div>";
-
-
+               $link .= Ajax::createIframeModalWindow('task',
+                                                      PLUGIN_TASKLISTS_WEBDIR . "/front/task.form.php",
+                                                      ['title'         => __('Add task', 'tasklists'),
+                                                       'reloadonclose' => false,
+                                                       'width'         => 1180,
+                                                       'display'       => false,
+                                                       'height'        => 600
+                                                      ]);
                $widget->appendWidgetHtmlContent($link);
 
                $widget->setWidgetTitle(__("Tasks list", 'tasklists'));
