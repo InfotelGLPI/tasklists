@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-20 12:40+0000\n"
+"POT-Creation-Date: 2022-01-20 17:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -159,21 +159,21 @@ msgid_plural "Statuses"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/ticket.class.php:74 inc/ticket.class.php:183
+#: inc/ticket.class.php:74 inc/ticket.class.php:184
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/ticket.class.php:227
+#: inc/ticket.class.php:228
 msgid "No task linked to this ticket yet"
 msgstr ""
 
-#: inc/ticket.class.php:258
+#: inc/ticket.class.php:259
 msgid "Link a existant ticket"
 msgstr ""
 
-#: inc/ticket.class.php:284
+#: inc/ticket.class.php:285
 msgid "Linked tickets"
 msgstr ""
 
