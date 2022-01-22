@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-22 15:52+0000\n"
+"POT-Creation-Date: 2022-01-22 16:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:95 inc/dashboard.class.php:58 inc/dashboard.class.php:183
-#: inc/dashboard.class.php:188 inc/menu.class.php:44
+#: setup.php:95 inc/dashboard.class.php:58 inc/dashboard.class.php:169
+#: inc/dashboard.class.php:174 inc/menu.class.php:44
 #: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr ""
@@ -36,7 +36,7 @@ msgstr ""
 msgid "Tables"
 msgstr ""
 
-#: inc/dashboard.class.php:98 inc/task.class.php:93 inc/task.class.php:437
+#: inc/dashboard.class.php:100 inc/task.class.php:93 inc/task.class.php:437
 #: inc/taskstate.class.php:103 inc/taskstate.class.php:155
 #: inc/tasktype.class.php:52
 msgid "Context"
@@ -44,14 +44,14 @@ msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/dashboard.class.php:98 inc/notificationtargettask.class.php:213
+#: inc/dashboard.class.php:103 inc/notificationtargettask.class.php:213
 #: inc/notificationtargettask.class.php:259 inc/task.class.php:131
 #: inc/task.class.php:514 inc/tasktype.class.php:279
 msgid "Due date"
 msgstr ""
 
-#: inc/dashboard.class.php:169 inc/dashboard.class.php:177
-#: inc/ticket.class.php:154
+#: inc/dashboard.class.php:156 inc/dashboard.class.php:157
+#: inc/dashboard.class.php:161 inc/ticket.class.php:154
 msgid "Add task"
 msgstr ""
 
