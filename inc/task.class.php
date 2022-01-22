@@ -419,14 +419,14 @@ class PluginTasklistsTask extends CommonDBTM {
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
       echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
-      if (isset($options['from_edit_ajax'])
-          && $options['from_edit_ajax']) {
-         echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
-      }
-      if (isset($options['withtemplate']) && empty($options['withtemplate'])) {
-         $options['withtemplate'] = 0;
-      }
-      echo Html::hidden('withtemplate', ['value' => $options['withtemplate']]);
+//      if (isset($options['from_edit_ajax'])
+//          && $options['from_edit_ajax']) {
+//         echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
+//      }
+//      if (isset($options['withtemplate']) && empty($options['withtemplate'])) {
+//         $options['withtemplate'] = 0;
+//      }
+//      echo Html::hidden('withtemplate', ['value' => $options['withtemplate']]);
       echo "</td>";
 
       $plugin_tasklists_tasktypes_id = $this->fields["plugin_tasklists_tasktypes_id"];

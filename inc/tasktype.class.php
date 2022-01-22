@@ -320,7 +320,11 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                   $content .= sprintf(__('%s / %s tasks complete'), $done, $total);
                }
                $content .= "<div class='flex-break'></div>";
-               $content .= Html::resume_text(Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true), 100);
+               $rich_content = "";
+               if ($data['content'] != null) {
+                  $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true);
+               }
+               $content .= Html::resume_text($rich_content, 100);
                $content .= "</div>";
 
 
@@ -415,9 +419,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                   $bgcolor = "#FFF";
                }
 
+               $rich_content = "";
+               if ($data['content'] != null) {
+                  $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true);
+               }
+
                $tasks[] = ['id'            => "{$itemtype}-{$data['id']}",
                            'title'         => Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments,
-                           'title_tooltip' => Html::resume_text(Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true), 100),
+                           'title_tooltip' => Html::resume_text($rich_content, 100),
                            'is_deleted'    => $data['is_deleted'] ?? false,
                            'content'       => $content,
                            '_team'         => $team,
