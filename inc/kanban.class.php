@@ -161,6 +161,7 @@ class PluginTasklistsKanban extends CommonGLPI {
       } else {
          $item_id = PluginTasklistsPreference::checkPreferenceValue("default_type", Session::getLoginUserID());
       }
+
       if ($item_id == 0) {
          echo "<div class='alert alert-important alert-warning d-flex'>";
          echo "<b>" . __("There is no accessible context", "tasklists") . "</b></div>";

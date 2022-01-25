@@ -245,7 +245,6 @@ class PluginTasklistsTypeVisibility extends CommonDBTM {
       // Get type groups
       $groups_data = $dbu->getAllDataFromTable('glpi_plugin_tasklists_typevisibilities',
                                                ['`plugin_tasklists_tasktypes_id`' => $plugin_tasklists_tasktypes_id]);
-
       if (!empty($groups_data)) {
          $groups_id = [];
          foreach ($groups_data as $groups) {

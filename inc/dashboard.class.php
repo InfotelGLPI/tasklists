@@ -153,7 +153,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
                $widget->setTabNames($headers);
                //$widget->setOption("bSort", false);
                $widget->toggleWidgetRefresh();
-               $link = "<div align='right'><a href='#' data-bs-toggle='modal' data-bs-target='#task' class='btn btn-primary' title='" . __('Add task', 'tasklists') . "' >";
+               $link = "<div align='right'><a href='#' data-bs-toggle='modal' data-bs-target='#task' class='submit btn btn-primary' title='" . __('Add task', 'tasklists') . "' >";
                $link .= __('Add task', 'tasklists');
                $link .= "</a></div>";
                $link .= Ajax::createIframeModalWindow('task',
