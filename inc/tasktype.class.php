@@ -177,7 +177,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
          'rank'            => 0,
          //                     'count'    => $countTasks,
          //                     'folded'   => PluginTasklistsItem_Kanban::loadStateForItem(PluginTasklistsTaskType::getType(), $ID, 0),
-         //                     'finished' => 0
+                              'finished' => 0
       ];
       $nb         = 1;
       $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
@@ -254,14 +254,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
             if (!in_array(-1, $usersallowed) && !in_array($data['users_id'], $usersallowed)) {
                continue;
             }
-            $user = new User();
-            $link = "";
-            if ($user->getFromDB($data['users_id'])) {
-               $link = "<div class='kanban_user_picture_border_verysmall'>";
-               $link .= "<a target='_blank' href='" . Toolbox::getItemTypeFormURL('User') . "?id=" . $data['users_id'] . "'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall'  src='" .
-                        User::getThumbnailURLForPicture($user->fields['picture']) . "'></a>";
-               $link .= "</div>";
-            }
+            //            $user = new User();
+            //            $link = "";
+            //            if ($user->getFromDB($data['users_id'])) {
+            //               $link = "<div class='kanban_user_picture_border_verysmall'>";
+            //               $link .= "<a target='_blank' href='" . Toolbox::getItemTypeFormURL('User') . "?id=" . $data['users_id'] . "'><img title=\"" . $dbu->getUserName($data['users_id']) . "\" class='kanban_user_picture_verysmall'  src='" .
+            //                        User::getThumbnailURLForPicture($user->fields['picture']) . "'></a>";
+            //               $link .= "</div>";
+            //            }
             $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
             $finished                       = 0;
             $finished_style                 = 'style="display: inline;"';
@@ -310,24 +310,22 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                $comment = Glpi\Toolbox\Sanitizer::unsanitize($data["content"]);
 
                // Core content
-               $content = "<div class='kanban-core-content'>";
-               if (isset($item['_steps']) && count($item['_steps'])) {
-                  $done    = count(array_filter($item['_steps'], static function ($l) {
-                     return in_array($l['status'], static::getClosedStatusArray());
-                  }));
-                  $total   = count($item['_steps']);
-                  $content .= "<div class='flex-break'></div>";
-                  $content .= sprintf(__('%s / %s tasks complete'), $done, $total);
-               }
-               $content .= "<div class='flex-break'></div>";
+               $content      = "<div class='kanban-core-content'>";
+               $content      .= "<div class='flex-break'></div>";
                $rich_content = "";
                if ($data['content'] != null) {
                   $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true);
                }
                $content .= Html::resume_text($rich_content, 100);
                $content .= "</div>";
-
-
+               $content .= "<div align='right' class='endfooter b'>" . $client . "</div>";
+               $content .= "<div align='right' class='endfooter'>" . $actiontime . "</div>";
+               $content .= "<div align='right' class='endfooter'>" . $duedate . "</div>";
+               // Percent Done
+               $content    .= "<div class='flex-break'></div>";
+               $content    .= Html::progress(100, $data['percent_done']);
+               $content    .= "</div>";
+               $content    .= "<div align='right' class='endfooter'>" . $data['percent_done'] . "%</div>";
                $nbcomments = "";
                $nb         = 0;
                $where      = [
@@ -424,8 +422,17 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                   $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true);
                }
 
+               $title = Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments;
+//               $ID    = $data['id'];
+//               if ($finished == 1 && $archived == 0) {
+//                  $title .= "&nbsp;<a id='archivetask$ID' href='#' title='" . __('Archive this task', 'tasklists') . "'><i class='ti ti-archive'></i></a>";
+//               }
+//               if ($finished == 1 && $data['priority'] < 5) {
+//                  $title .= "&nbsp;<a id='updatepriority$ID' href='#' title='" . __('Update priority of task', 'tasklists') . "'><i class='ti ti-arrow-up'></i></a>";
+//               }
+
                $tasks[] = ['id'            => "{$itemtype}-{$data['id']}",
-                           'title'         => Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments,
+                           'title'         => $title,
                            'title_tooltip' => Html::resume_text($rich_content, 100),
                            'is_deleted'    => $data['is_deleted'] ?? false,
                            'content'       => $content,
@@ -439,7 +446,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                            'percent'        => $data['percent_done'],
                            'actiontime'     => $actiontime,
                            'duedate'        => $duedate,
-                           'user'           => $link,
+                           //                           'user'           => $link,
                            'client'         => $client,
                            'finished'       => $finished,
                            'archived'       => $archived,
@@ -471,15 +478,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
    }
 
-   public static function getFgColor(string $color = "", int $offset = 40, bool $inherit_if_transparent = false): string
-   {
+   public static function getFgColor(string $color = "", int $offset = 40, bool $inherit_if_transparent = false): string {
       $fg_color = "FFFFFF";
       if ($color !== "") {
          $color = str_replace("#", "", $color);
 
          // if transparency present, get only the color part
          if (strlen($color) === 8 && preg_match('/^[a-fA-F0-9]+$/', $color)) {
-            $tmp = $color;
+            $tmp   = $color;
             $alpha = hexdec(substr($tmp, 6, 2));
             $color = substr($color, 0, 6);
 
@@ -491,16 +497,16 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
          $color_inst = new Mexitek\PHPColors\Color($color);
 
          // adapt luminance part
-//         if ($color_inst->isLight()) {
-//            $hsl = Color::hexToHsl($color);
-//            $hsl['L'] = max(0, $hsl['L'] - ($offset / 100));
-//            $fg_color = Color::hslToHex($hsl);
-//         } else {
-            $hsl = Mexitek\PHPColors\Color::hexToHsl($color);
+         //         if ($color_inst->isLight()) {
+         //            $hsl = Color::hexToHsl($color);
+         //            $hsl['L'] = max(0, $hsl['L'] - ($offset / 100));
+         //            $fg_color = Color::hslToHex($hsl);
+         //         } else {
+         $hsl      = Mexitek\PHPColors\Color::hexToHsl($color);
          $hsl['L'] = ($hsl['L'] * 110) + 5;
          $hsl['L'] = ($hsl['L'] > 110) ? $hsl['L'] / 50 : $hsl['L'] / 90;
-            $fg_color = Mexitek\PHPColors\Color::hslToHex($hsl);
-//         }
+         $fg_color = Mexitek\PHPColors\Color::hslToHex($hsl);
+         //         }
       }
 
       return "#" . $fg_color;
@@ -566,9 +572,9 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       if ($column_field === null || $column_field === 'plugin_tasklists_taskstates_id') {
          $columns  = ['plugin_tasklists_taskstates_id' => []];
          $restrict = [];
-//         if (!empty($column_ids) && !$get_default) {
-//            $restrict = ['id' => $column_ids];
-//         }
+         //         if (!empty($column_ids) && !$get_default) {
+         //            $restrict = ['id' => $column_ids];
+         //         }
 
          $Taskstate    = new PluginTasklistsTaskState();
          $all_statuses = $Taskstate->find($restrict, ['is_finished ASC', 'id']);
@@ -595,5 +601,22 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
       } else {
          return [];
       }
+   }
+
+   //   public static function getGlobalKanbanUrl(bool $full = true): string
+   //   {
+   //      if (method_exists(static::class, 'getFormUrl')) {
+   //         return static::getFormURL($full) . '?showglobalkanban=1';
+   //      }
+   //      //      $kb = new PluginTasklistsKanban();
+   //      //      echo $kb->getSearchURL() . '?context_id=' . $_REQUEST['items_id'];
+   //      //
+   //      return '';
+   //   }
+
+   public function getKanbanUrlWithID(int $items_id, bool $full = true): string {
+      $kb = new PluginTasklistsKanban();
+      return $kb->getSearchURL() . '?context_id=' . $items_id;
+
    }
 }

@@ -184,14 +184,18 @@ class PluginTasklistsKanban extends CommonGLPI {
                'name'           => PluginTasklistsTask::getTypeName(1),
                'icon'           => PluginTasklistsTask::getIcon(),
                'fields'         => [
-                  'name'     => [
+                  'name'                          => [
                      'placeholder' => __('Name')
                   ],
-                  'content'  => [
+                  'content'                       => [
                      'placeholder' => __('Content'),
                      'type'        => 'textarea'
                   ],
-                  'users_id' => [
+                  'plugin_tasklists_tasktypes_id' => [
+                     'type'  => 'hidden',
+                     'value' => $item_id
+                  ],
+                  'users_id'                      => [
                      'type'  => 'hidden',
                      'value' => $_SESSION['glpiID']
                   ]
