@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-29 10:42+0000\n"
+"POT-Creation-Date: 2022-02-02 11:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,7 +130,7 @@ msgid "Existing client"
 msgstr ""
 
 #: inc/task.class.php:659 inc/task.class.php:746 inc/task.class.php:1022
-#: inc/tasktype.class.php:173 inc/tasktype.class.php:578
+#: inc/tasktype.class.php:173 inc/tasktype.class.php:584
 msgid "Backlog"
 msgstr ""
 
