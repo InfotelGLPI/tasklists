@@ -174,10 +174,10 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
          'header_color'    => "#CCC",
          'header_fg_color' => Toolbox::getFgColor("#CCC", 50),
          'drop_only'       => 0,
-         'rank'            => 0,
+         //         'rank'            => 0,
          //                     'count'    => $countTasks,
          //                     'folded'   => PluginTasklistsItem_Kanban::loadStateForItem(PluginTasklistsTaskType::getType(), $ID, 0),
-                              'finished' => 0
+         'finished'        => 0
       ];
       $nb         = 1;
       $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
@@ -188,14 +188,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
             //               if (in_array($ID, $tasktypes)) {
             $condition = ['plugin_tasklists_taskstates_id' => $datastate['id'],
                           'plugin_tasklists_tasktypes_id'  => $ID];
-            $order     = new PluginTasklistsStateOrder();
-            $ranks     = $order->find($condition);
-            $ranking   = 0;
-            if (count($ranks) > 0) {
-               foreach ($ranks as $rank) {
-                  $ranking = $rank['ranking'];
-               }
-            }
+            //            $order     = new PluginTasklistsStateOrder();
+            //            $ranks     = $order->find($condition);
+            //            $ranking   = 0;
+            //            if (count($ranks) > 0) {
+            //               foreach ($ranks as $rank) {
+            //                  $ranking = $rank['ranking'];
+            //               }
+            //            }
             $cond       = ["plugin_tasklists_taskstates_id" => $datastate['id'],
                            "plugin_tasklists_tasktypes_id"  => $ID,
                            "is_template"                    => 0,
@@ -216,16 +216,16 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                'header_fg_color' => Toolbox::getFgColor($datastate['color'], 50),
                //                     'drop_only'       => $datastate['is_finished'] ?? 0,
                'name'            => $name,
-               'rank'            => $ranking,
+               //               'rank'            => $ranking,
                //                               'count'    => $countTasks,
                //                               'folded'   => PluginTasklistsItem_Kanban::loadStateForItem(PluginTasklistsTaskType::getType(), $ID, $datastate['id']),
                'finished'        => $datastate['is_finished']];
 
-            $states_ranked = [];
-            foreach ($states as $key => $row) {
-               $states_ranked[$key] = $row['rank'];
-            }
-            array_multisort($states_ranked, SORT_ASC, $states);
+            //            $states_ranked = [];
+            //            foreach ($states as $key => $row) {
+            //               $states_ranked[$key] = $row['rank'];
+            //            }
+            //            array_multisort($states_ranked, SORT_ASC, $states);
 
             $colors[$datastate['id']] = $datastate['color'];
 
@@ -290,7 +290,8 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                }
 
                $right = 0;
-               if (($data['users_id'] == Session::getLoginUserID() && Session::haveRight("plugin_tasklists", UPDATE))
+               if (($data['users_id'] == Session::getLoginUserID()
+                    && Session::haveRight("plugin_tasklists", UPDATE))
                    || Session::haveRight("plugin_tasklists_see_all", 1)) {
                   $right = 1;
                }
@@ -307,11 +308,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                }
                $client = (empty($data['client'])) ? $entity_name : $data['client'];
 
-               $comment = Glpi\Toolbox\Sanitizer::unsanitize($data["content"]);
+               //               $comment = Glpi\Toolbox\Sanitizer::unsanitize($data["content"]);
 
                // Core content
                $content      = "<div class='kanban-core-content'>";
-               $content      .= "<div class='flex-break'></div>";
+               $content      .= "<div class='flex-break'>";
+               $bgcolor      = $_SESSION["glpipriority_" . $data['priority']];
+               $content      .= __('Priority')."&nbsp;:&nbsp;<i class='fas fa-circle' style='color: $bgcolor'></i>&nbsp;" . CommonITILObject::getPriorityName($data['priority']);
+               $content      .= "</div>";
                $rich_content = "";
                if ($data['content'] != null) {
                   $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true);
@@ -423,13 +427,13 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                }
 
                $title = Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments;
-//               $ID    = $data['id'];
-//               if ($finished == 1 && $archived == 0) {
-//                  $title .= "&nbsp;<a id='archivetask$ID' href='#' title='" . __('Archive this task', 'tasklists') . "'><i class='ti ti-archive'></i></a>";
-//               }
-//               if ($finished == 1 && $data['priority'] < 5) {
-//                  $title .= "&nbsp;<a id='updatepriority$ID' href='#' title='" . __('Update priority of task', 'tasklists') . "'><i class='ti ti-arrow-up'></i></a>";
-//               }
+               //               $ID    = $data['id'];
+               //               if ($finished == 1 && $archived == 0) {
+               //                  $title .= "&nbsp;<a id='archivetask$ID' href='#' title='" . __('Archive this task', 'tasklists') . "'><i class='ti ti-archive'></i></a>";
+               //               }
+               //               if ($finished == 1 && $data['priority'] < 5) {
+               //                  $title .= "&nbsp;<a id='updatepriority$ID' href='#' title='" . __('Update priority of task', 'tasklists') . "'><i class='ti ti-arrow-up'></i></a>";
+               //               }
 
                $tasks[] = ['id'            => "{$itemtype}-{$data['id']}",
                            'title'         => $title,

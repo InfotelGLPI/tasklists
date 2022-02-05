@@ -35,11 +35,11 @@ $kanban = new PluginTasklistsKanban();
 
 if ($kanban->canView() || Session::haveRight("config", CREATE)) {
    //AS module for SearchTokenizer
-   echo "<script type='module' src='../../../js/modules/Kanban/Kanban.js'></script>";
+//   echo "<script type='module' src='../../../js/modules/Kanban/Kanban.js'></script>";
+   echo "<script type='module' src='".PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/Kanban.js'></script>";
    Html::requireJs('sortable');
    Html::requireJs('kanban');
    echo Html::css(PLUGIN_TASKLISTS_NOTFULL_DIR . '/lib/kanban/css/kanban.css');
-
    echo Html::script(PLUGIN_TASKLISTS_NOTFULL_DIR . "/lib/kanban/js/kanban-actions.js");
    if (!isset($_GET["context_id"])) {
       $_GET["context_id"] = -1;

@@ -37,6 +37,7 @@ if (isset($_POST['data_id'])
    $input['percent_done'] = $_POST['percent_done'];
    $input['id']           = $_POST['data_id'];
    $task->update($input);
+
 } else if (isset($_POST['data_id'])
            && isset($_POST['updatepriority'])) {
    $task = new PluginTasklistsTask();
@@ -47,24 +48,17 @@ if (isset($_POST['data_id'])
       $input['id'] = $_POST['data_id'];
       $task->update($input);
    }
-} /*else if (isset($_POST['data_id'])
-           && isset($_POST['clonetask'])) {
-   $task = new PluginTasklistsTask();
-   if ($task->getFromDB($_POST['data_id'])) {
-      $status                                  = PluginTasklistsTask::getClosedStateForTask($_POST['data_id']);
-      $input['plugin_tasklists_taskstates_id'] = $status;
-      $input['id']                             = $_POST['data_id'];
-      $task->update($input);
-   }
-}*/ else if (isset($_POST['data_id'])
-             && isset($_POST['archivetask'])) {
+} else if (isset($_POST['data_id'])
+           && isset($_POST['archivetask'])) {
    $task                 = new PluginTasklistsTask();
    $input['is_archived'] = 1;
    $input['id']          = $_POST['data_id'];
    $task->update($input);
+
 } else if (isset($_POST['archivealltasks'])
            && isset($_POST['state_id'])
            && isset($_POST['context_id'])) {
+
    $task  = new PluginTasklistsTask();
    $dbu   = new DbUtils();
    $cond  = ["plugin_tasklists_taskstates_id" => $_POST['state_id'],
