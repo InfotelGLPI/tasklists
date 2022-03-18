@@ -168,7 +168,8 @@ class PluginTasklistsKanban extends CommonGLPI {
       } else {
          //         $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
          //         $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
-
+         $context             = new PluginTasklistsTaskType();
+         $context->getFromDB($item_id);
          $supported_itemtypes = [];
 
          $team_itemtypes = PluginTasklistsTask::getTeamItemtypes();
@@ -194,6 +195,10 @@ class PluginTasklistsKanban extends CommonGLPI {
                   'plugin_tasklists_tasktypes_id' => [
                      'type'  => 'hidden',
                      'value' => $item_id
+                  ],
+                  'entities_id'                   => [
+                     'type'  => 'hidden',
+                     'value' => $context->fields['entities_id']
                   ],
                   'users_id'                      => [
                      'type'  => 'hidden',
