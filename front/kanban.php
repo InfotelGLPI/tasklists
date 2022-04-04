@@ -40,7 +40,7 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
    Html::requireJs('sortable');
    Html::requireJs('kanban');
    echo Html::css(PLUGIN_TASKLISTS_NOTFULL_DIR . '/lib/kanban/css/kanban.css');
-   echo Html::script(PLUGIN_TASKLISTS_NOTFULL_DIR . "/lib/kanban/js/kanban-actions.js");
+//   echo Html::script(PLUGIN_TASKLISTS_NOTFULL_DIR . "/lib/kanban/js/kanban-actions.js");
    if (!isset($_GET["context_id"])) {
       $_GET["context_id"] = -1;
    }
