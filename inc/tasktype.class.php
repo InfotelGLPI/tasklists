@@ -40,7 +40,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
 
    use \Glpi\Features\Kanban;
 
-   static $rightname = 'plugin_tasklists_config';
+   static $rightname = 'plugin_tasklists';
 
    /**
     * @param int $nb

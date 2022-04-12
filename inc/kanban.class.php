@@ -231,9 +231,9 @@ class PluginTasklistsKanban extends CommonGLPI {
 
          $canadd_item    = json_encode(self::canCreate());
          $candelete_item = json_encode(self::canDelete());
-         $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", 1));
+         $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", READ));
          //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
-         $cancreate_column      = json_encode((bool)Session::haveRight("plugin_tasklists_config", 1));
+         $cancreate_column      = json_encode((bool)Session::haveRight("plugin_tasklists_config", READ));
          $limit_addcard_columns = [];
          $can_order_item        = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
 
