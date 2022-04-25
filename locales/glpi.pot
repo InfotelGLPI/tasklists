@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-12 08:50+0000\n"
+"POT-Creation-Date: 2022-04-25 09:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,19 +89,19 @@ msgstr ""
 msgid "At creation, update, removal of a task"
 msgstr ""
 
-#: inc/preference.class.php:80
+#: inc/preference.class.php:88
 msgid "Context by default"
 msgstr ""
 
-#: inc/preference.class.php:88
+#: inc/preference.class.php:96
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: inc/preference.class.php:94
+#: inc/preference.class.php:102
 msgid "Refresh every "
 msgstr ""
 
-#: inc/preference.class.php:98
+#: inc/preference.class.php:106
 msgid "minute(s)"
 msgstr ""
 
