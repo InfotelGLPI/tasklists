@@ -49,6 +49,14 @@ class PluginTasklistsPreference extends CommonDBTM {
    }
 
    /**
+    * @return string
+    */
+   static function getIcon() {
+      return PluginTasklistsTask::getIcon();
+   }
+   
+   
+   /**
     * @param CommonGLPI $item
     * @param int        $tabnum
     * @param int        $withtemplate

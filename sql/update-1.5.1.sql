@@ -1,7 +1,7 @@
 CREATE TABLE `glpi_plugin_tasklists_items_kanbans`
 (
     `id`                             INT(11)                              NOT NULL AUTO_INCREMENT, -- id
-    `itemtype`                       varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+    `itemtype`                       varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
     `items_id`                       int(11)                                       DEFAULT NULL,
     `users_id`                       int(11)                              NOT NULL,
     `plugin_tasklists_taskstates_id` int(11)                              NOT NULL,
