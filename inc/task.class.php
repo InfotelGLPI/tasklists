@@ -262,7 +262,7 @@ class PluginTasklistsTask extends CommonDBTM {
          'id'                 => '20',
          'table'              => 'glpi_plugin_tasklists_tickets',
          'field'              => 'id',
-         'name'               => _x('quantity', 'Number of Tickets', 'tasklists'),
+         'name'               => __('Number of tickets'),
          'forcegroupby'       => true,
          'usehaving'          => true,
          'datatype'           => 'count',
