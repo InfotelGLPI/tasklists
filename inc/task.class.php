@@ -243,6 +243,35 @@ class PluginTasklistsTask extends CommonDBTM {
          'name'      => _n('Requester', 'Requesters', 1),
          'datatype'  => 'dropdown'
       ];
+
+      $tab[] = [
+         'id'                 => '19',
+         'table'              => 'glpi_plugin_tasklists_tasks_comments',
+         'field'              => 'id',
+         'name'               => _x('quantity', 'Number of comments', 'tasklists'),
+         'forcegroupby'       => true,
+         'usehaving'          => true,
+         'datatype'           => 'count',
+         'massiveaction'      => false,
+         'joinparams'         => [
+            'jointype'           => 'child'
+         ]
+      ];
+
+      $tab[] = [
+         'id'                 => '20',
+         'table'              => 'glpi_plugin_tasklists_tickets',
+         'field'              => 'id',
+         'name'               => _x('quantity', 'Number of Tickets', 'tasklists'),
+         'forcegroupby'       => true,
+         'usehaving'          => true,
+         'datatype'           => 'count',
+         'massiveaction'      => false,
+         'joinparams'         => [
+            'jointype'           => 'child'
+         ]
+      ];
+
       return $tab;
    }
 
