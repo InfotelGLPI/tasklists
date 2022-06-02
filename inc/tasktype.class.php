@@ -102,7 +102,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
     */
    public function forceGlobalState() {
       // All users must be using the global state unless viewing the global Kanban
-      return $this->getID() > 0;
+      return false;
    }
 
    /**
