@@ -204,9 +204,7 @@ function plugin_tasklists_uninstall() {
  */
 function plugin_tasklists_getDatabaseRelations() {
 
-   $plugin = new Plugin();
-
-   if ($plugin->isActivated("tasklists")) {
+   if (Plugin::isPluginActive("tasklists")) {
       return ["glpi_plugin_tasklists_tasktypes"  => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"],
               "glpi_plugin_tasklists_taskstates" => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_taskstates_id"],
               "glpi_users"                       => ["glpi_plugin_tasklists_tasks" => "users_id"],
@@ -223,10 +221,7 @@ function plugin_tasklists_getDatabaseRelations() {
  * @return array
  */
 function plugin_tasklists_getDropdown() {
-
-   $plugin = new Plugin();
-
-   if ($plugin->isActivated("tasklists")) {
+   if (Plugin::isPluginActive("tasklists")) {
       return ['PluginTasklistsTaskType'  => PluginTasklistsTaskType::getTypeName(2),
               'PluginTasklistsTaskState' => PluginTasklistsTaskState::getTypeName(2)];
    } else {

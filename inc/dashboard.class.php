@@ -78,8 +78,7 @@ class PluginTasklistsDashboard extends CommonGLPI {
       }
       switch ($widgetId) {
          case $this->getType() . "1":
-            $plugin = new Plugin();
-            if ($plugin->isActivated("tasklists")) {
+            if (Plugin::isPluginActive("tasklists")) {
                $dbu    = new DbUtils();
                $widget = new PluginMydashboardDatatable();
 

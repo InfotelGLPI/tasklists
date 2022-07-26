@@ -29,9 +29,7 @@
 
 include('../../../inc/includes.php');
 
-$plugin = new Plugin();
-
-if ($plugin->isActivated("tasklists")) {
+if (Plugin::isPluginActive("tasklists")) {
 
    Html::header(__('Setup'), '', "config", "plugins");
 
