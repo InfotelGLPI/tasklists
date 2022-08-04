@@ -346,8 +346,9 @@ class PluginTasklistsTask extends CommonDBTM {
    function post_addItem() {
       global $CFG_GLPI;
 
-      if (isset($this->input['withtemplate'])
-          && $this->input["withtemplate"] != 1
+      if (!(isset($this->input['withtemplate'])
+      || (isset($this->input['withtemplate'])
+          && $this->input["withtemplate"] != 1))
       ) {
          if ($CFG_GLPI["notifications_mailing"]) {
             NotificationEvent::raiseEvent("newtask", $this);
@@ -396,15 +397,9 @@ class PluginTasklistsTask extends CommonDBTM {
    function post_updateItem($history = 1) {
       global $CFG_GLPI;
 
-      if (count($this->updates)
-          && isset($this->input["withtemplate"])
-          && $this->input["withtemplate"] != 1
-      ) {
-
-         if ($CFG_GLPI["notifications_mailing"]) {
-            NotificationEvent::raiseEvent("updatetask", $this);
-         }
-      }
+       if ($CFG_GLPI["notifications_mailing"]) {
+           NotificationEvent::raiseEvent("updatetask", $this);
+       }
    }
 
 
@@ -418,10 +413,11 @@ class PluginTasklistsTask extends CommonDBTM {
       global $CFG_GLPI;
 
       if ($CFG_GLPI["notifications_mailing"]
-          && $this->fields["is_template"] != 1
+          && !(isset($this->input['withtemplate'])
+               || (isset($this->input['withtemplate'])
+                   && $this->input["withtemplate"] != 1))
           && isset($this->input['_delete'])
       ) {
-
          NotificationEvent::raiseEvent("deletetask", $this);
       }
 
