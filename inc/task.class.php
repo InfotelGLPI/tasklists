@@ -1385,6 +1385,9 @@ class PluginTasklistsTask extends CommonDBTM {
                             ]);
          foreach ($it as $data) {
             $items_id = $data[$itemtype::getForeignKeyField()];
+            if ($items_id <= 0) {
+               continue;
+            }
             $member   = [
                'itemtype'     => $itemtype,
                'items_id'     => $items_id,
