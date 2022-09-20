@@ -135,7 +135,7 @@ class PluginTasklistsTask extends CommonDBTM {
       $tab[] = [
          'id'       => '7',
          'table'    => $this->getTable(),
-         'field'    => 'comment',
+         'field'    => 'content',
          'name'     => __('Description'),
          'datatype' => 'text'
       ];
