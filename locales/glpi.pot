@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-29 13:44+0000\n"
+"POT-Creation-Date: 2022-11-05 10:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid "Tables"
 msgstr ""
 
 #: inc/dashboard.class.php:99 inc/task.class.php:93 inc/task.class.php:462
-#: inc/taskstate.class.php:103 inc/taskstate.class.php:155
+#: inc/taskstate.class.php:137 inc/taskstate.class.php:189
 #: inc/tasktype.class.php:52
 msgid "Context"
 msgid_plural "Contexts"
@@ -158,7 +158,7 @@ msgstr ""
 msgid "Affect entity for create task"
 msgstr ""
 
-#: inc/taskstate.class.php:50
+#: inc/taskstate.class.php:84
 msgid "Status"
 msgid_plural "Statuses"
 msgstr[0] ""
