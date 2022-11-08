@@ -31,158 +31,168 @@
 /**
  * Class PluginTasklistsDashboard
  */
-class PluginTasklistsDashboard extends CommonGLPI {
+class PluginTasklistsDashboard extends CommonGLPI
+{
+    public $widgets = [];
+    private $options;
+    private $datas;
+    private $form;
 
-   public  $widgets = [];
-   private $options;
-   private $datas, $form;
+    /**
+     * PluginTasklistsDashboard constructor.
+     *
+     * @param array $options
+     */
+    public function __construct($options = [])
+    {
+        $this->options = $options;
+    }
 
-   /**
-    * PluginTasklistsDashboard constructor.
-    *
-    * @param array $options
-    */
-   function __construct($options = []) {
-      $this->options = $options;
-   }
-
-   function init() {
-
-   }
+    public function init()
+    {
+    }
 
 
-   function getWidgetsForItem() {
+    public function getWidgetsForItem()
+    {
+        $widgets = [
+           __('Tables', "mydashboard") => [
+              $this->getType() . "1" => ["title"   => __("Tasks list", 'tasklists'),
+                                         "icon"    => "ti ti-table",
+                                         "comment" => ""],
+           ],
+        ];
+        return $widgets;
+    }
 
-      $widgets = [
-         __('Tables', "mydashboard") => [
-            $this->getType() . "1" => ["title"   => __("Tasks list", 'tasklists'),
-                                       "icon"    => "ti ti-table",
-                                       "comment" => ""],
-         ],
-      ];
-      return $widgets;
+    /**
+     * @param $widgetId
+     *
+     * @return PluginMydashboardDatatable
+     * @throws \GlpitestSQLError
+     */
+    public function getWidgetContentForItem($widgetId)
+    {
+        global $CFG_GLPI, $DB;
 
-   }
+        if (empty($this->form)) {
+            $this->init();
+        }
+        switch ($widgetId) {
+            case $this->getType() . "1":
+                if (Plugin::isPluginActive("tasklists")) {
+                    $dbu    = new DbUtils();
+                    $widget = new PluginMydashboardDatatable();
 
-   /**
-    * @param $widgetId
-    *
-    * @return PluginMydashboardDatatable
-    * @throws \GlpitestSQLError
-    */
-   function getWidgetContentForItem($widgetId) {
-      global $CFG_GLPI, $DB;
+                    $st             = new PluginTasklistsTaskState();
+                    $states_founded = [];
+                    $states         = $st->find(['is_finished' => 0]);
+                    foreach ($states as $state) {
+                        $states_founded[] = $state["id"];
+                    }
+                    $groups_founded = [];
+                    $groups         = Group_User::getUserGroups(Session::getLoginUserID());
+                    foreach ($groups as $group) {
+                        $groups_founded[] = $group["id"];
+                    }
 
-      if (empty($this->form)) {
-         $this->init();
-      }
-      switch ($widgetId) {
-         case $this->getType() . "1":
-            if (Plugin::isPluginActive("tasklists")) {
-               $dbu    = new DbUtils();
-               $widget = new PluginMydashboardDatatable();
-
-               $st             = new PluginTasklistsTaskState();
-               $states_founded = [];
-               $states         = $st->find(['is_finished' => 0]);
-               foreach ($states as $state) {
-                  $states_founded[] = $state["id"];
-               }
-               $groups_founded = [];
-               $groups         = Group_User::getUserGroups(Session::getLoginUserID());
-               foreach ($groups as $group) {
-                  $groups_founded[] = $group["id"];
-               }
-
-               $headers = [__('Name'),
-                           __('Priority'),
-                           _n('Context',
-                              'Contexts', 1, 'tasklists'),
-                           __('User'), __('Percent done'),
-                           __('Due date', 'tasklists')];//, __('Action')
-               $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
+                    $headers = [__('Name'),
+                                __('Priority'),
+                                _n(
+                                    'Context',
+                                    'Contexts',
+                                    1,
+                                    'tasklists'
+                                ),
+                                __('User'), __('Percent done'),
+                                __('Due date', 'tasklists')];//, __('Action')
+                    $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
                             FROM `glpi_plugin_tasklists_tasks`
                             LEFT JOIN `glpi_plugin_tasklists_tasktypes` 
                             ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
                             WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 
                               AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 ";
-               if (is_array($states) && count($states) > 0) {
-                  $query .= " AND `glpi_plugin_tasklists_tasks`.`plugin_tasklists_taskstates_id` IN (" . implode(",", $states_founded) . ") ";
-               }
-               $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '" . Session::getLoginUserID() . "'";
-               //if (count($groups) > 0){
-               //   $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
-               //}
-               //$query .= "OR `glpi_plugin_tasklists_tasks`.`visibility` = 3)";
-               $query .= ") ";
-               $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
-               $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
+                    if (is_array($states) && count($states) > 0) {
+                        $query .= " AND `glpi_plugin_tasklists_tasks`.`plugin_tasklists_taskstates_id` IN (" . implode(",", $states_founded) . ") ";
+                    }
+                    $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '" . Session::getLoginUserID() . "'";
+                    //if (count($groups) > 0){
+                    //   $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
+                    //}
+                    //$query .= "OR `glpi_plugin_tasklists_tasks`.`visibility` = 3)";
+                    $query .= ") ";
+                    $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
+                    $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
-               $tasks = [];
-               if ($result = $DB->query($query)) {
-                  if ($DB->numrows($result)) {
-                     while ($data = $DB->fetchArray($result)) {
-                        $ID   = $data['id'];
-                        $task = new PluginTasklistsTask();
-                        if ($task->checkVisibility($ID) == true) {
-                           $rand                  = mt_rand();
-                           $url                   = Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'];
-                           $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
+                    $tasks = [];
+                    if ($result = $DB->query($query)) {
+                        if ($DB->numrows($result)) {
+                            while ($data = $DB->fetchArray($result)) {
+                                $ID   = $data['id'];
+                                $task = new PluginTasklistsTask();
+                                if ($task->checkVisibility($ID) == true) {
+                                    $rand                  = mt_rand();
+                                    $url                   = Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'];
+                                    $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
 
-                           $tasks[$data['id']][0] .= Html::showToolTip(Glpi\RichText\RichText::getSafeHtml($data['content']),
-                                                                       ['applyto' => 'task' . $data["id"] . $rand,
-                                                                        'display' => false]);
+                                    $tasks[$data['id']][0] .= Html::showToolTip(
+                                        Glpi\RichText\RichText::getSafeHtml($data['content']),
+                                        ['applyto' => 'task' . $data["id"] . $rand,
+                                         'display' => false]
+                                    );
 
-                           $bgcolor               = $_SESSION["glpipriority_" . $data['priority']];
-                           $tasks[$data['id']][1] = "<div class='center' style='background-color:$bgcolor;'>" . CommonITILObject::getPriorityName($data['priority']) . "</div>";
-                           $tasks[$data['id']][2] = $data['type'];
-                           $tasks[$data['id']][3] = $dbu->getUserName($data['users_id']);
-                           $tasks[$data['id']][4] = Dropdown::getValueWithUnit($data['percent_done'], "%");
-                           $due_date              = $data['due_date'];
-                           $display               = Html::convDate($data['due_date']);
-                           if ($due_date <= date('Y-m-d') && !empty($due_date)) {
-                              $display = "<div class='deleted'>" . Html::convDate($data['due_date']) . "</div>";
-                           }
-                           $tasks[$data['id']][5] = $display;
+                                    $bgcolor               = $_SESSION["glpipriority_" . $data['priority']];
+                                    $tasks[$data['id']][1] = "<div class='center' style='background-color:$bgcolor;'>" . CommonITILObject::getPriorityName($data['priority']) . "</div>";
+                                    $tasks[$data['id']][2] = $data['type'];
+                                    $tasks[$data['id']][3] = $dbu->getUserName($data['users_id']);
+                                    $tasks[$data['id']][4] = Dropdown::getValueWithUnit($data['percent_done'], "%");
+                                    $due_date              = $data['due_date'];
+                                    $display               = Html::convDate($data['due_date']);
+                                    if ($due_date <= date('Y-m-d') && !empty($due_date)) {
+                                        $display = "<div class='deleted'>" . Html::convDate($data['due_date']) . "</div>";
+                                    }
+                                    $tasks[$data['id']][5] = $display;
+                                }
+                            }
                         }
-                     }
-                  }
-               }
-               $widget->setTabDatas($tasks);
-               $widget->setTabNames($headers);
-               //$widget->setOption("bSort", false);
-               $widget->toggleWidgetRefresh();
-               $link = "<div align='right'><a href='#' data-bs-toggle='modal' data-bs-target='#task' class='submit btn btn-primary' title='" . __('Add task', 'tasklists') . "' >";
-               $link .= __('Add task', 'tasklists');
-               $link .= "</a></div>";
-               $link .= Ajax::createIframeModalWindow('task',
-                                                      PLUGIN_TASKLISTS_WEBDIR . "/front/task.form.php",
-                                                      ['title'         => __('Add task', 'tasklists'),
-                                                       'reloadonclose' => false,
-                                                       'width'         => 1180,
-                                                       'display'       => false,
-                                                       'height'        => 600
-                                                      ]);
-               $widget->appendWidgetHtmlContent($link);
+                    }
+                    $widget->setTabDatas($tasks);
+                    $widget->setTabNames($headers);
+                    //$widget->setOption("bSort", false);
+                    $widget->toggleWidgetRefresh();
+                    $link = "<div align='right'><a href='#' data-bs-toggle='modal' data-bs-target='#task' class='submit btn btn-primary' title='" . __('Add task', 'tasklists') . "' >";
+                    $link .= __('Add task', 'tasklists');
+                    $link .= "</a></div>";
+                    $link .= Ajax::createIframeModalWindow(
+                        'task',
+                        PLUGIN_TASKLISTS_WEBDIR . "/front/task.form.php",
+                        ['title'         => __('Add task', 'tasklists'),
+                         'reloadonclose' => false,
+                         'width'         => 1180,
+                         'display'       => false,
+                         'height'        => 600
+                        ]
+                    );
+                    $widget->appendWidgetHtmlContent($link);
 
-               $widget->setWidgetTitle(__("Tasks list", 'tasklists'));
+                    $widget->setWidgetTitle(__("Tasks list", 'tasklists'));
 
-               return $widget;
-            } else {
-               $widget = new PluginMydashboardDatatable();
-               $widget->setWidgetTitle(__("Tasks list", 'tasklists'));
-               return $widget;
-            }
-            break;
-      }
-   }
+                    return $widget;
+                } else {
+                    $widget = new PluginMydashboardDatatable();
+                    $widget->setWidgetTitle(__("Tasks list", 'tasklists'));
+                    return $widget;
+                }
+                break;
+        }
+    }
 
-   /**
-    * @return mixed
-    */
-   static function addTask() {
-
-      //$task->showFormButtons($options);
-      //return $form;
-   }
+    /**
+     * @return mixed
+     */
+    public static function addTask()
+    {
+        //$task->showFormButtons($options);
+        //return $form;
+    }
 }
