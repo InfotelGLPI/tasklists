@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-05 10:54+0000\n"
+"POT-Creation-Date: 2022-11-08 12:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:95 inc/dashboard.class.php:58 inc/dashboard.class.php:168
-#: inc/dashboard.class.php:173 inc/menu.class.php:44
+#: setup.php:95 inc/dashboard.class.php:60 inc/dashboard.class.php:178
+#: inc/dashboard.class.php:183 inc/menu.class.php:44
 #: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr ""
@@ -32,11 +32,11 @@ msgstr ""
 msgid "Archived"
 msgstr ""
 
-#: inc/dashboard.class.php:57
+#: inc/dashboard.class.php:59
 msgid "Tables"
 msgstr ""
 
-#: inc/dashboard.class.php:99 inc/task.class.php:93 inc/task.class.php:462
+#: inc/dashboard.class.php:102 inc/task.class.php:93 inc/task.class.php:462
 #: inc/taskstate.class.php:137 inc/taskstate.class.php:189
 #: inc/tasktype.class.php:52
 msgid "Context"
@@ -44,14 +44,14 @@ msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/dashboard.class.php:102 inc/notificationtargettask.class.php:213
+#: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
 #: inc/notificationtargettask.class.php:259 inc/task.class.php:131
 #: inc/task.class.php:539 inc/tasktype.class.php:230
 msgid "Due date"
 msgstr ""
 
-#: inc/dashboard.class.php:155 inc/dashboard.class.php:156
-#: inc/dashboard.class.php:160 inc/ticket.class.php:154
+#: inc/dashboard.class.php:163 inc/dashboard.class.php:164
+#: inc/dashboard.class.php:169 inc/ticket.class.php:154
 msgid "Add task"
 msgstr ""
 
@@ -105,11 +105,11 @@ msgstr ""
 msgid "minute(s)"
 msgstr ""
 
-#: inc/profile.class.php:153 inc/profile.class.php:196
+#: inc/profile.class.php:164 inc/profile.class.php:208
 msgid "See and update all tasks"
 msgstr ""
 
-#: inc/profile.class.php:162 inc/profile.class.php:199
+#: inc/profile.class.php:173 inc/profile.class.php:211
 msgid "Configure contexts and statuses"
 msgstr ""
 
