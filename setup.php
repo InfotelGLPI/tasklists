@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_TASKLISTS_VERSION', '2.0.2');
+define('PLUGIN_TASKLISTS_VERSION', '2.0.3');
 
 if (!defined("PLUGIN_TASKLISTS_DIR")) {
    define("PLUGIN_TASKLISTS_DIR", Plugin::getPhpDir("tasklists"));

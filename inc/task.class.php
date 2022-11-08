@@ -332,9 +332,14 @@ class PluginTasklistsTask extends CommonDBTM {
     */
    function prepareInputForAdd($input) {
 
+
       if (isset($input['due_date']) && empty($input['due_date'])) {
          $input['due_date'] = 'NULL';
       }
+       if (isset($input['content'])) {
+        $input['content'] = Glpi\RichText\RichText::getSafeHtml($input['content'], true);
+       }
+
       if (isset($input["id"]) && ($input["id"] > 0)) {
          $input["_oldID"] = $input["id"];
       }

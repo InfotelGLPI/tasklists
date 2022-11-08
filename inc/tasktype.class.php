@@ -269,7 +269,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
                $content      .= "</div>";
                $rich_content = "";
                if ($data['content'] != null) {
-                  $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true);
+                  $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true, true);
                }
                $content .= Html::resume_text($rich_content, 100);
                $content .= "</div>";
