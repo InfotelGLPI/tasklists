@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-08 12:30+0000\n"
+"POT-Creation-Date: 2022-11-08 13:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "Not archived"
 msgstr ""
 
-#: ajax/addOptions.php:31 inc/task.class.php:194 inc/task.class.php:661
+#: ajax/addOptions.php:31 inc/task.class.php:194 inc/task.class.php:666
 msgid "Archived"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgstr ""
 msgid "Tables"
 msgstr ""
 
-#: inc/dashboard.class.php:102 inc/task.class.php:93 inc/task.class.php:462
+#: inc/dashboard.class.php:102 inc/task.class.php:93 inc/task.class.php:467
 #: inc/taskstate.class.php:137 inc/taskstate.class.php:189
 #: inc/tasktype.class.php:52
 msgid "Context"
@@ -46,7 +46,7 @@ msgstr[1] ""
 
 #: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
 #: inc/notificationtargettask.class.php:259 inc/task.class.php:131
-#: inc/task.class.php:539 inc/tasktype.class.php:230
+#: inc/task.class.php:544 inc/tasktype.class.php:230
 msgid "Due date"
 msgstr ""
 
@@ -81,7 +81,7 @@ msgstr ""
 
 #: inc/notificationtargettask.class.php:217
 #: inc/notificationtargettask.class.php:263 inc/task.class.php:202
-#: inc/task.class.php:530
+#: inc/task.class.php:535
 msgid "Other client"
 msgstr ""
 
@@ -126,35 +126,35 @@ msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
 
-#: inc/task.class.php:382
+#: inc/task.class.php:387
 msgid "You cannot archive a task with this state"
 msgstr ""
 
-#: inc/task.class.php:501
+#: inc/task.class.php:506
 msgid "Existing client"
 msgstr ""
 
-#: inc/task.class.php:684 inc/task.class.php:771 inc/task.class.php:1047
+#: inc/task.class.php:689 inc/task.class.php:776 inc/task.class.php:1052
 #: inc/tasktype.class.php:166 inc/tasktype.class.php:527
 msgid "Backlog"
 msgstr ""
 
-#: inc/task.class.php:1107
+#: inc/task.class.php:1112
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: inc/task.class.php:1110
+#: inc/task.class.php:1115
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
 
-#: inc/task.class.php:1113
+#: inc/task.class.php:1118
 msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: inc/task.class.php:1155
+#: inc/task.class.php:1160
 msgid "Affect entity for create task"
 msgstr ""
 
