@@ -1,0 +1,197 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Tasklists Development Team
+# This file is distributed under the same license as the GLPI - Tasklists plugin package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Soporte Infraestructura Standby, 2023
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI - Tasklists plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-08 13:00+0000\n"
+"PO-Revision-Date: 2020-11-02 16:28+0000\n"
+"Last-Translator: Soporte Infraestructura Standby, 2023\n"
+"Language-Team: Spanish (Ecuador) (https://app.transifex.com/infotelGLPI/teams/79675/es_EC/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es_EC\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#: setup.php:95 inc/dashboard.class.php:60 inc/dashboard.class.php:178
+#: inc/dashboard.class.php:183 inc/menu.class.php:44
+#: inc/preference.class.php:46 inc/profile.class.php:52
+msgid "Tasks list"
+msgstr "Lista de tareas"
+
+#: ajax/addOptions.php:30
+msgid "Not archived"
+msgstr "Sin archivar"
+
+#: ajax/addOptions.php:31 inc/task.class.php:194 inc/task.class.php:666
+msgid "Archived"
+msgstr "Archivado"
+
+#: inc/dashboard.class.php:59
+msgid "Tables"
+msgstr "Tablas"
+
+#: inc/dashboard.class.php:102 inc/task.class.php:93 inc/task.class.php:467
+#: inc/taskstate.class.php:137 inc/taskstate.class.php:189
+#: inc/tasktype.class.php:52
+msgid "Context"
+msgid_plural "Contexts"
+msgstr[0] "Contextos"
+msgstr[1] "Contextos"
+msgstr[2] "Contextos"
+
+#: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
+#: inc/notificationtargettask.class.php:259 inc/task.class.php:131
+#: inc/task.class.php:544 inc/tasktype.class.php:230
+msgid "Due date"
+msgstr "Fecha de vencimiento"
+
+#: inc/dashboard.class.php:163 inc/dashboard.class.php:164
+#: inc/dashboard.class.php:169 inc/ticket.class.php:154
+msgid "Add task"
+msgstr "Agregar tarea"
+
+#: inc/kanban.class.php:71
+msgid "Kanban"
+msgstr "Kanban"
+
+#: inc/kanban.class.php:131
+msgid "You don't have the right to see any context"
+msgstr "No tienes derecho a ver ningún contexto"
+
+#: inc/kanban.class.php:167
+msgid "There is no accessible context"
+msgstr "No existe un contexto accesible"
+
+#: inc/notificationtargettask.class.php:51
+msgid "A task has been added"
+msgstr "Se ha agregado una tarea"
+
+#: inc/notificationtargettask.class.php:52
+msgid "A task has been updated"
+msgstr "Una tarea se ha actualizado"
+
+#: inc/notificationtargettask.class.php:53
+msgid "A task has been removed"
+msgstr "Una tarea ha sido eliminada"
+
+#: inc/notificationtargettask.class.php:217
+#: inc/notificationtargettask.class.php:263 inc/task.class.php:202
+#: inc/task.class.php:535
+msgid "Other client"
+msgstr "Otro cliente"
+
+#: inc/notificationtargettask.class.php:271
+msgid "At creation, update, removal of a task"
+msgstr "En la creación, actualización, eliminación de una tarea"
+
+#: inc/preference.class.php:88
+msgid "Context by default"
+msgstr "Contexto predeterminado"
+
+#: inc/preference.class.php:96
+msgid "Automatic refreshing of tasklist"
+msgstr "Actualizar automáticamente la lista de tareas"
+
+#: inc/preference.class.php:102
+msgid "Refresh every "
+msgstr "Actualizar cada"
+
+#: inc/preference.class.php:106
+msgid "minute(s)"
+msgstr "minuto(s)"
+
+#: inc/profile.class.php:164 inc/profile.class.php:208
+msgid "See and update all tasks"
+msgstr "Ver y actualizar todas las tareas"
+
+#: inc/profile.class.php:173 inc/profile.class.php:211
+msgid "Configure contexts and statuses"
+msgstr "Configurar contextos y estados"
+
+#: inc/stateorder.class.php:96
+msgid "States ordering"
+msgstr "Pedidos de Estados"
+
+#: inc/stateorder.class.php:156
+msgid "Add states from linked Kanban"
+msgstr "Agergar estados desde Kanban vinculado"
+
+#: inc/task.class.php:251
+msgctxt "quantity"
+msgid "Number of comments"
+msgstr "Número de comentarios"
+
+#: inc/task.class.php:387
+msgid "You cannot archive a task with this state"
+msgstr "No se puede archivar una tarea con este estado"
+
+#: inc/task.class.php:506
+msgid "Existing client"
+msgstr "Cliente existente"
+
+#: inc/task.class.php:689 inc/task.class.php:776 inc/task.class.php:1052
+#: inc/tasktype.class.php:166 inc/tasktype.class.php:527
+msgid "Backlog"
+msgstr "Atrasos"
+
+#: inc/task.class.php:1112
+msgctxt "visibility"
+msgid "This user"
+msgstr "Este usuario"
+
+#: inc/task.class.php:1115
+msgctxt "visibility"
+msgid "This user and this group"
+msgstr "Este usuario y este grupo"
+
+#: inc/task.class.php:1118
+msgctxt "visibility"
+msgid "All"
+msgstr "Todos"
+
+#: inc/task.class.php:1160
+msgid "Affect entity for create task"
+msgstr "Entidad afectada para crear tarea"
+
+#: inc/taskstate.class.php:84
+msgid "Status"
+msgid_plural "Statuses"
+msgstr[0] "Estados"
+msgstr[1] "Estados"
+msgstr[2] "Estados"
+
+#: inc/ticket.class.php:74 inc/ticket.class.php:184
+msgid "Linked task"
+msgid_plural "Linked tasks"
+msgstr[0] "Tareas vinculadas"
+msgstr[1] "Tareas vinculadas"
+msgstr[2] "Tareas vinculadas"
+
+#: inc/ticket.class.php:228
+msgid "No task linked to this ticket yet"
+msgstr "Todavía no hay ninguna tarea vinculada a este ticket"
+
+#: inc/ticket.class.php:259
+msgid "Link a existant ticket"
+msgstr "Vincular un ticket existente"
+
+#: inc/ticket.class.php:285
+msgid "Linked tickets"
+msgstr "Tickets vinculados"
+
+#: inc/typevisibility.class.php:138
+msgid "Add a group"
+msgstr "Agregar un grupo"
+
+#: inc/typevisibility.class.php:179
+msgid "Groups allowed to use context"
+msgstr "Grupos autorizados a utilizar el contexto"
