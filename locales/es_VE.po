@@ -37,7 +37,7 @@ msgstr "Archivado"
 
 #: inc/dashboard.class.php:59
 msgid "Tables"
-msgstr "Tableros"
+msgstr "Tablas"
 
 #: inc/dashboard.class.php:102 inc/task.class.php:93 inc/task.class.php:467
 #: inc/taskstate.class.php:137 inc/taskstate.class.php:189
