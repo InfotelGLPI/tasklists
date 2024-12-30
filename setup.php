@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_TASKLISTS_VERSION', '2.0.3');
+define('PLUGIN_TASKLISTS_VERSION', '2.0.4');
 
 if (!defined("PLUGIN_TASKLISTS_DIR")) {
    define("PLUGIN_TASKLISTS_DIR", Plugin::getPhpDir("tasklists"));
@@ -74,14 +74,6 @@ function plugin_init_tasklists() {
       if (Session::haveRight("plugin_tasklists", CREATE)) {
          $PLUGIN_HOOKS['use_massive_action']['tasklists'] = 1;
       }
-      // require spectrum (for glpi >= 9.2)
-//      $CFG_GLPI['javascript']['config']['commondropdown']['PluginTasklistsTaskState'] = ['colorpicker'];
-      $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = PLUGIN_TASKLISTS_NOTFULL_DIR."/lib/redips/redips-drag-min.js";
-      $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = PLUGIN_TASKLISTS_NOTFULL_DIR."/scripts/plugin_tasklists_drag-field-row.js";
-//      $PLUGIN_HOOKS['javascript']['tasklists'][]                                      = PLUGIN_TASKLISTS_NOTFULL_DIR."/lib/kanban/js/kanban.js";
-//      $CFG_GLPI['javascript']['helpdesk']['plugintasklistsmenu']                      = ['colorpicker'];
-
-
    }
 }
 
