@@ -31,38 +31,76 @@ include("../../../inc/includes.php");
 
 Session::checkLoginUser();
 
-$dbu   = new DbUtils();
-$table = $dbu->getTableForItemType('PluginTasklistsStateOrder');
+if (
+    !array_key_exists('plugin_tasklists_tasktypes_id', $_POST)
+    || !array_key_exists('old_order', $_POST)
+    || !array_key_exists('new_order', $_POST)
+) {
+    // Missing input
+    exit();
+}
 
-// Récupération de l'ID du champ à modifier
-$query = "SELECT id FROM $table
-            WHERE `plugin_tasklists_tasktypes_id` = {$_POST['plugin_tasklists_tasktypes_id']}
-               AND `ranking` = {$_POST['old_order']}";
+$table        = PluginTasklistsStateOrder::getTable();
+$plugin_tasklists_tasktypes_id = (int) $_POST['plugin_tasklists_tasktypes_id'];
+$old_order    = (int) $_POST['old_order'];
+$new_order    = (int) $_POST['new_order'];
 
-$result = $DB->queryOrDie($query, 'Error');
-//$result  = $DB->query($query);
-$first   = $result->fetchAssoc();
-$id_item = $first['id'];
+/** @var DBmysql $DB */
+global $DB;
 
-// Réorganisation de tout les champs
-if ($_POST['old_order'] < $_POST['new_order']) {
+// Retrieve id of field to update
+$field_iterator = $DB->request(
+    [
+        'SELECT' => 'id',
+        'FROM'   => $table,
+        'WHERE'  => [
+            'plugin_tasklists_tasktypes_id' => $plugin_tasklists_tasktypes_id,
+            'ranking'                     => $old_order,
+        ],
+    ],
+);
 
-   $DB->query("UPDATE $table SET
-               `ranking` = `ranking`-1
-               WHERE `plugin_tasklists_tasktypes_id` = {$_POST['plugin_tasklists_tasktypes_id']}
-               AND `ranking` > {$_POST['old_order']}
-               AND `ranking` <= {$_POST['new_order']}");
+if (0 === $field_iterator->count()) {
+    // Unknown field
+    exit();
+}
+
+$field_id = $field_iterator->current()['id'];
+
+// Move all elements to their new ranking
+if ($old_order < $new_order) {
+    $DB->update(
+        $table,
+        [
+            'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' - 1'),
+        ],
+        [
+            'plugin_tasklists_tasktypes_id' => $plugin_tasklists_tasktypes_id,
+            ['ranking'                    => ['>',  $old_order]],
+            ['ranking'                    => ['<=', $new_order]],
+        ],
+    );
 } else {
-
-   $DB->query("UPDATE $table SET
-               `ranking` = `ranking`+1
-               WHERE `plugin_tasklists_tasktypes_id` = {$_POST['plugin_tasklists_tasktypes_id']}
-               AND `ranking` < {$_POST['old_order']}
-               AND `ranking` >= {$_POST['new_order']}");
+    $DB->update(
+        $table,
+        [
+            'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' + 1'),
+        ],
+        [
+            'plugin_fields_containers_id' => $plugin_tasklists_tasktypes_id,
+            ['ranking'                    => ['<',  $old_order]],
+            ['ranking'                    => ['>=', $new_order]],
+        ],
+    );
 }
 
-if (isset($id_item) && $id_item > 0) {
-   $DB->query("UPDATE $table SET
-               `ranking` = {$_POST['new_order']}
-               WHERE id = $id_item");
-}
+// Update current element
+$DB->update(
+    $table,
+    [
+        'ranking' => $new_order,
+    ],
+    [
+        'id' => $field_id,
+    ],
+);
