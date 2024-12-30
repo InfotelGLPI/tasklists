@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-08 13:00+0000\n"
+"POT-Creation-Date: 2024-12-30 13:49+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: INOUE Daisuke, 2024\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/teams/79675/ja_JP/)\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: setup.php:95 inc/dashboard.class.php:60 inc/dashboard.class.php:178
+#: setup.php:87 inc/dashboard.class.php:60 inc/dashboard.class.php:178
 #: inc/dashboard.class.php:183 inc/menu.class.php:44
 #: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
@@ -31,7 +31,7 @@ msgstr "タスクリスト"
 msgid "Not archived"
 msgstr "未保管"
 
-#: ajax/addOptions.php:31 inc/task.class.php:194 inc/task.class.php:666
+#: ajax/addOptions.php:31 inc/task.class.php:197 inc/task.class.php:686
 msgid "Archived"
 msgstr "保管済み"
 
@@ -39,7 +39,7 @@ msgstr "保管済み"
 msgid "Tables"
 msgstr "テーブル"
 
-#: inc/dashboard.class.php:102 inc/task.class.php:93 inc/task.class.php:467
+#: inc/dashboard.class.php:102 inc/task.class.php:96 inc/task.class.php:478
 #: inc/taskstate.class.php:137 inc/taskstate.class.php:189
 #: inc/tasktype.class.php:52
 msgid "Context"
@@ -47,8 +47,8 @@ msgid_plural "Contexts"
 msgstr[0] "コンテキスト"
 
 #: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
-#: inc/notificationtargettask.class.php:259 inc/task.class.php:131
-#: inc/task.class.php:544 inc/tasktype.class.php:230
+#: inc/notificationtargettask.class.php:259 inc/task.class.php:134
+#: inc/task.class.php:568 inc/tasktype.class.php:229
 msgid "Due date"
 msgstr "期限"
 
@@ -57,15 +57,15 @@ msgstr "期限"
 msgid "Add task"
 msgstr "タスクの追加"
 
-#: inc/kanban.class.php:71
+#: inc/kanban.class.php:76
 msgid "Kanban"
 msgstr "カンバン"
 
-#: inc/kanban.class.php:131
+#: inc/kanban.class.php:148
 msgid "You don't have the right to see any context"
 msgstr "コンテキストを表示する権限がありません"
 
-#: inc/kanban.class.php:167
+#: inc/kanban.class.php:185
 msgid "There is no accessible context"
 msgstr "開くことができるコンテキストがありません"
 
@@ -82,8 +82,8 @@ msgid "A task has been removed"
 msgstr "タスクを削除しました"
 
 #: inc/notificationtargettask.class.php:217
-#: inc/notificationtargettask.class.php:263 inc/task.class.php:202
-#: inc/task.class.php:535
+#: inc/notificationtargettask.class.php:263 inc/task.class.php:205
+#: inc/task.class.php:559
 msgid "Other client"
 msgstr "その他のクライアント"
 
@@ -115,48 +115,40 @@ msgstr "すべてのタスクを表示・更新"
 msgid "Configure contexts and statuses"
 msgstr "コンテキストと状態の設定"
 
-#: inc/stateorder.class.php:96
-msgid "States ordering"
-msgstr "状態の並び順"
-
-#: inc/stateorder.class.php:156
-msgid "Add states from linked Kanban"
-msgstr "リンクしているカンバンから状態を追加する"
-
-#: inc/task.class.php:251
+#: inc/task.class.php:254
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr "コメント数"
 
-#: inc/task.class.php:387
+#: inc/task.class.php:392
 msgid "You cannot archive a task with this state"
 msgstr "この状態のタスクを保管できません"
 
-#: inc/task.class.php:506
+#: inc/task.class.php:522
 msgid "Existing client"
 msgstr "既存のクライアント"
 
-#: inc/task.class.php:689 inc/task.class.php:776 inc/task.class.php:1052
-#: inc/tasktype.class.php:166 inc/tasktype.class.php:527
+#: inc/task.class.php:709 inc/task.class.php:790 inc/task.class.php:1085
+#: inc/tasktype.class.php:165 inc/tasktype.class.php:526
 msgid "Backlog"
 msgstr "バックログ"
 
-#: inc/task.class.php:1112
+#: inc/task.class.php:1143
 msgctxt "visibility"
 msgid "This user"
 msgstr "このユーザー"
 
-#: inc/task.class.php:1115
+#: inc/task.class.php:1146
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "このユーザーとグループ"
 
-#: inc/task.class.php:1118
+#: inc/task.class.php:1149
 msgctxt "visibility"
 msgid "All"
 msgstr "すべて"
 
-#: inc/task.class.php:1160
+#: inc/task.class.php:1192
 msgid "Affect entity for create task"
 msgstr "タスクを作成してエンティティ―に影響を与える"
 
