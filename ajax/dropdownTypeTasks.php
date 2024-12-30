@@ -28,10 +28,10 @@
  */
 
 if (strpos($_SERVER['PHP_SELF'], "dropdownTypeTasks.php")) {
-   $AJAX_INCLUDE = 1;
-   include('../../../inc/includes.php');
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
+    $AJAX_INCLUDE = 1;
+    include('../../../inc/includes.php');
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
 }
 
 Session::checkCentralAccess();
@@ -40,25 +40,36 @@ global $DB;
 
 // Make a select box
 if (isset($_POST["tasktypes"])) {
-   $used = [];
+    $used = [];
 
-   // Clean used array
-   if (isset($_POST['used']) && is_array($_POST['used']) && (count($_POST['used']) > 0)) {
-      $query = "SELECT `id`
-                FROM `glpi_plugin_tasklists_tasks`
-                WHERE `id` IN (" . implode(',', $_POST['used']) . ")
-                      AND `plugin_tasklists_tasktypes_id` = '" . $_POST["tasktypes"] . "'";
+// Clean used array
+    if (
+        isset($_POST['used'])
+        && is_array($_POST['used'])
+        && (count($_POST['used']) > 0)
+    ) {
+        foreach (
+            $DB->request(
+                'glpi_plugin_tasklists_tasks',
+                [
+                    'id' => $_POST['used'],
+                    'plugin_tasklists_tasktypes_id' => $_POST['tasktypes']
+                ]
+            ) as $data
+        ) {
+            $used[$data['id']] = $data['id'];
+        }
+    }
 
-      foreach ($DB->request($query) AS $data) {
-         $used[$data['id']] = $data['id'];
-      }
-   }
-
-   Dropdown::show('PluginTasklistsTask',
-                  ['name'      => $_POST['myname'],
-                   'used'      => $used,
-                   'width'     => '50%',
-                   'entity'    => $_POST['entity'],
-                   'rand'      => $_POST['rand'],
-                   'condition' => ["glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id" => $_POST["tasktypes"]]]);
+    Dropdown::show(
+        'PluginTasklistsTask',
+        [
+            'name' => $_POST['myname'],
+            'used' => $used,
+            'width' => '50%',
+            'entity' => $_POST['entity'],
+            'rand' => $_POST['rand'],
+            'condition' => ["glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id" => $_POST["tasktypes"]]
+        ]
+    );
 }
