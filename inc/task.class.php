@@ -69,6 +69,33 @@ class PluginTasklistsTask extends CommonDBTM
     }
 
     /**
+     * check visibility access
+     */
+    function checkAccess()
+    {
+
+        $id = $_GET['id'];
+        $datas = $this->find(['id' => $id]);
+        if(count($datas) >= 1){
+            $datas = $datas[$id];
+            if($datas['visibility'] != 3){
+                if($datas['visibility'] == 1 ){
+                    if($_SESSION["glpiID"] == $datas['users_id']){
+                        Html::displayRightError();
+                    }
+                }elseif ($datas['visibility'] == 2){
+                    if(($_SESSION["glpiID"] != $datas['users_id']) || ($_SESSION["glpigroups"] != $datas['groups_id'])){
+                        Html::displayRightError();
+                    }
+                }
+            }
+        }else{
+            Html::displayErrorAndDie(__('Item not found'));
+        }
+    }
+
+
+    /**
      * @return array
      */
     function rawSearchOptions()
