@@ -95,6 +95,7 @@ if (isset($_POST["add"])) {
 } else {
 
    $task->checkGlobal(READ);
+   $task->checkAccess();
 
    Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 

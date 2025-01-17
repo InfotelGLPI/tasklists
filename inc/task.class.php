@@ -69,6 +69,36 @@ class PluginTasklistsTask extends CommonDBTM
     }
 
     /**
+     * check visibility access
+     */
+    function checkAccess()
+    {
+        $id = $_GET['id'];
+        $datas = $this->find(['id' => $id]);
+        if (count($datas) == 1 && !Session::haveRight("plugin_tasklists_see_all", 1)) {
+            $datas = $datas[$id];
+            if ($datas['visibility'] != 3) {
+                if ($datas['visibility'] == 1) {
+                    if ($_SESSION["glpiID"] != $datas['users_id']) {
+                        Html::displayRightError();
+                    }
+                } elseif ($datas['visibility'] == 2) {
+                    $check_group = array_search(
+                        $datas['groups_id'],
+                        $_SESSION["glpigroups"]
+                    );
+                    if (($_SESSION["glpiID"] != $datas['users_id']) && $check_group === false) {
+                        Html::displayRightError();
+                    }
+                }
+            }
+        } elseif(count($datas) == 0) {
+            Html::displayNotFoundError('The item could not be found in the database');
+        }
+    }
+
+
+    /**
      * @return array
      */
     function rawSearchOptions()
@@ -342,6 +372,9 @@ class PluginTasklistsTask extends CommonDBTM
         if (isset($input['content'])) {
             $input['content'] = Glpi\RichText\RichText::getSafeHtml($input['content'], true);
         }
+
+        $input["users_id"] = $_SESSION['glpiID'];
+        $input["entities_id"] = $_SESSION['glpiactive_entity'];
 
         if (isset($input["id"]) && ($input["id"] > 0)) {
             $input["_oldID"] = $input["id"];
