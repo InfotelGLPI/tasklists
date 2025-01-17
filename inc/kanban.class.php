@@ -214,14 +214,7 @@ class PluginTasklistsKanban extends CommonGLPI
                             'type' => 'hidden',
                             'value' => $item_id
                         ],
-                        'entities_id' => [
-                            'type' => 'hidden',
-                            'value' => $context->fields['entities_id']
-                        ],
-                        'users_id' => [
-                            'type' => 'hidden',
-                            'value' => $_SESSION['glpiID']
-                        ]
+
                     ],
                     'team_itemtypes' => $team_itemtypes,
                     'team_roles' => $team_roles,

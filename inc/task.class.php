@@ -373,6 +373,9 @@ class PluginTasklistsTask extends CommonDBTM
             $input['content'] = Glpi\RichText\RichText::getSafeHtml($input['content'], true);
         }
 
+        $input["users_id"] = $_SESSION['glpiID'];
+        $input["entities_id"] = $_SESSION['glpiactive_entity'];
+
         if (isset($input["id"]) && ($input["id"] > 0)) {
             $input["_oldID"] = $input["id"];
         }
