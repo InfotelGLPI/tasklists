@@ -73,24 +73,27 @@ class PluginTasklistsTask extends CommonDBTM
      */
     function checkAccess()
     {
-
         $id = $_GET['id'];
         $datas = $this->find(['id' => $id]);
-        if(count($datas) >= 1){
+        if (count($datas) == 1 && !Session::haveRight("plugin_tasklists_see_all", 1)) {
             $datas = $datas[$id];
-            if($datas['visibility'] != 3){
-                if($datas['visibility'] == 1 ){
-                    if($_SESSION["glpiID"] == $datas['users_id']){
+            if ($datas['visibility'] != 3) {
+                if ($datas['visibility'] == 1) {
+                    if ($_SESSION["glpiID"] != $datas['users_id']) {
                         Html::displayRightError();
                     }
-                }elseif ($datas['visibility'] == 2){
-                    if(($_SESSION["glpiID"] != $datas['users_id']) || ($_SESSION["glpigroups"] != $datas['groups_id'])){
+                } elseif ($datas['visibility'] == 2) {
+                    $check_group = array_search(
+                        $datas['groups_id'],
+                        $_SESSION["glpigroups"]
+                    );
+                    if (($_SESSION["glpiID"] != $datas['users_id']) && $check_group === false) {
                         Html::displayRightError();
                     }
                 }
             }
-        }else{
-            Html::displayErrorAndDie(__('Item not found'));
+        } elseif(count($datas) == 0) {
+            Html::displayNotFoundError('The item could not be found in the database');
         }
     }
 
