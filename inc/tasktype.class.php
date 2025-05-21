@@ -124,7 +124,6 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
          if ($result = $DB->query($query)) {
             if ($DB->numrows($result)) {
                $data                                   = $DB->fetchAssoc($result);
-               $data                                   = Toolbox::addslashes_deep($data);
                $input['name']                          = $data['name'];
                $input['entities_id']                   = $entity;
                $input['is_recursive']                  = $data['is_recursive'];
@@ -480,21 +479,24 @@ class PluginTasklistsTaskType extends CommonTreeDropdown {
     *
     * @return boolean
     **/
-   static function canCreate() {
+   static function canCreate(): bool
+   {
       if (static::$rightname) {
          return Session::haveRight(static::$rightname, 1);
       }
       return false;
    }
 
-   static function canUpdate() {
+   static function canUpdate(): bool
+   {
       if (static::$rightname) {
          return Session::haveRight(static::$rightname, 1);
       }
       return false;
    }
 
-   static function canDelete() {
+   static function canDelete(): bool
+   {
       if (static::$rightname) {
          return Session::haveRight(static::$rightname, 1);
       }

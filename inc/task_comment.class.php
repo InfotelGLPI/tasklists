@@ -82,7 +82,8 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
    static function showForItem(CommonDBTM $item, $withtemplate = 0) {
 
       // Total Number of comments
-      if ($item->getType() == PluginTasklistsTask::getType()) {
+       global $CFG_GLPI;
+       if ($item->getType() == PluginTasklistsTask::getType()) {
          $where                     = [
             'plugin_tasklists_tasks_id' => $item->getID(),
             'language'                  => null

@@ -28,8 +28,8 @@
  */
 
 use Glpi\Event;
+use Glpi\Exception\Http\BadRequestHttpException;
 
-include('../../../inc/includes.php');
 
 Session::checkLoginUser();
 
@@ -81,4 +81,4 @@ if (isset($_POST["edit"])) {
    Html::back();
 }
 
-Html::displayErrorAndDie("lost");
+throw new BadRequestHttpException("lost");

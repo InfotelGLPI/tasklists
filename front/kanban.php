@@ -27,7 +27,10 @@
  --------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+
+global $CFG_GLPI;
+
+use Glpi\Exception\Http\AccessDeniedHttpException;
 
 Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
@@ -47,7 +50,7 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
    PluginTasklistsKanban::showKanban($_GET["context_id"]);
 
 } else {
-   Html::displayRightError();
+    throw new AccessDeniedHttpException();
 }
 
 Html::footer();

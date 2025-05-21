@@ -28,7 +28,6 @@
  */
 
 
-include('../../../inc/includes.php');
 
 Session::checkRight("plugin_tasklists", READ);
 

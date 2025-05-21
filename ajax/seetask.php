@@ -104,4 +104,3 @@ if (isset($_GET['id'])) {
       $ticket->showForm(0, $options);
    }
 }
-Html::ajaxFooter();

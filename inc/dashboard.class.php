@@ -165,7 +165,7 @@ class PluginTasklistsDashboard extends CommonGLPI
                     $link .= "</a></div>";
                     $link .= Ajax::createIframeModalWindow(
                         'task',
-                        PLUGIN_TASKLISTS_WEBDIR . "/front/task.form.php",
+                        $CFG_GLPI['root_doc'] . "/plugins/front/task.form.php",
                         ['title'         => __('Add task', 'tasklists'),
                          'reloadonclose' => false,
                          'width'         => 1180,

@@ -44,7 +44,7 @@ class PluginTasklistsKanban extends CommonGLPI
     /**
      * @return bool
      */
-    static function canView()
+    static function canView(): bool
     {
         return Session::haveRight(self::$rightname, READ);
     }
@@ -52,7 +52,7 @@ class PluginTasklistsKanban extends CommonGLPI
     /**
      * @return bool
      */
-    static function canCreate()
+    static function canCreate(): bool
     {
         return Session::haveRight(self::$rightname, CREATE);
     }
@@ -174,6 +174,7 @@ class PluginTasklistsKanban extends CommonGLPI
 
     static function showKanban($ID)
     {
+        global $CFG_GLPI;
         if ($ID > 0) {
             $item_id = $ID;
         } else {

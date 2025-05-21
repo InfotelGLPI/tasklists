@@ -27,7 +27,8 @@
  --------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+
+use Glpi\Exception\Http\AccessDeniedHttpException;
 
 Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
 
@@ -38,7 +39,7 @@ if ($task->canView() || Session::haveRight("config", CREATE)) {
    Search::show("PluginTasklistsTask");
 
 } else {
-   Html::displayRightError();
+    throw new AccessDeniedHttpException();
 }
 
 Html::footer();

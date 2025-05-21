@@ -26,7 +26,8 @@
  along with Tasklists. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
-include('../../../inc/includes.php');
+
+use Glpi\Exception\Http\BadRequestHttpException;
 
 Session::checkLoginUser();
 
@@ -39,4 +40,4 @@ if (isset($_POST["add"])) {
 
 }
 
-Html::displayErrorAndDie("lost");
+throw new BadRequestHttpException("lost");
