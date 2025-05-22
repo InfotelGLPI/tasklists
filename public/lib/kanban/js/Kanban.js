@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------
  */
 //INFOTEL
-import SearchInput from "../../../../../js/modules/SearchTokenizer/SearchInput.js";
+import SearchInput from "../../../../../../js/modules/SearchTokenizer/SearchInput.js";
 
 /* global sortable */
 /* global glpi_toast_error */
@@ -353,8 +353,8 @@ class GLPIKanbanRights {
                 'allow_delete_item', 'supported_filters', 'display_initials'
             ];
             // Use CSS variable check for dark theme detection by default
-            self.dark_theme = $('html').css('--is-dark').trim() === 'true';
-
+            const darkThemeValue = $('html').css('--is-dark');
+            self.dark_theme = (darkThemeValue && darkThemeValue.trim() === 'true');
             if (args.length === 1) {
                 for (let i = 0; i < overridableParams.length; i++) {
                     const param = overridableParams[i];
