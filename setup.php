@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+global $CFG_GLPI;
 define('PLUGIN_TASKLISTS_VERSION', '2.0.4');
 
 if (!defined("PLUGIN_TASKLISTS_DIR")) {
@@ -34,7 +35,6 @@ if (!defined("PLUGIN_TASKLISTS_DIR")) {
    define("PLUGIN_TASKLISTS_NOTFULL_DIR", Plugin::getPhpDir("tasklists",false));
    define("PLUGIN_TASKLISTS_WEBDIR", Plugin::getWebDir("tasklists"));
 }
-
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
    global $PLUGIN_HOOKS, $CFG_GLPI;

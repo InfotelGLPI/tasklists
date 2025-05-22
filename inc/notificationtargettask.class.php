@@ -284,7 +284,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
 
       $query_id = "SELECT `id` FROM `glpi_notificationtemplates` 
                   WHERE `itemtype`='PluginTasklistsTask' AND `name` = 'Tasks'";
-      $result = $DB->query($query_id) or die($DB->error());
+      $result = $DB->doQuery($query_id) or die($DB->error());
 
       if ($DB->numrows($result) > 0) {
          $templates_id = $DB->result($result, 0, 'id');

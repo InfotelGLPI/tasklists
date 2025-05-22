@@ -258,15 +258,19 @@ class PluginTasklistsProfile extends Profile
                 ProfileRight::addProfileRights([$data['field']]);
             }
         }
-
-        foreach ($DB->request("SELECT *
-                           FROM `glpi_profilerights` 
-                           WHERE `profiles_id`='" . $_SESSION['glpiactiveprofile']['id'] . "' 
-                              AND `name` LIKE '%plugin_tasklists%'") as $prof) {
-            if (isset($_SESSION['glpiactiveprofile'])) {
-                $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
-            }
+        $options = [
+            'FROM'  => 'glpi_profilerights',
+            'WHERE' => [
+                'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
+                'name' => "LIKE '%plugin_tasklists%'"
+            ]
+        ];
+        foreach ($DB->request($options) as $prof) {
+        // Vérifier si la session est active
+        if (isset($_SESSION['glpiactiveprofile'])) {
+            $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
         }
+    }
     }
 
 

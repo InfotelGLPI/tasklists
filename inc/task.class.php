@@ -543,7 +543,7 @@ class PluginTasklistsTask extends CommonDBTM
             ];
             $JS .= Ajax::updateItemJsCode(
                 "plugin_tasklists_entity",
-                $CFG_GLPI['root_doc'] . "/plugins/ajax/inputEntity.php",
+                $CFG_GLPI['root_doc'] . "/plugins/tasklists/ajax/inputEntity.php",
                 $params,
                 'dropdown_entities_id' . $rand_entity,
                 false
@@ -866,7 +866,7 @@ class PluginTasklistsTask extends CommonDBTM
         $out .= Ajax::updateItemOnSelectEvent(
             $field_id,
             "show_" . $p['name'] . $rand,
-            $CFG_GLPI['root_doc'] . "/plugins/ajax/dropdownTypeTasks.php",
+            $CFG_GLPI['root_doc'] . "/plugins/tasklists/ajax/dropdownTypeTasks.php",
             $params,
             false
         );
@@ -877,7 +877,7 @@ class PluginTasklistsTask extends CommonDBTM
         $params['tasktype'] = 0;
         $out .= Ajax::updateItem(
             "show_" . $p['name'] . $rand,
-            $CFG_GLPI['root_doc'] . "/plugins/ajax/dropdownTypeTasks.php",
+            $CFG_GLPI['root_doc'] . "/plugins/tasklists/ajax/dropdownTypeTasks.php",
             $params,
             false
         );
