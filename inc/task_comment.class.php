@@ -138,7 +138,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
 
       $html = self::displayComments($comments, $cancomment);
       echo $html;
-      $root_doc = PLUGIN_TASKLISTS_WEBDIR;
+      $root_doc = $CFG_GLPI['root_doc'] . '/plugins/tasklists';
       echo "</ul>";
       echo "<script type='text/javascript'>
               $(function() {
