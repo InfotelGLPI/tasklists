@@ -2346,6 +2346,9 @@ class GLPIKanbanRights {
                 self.updateColumnCount(column);
             });
             $(self.element).trigger('kanban:post_filter', self.filters);
+            $(self.element).on('click', '.item-details-panel button.btn-link', (e) => {
+                $('.item-details-panel').remove();
+            });
         };
 
         /**

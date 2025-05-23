@@ -38,7 +38,20 @@
    text-align: center;
    border-top: 5px solid transparent;
 }
-
+.item-details-panel {
+   position: fixed !important;
+   top: 50% !important;
+   left: 50% !important;
+   transform: translate(-50%, -50%) !important;
+   z-index: 1050 !important;
+   background: white !important;
+   border: 1px solid #ccc !important;
+   padding: 20px !important;
+   box-shadow: 0 5px 15px rgba(0,0,0,.5) !important;
+   max-width: 90vw !important;
+   max-height: 90vh !important;
+   overflow-y: auto !important;
+}
 /*!**/
 /*    ---------------------------*/
 /*    BOARD STYLES*/
