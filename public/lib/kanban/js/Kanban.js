@@ -956,8 +956,14 @@ class GLPIKanbanRights {
             $(self.element + ' .kanban-container').on('submit', '.kanban-add-form:not(.kanban-bulk-add-form)', function(e) {
                 e.preventDefault();
                 const form = $(e.target);
+                const inputsArray = form.serializeArray();
+                const inputs = {};
+                inputsArray.forEach(({name, value}) => {
+                    inputs[name] = value;
+                });
+
                 const data = {
-                    inputs: form.serialize(),
+                    inputs: inputs,
                     itemtype: form.prop('id').split('_')[2],
                     action: 'add_item'
                 };
