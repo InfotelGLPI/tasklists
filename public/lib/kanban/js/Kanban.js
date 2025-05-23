@@ -1820,8 +1820,13 @@ class GLPIKanbanRights {
             $("#" + formID).on('submit', function(e) {
                 e.preventDefault();
                 const form = $(e.target);
+                const inputsArray = form.serializeArray();
+                const inputs = {};
+                inputsArray.forEach(function(item) {
+                    inputs[item.name] = item.value;
+                });
                 const data = {
-                    inputs: form.serialize(),
+                    inputs: inputs,
                     itemtype: form.prop('id').split('_')[2],
                     action: 'bulk_add_item'
                 };
