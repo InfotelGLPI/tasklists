@@ -33,6 +33,7 @@ if (strpos($_SERVER['PHP_SELF'], "dropdownTypeTasks.php")) {
 }
 
 Session::checkCentralAccess();
+Session::checkRight('plugin_tasklists', UPDATE);
 
 global $DB;
 

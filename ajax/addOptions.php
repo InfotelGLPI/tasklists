@@ -6,7 +6,7 @@ header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
-
+Session::checkRight('plugin_tasklists', UPDATE);
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
    // Get AJAX input and load it into $_REQUEST
    $input = file_get_contents('php://input');

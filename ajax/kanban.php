@@ -36,6 +36,7 @@ header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
+Session::checkRight('plugin_tasklists', UPDATE);
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Exception\Http\BadRequestHttpException;
@@ -122,14 +123,14 @@ if (($_POST['action'] ?? null) === 'update') {
    $checkParams(['inputs']);
    $item   = new $itemtype();
    $inputs = [];
-   parse_str($_UPOST['inputs'], $inputs);
+   parse_str($_POST['inputs'], $inputs);
 
    $item->add(Sanitizer::sanitize($inputs));
 } else if (($_POST['action'] ?? null) === 'bulk_add_item') {
    $checkParams(['inputs']);
    $item   = new $itemtype();
    $inputs = [];
-   parse_str($_UPOST['inputs'], $inputs);
+   parse_str($_POST['inputs'], $inputs);
 
    $bulk_item_list = preg_split('/\r\n|[\r\n]/', $inputs['bulk_item_list']);
    if (!empty($bulk_item_list)) {

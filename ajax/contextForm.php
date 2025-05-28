@@ -30,6 +30,7 @@
 include("../../../inc/includes.php");
 
 Session::checkLoginUser();
+Session::checkRight('plugin_tasklists_config', UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");

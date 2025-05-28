@@ -31,6 +31,7 @@ header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
+Session::checkRight('plugin_tasklists', UPDATE);
 
 if (isset($_POST["entities_id"])) {
    echo Html::hidden('entities_id', ['value' => $_POST["entities_id"]]);
