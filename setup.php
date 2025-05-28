@@ -44,7 +44,7 @@ function plugin_init_tasklists() {
    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
    $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
    $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
-    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
+//    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
    if (Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginTasklistsTask', [

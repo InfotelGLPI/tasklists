@@ -2022,7 +2022,7 @@ class GLPIKanbanRights {
             const column_left = $("<span class=''></span>").appendTo(column_content);
             const column_right = $("<span class=''></span>").appendTo(column_content);
             if (self.rights.canModifyView()) {
-                $(column_left).append("<i class='ti ti-caret-right kanban-collapse-column btn btn-sm btn-ghost-secondary' title='" + __('Toggle collapse') + "'/>");
+                $(column_left).append("<i class='ti ti-caret-right kanban-collapse-column btn btn-sm btn-ghost-secondary' title='" + __('Toggle collapse') + "'></i>");
             }
             $(column_left).append("<span class='kanban-column-title badge "+(column['color_class'] || '')+"' style='background-color: "+column['header_color']+"; color: "+column['header_fg_color']+";'>" + column['name'] + "</span></span>");
             $(column_right).append("<span class='kanban_nb badge bg-secondary'>"+count+"</span>");
