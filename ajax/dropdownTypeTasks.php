@@ -46,18 +46,20 @@ if (isset($_POST["tasktypes"])) {
         && is_array($_POST['used'])
         && (count($_POST['used']) > 0)
     ) {
+        $options = [
+            'id' => $_POST['used'],
+            'plugin_tasklists_tasktypes_id' => $_POST['tasktypes']
+        ];
         foreach (
-            $DB->request(
-                'glpi_plugin_tasklists_tasks',
-                [
-                    'id' => $_POST['used'],
-                    'plugin_tasklists_tasktypes_id' => $_POST['tasktypes']
-                ]
-            ) as $data
+            $DB->request([
+                'FROM'  => 'glpi_plugin_tasklists_tasks',
+                'WHERE' => $options
+            ]) as $data
         ) {
             $used[$data['id']] = $data['id'];
         }
     }
+
 
     Dropdown::show(
         'PluginTasklistsTask',
