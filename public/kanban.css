@@ -10,6 +10,48 @@
    min-height: 750px;
    height: unset!important;
 }
+
+.no-track, .form-check-input, .kanban-toolbar, .kanban-item{
+   padding: 10px;
+}
+.form-control{
+   margin: 10px;
+}
+.kanban-columns-list li input{
+   margin-right: 5px;
+}
+.kanban-column-header-content span{
+   color: white !important;
+}
+.kanban .kanban-container .kanban-columns {
+   width: max-content;
+   display: flex
+;
+}
+.kanban .kanban-container .kanban-columns .kanban-column {
+   margin-right: 16px;
+   width: 350px !important;
+   height: 600px;
+   border-radius: 5px;
+   flex-direction: column;
+   flex: 1 0 auto;
+   text-align: center;
+   border-top: 5px solid transparent;
+}
+.item-details-panel {
+   position: fixed !important;
+   top: 50% !important;
+   left: 50% !important;
+   transform: translate(-50%, -50%) !important;
+   z-index: 1050 !important;
+   background: white !important;
+   border: 1px solid #ccc !important;
+   padding: 20px !important;
+   box-shadow: 0 5px 15px rgba(0,0,0,.5) !important;
+   max-width: 90vw !important;
+   max-height: 90vh !important;
+   overflow-y: auto !important;
+}
 /*!**/
 /*    ---------------------------*/
 /*    BOARD STYLES*/

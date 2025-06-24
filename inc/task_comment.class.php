@@ -82,7 +82,8 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
    static function showForItem(CommonDBTM $item, $withtemplate = 0) {
 
       // Total Number of comments
-      if ($item->getType() == PluginTasklistsTask::getType()) {
+       global $CFG_GLPI;
+       if ($item->getType() == PluginTasklistsTask::getType()) {
          $where                     = [
             'plugin_tasklists_tasks_id' => $item->getID(),
             'language'                  => null
@@ -137,7 +138,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
 
       $html = self::displayComments($comments, $cancomment);
       echo $html;
-      $root_doc = PLUGIN_TASKLISTS_WEBDIR;
+      $root_doc = $CFG_GLPI['root_doc'] . '/plugins/tasklists';
       echo "</ul>";
       echo "<script type='text/javascript'>
               $(function() {
@@ -239,10 +240,11 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          'parent_comment_id'         => $parent
       ];
 
-      $db_comments = $DB->request(
-         'glpi_plugin_tasklists_tasks_comments',
-         $where + ['ORDER' => 'id ASC']
-      );
+       $db_comments = $DB->request([
+           'FROM'  => 'glpi_plugin_tasklists_tasks_comments',
+           'WHERE' => $where,
+           'ORDER' => ['id' => 'ASC']
+       ]);
 
       $comments = [];
       foreach ($db_comments as $db_comment) {

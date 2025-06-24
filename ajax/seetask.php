@@ -27,9 +27,9 @@
  --------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
 
 Session::checkLoginUser();
+Session::checkRight('plugin_tasklists', UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
@@ -104,4 +104,3 @@ if (isset($_GET['id'])) {
       $ticket->showForm(0, $options);
    }
 }
-Html::ajaxFooter();

@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------
  */
 //INFOTEL
-import SearchInput from "../../../../../js/modules/SearchTokenizer/SearchInput.js";
+import SearchInput from "../../../../../../js/modules/SearchTokenizer/SearchInput.js";
 
 /* global sortable */
 /* global glpi_toast_error */
@@ -353,8 +353,8 @@ class GLPIKanbanRights {
                 'allow_delete_item', 'supported_filters', 'display_initials'
             ];
             // Use CSS variable check for dark theme detection by default
-            self.dark_theme = $('html').css('--is-dark').trim() === 'true';
-
+            const darkThemeValue = $('html').css('--is-dark');
+            self.dark_theme = (darkThemeValue && darkThemeValue.trim() === 'true');
             if (args.length === 1) {
                 for (let i = 0; i < overridableParams.length; i++) {
                     const param = overridableParams[i];
@@ -956,8 +956,14 @@ class GLPIKanbanRights {
             $(self.element + ' .kanban-container').on('submit', '.kanban-add-form:not(.kanban-bulk-add-form)', function(e) {
                 e.preventDefault();
                 const form = $(e.target);
+                const inputsArray = form.serializeArray();
+                const inputs = {};
+                inputsArray.forEach(({name, value}) => {
+                    inputs[name] = value;
+                });
+
                 const data = {
-                    inputs: form.serialize(),
+                    inputs: inputs,
                     itemtype: form.prop('id').split('_')[2],
                     action: 'add_item'
                 };
@@ -1137,7 +1143,7 @@ class GLPIKanbanRights {
             const column_id = parseInt(getColumnIDFromElement(column['id']));
             if (self.rights.canCreateItem() && (self.rights.getAllowedColumnsForNewCards().length === 0 || self.rights.getAllowedColumnsForNewCards().includes(column_id))) {
                 toolbar_el += "<i id='kanban_add_" + column['id'] + "' class='kanban-add btn btn-sm btn-ghost-secondary fas fa-plus' title='" + __('Add') + "'></i>";
-                toolbar_el += "<i id='kanban_column_overflow_actions_" + column['id'] +"' class='kanban-column-overflow-actions btn btn-sm btn-ghost-secondary fas fa-ellipsis-h' title='" + __('More') + "'></i>";
+                toolbar_el += "<i id='kanban_column_overflow_actions_" + column['id'] +"' class='kanban-column-overflow-actions btn btn-sm btn-ghost-secondary ti ti-dots' title='" + __('More') + "'></i>";
             }
             toolbar_el += "</span>";
             return toolbar_el;
@@ -1814,8 +1820,13 @@ class GLPIKanbanRights {
             $("#" + formID).on('submit', function(e) {
                 e.preventDefault();
                 const form = $(e.target);
+                const inputsArray = form.serializeArray();
+                const inputs = {};
+                inputsArray.forEach(function(item) {
+                    inputs[item.name] = item.value;
+                });
                 const data = {
-                    inputs: form.serialize(),
+                    inputs: inputs,
                     itemtype: form.prop('id').split('_')[2],
                     action: 'bulk_add_item'
                 };
@@ -2011,7 +2022,7 @@ class GLPIKanbanRights {
             const column_left = $("<span class=''></span>").appendTo(column_content);
             const column_right = $("<span class=''></span>").appendTo(column_content);
             if (self.rights.canModifyView()) {
-                $(column_left).append("<i class='fas fa-caret-right fa-lg kanban-collapse-column btn btn-sm btn-ghost-secondary' title='" + __('Toggle collapse') + "'/>");
+                $(column_left).append("<i class='ti ti-caret-right kanban-collapse-column btn btn-sm btn-ghost-secondary' title='" + __('Toggle collapse') + "'></i>");
             }
             $(column_left).append("<span class='kanban-column-title badge "+(column['color_class'] || '')+"' style='background-color: "+column['header_color']+"; color: "+column['header_fg_color']+";'>" + column['name'] + "</span></span>");
             $(column_right).append("<span class='kanban_nb badge bg-secondary'>"+count+"</span>");
@@ -2123,7 +2134,7 @@ class GLPIKanbanRights {
                         ${card['title']}`
             card_el += link;
             card_el += `</span>
-                    <i class="kanban-item-overflow-actions fas fa-ellipsis-h btn btn-sm btn-ghost-secondary"></i>
+                    <i class="kanban-item-overflow-actions ti ti-dots btn btn-sm btn-ghost-secondary"></i>
                 </div>
                 <div class="kanban-item-content">${(card['content'] || '')}</div>
                 <div class="kanban-item-team">
@@ -2346,6 +2357,9 @@ class GLPIKanbanRights {
                 self.updateColumnCount(column);
             });
             $(self.element).trigger('kanban:post_filter', self.filters);
+            $(self.element).on('click', '.item-details-panel button.btn-link', (e) => {
+                $('.item-details-panel').remove();
+            });
         };
 
         /**

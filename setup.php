@@ -27,14 +27,16 @@
  --------------------------------------------------------------------------
  */
 
+global $CFG_GLPI;
+
+use Glpi\Plugin\Hooks;
+
 define('PLUGIN_TASKLISTS_VERSION', '2.0.4');
 
 if (!defined("PLUGIN_TASKLISTS_DIR")) {
    define("PLUGIN_TASKLISTS_DIR", Plugin::getPhpDir("tasklists"));
    define("PLUGIN_TASKLISTS_NOTFULL_DIR", Plugin::getPhpDir("tasklists",false));
-   define("PLUGIN_TASKLISTS_WEBDIR", Plugin::getWebDir("tasklists"));
 }
-
 // Init the hooks of the plugins -Needed
 function plugin_init_tasklists() {
    global $PLUGIN_HOOKS, $CFG_GLPI;
@@ -42,7 +44,7 @@ function plugin_init_tasklists() {
    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
    $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
    $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
-
+//    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
    if (Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginTasklistsTask', [
@@ -91,8 +93,8 @@ function plugin_version_tasklists() {
       'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
       'requirements' => [
          'glpi' => [
-            'min' => '10.0',
-            'max' => '11.0',
+            'min' => '11.0',
+            'max' => '12.0',
             'dev' => false
          ]
       ]

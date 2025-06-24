@@ -30,6 +30,7 @@
 include("../../../inc/includes.php");
 
 Session::checkLoginUser();
+Session::checkRight('plugin_tasklists_config', UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
@@ -47,4 +48,3 @@ if (isset($_GET['newContext'])) {
    $task->showForm(0, $options);
 
 }
-Html::ajaxFooter();

@@ -30,16 +30,16 @@
  * ---------------------------------------------------------------------
  */
 
-$AJAX_INCLUDE = 1;
 
-include('../../../inc/includes.php');
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
+Session::checkRight('plugin_tasklists', UPDATE);
 
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\Exception\Http\BadRequestHttpException;
 
 //if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 //   // Get AJAX input and load it into $_REQUEST
@@ -48,8 +48,7 @@ use Glpi\Application\View\TemplateRenderer;
 //}
 
 if (!isset($_REQUEST['action'])) {
-   Glpi\Http\Response::sendError(400, "Missing action parameter", Glpi\Http\Response::CONTENT_TYPE_TEXT_HTML);
-}
+    throw new BadRequestHttpException("Missing action parameter");}
 
 $action = $_REQUEST['action'];
 
@@ -62,7 +61,7 @@ if (isset($_REQUEST['itemtype'])) {
    if (!in_array($_REQUEST['action'], $nonkanban_actions) && !Toolbox::hasTrait($_REQUEST['itemtype'], Kanban::class)) {
       // Bad request
       // For all actions, except those in $nonkanban_actions, we expect to be manipulating the Kanban itself.
-      Glpi\Http\Response::sendError(400, "Invalid itemtype parameter", Glpi\Http\Response::CONTENT_TYPE_TEXT_HTML);
+       throw new BadRequestHttpException("Invalid itemtype parameter");
    }
    /** @var CommonDBTM $item */
    $itemtype = $_REQUEST['itemtype'];
@@ -107,7 +106,7 @@ if (isset($itemtype)) {
 $checkParams = static function ($required) {
    foreach ($required as $param) {
       if (!isset($_REQUEST[$param])) {
-         Glpi\Http\Response::sendError(400, "Missing $param parameter");
+          throw new BadRequestHttpException("Missing $param parameter");
       }
    }
 };
@@ -124,14 +123,14 @@ if (($_POST['action'] ?? null) === 'update') {
    $checkParams(['inputs']);
    $item   = new $itemtype();
    $inputs = [];
-   parse_str($_UPOST['inputs'], $inputs);
+   parse_str($_POST['inputs'], $inputs);
 
    $item->add(Sanitizer::sanitize($inputs));
 } else if (($_POST['action'] ?? null) === 'bulk_add_item') {
    $checkParams(['inputs']);
    $item   = new $itemtype();
    $inputs = [];
-   parse_str($_UPOST['inputs'], $inputs);
+   parse_str($_POST['inputs'], $inputs);
 
    $bulk_item_list = preg_split('/\r\n|[\r\n]/', $inputs['bulk_item_list']);
    if (!empty($bulk_item_list)) {

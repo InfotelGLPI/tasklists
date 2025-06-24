@@ -27,9 +27,9 @@
  --------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
 
 Session::checkLoginUser();
+Session::checkRight('plugin_tasklists', UPDATE);
 
 if (isset($_POST['data_id'])
     && isset($_POST['percent_done'])) {
