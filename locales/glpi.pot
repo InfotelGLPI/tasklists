@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 13:55+0000\n"
+"POT-Creation-Date: 2025-07-12 07:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:87 inc/dashboard.class.php:60 inc/dashboard.class.php:178
+#: setup.php:89 inc/dashboard.class.php:60 inc/dashboard.class.php:178
 #: inc/dashboard.class.php:183 inc/menu.class.php:44
 #: inc/preference.class.php:46 inc/profile.class.php:52
 msgid "Tasks list"
 msgstr ""
 
-#: ajax/addOptions.php:30
+#: ajax/addOptions.php:28
 msgid "Not archived"
 msgstr ""
 
-#: ajax/addOptions.php:31 inc/task.class.php:197 inc/task.class.php:686
+#: ajax/addOptions.php:29 inc/task.class.php:197 inc/task.class.php:686
 msgid "Archived"
 msgstr ""
 
@@ -37,7 +37,7 @@ msgid "Tables"
 msgstr ""
 
 #: inc/dashboard.class.php:102 inc/task.class.php:96 inc/task.class.php:478
-#: inc/taskstate.class.php:137 inc/taskstate.class.php:189
+#: inc/taskstate.class.php:140 inc/taskstate.class.php:192
 #: inc/tasktype.class.php:52
 msgid "Context"
 msgid_plural "Contexts"
@@ -46,7 +46,7 @@ msgstr[1] ""
 
 #: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
 #: inc/notificationtargettask.class.php:259 inc/task.class.php:134
-#: inc/task.class.php:568 inc/tasktype.class.php:229
+#: inc/task.class.php:568 inc/tasktype.class.php:228
 msgid "Due date"
 msgstr ""
 
@@ -63,7 +63,7 @@ msgstr ""
 msgid "You don't have the right to see any context"
 msgstr ""
 
-#: inc/kanban.class.php:185
+#: inc/kanban.class.php:186
 msgid "There is no accessible context"
 msgstr ""
 
@@ -127,7 +127,7 @@ msgid "Existing client"
 msgstr ""
 
 #: inc/task.class.php:709 inc/task.class.php:790 inc/task.class.php:1085
-#: inc/tasktype.class.php:165 inc/tasktype.class.php:526
+#: inc/tasktype.class.php:164 inc/tasktype.class.php:528
 msgid "Backlog"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Affect entity for create task"
 msgstr ""
 
-#: inc/taskstate.class.php:84
+#: inc/taskstate.class.php:87
 msgid "Status"
 msgid_plural "Statuses"
 msgstr[0] ""
