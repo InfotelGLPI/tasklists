@@ -150,7 +150,7 @@ function plugin_tasklists_uninstall() {
               "glpi_plugin_tasklists_items_kanbans"];
 
    foreach ($tables as $table) {
-      $DB->query("DROP TABLE IF EXISTS `$table`;");
+      $DB->doQuery("DROP TABLE IF EXISTS `$table`;");
    }
 
    $tables_glpi = ["glpi_displaypreferences",
@@ -161,7 +161,7 @@ function plugin_tasklists_uninstall() {
                    "glpi_documents_items"];
 
    foreach ($tables_glpi as $table_glpi) {
-      $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
+      $DB->doQuery("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
    }
 
    $notif = new Notification();

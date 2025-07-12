@@ -39,7 +39,12 @@ $kanban = new PluginTasklistsKanban();
 if ($kanban->canView() || Session::haveRight("config", CREATE)) {
    //AS module for SearchTokenizer
 //   echo "<script type='module' src='../../../js/modules/Kanban/Kanban.js'></script>";
-   echo "<script type='module' src='".$CFG_GLPI['root_doc'] . "/plugins/tasklists/lib/kanban/js/Kanban.js'></script>";
+    echo "<script src='".$CFG_GLPI['root_doc']."/plugins/tasklists/lib/kanban/js/SearchTokenizer/SearchTokenizerResult.js'></script>";
+    echo "<script src='".$CFG_GLPI['root_doc']."/plugins/tasklists/lib/kanban/js/SearchTokenizer/SearchToken.js'></script>";
+    echo "<script src='".$CFG_GLPI['root_doc']."/plugins/tasklists/lib/kanban/js/SearchTokenizer/SearchTokenizer.js'></script>";
+    echo "<script src='".$CFG_GLPI['root_doc']."/plugins/tasklists/lib/kanban/js/SearchTokenizer/SearchInput.js'></script>";
+    echo "<script src='".$CFG_GLPI['root_doc']."/plugins/tasklists/lib/kanban/js/Kanban.js'></script>";
+
    Html::requireJs('sortable');
 //   Html::requireJs('kanban');
    echo Html::css(PLUGIN_TASKLISTS_NOTFULL_DIR . '/lib/kanban/css/kanban.css');

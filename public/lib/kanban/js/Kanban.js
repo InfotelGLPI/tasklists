@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------
  */
 //INFOTEL
-import SearchInput from "../../../../../../js/modules/SearchTokenizer/SearchInput.js";
+// import SearchInput from "../../../../../../js/modules/SearchTokenizer/SearchInput.js";
 
 /* global sortable */
 /* global glpi_toast_error */
