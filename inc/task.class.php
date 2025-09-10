@@ -840,7 +840,7 @@ class PluginTasklistsTask extends CommonDBTM
                        FROM `glpi_plugin_tasklists_tasks`
                        $where)
         ORDER BY `name`";
-        $result = $DB->query($query);
+        $result = $DB->doQuery($query);
 
         $values = [0 => Dropdown::EMPTY_VALUE];
 

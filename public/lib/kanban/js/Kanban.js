@@ -365,6 +365,7 @@ class GLPIKanbanRights {
             }
             //INFOTEL
             self.tasklist_root = self.root_taslists + "/ajax";
+            self.ajax_root = self.root_taslists + "/ajax/";
             // Set rights
             if (args[0]['rights'] !== undefined) {
                 self.rights = new GLPIKanbanRights(args[0]['rights']);

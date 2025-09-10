@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -38,13 +39,12 @@ use Glpi\Application\View\TemplateRenderer;
  */
 class PluginTasklistsKanban extends CommonGLPI
 {
-
-    static $rightname = 'plugin_tasklists';
+    public static $rightname = 'plugin_tasklists';
 
     /**
      * @return bool
      */
-    static function canView(): bool
+    public static function canView(): bool
     {
         return Session::haveRight(self::$rightname, READ);
     }
@@ -52,7 +52,7 @@ class PluginTasklistsKanban extends CommonGLPI
     /**
      * @return bool
      */
-    static function canCreate(): bool
+    public static function canCreate(): bool
     {
         return Session::haveRight(self::$rightname, CREATE);
     }
@@ -71,7 +71,7 @@ class PluginTasklistsKanban extends CommonGLPI
      *
      * @return translated
      */
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
         return __('Kanban', 'tasklists');
     }
@@ -82,7 +82,7 @@ class PluginTasklistsKanban extends CommonGLPI
      *
      * @return array
      */
-    function defineTabs($options = [])
+    public function defineTabs($options = [])
     {
         $ong = [];
         $this->addStandardTab(__CLASS__, $ong, $options);
@@ -96,26 +96,26 @@ class PluginTasklistsKanban extends CommonGLPI
      *
      * @return int
      */
-    static function countTasksForKanban($id)
+    public static function countTasksForKanban($id)
     {
         $dbu = new DbUtils();
         return $dbu->countElementsInTable(
             'glpi_plugin_tasklists_tasks',
             [
                 "plugin_tasklists_tasktypes_id" => $id,
-                "is_template" => 0
+                "is_template" => 0,
             ]
         );
     }
 
     /**
-     * @param \CommonGLPI $item
+     * @param CommonGLPI $item
      * @param int $withtemplate
      *
      * @return array|bool|string
-     * @throws \GlpitestSQLError
+     * @throws GlpitestSQLError
      */
-    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         global $DB, $CFG_GLPI;
 
@@ -132,7 +132,7 @@ class PluginTasklistsKanban extends CommonGLPI
         $query .= "ORDER BY `name`";
         $tabs = [];
         if ($item->getType() == __CLASS__) {
-            if ($result = $DB->query($query)) {
+            if ($result = $DB->doQuery($query)) {
                 if ($DB->numrows($result)) {
                     while ($data = $DB->fetchArray($result)) {
                         //                  if (self::countTasksForKanban($data["id"]) > 0) {
@@ -156,14 +156,14 @@ class PluginTasklistsKanban extends CommonGLPI
     }
 
     /**
-     * @param \CommonGLPI $item
+     * @param CommonGLPI $item
      * @param int $tabnum
      * @param int $withtemplate
      *
      * @return bool
-     * @throws \GlpitestSQLError
+     * @throws GlpitestSQLError
      */
-    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
         if ($item->getType() == __CLASS__) {
             self::showKanban($tabnum);
@@ -172,7 +172,7 @@ class PluginTasklistsKanban extends CommonGLPI
     }
 
 
-    static function showKanban($ID)
+    public static function showKanban($ID)
     {
         global $CFG_GLPI;
         if ($ID > 0) {
@@ -205,24 +205,24 @@ class PluginTasklistsKanban extends CommonGLPI
                     'icon' => PluginTasklistsTask::getIcon(),
                     'fields' => [
                         'name' => [
-                            'placeholder' => __('Name')
+                            'placeholder' => __('Name'),
                         ],
                         'content' => [
                             'placeholder' => __('Content'),
-                            'type' => 'textarea'
+                            'type' => 'textarea',
                         ],
                         'plugin_tasklists_tasktypes_id' => [
                             'type' => 'hidden',
-                            'value' => $item_id
+                            'value' => $item_id,
                         ],
                         'entities_id' => [
                             'type' => 'hidden',
-                            'value' => $context->fields['entities_id']
+                            'value' => $context->fields['entities_id'],
                         ],
                         'users_id' => [
                             'type' => 'hidden',
-                            'value' => $_SESSION['glpiID']
-                        ]
+                            'value' => $_SESSION['glpiID'],
+                        ],
                     ],
                     'team_itemtypes' => $team_itemtypes,
                     'team_roles' => $team_roles,
@@ -240,7 +240,7 @@ class PluginTasklistsKanban extends CommonGLPI
 
             $column_field = [
                 'id' => 'plugin_tasklists_taskstates_id',
-                'extra_fields' => []
+                'extra_fields' => [],
             ];
 
             $refresh = 0;
@@ -255,9 +255,9 @@ class PluginTasklistsKanban extends CommonGLPI
             $candelete_item = json_encode(self::canDelete());
             $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", READ));
             //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
-            $cancreate_column = json_encode((bool)Session::haveRight("plugin_tasklists_config", READ));
+            $cancreate_column = json_encode((bool) Session::haveRight("plugin_tasklists_config", READ));
             $limit_addcard_columns = [];
-            $can_order_item = json_encode((bool)PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
+            $can_order_item = json_encode((bool) PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
 
             $itemtype = PluginTasklistsTaskType::class;
 
@@ -267,7 +267,7 @@ class PluginTasklistsKanban extends CommonGLPI
                 'create_column' => $cancreate_column,
                 'modify_view' => $canmodify_view,
                 'order_card' => $can_order_item,
-                'create_card_limited_columns' => $limit_addcard_columns
+                'create_card_limited_columns' => $limit_addcard_columns,
             ];
 
             TemplateRenderer::getInstance()->display('@tasklists/kanban.html.twig', [
@@ -280,38 +280,38 @@ class PluginTasklistsKanban extends CommonGLPI
                 'column_field' => $column_field,
                 'item' => [
                     'itemtype' => $itemtype,
-                    'items_id' => $item_id
+                    'items_id' => $item_id,
                 ],
                 'supported_filters' => [
-                        'title' => [
-                            'description' => _x('filters', 'The title of the item'),
-                            'supported_prefixes' => ['!', '#'] // Support exclusions and regex
-                        ],
-                        'type' => [
-                            'description' => _x('filters', 'The type of the item'),
-                            'supported_prefixes' => ['!']
-                        ],
-                        'content' => [
-                            'description' => _x('filters', 'The content of the item'),
-                            'supported_prefixes' => ['!', '#'] // Support exclusions and regex
-                        ],
-                        'team' => [
-                            'description' => _x('filters', 'A team member for the item'),
-                            'supported_prefixes' => ['!']
-                        ],
-                        'user' => [
-                            'description' => _x('filters', 'A user in the team of the item'),
-                            'supported_prefixes' => ['!']
-                        ],
-                        'group' => [
-                            'description' => _x('filters', 'A group in the team of the item'),
-                            'supported_prefixes' => ['!']
-                        ],
-                        //                                                'supplier' => [
-                        //                                                   'description'        => _x('filters', 'A supplier in the team of the item'),
-                        //                                                   'supported_prefixes' => ['!']
-                        //                                                ],
-                    ] + self::getKanbanPluginFilters(static::getType()),
+                    'title' => [
+                        'description' => _x('filters', 'The title of the item'),
+                        'supported_prefixes' => ['!', '#'], // Support exclusions and regex
+                    ],
+                    'type' => [
+                        'description' => _x('filters', 'The type of the item'),
+                        'supported_prefixes' => ['!'],
+                    ],
+                    'content' => [
+                        'description' => _x('filters', 'The content of the item'),
+                        'supported_prefixes' => ['!', '#'], // Support exclusions and regex
+                    ],
+                    'team' => [
+                        'description' => _x('filters', 'A team member for the item'),
+                        'supported_prefixes' => ['!'],
+                    ],
+                    'user' => [
+                        'description' => _x('filters', 'A user in the team of the item'),
+                        'supported_prefixes' => ['!'],
+                    ],
+                    'group' => [
+                        'description' => _x('filters', 'A group in the team of the item'),
+                        'supported_prefixes' => ['!'],
+                    ],
+                    //                                                'supplier' => [
+                    //                                                   'description'        => _x('filters', 'A supplier in the team of the item'),
+                    //                                                   'supported_prefixes' => ['!']
+                    //                                                ],
+                ] + self::getKanbanPluginFilters(static::getType()),
             ]);
         }
     }

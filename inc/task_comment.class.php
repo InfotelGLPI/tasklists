@@ -40,7 +40,16 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       return _n('Comment', 'Comments', $nb);
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+    /**
+     * @return string
+     */
+    static function getIcon()
+    {
+        return PluginTasklistsTask::getIcon();
+    }
+
+
+    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       if (!$item->canUpdateItem()) {
          return '';
       }

@@ -282,7 +282,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       $template = new NotificationTemplate();
       $dbu      = new DbUtils();
 
-      $query_id = "SELECT `id` FROM `glpi_notificationtemplates` 
+      $query_id = "SELECT `id` FROM `glpi_notificationtemplates`
                   WHERE `itemtype`='PluginTasklistsTask' AND `name` = 'Tasks'";
       $result = $DB->doQuery($query_id) or die($DB->error());
 
@@ -343,7 +343,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
       }
       //      $query_id = "SELECT `id` FROM `glpi_notificationtemplates`
       //                  WHERE `itemtype`='PluginTasklistsTask' AND `name` = 'Alert not finished Tasks'";
-      //      $result = $DB->query($query_id) or die($DB->error());
+      //      $result = $DB->doQuery($query_id) or die($DB->error());
       //
       //      if ($DB->numrows($result) > 0) {
       //         $templates_id = $DB->result($result, 0, 'id');
@@ -449,7 +449,7 @@ class PluginTasklistsNotificationTargetTask extends NotificationTarget {
                         &lt;br /&gt;&lt;/span&gt;##ENDIFtask.name## ##IFtask.type##
                         &lt;span style=\"font-family: Verdana; font-size: 11px; text-align: left;\"&gt;
                         &lt;strong&gt;##lang.task.type##&lt;/strong&gt; :  ##task.type##&lt;br /&gt;
-                        &lt;/span&gt;##ENDIFtask.type## 
+                        &lt;/span&gt;##ENDIFtask.type##
                         &lt;span style=\"font-family: Verdana; font-size: 11px; text-align: left;\"&gt;
                         &lt;strong&gt;##lang.task.status##&lt;/strong&gt; :  ##task.status##&lt;br /&gt;
                         &lt;/span&gt; ##IFtask.users##

@@ -64,8 +64,8 @@ class PluginTasklistsMenu extends CommonGLPI {
 
       $menu['links']['search'] = PluginTasklistsTask::getSearchURL(false);
       if (PluginTasklistsTask::canCreate()) {
-         $menu['links']['add']      = PLUGIN_TASKLISTS_NOTFULL_DIR.'/front/setup.templates.php?add=1';
-         $menu['links']['template'] = PLUGIN_TASKLISTS_NOTFULL_DIR.'/front/setup.templates.php?add=0';
+         $menu['links']['add']      = PLUGIN_TASKLISTS_WEBDIR.'/front/setup.templates.php?add=1';
+         $menu['links']['template'] = PLUGIN_TASKLISTS_WEBDIR.'/front/setup.templates.php?add=0';
       }
       $menu['links']['summary'] = PluginTasklistsKanban::getSearchURL(false);
 

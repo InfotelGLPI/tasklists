@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -49,9 +50,17 @@ class PluginTasklistsProfile extends Profile
         if ($item->getType() == 'Profile'
             && $item->getField('interface') != 'helpdesk'
         ) {
-            return __('Tasks list', 'tasklists');
+            return self::createTabEntry(__('Tasks list', 'tasklists'));
         }
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    static function getIcon()
+    {
+        return PluginTasklistsTask::getIcon();
     }
 
 
@@ -71,8 +80,8 @@ class PluginTasklistsProfile extends Profile
             self::addDefaultProfileInfos(
                 $ID,
                 ['plugin_tasklists'         => 0,
-                 'plugin_tasklists_see_all' => 0,
-                 'plugin_tasklists_config'  => 0]
+                    'plugin_tasklists_see_all' => 0,
+                    'plugin_tasklists_config'  => 0]
             );
             $prof->showForm($ID);
         }
@@ -88,8 +97,8 @@ class PluginTasklistsProfile extends Profile
         self::addDefaultProfileInfos(
             $ID,
             ['plugin_tasklists'         => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE,
-             'plugin_tasklists_see_all' => 1,
-             'plugin_tasklists_config'  => 1],
+                'plugin_tasklists_see_all' => 1,
+                'plugin_tasklists_config'  => 1],
             true
         );
     }
@@ -153,8 +162,8 @@ class PluginTasklistsProfile extends Profile
         if ($profile->getField('interface') == 'central') {
             $rights = $this->getAllRights();
             $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
-                                                          'default_class' => 'tab_bg_2',
-                                                          'title'         => __('General')]);
+                'default_class' => 'tab_bg_2',
+                'title'         => __('General')]);
         }
 
         echo "<table class='tab_cadre_fixehov'>";
@@ -164,7 +173,7 @@ class PluginTasklistsProfile extends Profile
         echo "<td width='20%'>" . __('See and update all tasks', 'tasklists') . "</td>";
         echo "<td colspan='5'>";
         Html::showCheckbox(['name'    => '_plugin_tasklists_see_all',
-                            'checked' => $effective_rights['plugin_tasklists_see_all']]);
+            'checked' => $effective_rights['plugin_tasklists_see_all']]);
         echo "</td></tr>\n";
 
         $effective_rights = ProfileRight::getProfileRights($profiles_id, ['plugin_tasklists_config']);
@@ -173,7 +182,7 @@ class PluginTasklistsProfile extends Profile
         echo "<td width='20%'>" . __('Configure contexts and statuses', 'tasklists') . "</td>";
         echo "<td colspan='5'>";
         Html::showCheckbox(['name'    => '_plugin_tasklists_config',
-                            'checked' => $effective_rights['plugin_tasklists_config']]);
+            'checked' => $effective_rights['plugin_tasklists_config']]);
         echo "</td></tr>\n";
 
         echo "</table>";
@@ -198,18 +207,18 @@ class PluginTasklistsProfile extends Profile
     public static function getAllRights($all = false)
     {
         $rights = [
-           ['itemtype' => 'PluginTasklistsTask',
-            'label'    => PluginTasklistsTask::getTypeName(2),
-            'field'    => 'plugin_tasklists'
-           ],
+            ['itemtype' => 'PluginTasklistsTask',
+                'label'    => PluginTasklistsTask::getTypeName(2),
+                'field'    => 'plugin_tasklists',
+            ],
         ];
         if ($all) {
             $rights[] = ['itemtype' => 'PluginTasklistsTask',
-                         'label'    => __('See and update all tasks', 'tasklists'),
-                         'field'    => 'plugin_tasklists_see_all'];
+                'label'    => __('See and update all tasks', 'tasklists'),
+                'field'    => 'plugin_tasklists_see_all'];
             $rights[] = ['itemtype' => 'PluginTasklistsTask',
-                         'label'    => __('Configure contexts and statuses', 'tasklists'),
-                         'field'    => 'plugin_tasklists_config'];
+                'label'    => __('Configure contexts and statuses', 'tasklists'),
+                'field'    => 'plugin_tasklists_config'];
         }
         return $rights;
     }
@@ -262,15 +271,15 @@ class PluginTasklistsProfile extends Profile
             'FROM'  => 'glpi_profilerights',
             'WHERE' => [
                 'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-                'name' => "LIKE '%plugin_tasklists%'"
-            ]
+                'name' => "LIKE '%plugin_tasklists%'",
+            ],
         ];
         foreach ($DB->request($options) as $prof) {
-        // Vérifier si la session est active
-        if (isset($_SESSION['glpiactiveprofile'])) {
-            $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
+            // Vérifier si la session est active
+            if (isset($_SESSION['glpiactiveprofile'])) {
+                $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
+            }
         }
-    }
     }
 
 

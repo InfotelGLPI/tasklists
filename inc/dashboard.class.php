@@ -106,11 +106,11 @@ class PluginTasklistsDashboard extends CommonGLPI
                                 ),
                                 __('User'), __('Percent done'),
                                 __('Due date', 'tasklists')];//, __('Action')
-                    $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type' 
+                    $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type'
                             FROM `glpi_plugin_tasklists_tasks`
-                            LEFT JOIN `glpi_plugin_tasklists_tasktypes` 
-                            ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`) 
-                            WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0 
+                            LEFT JOIN `glpi_plugin_tasklists_tasktypes`
+                            ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`)
+                            WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0
                               AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 ";
                     if (is_array($states) && count($states) > 0) {
                         $query .= " AND `glpi_plugin_tasklists_tasks`.`plugin_tasklists_taskstates_id` IN (" . implode(",", $states_founded) . ") ";
@@ -125,7 +125,7 @@ class PluginTasklistsDashboard extends CommonGLPI
                     $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
 
                     $tasks = [];
-                    if ($result = $DB->query($query)) {
+                    if ($result = $DB->doQuery($query)) {
                         if ($DB->numrows($result)) {
                             while ($data = $DB->fetchArray($result)) {
                                 $ID   = $data['id'];

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -34,70 +35,80 @@ use Glpi\Plugin\Hooks;
 define('PLUGIN_TASKLISTS_VERSION', '2.0.4');
 
 if (!defined("PLUGIN_TASKLISTS_DIR")) {
-   define("PLUGIN_TASKLISTS_DIR", Plugin::getPhpDir("tasklists"));
-   define("PLUGIN_TASKLISTS_NOTFULL_DIR", Plugin::getPhpDir("tasklists",false));
+    define("PLUGIN_TASKLISTS_DIR", Plugin::getPhpDir("tasklists"));
+    //   define("PLUGIN_TASKLISTS_WEBDIR", Plugin::getPhpDir("tasklists",false));
+    $root = $CFG_GLPI['root_doc'] . '/plugins/tasklists';
+    define("PLUGIN_TASKLISTS_WEBDIR", $root);
 }
 // Init the hooks of the plugins -Needed
-function plugin_init_tasklists() {
-   global $PLUGIN_HOOKS, $CFG_GLPI;
+function plugin_init_tasklists()
+{
+    global $PLUGIN_HOOKS, $CFG_GLPI;
 
-   $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
-   $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
-   $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
-//    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
-   if (Session::getLoginUserID()) {
+    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
+    $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
+    $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
+    //    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
+    if (Session::getLoginUserID()) {
 
-      Plugin::registerClass('PluginTasklistsTask', [
-//         'linkuser_types'              => true,
-//         'linkgroup_types'             => true,
-         'document_types'              => true,
-         'notificationtemplates_types' => true
-      ]);
+        Plugin::registerClass('PluginTasklistsTask', [
+            //         'linkuser_types'              => true,
+            //         'linkgroup_types'             => true,
+            'document_types'              => true,
+            'notificationtemplates_types' => true,
+        ]);
 
-      Plugin::registerClass('PluginTasklistsTicket',
-                            ['addtabon' => 'Ticket']);
+        Plugin::registerClass(
+            'PluginTasklistsTicket',
+            ['addtabon' => 'Ticket']
+        );
 
-      $PLUGIN_HOOKS['item_purge']['tasklists']['Ticket'] = ['PluginTasklistsTaskTicket', 'cleanForTicket'];
+        $PLUGIN_HOOKS['item_purge']['tasklists']['Ticket'] = ['PluginTasklistsTaskTicket', 'cleanForTicket'];
 
-      Plugin::registerClass('PluginTasklistsProfile',
-                            ['addtabon' => 'Profile']);
+        Plugin::registerClass(
+            'PluginTasklistsProfile',
+            ['addtabon' => 'Profile']
+        );
 
-      Plugin::registerClass('PluginTasklistsPreference',
-                            ['addtabon' => 'Preference']);
+        Plugin::registerClass(
+            'PluginTasklistsPreference',
+            ['addtabon' => 'Preference']
+        );
 
-      if (Session::haveRight("plugin_tasklists", READ)) {
-         $PLUGIN_HOOKS['menu_toadd']['tasklists'] = ['helpdesk' => 'PluginTasklistsMenu'];
-      }
+        if (Session::haveRight("plugin_tasklists", READ)) {
+            $PLUGIN_HOOKS['menu_toadd']['tasklists'] = ['helpdesk' => 'PluginTasklistsMenu'];
+        }
 
-      if (class_exists('PluginMydashboardMenu')) {
-         $PLUGIN_HOOKS['mydashboard']['tasklists'] = ["PluginTasklistsDashboard"];
-      }
+        if (class_exists('PluginMydashboardMenu')) {
+            $PLUGIN_HOOKS['mydashboard']['tasklists'] = ["PluginTasklistsDashboard"];
+        }
 
-      if (Session::haveRight("plugin_tasklists", CREATE)) {
-         $PLUGIN_HOOKS['use_massive_action']['tasklists'] = 1;
-      }
-   }
+        if (Session::haveRight("plugin_tasklists", CREATE)) {
+            $PLUGIN_HOOKS['use_massive_action']['tasklists'] = 1;
+        }
+    }
 }
 
 // Get the name and the version of the plugin - Needed
 /**
  * @return array
  */
-function plugin_version_tasklists() {
+function plugin_version_tasklists()
+{
 
-   return [
-      'name'         => __('Tasks list', 'tasklists'),
-      'version'      => PLUGIN_TASKLISTS_VERSION,
-      'license'      => 'GPLv2+',
-      'author'       => "<a href='http://blogglpi.infotel.com'>Infotel</a>",
-      'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
-      'requirements' => [
-         'glpi' => [
-            'min' => '11.0',
-            'max' => '12.0',
-            'dev' => false
-         ]
-      ]
-   ];
+    return [
+        'name'         => __('Tasks list', 'tasklists'),
+        'version'      => PLUGIN_TASKLISTS_VERSION,
+        'license'      => 'GPLv2+',
+        'author'       => "<a href='http://blogglpi.infotel.com'>Infotel</a>",
+        'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
+        'requirements' => [
+            'glpi' => [
+                'min' => '11.0',
+                'max' => '12.0',
+                'dev' => false,
+            ],
+        ],
+    ];
 
 }
