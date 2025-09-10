@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 07:37+0000\n"
+"POT-Creation-Date: 2025-09-10 11:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:89 inc/dashboard.class.php:60 inc/dashboard.class.php:178
+#: setup.php:100 inc/dashboard.class.php:60 inc/dashboard.class.php:178
 #: inc/dashboard.class.php:183 inc/menu.class.php:44
-#: inc/preference.class.php:46 inc/profile.class.php:52
+#: inc/preference.class.php:48 inc/profile.class.php:53
 msgid "Tasks list"
 msgstr ""
 
-#: ajax/addOptions.php:28
+#: ajax/addOptions.php:53
 msgid "Not archived"
 msgstr ""
 
-#: ajax/addOptions.php:29 inc/task.class.php:197 inc/task.class.php:686
+#: ajax/addOptions.php:54 inc/task.class.php:197 inc/task.class.php:686
 msgid "Archived"
 msgstr ""
 
@@ -38,7 +38,7 @@ msgstr ""
 
 #: inc/dashboard.class.php:102 inc/task.class.php:96 inc/task.class.php:478
 #: inc/taskstate.class.php:140 inc/taskstate.class.php:192
-#: inc/tasktype.class.php:52
+#: inc/tasktype.class.php:55
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
@@ -46,12 +46,12 @@ msgstr[1] ""
 
 #: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
 #: inc/notificationtargettask.class.php:259 inc/task.class.php:134
-#: inc/task.class.php:568 inc/tasktype.class.php:228
+#: inc/task.class.php:568 inc/tasktype.class.php:234
 msgid "Due date"
 msgstr ""
 
 #: inc/dashboard.class.php:163 inc/dashboard.class.php:164
-#: inc/dashboard.class.php:169 inc/ticket.class.php:154
+#: inc/dashboard.class.php:169 inc/ticket.class.php:171
 msgid "Add task"
 msgstr ""
 
@@ -89,27 +89,27 @@ msgstr ""
 msgid "At creation, update, removal of a task"
 msgstr ""
 
-#: inc/preference.class.php:88
+#: inc/preference.class.php:93
 msgid "Context by default"
 msgstr ""
 
-#: inc/preference.class.php:96
+#: inc/preference.class.php:101
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: inc/preference.class.php:102
+#: inc/preference.class.php:107
 msgid "Refresh every "
 msgstr ""
 
-#: inc/preference.class.php:106
+#: inc/preference.class.php:114
 msgid "minute(s)"
 msgstr ""
 
-#: inc/profile.class.php:164 inc/profile.class.php:208
+#: inc/profile.class.php:173 inc/profile.class.php:217
 msgid "See and update all tasks"
 msgstr ""
 
-#: inc/profile.class.php:173 inc/profile.class.php:211
+#: inc/profile.class.php:182 inc/profile.class.php:220
 msgid "Configure contexts and statuses"
 msgstr ""
 
@@ -127,7 +127,7 @@ msgid "Existing client"
 msgstr ""
 
 #: inc/task.class.php:709 inc/task.class.php:790 inc/task.class.php:1085
-#: inc/tasktype.class.php:164 inc/tasktype.class.php:528
+#: inc/tasktype.class.php:172 inc/tasktype.class.php:538
 msgid "Backlog"
 msgstr ""
 
@@ -156,28 +156,28 @@ msgid_plural "Statuses"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/ticket.class.php:74 inc/ticket.class.php:184
+#: inc/ticket.class.php:89 inc/ticket.class.php:201
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/ticket.class.php:228
+#: inc/ticket.class.php:244
 msgid "No task linked to this ticket yet"
 msgstr ""
 
-#: inc/ticket.class.php:259
+#: inc/ticket.class.php:276
 msgid "Link a existant ticket"
 msgstr ""
 
-#: inc/ticket.class.php:285
+#: inc/ticket.class.php:301
 msgid "Linked tickets"
 msgstr ""
 
-#: inc/typevisibility.class.php:138
+#: inc/typevisibility.class.php:156
 msgid "Add a group"
 msgstr ""
 
-#: inc/typevisibility.class.php:179
+#: inc/typevisibility.class.php:198
 msgid "Groups allowed to use context"
 msgstr ""
