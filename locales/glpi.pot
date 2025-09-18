@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-10 11:02+0000\n"
+"POT-Creation-Date: 2025-09-18 15:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,166 +18,168 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:100 inc/dashboard.class.php:60 inc/dashboard.class.php:178
-#: inc/dashboard.class.php:183 inc/menu.class.php:44
-#: inc/preference.class.php:48 inc/profile.class.php:53
+#: setup.php:102 src/Dashboard.php:73 src/Dashboard.php:191
+#: src/Dashboard.php:196 src/Menu.php:50 src/Preference.php:55
+#: src/Profile.php:60
 msgid "Tasks list"
 msgstr ""
 
-#: ajax/addOptions.php:53
+#: ajax/addOptions.php:54
 msgid "Not archived"
 msgstr ""
 
-#: ajax/addOptions.php:54 inc/task.class.php:197 inc/task.class.php:686
+#: ajax/addOptions.php:55 src/Task.php:216 src/Task.php:705
 msgid "Archived"
 msgstr ""
 
-#: inc/dashboard.class.php:59
+#: src/Dashboard.php:72
 msgid "Tables"
 msgstr ""
 
-#: inc/dashboard.class.php:102 inc/task.class.php:96 inc/task.class.php:478
-#: inc/taskstate.class.php:140 inc/taskstate.class.php:192
-#: inc/tasktype.class.php:55
+#: src/Dashboard.php:115 src/Task.php:115 src/Task.php:497
+#: src/Taskstate.php:151 src/Taskstate.php:206 src/Tasktype.php:67
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
-#: inc/notificationtargettask.class.php:259 inc/task.class.php:134
-#: inc/task.class.php:568 inc/tasktype.class.php:234
+#: src/Dashboard.php:121 src/Notificationtargettask.php:234
+#: src/Notificationtargettask.php:284 src/Task.php:153 src/Task.php:587
+#: src/Tasktype.php:246
 msgid "Due date"
 msgstr ""
 
-#: inc/dashboard.class.php:163 inc/dashboard.class.php:164
-#: inc/dashboard.class.php:169 inc/ticket.class.php:171
+#: src/Dashboard.php:176 src/Dashboard.php:177 src/Dashboard.php:182
+#: src/Ticket.php:182
 msgid "Add task"
 msgstr ""
 
-#: inc/kanban.class.php:76
+#: src/Kanban.php:82
 msgid "Kanban"
 msgstr ""
 
-#: inc/kanban.class.php:148
+#: src/Kanban.php:154
 msgid "You don't have the right to see any context"
 msgstr ""
 
-#: inc/kanban.class.php:186
+#: src/Kanban.php:192
 msgid "There is no accessible context"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:51
+#: src/Notificationtargettask.php:68
 msgid "A task has been added"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:52
+#: src/Notificationtargettask.php:69
 msgid "A task has been updated"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:53
+#: src/Notificationtargettask.php:70
 msgid "A task has been removed"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:217
-#: inc/notificationtargettask.class.php:263 inc/task.class.php:205
-#: inc/task.class.php:559
+#: src/Notificationtargettask.php:238 src/Notificationtargettask.php:288
+#: src/Task.php:224 src/Task.php:578
 msgid "Other client"
 msgstr ""
 
-#: inc/notificationtargettask.class.php:271
+#: src/Notificationtargettask.php:296
 msgid "At creation, update, removal of a task"
 msgstr ""
 
-#: inc/preference.class.php:93
+#: src/Preference.php:100
 msgid "Context by default"
 msgstr ""
 
-#: inc/preference.class.php:101
+#: src/Preference.php:108
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: inc/preference.class.php:107
+#: src/Preference.php:114
 msgid "Refresh every "
 msgstr ""
 
-#: inc/preference.class.php:114
+#: src/Preference.php:121
 msgid "minute(s)"
 msgstr ""
 
-#: inc/profile.class.php:173 inc/profile.class.php:217
+#: src/Profile.php:180 src/Profile.php:224
 msgid "See and update all tasks"
 msgstr ""
 
-#: inc/profile.class.php:182 inc/profile.class.php:220
+#: src/Profile.php:189 src/Profile.php:227
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: inc/task.class.php:254
+#: src/Task.php:273
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
 
-#: inc/task.class.php:392
+#: src/Task.php:411
 msgid "You cannot archive a task with this state"
 msgstr ""
 
-#: inc/task.class.php:522
+#: src/Task.php:541
 msgid "Existing client"
 msgstr ""
 
-#: inc/task.class.php:709 inc/task.class.php:790 inc/task.class.php:1085
-#: inc/tasktype.class.php:172 inc/tasktype.class.php:538
+#: src/Task.php:728 src/Task.php:809 src/Task.php:1104 src/Tasktype.php:184
+#: src/Tasktype.php:550
 msgid "Backlog"
 msgstr ""
 
-#: inc/task.class.php:1143
+#: src/Task.php:1162
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: inc/task.class.php:1146
+#: src/Task.php:1165
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
 
-#: inc/task.class.php:1149
+#: src/Task.php:1168
 msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: inc/task.class.php:1192
+#: src/Task.php:1211
 msgid "Affect entity for create task"
 msgstr ""
 
-#: inc/taskstate.class.php:87
+#: src/Task.php:1311
+msgid "Choose a template"
+msgstr ""
+
+#: src/Taskstate.php:97
 msgid "Status"
 msgid_plural "Statuses"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/ticket.class.php:89 inc/ticket.class.php:201
+#: src/Ticket.php:100 src/Ticket.php:212
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/ticket.class.php:244
+#: src/Ticket.php:255
 msgid "No task linked to this ticket yet"
 msgstr ""
 
-#: inc/ticket.class.php:276
+#: src/Ticket.php:287
 msgid "Link a existant ticket"
 msgstr ""
 
-#: inc/ticket.class.php:301
+#: src/Ticket.php:312
 msgid "Linked tickets"
 msgstr ""
 
-#: inc/typevisibility.class.php:156
+#: src/Typevisibility.php:168
 msgid "Add a group"
 msgstr ""
 
-#: inc/typevisibility.class.php:198
+#: src/Typevisibility.php:210
 msgid "Groups allowed to use context"
 msgstr ""
