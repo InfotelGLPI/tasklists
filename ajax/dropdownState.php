@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Task;
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
@@ -36,6 +37,6 @@ Session::checkRight('plugin_tasklists', UPDATE);
 
 if (isset($_POST["plugin_tasklists_tasktypes_id"])) {
 
-   PluginTasklistsTask::displayState($_POST['plugin_tasklists_tasktypes_id']);
+   Task::displayState($_POST['plugin_tasklists_tasktypes_id']);
 
 }

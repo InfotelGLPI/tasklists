@@ -32,10 +32,13 @@
 global $CFG_GLPI;
 
 use Glpi\Exception\Http\AccessDeniedHttpException;
+use GlpiPlugin\Tasklists\Menu;
+use GlpiPlugin\Tasklists\Task;
+use GlpiPlugin\Tasklists\Kanban;
 
-Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
-$kanban = new PluginTasklistsKanban();
+$kanban = new Kanban();
 
 if ($kanban->canView() || Session::haveRight("config", CREATE)) {
     //AS module for SearchTokenizer
@@ -53,7 +56,7 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
     if (!isset($_GET["context_id"])) {
         $_GET["context_id"] = -1;
     }
-    PluginTasklistsKanban::showKanban($_GET["context_id"]);
+    Kanban::showKanban($_GET["context_id"]);
 } else {
     throw new AccessDeniedHttpException();
 }

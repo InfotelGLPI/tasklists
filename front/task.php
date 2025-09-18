@@ -27,16 +27,17 @@
  --------------------------------------------------------------------------
  */
 
-
 use Glpi\Exception\Http\AccessDeniedHttpException;
+use GlpiPlugin\Tasklists\Menu;
+use GlpiPlugin\Tasklists\Task;
 
-Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
-$task = new PluginTasklistsTask();
+$task = new Task();
 
 if ($task->canView() || Session::haveRight("config", CREATE)) {
 
-   Search::show("PluginTasklistsTask");
+   Search::show(Task::class);
 
 } else {
     throw new AccessDeniedHttpException();

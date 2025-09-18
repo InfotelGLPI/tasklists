@@ -27,22 +27,41 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
+use Ajax;
+use CommonDBTM;
+use CommonITILActor;
+use CommonITILObject;
+use DbUtils;
+use Document_Item;
+use Dropdown;
+use DropdownTranslation;
+use Glpi\Plugin\Hooks;
+use Glpi\DBAL\QueryExpression;
+use Glpi\Features\Clonable;
+use Glpi\Features\Teamwork;
+//Needed for save cards
+use Glpi\Features\Kanban;
+use Glpi\RichText\RichText;
+use Group_User;
+use Html;
+use MassiveAction;
+use Notepad;
+use NotificationEvent;
+use Session;
+use User;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
-use Glpi\Plugin\Hooks;
-use Glpi\DBAL\QueryExpression;
-/**
- * Class PluginTasklistsTask
- */
-class PluginTasklistsTask extends CommonDBTM
-{
-    use Glpi\Features\Clonable;
-    use Glpi\Features\Teamwork;
 
-    //Needed for save cards
-    use Glpi\Features\Kanban;
+/**
+ * Class Task
+ */
+class Task extends CommonDBTM
+{
 
     public $dohistory = true;
     static $rightname = 'plugin_tasklists';
@@ -52,7 +71,7 @@ class PluginTasklistsTask extends CommonDBTM
     /**
      * @param int $nb
      *
-     * @return translated
+     * @return string
      */
     static function getTypeName($nb = 0)
     {
@@ -289,8 +308,8 @@ class PluginTasklistsTask extends CommonDBTM
         $this->addDefaultFormTab($ong);
         $this->addStandardTab('Document_Item', $ong, $options);
         if (!isset($options['withtemplate']) || empty($options['withtemplate'])) {
-            $this->addStandardTab('PluginTasklistsTask_Comment', $ong, $options);
-            $this->addStandardTab('PluginTasklistsTicket', $ong, $options);
+            $this->addStandardTab(Task_Comment::class, $ong, $options);
+            $this->addStandardTab(Ticket::class, $ong, $options);
         }
         $this->addStandardTab('Notepad', $ong, $options);
         $this->addStandardTab('Log', $ong, $options);
@@ -324,8 +343,8 @@ class PluginTasklistsTask extends CommonDBTM
      **/
     function cleanDBonPurge()
     {
-        /// PluginTasklistsTask_Comment does not extends CommonDBConnexity
-        $kbic = new PluginTasklistsTask_Comment();
+        /// Task_Comment does not extends CommonDBConnexity
+        $kbic = new Task_Comment();
         $kbic->deleteByCriteria(['plugin_tasklists_tasks_id' => $this->fields['id']]);
     }
 
@@ -340,7 +359,7 @@ class PluginTasklistsTask extends CommonDBTM
             $input['due_date'] = 'NULL';
         }
         if (isset($input['content'])) {
-            $input['content'] = Glpi\RichText\RichText::getSafeHtml($input['content'], true);
+            $input['content'] = RichText::getSafeHtml($input['content'], true);
         }
 
         if (isset($input["id"]) && ($input["id"] > 0)) {
@@ -376,7 +395,7 @@ class PluginTasklistsTask extends CommonDBTM
             $input['due_date'] = 'NULL';
         }
         if (isset($input['plugin_tasklists_taskstates_id'])) {
-            $state = new PluginTasklistsTaskState();
+            $state = new TaskState();
             if ($state->getFromDB($input['plugin_tasklists_taskstates_id'])) {
                 if ($state->getFinishedState()) {
                     $input['percent_done'] = 100;
@@ -385,7 +404,7 @@ class PluginTasklistsTask extends CommonDBTM
         }
         if (isset($input['is_archived'])
             && $input['is_archived'] == 1) {
-            $state = new PluginTasklistsTaskState();
+            $state = new TaskState();
             if ($state->getFromDB($this->fields['plugin_tasklists_taskstates_id'])) {
                 if (!$state->getFinishedState()) {
                     Session::addMessageAfterRedirect(
@@ -476,8 +495,8 @@ class PluginTasklistsTask extends CommonDBTM
             $plugin_tasklists_tasktypes_id = $options['plugin_tasklists_tasktypes_id'];
         }
         echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";
-        $types = PluginTasklistsTypeVisibility::seeAllowedTypes();
-        $rand_type = Dropdown::show('PluginTasklistsTaskType', [
+        $types = TypeVisibility::seeAllowedTypes();
+        $rand_type = Dropdown::show(TaskType::class, [
             'name' => "plugin_tasklists_tasktypes_id",
             'value' => $plugin_tasklists_tasktypes_id,
             'entity' => $this->fields["entities_id"],
@@ -642,7 +661,7 @@ class PluginTasklistsTask extends CommonDBTM
         echo "<td>" . __('Status') . "</td><td>";
 
         Dropdown::show(
-            'PluginTasklistsTaskState',
+            TaskState::class,
             ['value' => $this->fields["plugin_tasklists_taskstates_id"]]
         );
 
@@ -712,7 +731,7 @@ class PluginTasklistsTask extends CommonDBTM
 
         $states_ranked = [];
         $dbu = new DbUtils();
-        $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
+        $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType(TaskState::class));
         if (!empty($datastates)) {
             foreach ($datastates as $datastate) {
                 if ($datastate['tasktypes'] != null) {
@@ -722,7 +741,7 @@ class PluginTasklistsTask extends CommonDBTM
                             if (empty(
                             $name = DropdownTranslation::getTranslatedValue(
                                 $datastate['id'],
-                                'PluginTasklistsTaskState',
+                                TaskState::class,
                                 'name',
                                 $_SESSION['glpilanguage']
                             )
@@ -758,12 +777,12 @@ class PluginTasklistsTask extends CommonDBTM
      */
     static function getClosedStateForTask($plugin_tasklists_tasks_id)
     {
-        $task = new PluginTasklistsTask();
+        $task = new Task();
         if ($task->getFromDB($plugin_tasklists_tasks_id)) {
             $state = $task->fields["plugin_tasklists_taskstates_id"];
             $dbu = new DbUtils();
             $condition = ["is_finished" => 1];
-            $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'), $condition);
+            $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType(TaskState::class), $condition);
             if (!empty($datastates)) {
                 foreach ($datastates as $datastate) {
                     $tasktypes = json_decode($datastate['tasktypes']);
@@ -904,7 +923,7 @@ class PluginTasklistsTask extends CommonDBTM
             if ($isadmin) {
                 if (Session::haveRight('transfer', READ) && Session::isMultiEntitiesMode()
                 ) {
-                    $actions['PluginTasklistsTask' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
+                    $actions['GlpiPlugin\Tasklists\Task' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
                         'Transfer'
                     );
                 }
@@ -951,10 +970,10 @@ class PluginTasklistsTask extends CommonDBTM
         switch ($ma->getAction()) {
             case "transfer" :
                 $input = $ma->getInput();
-                if ($item->getType() == 'PluginTasklistsTask') {
+                if ($item->getType() == Task::class) {
                     foreach ($ids as $key) {
                         $item->getFromDB($key);
-                        $type = PluginTasklistsTaskType::transfer(
+                        $type = TaskType::transfer(
                             $item->fields["plugin_tasklists_tasktypes_id"],
                             $input['entities_id']
                         );
@@ -1029,7 +1048,7 @@ class PluginTasklistsTask extends CommonDBTM
      * @param $values    String / Array with the value to display
      * @param $options   Array          of option
      *
-     * @return a string
+     * @return int|string string
      **@since version 0.83
      *
      */
@@ -1079,7 +1098,7 @@ class PluginTasklistsTask extends CommonDBTM
                 return self::dropdownVisibility($options);
 
             case 'plugin_tasklists_taskstates_id':
-                return Dropdown::show('PluginTasklistsTaskState', [
+                return Dropdown::show(TaskState::class, [
                     'name' => $name,
                     'value' => $values[$field],
                     'emptylabel' => __('Backlog', 'tasklists'),
@@ -1289,7 +1308,7 @@ class PluginTasklistsTask extends CommonDBTM
 
         echo "<div align='center'><table class='tab_cadre_fixe'>";
         if ($add) {
-            echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Choose a template') . " - " . self::getTypeName(
+            echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Choose a template', 'tasklists') . " - " . self::getTypeName(
                     2
                 ) . "</th>";
         } else {
@@ -1344,7 +1363,7 @@ class PluginTasklistsTask extends CommonDBTM
         if (!$add) {
             echo "<tr>";
             echo "<td colspan='" . (2 + $colsup) . "' class='tab_bg_2 center'>";
-            echo "<b><a href=\"$target?withtemplate=1\">" . __('Add a template...') . "</a></b>";
+            echo "<b><a href=\"$target?withtemplate=1\">" . __('Add a template') . "</a></b>";
             echo "</td>";
             echo "</tr>";
         }
@@ -1391,10 +1410,10 @@ class PluginTasklistsTask extends CommonDBTM
             $link_class = null;
             switch ($itemtype) {
                 case 'User':
-                    $link_class = "PluginTasklistsTask";
+                    $link_class = Task::class;
                     break;
                 case 'Group':
-                    $link_class = "PluginTasklistsTask";
+                    $link_class = Task::class;
                     break;
             }
 
@@ -1480,11 +1499,11 @@ class PluginTasklistsTask extends CommonDBTM
         $link_class = null;
         switch ($itemtype) {
             case 'User':
-                $link_class = "PluginTasklistsTask";
+                $link_class = Task::class;
                 $field = "users_id";
                 break;
             case 'Group':
-                $link_class = "PluginTasklistsTask";
+                $link_class = Task::class;
                 $field = "groups_id";
                 break;
         }
@@ -1510,11 +1529,11 @@ class PluginTasklistsTask extends CommonDBTM
         $link_class = null;
         switch ($itemtype) {
             case 'User':
-                $link_class = "PluginTasklistsTask";
+                $link_class = Task::class;
                 $field = "users_id";
                 break;
             case 'Group':
-                $link_class = "PluginTasklistsTask";
+                $link_class = Task::class;
                 $field = "groups_id";
                 break;
         }

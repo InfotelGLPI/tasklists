@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -28,14 +27,22 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
+use CommonGLPI;
+use DbUtils;
+use Html;
+use ProfileRight;
+use Session;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginTasklistsProfile
+ * Class Profile
  */
-class PluginTasklistsProfile extends Profile
+class Profile extends \Profile
 {
     public static $rightname = "profile";
 
@@ -60,7 +67,7 @@ class PluginTasklistsProfile extends Profile
      */
     static function getIcon()
     {
-        return PluginTasklistsTask::getIcon();
+        return Task::getIcon();
     }
 
 
@@ -207,16 +214,16 @@ class PluginTasklistsProfile extends Profile
     public static function getAllRights($all = false)
     {
         $rights = [
-            ['itemtype' => 'PluginTasklistsTask',
-                'label'    => PluginTasklistsTask::getTypeName(2),
+            ['itemtype' => Task::class,
+                'label'    => Task::getTypeName(2),
                 'field'    => 'plugin_tasklists',
             ],
         ];
         if ($all) {
-            $rights[] = ['itemtype' => 'PluginTasklistsTask',
+            $rights[] = ['itemtype' => Task::class,
                 'label'    => __('See and update all tasks', 'tasklists'),
                 'field'    => 'plugin_tasklists_see_all'];
-            $rights[] = ['itemtype' => 'PluginTasklistsTask',
+            $rights[] = ['itemtype' => Task::class,
                 'label'    => __('Configure contexts and statuses', 'tasklists'),
                 'field'    => 'plugin_tasklists_config'];
         }

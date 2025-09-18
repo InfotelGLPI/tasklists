@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -27,63 +28,74 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 // Class for a Dropdown
+use CommonITILObject;
+use CommonTreeDropdown;
+use DbUtils;
+use DropdownTranslation;
+use Entity;
 use Glpi\Features\KanbanInterface;
+use Glpi\RichText\RichText;
+use Html;
+use Mexitek\PHPColors\Color;
+use Session;
+use Toolbox;
 
 /**
- * Class PluginTasklistsTaskType
+ * Class TaskType
  */
-class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterface
+class TaskType extends CommonTreeDropdown implements KanbanInterface
 {
-
     use \Glpi\Features\Kanban;
 
-    static $rightname = 'plugin_tasklists';
+    public static $rightname = 'plugin_tasklists';
 
-   /**
-    * @param int $nb
-    *
-    * @return translated
-    */
-    static function getTypeName($nb = 0)
+    /**
+     * @param int $nb
+     *
+     * @return string
+     */
+    public static function getTypeName($nb = 0)
     {
 
         return _n('Context', 'Contexts', $nb, 'tasklists');
     }
 
-   /**
-    * @return string
-    */
-    static function getIcon()
+    /**
+     * @return string
+     */
+    public static function getIcon()
     {
         return "ti ti-layout-kanban";
     }
 
-   /**
-    * @param array $options
-    *
-    * @return array
-    * @see CommonGLPI::defineTabs()
-    *
-    */
-    function defineTabs($options = [])
+    /**
+     * @param array $options
+     *
+     * @return array
+     * @see CommonGLPI::defineTabs()
+     *
+     */
+    public function defineTabs($options = [])
     {
 
         $ong = parent::defineTabs($options);
         $this->addStandardTab(__CLASS__, $ong, $options);
-        $this->addStandardTab('PluginTasklistsTypeVisibility', $ong, $options);
+        $this->addStandardTab(TypeVisibility::class, $ong, $options);
         return $ong;
     }
 
 
-   /**
-    * @return array
-    */
-    static function getAllForKanban($active = true, $current_id = -1)
+    /**
+     * @return array
+     */
+    public static function getAllForKanban($active = true, $current_id = -1)
     {
         $self = new self();
 
@@ -101,29 +113,29 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         return $items;
     }
 
-   /**
-    * @return bool
-    */
+    /**
+     * @return bool
+     */
     public function forceGlobalState()
     {
-       // All users must be using the global state unless viewing the global Kanban
+        // All users must be using the global state unless viewing the global Kanban
         return false;
     }
 
-   /**
-    * @param $ID
-    * @param $entity
-    *
-    * @return ID|int|the
-    * @throws \GlpitestSQLError
-    */
-    static function transfer($ID, $entity)
+    /**
+     * @param $ID
+     * @param $entity
+     *
+     * @return ID|int|the
+     * @throws \GlpitestSQLError
+     */
+    public static function transfer($ID, $entity)
     {
         global $DB;
 
         if ($ID > 0) {
-           // Not already transfer
-           // Search init item
+            // Not already transfer
+            // Search init item
             $query = "SELECT *
                    FROM `glpi_plugin_tasklists_tasktypes`
                    WHERE `id` = '$ID'";
@@ -149,63 +161,63 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         return 0;
     }
 
-   /**
-    * @param       $ID
-    * @param       $column_field
-    * @param array $column_ids
-    * @param bool  $get_default
-    *
-    * @return array
-    */
+    /**
+     * @param       $ID
+     * @param       $column_field
+     * @param array $column_ids
+     * @param bool  $get_default
+     *
+     * @return array
+     */
 
-    static function getKanbanColumns($ID, $column_field = null, $column_ids = [], $get_default = false)
+    public static function getKanbanColumns($ID, $column_field = null, $column_ids = [], $get_default = false)
     {
 
-        if (!PluginTasklistsTypeVisibility::isUserHaveRight($ID)) {
+        if (!TypeVisibility::isUserHaveRight($ID)) {
             return [];
         }
         $dbu = new DbUtils();
-       //      $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTaskState'));
+        //      $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType('TaskState'));
 
         $states[0] = [
-         'id'              => 0,
-         'name'            => __('Backlog', 'tasklists'),
-         'header_color'    => "#CCC",
-         'header_fg_color' => Toolbox::getFgColor("#CCC", 50),
-         'drop_only'       => 0,
-         'finished'        => 0,
-         '_protected'   => true
+            'id'              => 0,
+            'name'            => __('Backlog', 'tasklists'),
+            'header_color'    => "#CCC",
+            'header_fg_color' => Toolbox::getFgColor("#CCC", 50),
+            'drop_only'       => 0,
+            'finished'        => 0,
+            '_protected'   => true,
         ];
 
         if (!empty($column_ids)) {
-            $PluginTasklistsTaskState = new PluginTasklistsTaskState();
-            $datastates               = $PluginTasklistsTaskState->find(["id" => $column_ids]);
+            $TaskState = new TaskState();
+            $datastates               = $TaskState->find(["id" => $column_ids]);
         }
 
         if (!empty($column_ids) && !empty($datastates)) {
             foreach ($datastates as $datastate) {
-                if (empty($name = DropdownTranslation::getTranslatedValue($datastate['id'], 'PluginTasklistsTaskState', 'name', $_SESSION['glpilanguage']))) {
+                if (empty($name = DropdownTranslation::getTranslatedValue($datastate['id'], TaskState::class, 'name', $_SESSION['glpilanguage']))) {
                     $name = $datastate['name'];
                 }
                 $states[$datastate['id']] = [
-                'id'              => $datastate['id'],
-                'header_color'    => $datastate['color'],
-                'header_fg_color' => Toolbox::getFgColor($datastate['color'], 50),
-                'name'            => $name,
-                'finished'        => $datastate['is_finished']];
+                    'id'              => $datastate['id'],
+                    'header_color'    => $datastate['color'],
+                    'header_fg_color' => Toolbox::getFgColor($datastate['color'], 50),
+                    'name'            => $name,
+                    'finished'        => $datastate['is_finished']];
                 $colors[$datastate['id']] = $datastate['color'];
             }
         }
         $nstates = [];
 
-        $task = new PluginTasklistsTask();
+        $task = new Task();
         foreach ($states as $state) {
             $selected_state = $state;
             $tasks          = [];
             $datas          = $task->find(["plugin_tasklists_tasktypes_id"  => $ID,
-                                        "plugin_tasklists_taskstates_id" => $state['id'],
-                                        'is_deleted'                     => 0,
-                                        'is_template'                    => 0], ['priority DESC,name']);
+                "plugin_tasklists_taskstates_id" => $state['id'],
+                'is_deleted'                     => 0,
+                'is_template'                    => 0], ['priority DESC,name']);
 
             foreach ($datas as $data) {
                 $array = isset($_SESSION["archive"][Session::getLoginUserID()]) ? json_decode($_SESSION["archive"][Session::getLoginUserID()]) : [0];
@@ -220,14 +232,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
                 $plugin_tasklists_taskstates_id = $data['plugin_tasklists_taskstates_id'];
                 $finished                       = 0;
                 $finished_style                 = 'style="display: inline;"';
-                $stateT                         = new PluginTasklistsTaskState();
+                $stateT                         = new TaskState();
                 if ($stateT->getFromDB($plugin_tasklists_taskstates_id)) {
                     if ($stateT->getFinishedState()) {
                         $finished_style = 'style="display: none;"';
                         $finished       = 1;
                     }
                 }
-                $task = new PluginTasklistsTask();
+                $task = new Task();
                 if ($task->checkVisibility($data['id']) == true) {
                     $duedate = '';
                     if (!empty($data['due_date'])) {
@@ -263,9 +275,9 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
                     }
                     $client = (empty($data['client'])) ? $entity_name : $data['client'];
 
-                  //               $comment = Glpi\Toolbox\Sanitizer::unsanitize($data["content"]);
+                    //               $comment = Glpi\Toolbox\Sanitizer::unsanitize($data["content"]);
 
-                  // Core content
+                    // Core content
                     $content      = "<div class='kanban-core-content'>";
                     $content      .= "<div class='flex-break'>";
                     $bgcolor      = $_SESSION["glpipriority_" . $data['priority']];
@@ -273,14 +285,14 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
                     $content      .= "</div>";
                     $rich_content = "";
                     if ($data['content'] != null) {
-                        $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true, true);
+                        $rich_content = RichText::getTextFromHtml($data['content'], false, true, true);
                     }
                     $content .= Html::resume_text($rich_content, 100);
                     $content .= "</div>";
                     $content .= "<div align='right' class='endfooter b'>" . $client . "</div>";
                     $content .= "<div align='right' class='endfooter'>" . $actiontime . "</div>";
                     $content .= "<div align='right' class='endfooter'>" . $duedate . "</div>";
-                  // Percent Done
+                    // Percent Done
                     $content    .= "<div class='flex-break'></div>";
                     $content    .= Html::progress(100, $data['percent_done']);
                     $content    .= "</div>";
@@ -288,8 +300,8 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
                     $nbcomments = "";
                     $nb         = 0;
                     $where      = [
-                    'plugin_tasklists_tasks_id' => $data['id'],
-                    'language'                  => null
+                        'plugin_tasklists_tasks_id' => $data['id'],
+                        'language'                  => null,
                     ];
                     $nb         = countElementsInTable(
                         'glpi_plugin_tasklists_tasks_comments',
@@ -299,7 +311,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
                         $nbcomments = " (" . $nb . ") ";
                     }
 
-                    $itemtype        = "PluginTasklistsTask";
+                    $itemtype        = Task::class;
                     $meta            = [];
                     $metadata_values = ['name', 'content'];
                     foreach ($metadata_values as $metadata_value) {
@@ -307,66 +319,66 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
                             $meta[$metadata_value] = $data[$metadata_value];
                         }
                     }
-                   //               if (isset($meta['_metadata']['content']) && is_string($meta['_metadata']['content'])) {
-                   //                  $meta['_metadata']['content'] = Glpi\RichText\RichText::getTextFromHtml($tasks['_metadata']['content'], false, true);
-                   //               } else {
-                   //                  $meta['_metadata']['content'] = '';
-                   //               }
+                    //               if (isset($meta['_metadata']['content']) && is_string($meta['_metadata']['content'])) {
+                    //                  $meta['_metadata']['content'] = Glpi\RichText\RichText::getTextFromHtml($tasks['_metadata']['content'], false, true);
+                    //               } else {
+                    //                  $meta['_metadata']['content'] = '';
+                    //               }
 
-                   // Create a fake item to get just the actors without loading all other information about items.
-                   //               $temp_item = new PluginTasklistsTask();
-                   //               $temp_item->fields['id'] = $data['id'];
-                   //               $temp_item->loadActors();
+                    // Create a fake item to get just the actors without loading all other information about items.
+                    //               $temp_item = new Task();
+                    //               $temp_item->fields['id'] = $data['id'];
+                    //               $temp_item->loadActors();
 
-                   // Build team member data
+                    // Build team member data
                     $supported_teamtypes = [
-                  //                  'User' => ['id', 'firstname', 'realname'],
-                  //                  'Group' => ['id', 'name'],
-                  //                  'Supplier' => ['id', 'name'],
+                        //                  'User' => ['id', 'firstname', 'realname'],
+                        //                  'Group' => ['id', 'name'],
+                        //                  'Supplier' => ['id', 'name'],
                     ];
-                   //               $members = [
-                   //                  'User'      => $temp_item->fields['users_id'],
-                   //                  'Group'     => $temp_item->fields['groups_id'],
-                   //                  'Supplier'   => $temp_item->getSuppliers(CommonITILActor::ASSIGN),
-                   //               ];
+                    //               $members = [
+                    //                  'User'      => $temp_item->fields['users_id'],
+                    //                  'Group'     => $temp_item->fields['groups_id'],
+                    //                  'Supplier'   => $temp_item->getSuppliers(CommonITILActor::ASSIGN),
+                    //               ];
                     $team = [];
-                   //               foreach ($supported_teamtypes as $itemtype => $fields) {
-                   //                  $fields[] = 'id';
-                   //                  $fields[] = new QueryExpression($DB->quoteValue($itemtype) . ' AS ' . $DB->quoteName('itemtype'));
-                   //
-                   //                  $member_ids = array_map(static function ($e) use ($itemtype) {
-                   //                     return $e[$itemtype::getForeignKeyField()];
-                   //                  }, $members[$itemtype]);
-                   //                  if (count($member_ids)) {
-                   //                     $itemtable = $itemtype::getTable();
-                   //                     $all_items = $DB->request([
-                   //                                                  'SELECT'    => $fields,
-                   //                                                  'FROM'      => $itemtable,
-                   //                                                  'WHERE'     => [
-                   //                                                     "{$itemtable}.id"   => $member_ids
-                   //                                                  ]
-                   ////                                               ]);
-                   //               $team = [];
-                   //                  $all_items[] = ['itemtype' => 'User', 'items_id'=> $data['users_id']];
-                   //                  $all_items[] = ['itemtype' => 'Group', 'items_id'=> $data['groups_id']];
-                   ////                     $all_members = [];
-                   //                     foreach ($all_items as $k => $member_data) {
-                   //                        $member_data['itemtype'] = $member_data['itemtype'];
-                   //                        $member_data['id'] = $member_data['items_id'];
-                   //                        $member_data['role'] = 2;
-                   ////                        if ($member_data['itemtype'] === User::class) {
-                   ////                           $member_data['name'] = formatUserName(
-                   ////                              $member_data['id'],
-                   ////                              '',
-                   ////                              $member_data['realname'],
-                   ////                              $member_data['firstname']
-                   ////                           );
-                   ////                        }
-                   //                        $team[] = $member_data;
-                   //                     }
-                   ////                  }
-                   ////               }
-                   //               Toolbox::logInfo($team);
+                    //               foreach ($supported_teamtypes as $itemtype => $fields) {
+                    //                  $fields[] = 'id';
+                    //                  $fields[] = new QueryExpression($DB->quoteValue($itemtype) . ' AS ' . $DB->quoteName('itemtype'));
+                    //
+                    //                  $member_ids = array_map(static function ($e) use ($itemtype) {
+                    //                     return $e[$itemtype::getForeignKeyField()];
+                    //                  }, $members[$itemtype]);
+                    //                  if (count($member_ids)) {
+                    //                     $itemtable = $itemtype::getTable();
+                    //                     $all_items = $DB->request([
+                    //                                                  'SELECT'    => $fields,
+                    //                                                  'FROM'      => $itemtable,
+                    //                                                  'WHERE'     => [
+                    //                                                     "{$itemtable}.id"   => $member_ids
+                    //                                                  ]
+                    ////                                               ]);
+                    //               $team = [];
+                    //                  $all_items[] = ['itemtype' => 'User', 'items_id'=> $data['users_id']];
+                    //                  $all_items[] = ['itemtype' => 'Group', 'items_id'=> $data['groups_id']];
+                    ////                     $all_members = [];
+                    //                     foreach ($all_items as $k => $member_data) {
+                    //                        $member_data['itemtype'] = $member_data['itemtype'];
+                    //                        $member_data['id'] = $member_data['items_id'];
+                    //                        $member_data['role'] = 2;
+                    ////                        if ($member_data['itemtype'] === User::class) {
+                    ////                           $member_data['name'] = formatUserName(
+                    ////                              $member_data['id'],
+                    ////                              '',
+                    ////                              $member_data['realname'],
+                    ////                              $member_data['firstname']
+                    ////                           );
+                    ////                        }
+                    //                        $team[] = $member_data;
+                    //                     }
+                    ////                  }
+                    ////               }
+                    //               Toolbox::logInfo($team);
                     $task->getFromDB($data['id']);
                     $team = $task->getTeam();
 
@@ -378,42 +390,42 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
 
                     $rich_content = "";
                     if ($data['content'] != null) {
-                        $rich_content = Glpi\RichText\RichText::getTextFromHtml($data['content'], false, true);
+                        $rich_content = RichText::getTextFromHtml($data['content'], false, true);
                     }
 
                     $title = Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments;
-                   //               $ID    = $data['id'];
-                   //               if ($finished == 1 && $archived == 0) {
-                   //                  $title .= "&nbsp;<a id='archivetask$ID' href='#' title='" . __('Archive this task', 'tasklists') . "'><i class='ti ti-archive'></i></a>";
-                   //               }
-                   //               if ($finished == 1 && $data['priority'] < 5) {
-                   //                  $title .= "&nbsp;<a id='updatepriority$ID' href='#' title='" . __('Update priority of task', 'tasklists') . "'><i class='ti ti-arrow-up'></i></a>";
-                   //               }
+                    //               $ID    = $data['id'];
+                    //               if ($finished == 1 && $archived == 0) {
+                    //                  $title .= "&nbsp;<a id='archivetask$ID' href='#' title='" . __('Archive this task', 'tasklists') . "'><i class='ti ti-archive'></i></a>";
+                    //               }
+                    //               if ($finished == 1 && $data['priority'] < 5) {
+                    //                  $title .= "&nbsp;<a id='updatepriority$ID' href='#' title='" . __('Update priority of task', 'tasklists') . "'><i class='ti ti-arrow-up'></i></a>";
+                    //               }
 
                     $tasks[] = ['id'            => "{$itemtype}-{$data['id']}",
-                           'title'         => $title,
-                           'title_tooltip' => Html::resume_text($rich_content, 100),
-                           'is_deleted'    => $data['is_deleted'] ?? false,
-                           'content'       => $content,
-                           '_team'         => $team,
-                           '_form_link'    => $itemtype::getFormUrlWithID($data['id']),
+                        'title'         => $title,
+                        'title_tooltip' => Html::resume_text($rich_content, 100),
+                        'is_deleted'    => $data['is_deleted'] ?? false,
+                        'content'       => $content,
+                        '_team'         => $team,
+                        '_form_link'    => $itemtype::getFormUrlWithID($data['id']),
 
-                           'block'          => ($ID > 0 ? $ID : 0),
-                           'priority'       => CommonITILObject::getPriorityName($data['priority']),
-                           'priority_id'    => $data['priority'],
-                           'bgcolor'        => $bgcolor,
-                           'percent'        => $data['percent_done'],
-                           'actiontime'     => $actiontime,
-                           'duedate'        => $duedate,
-                           //                           'user'           => $link,
-                           'client'         => $client,
-                           'finished'       => $finished,
-                           'archived'       => $archived,
-                           'finished_style' => $finished_style,
-                           'right'          => $right,
-                           'users_id'       => $data['users_id'],
-                           '_readonly'      => false,
-                           '_metadata'      => $meta
+                        'block'          => ($ID > 0 ? $ID : 0),
+                        'priority'       => CommonITILObject::getPriorityName($data['priority']),
+                        'priority_id'    => $data['priority'],
+                        'bgcolor'        => $bgcolor,
+                        'percent'        => $data['percent_done'],
+                        'actiontime'     => $actiontime,
+                        'duedate'        => $duedate,
+                        //                           'user'           => $link,
+                        'client'         => $client,
+                        'finished'       => $finished,
+                        'archived'       => $archived,
+                        'finished_style' => $finished_style,
+                        'right'          => $right,
+                        'users_id'       => $data['users_id'],
+                        '_readonly'      => false,
+                        '_metadata'      => $meta,
                     ];
                 }
             }
@@ -430,7 +442,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         if ($color !== "") {
             $color = str_replace("#", "", $color);
 
-           // if transparency present, get only the color part
+            // if transparency present, get only the color part
             if (strlen($color) === 8 && preg_match('/^[a-fA-F0-9]+$/', $color)) {
                 $tmp   = $color;
                 $alpha = hexdec(substr($tmp, 6, 2));
@@ -441,34 +453,34 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
                 }
             }
 
-            $color_inst = new Mexitek\PHPColors\Color($color);
+            $color_inst = new Color($color);
 
-           // adapt luminance part
-           //         if ($color_inst->isLight()) {
-           //            $hsl = Color::hexToHsl($color);
-           //            $hsl['L'] = max(0, $hsl['L'] - ($offset / 100));
-           //            $fg_color = Color::hslToHex($hsl);
-           //         } else {
-            $hsl      = Mexitek\PHPColors\Color::hexToHsl($color);
+            // adapt luminance part
+            //         if ($color_inst->isLight()) {
+            //            $hsl = Color::hexToHsl($color);
+            //            $hsl['L'] = max(0, $hsl['L'] - ($offset / 100));
+            //            $fg_color = Color::hslToHex($hsl);
+            //         } else {
+            $hsl      = Color::hexToHsl($color);
             $hsl['L'] = ($hsl['L'] * 110) + 5;
             $hsl['L'] = ($hsl['L'] > 110) ? $hsl['L'] / 50 : $hsl['L'] / 90;
-            $fg_color = Mexitek\PHPColors\Color::hslToHex($hsl);
-           //         }
+            $fg_color = Color::hslToHex($hsl);
+            //         }
         }
 
         return "#" . $fg_color;
     }
 
-   /**
-    * @param $plugin_tasklists_tasktypes_id
-    *
-    * @return array
-    */
-    static function findUsers($plugin_tasklists_tasktypes_id)
+    /**
+     * @param $plugin_tasklists_tasktypes_id
+     *
+     * @return array
+     */
+    public static function findUsers($plugin_tasklists_tasktypes_id)
     {
         $dbu   = new DbUtils();
         $users = [];
-        $task  = new PluginTasklistsTask();
+        $task  = new Task();
         $tasks = $task->find(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id, "is_archived" => 0, "is_deleted" => 0]);
         foreach ($tasks as $t) {
             $users[$t["users_id"]] = $dbu->getUserName($t["users_id"]);
@@ -480,13 +492,13 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         return $users;
     }
 
-   /**
-    * Have I the global right to "create" the Object
-    * May be overloaded if needed (ex KnowbaseItem)
-    *
-    * @return boolean
-    **/
-    static function canCreate(): bool
+    /**
+     * Have I the global right to "create" the Object
+     * May be overloaded if needed (ex KnowbaseItem)
+     *
+     * @return boolean
+     **/
+    public static function canCreate(): bool
     {
         if (static::$rightname) {
             return Session::haveRight(static::$rightname, 1);
@@ -494,7 +506,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         return false;
     }
 
-    static function canUpdate(): bool
+    public static function canUpdate(): bool
     {
         if (static::$rightname) {
             return Session::haveRight(static::$rightname, 1);
@@ -502,7 +514,7 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         return false;
     }
 
-    static function canDelete(): bool
+    public static function canDelete(): bool
     {
         if (static::$rightname) {
             return Session::haveRight(static::$rightname, 1);
@@ -512,12 +524,12 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
 
     public static function getDataToDisplayOnKanban($ID, $criteria = [])
     {
-       // Not needed
+        // Not needed
     }
 
     public static function showKanban($ID)
     {
-       // Not needed
+        // Not needed
     }
 
     public static function getAllKanbanColumns($column_field = null, $column_ids = [], $get_default = false)
@@ -526,27 +538,27 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         if ($column_field === null || $column_field === 'plugin_tasklists_taskstates_id') {
             $columns  = ['plugin_tasklists_taskstates_id' => []];
             $restrict = [];
-           //         if (!empty($column_ids) && !$get_default) {
-           //            $restrict = ['id' => $column_ids];
-           //         }
+            //         if (!empty($column_ids) && !$get_default) {
+            //            $restrict = ['id' => $column_ids];
+            //         }
 
-            $Taskstate    = new PluginTasklistsTaskState();
+            $Taskstate    = new TaskState();
             $all_statuses = $Taskstate->find($restrict, ['is_finished ASC', 'id']);
 
             $columns['plugin_tasklists_taskstates_id'][0] = [
-            //            'id'        => 0,
-            'name'            => __('Backlog', 'tasklists'),
-            'header_color'    => "#CCC",
-            'header_fg_color' => Toolbox::getFgColor("#CCC", 50),
-            'drop_only'       => 0
+                //            'id'        => 0,
+                'name'            => __('Backlog', 'tasklists'),
+                'header_color'    => "#CCC",
+                'header_fg_color' => Toolbox::getFgColor("#CCC", 50),
+                'drop_only'       => 0,
             ];
 
             foreach ($all_statuses as $status) {
                 $columns['plugin_tasklists_taskstates_id'][$status['id']] = [
-                'name'            => $status['name'],
-                'header_color'    => $status['color'],
-                'header_fg_color' => Toolbox::getFgColor($status['color'], 50),
-                'drop_only'       => 0,//$status['is_finished'] ??
+                    'name'            => $status['name'],
+                    'header_color'    => $status['color'],
+                    'header_fg_color' => Toolbox::getFgColor($status['color'], 50),
+                    'drop_only'       => 0,//$status['is_finished'] ??
                 ];
             }
 
@@ -556,20 +568,20 @@ class PluginTasklistsTaskType extends CommonTreeDropdown implements KanbanInterf
         }
     }
 
-   //   public static function getGlobalKanbanUrl(bool $full = true): string
-   //   {
-   //      if (method_exists(static::class, 'getFormUrl')) {
-   //         return static::getFormURL($full) . '?showglobalkanban=1';
-   //      }
-   //      //      $kb = new PluginTasklistsKanban();
-   //      //      echo $kb->getSearchURL() . '?context_id=' . $_REQUEST['items_id'];
-   //      //
-   //      return '';
-   //   }
+    //   public static function getGlobalKanbanUrl(bool $full = true): string
+    //   {
+    //      if (method_exists(static::class, 'getFormUrl')) {
+    //         return static::getFormURL($full) . '?showglobalkanban=1';
+    //      }
+    //      //      $kb = new Kanban();
+    //      //      echo $kb->getSearchURL() . '?context_id=' . $_REQUEST['items_id'];
+    //      //
+    //      return '';
+    //   }
 
     public function getKanbanUrlWithID(int $items_id, bool $full = true): string
     {
-        $kb = new PluginTasklistsKanban();
+        $kb = new Kanban();
         return $kb->getSearchURL() . '?context_id=' . $items_id;
     }
 }

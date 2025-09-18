@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -28,10 +27,24 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
+use Ajax;
+use CommonGLPI;
+use DbUtils;
+use Dropdown;
+use Glpi\RichText\RichText;
+use GlpiPlugin\Mydashboard\Datatable;
+use Group_User;
+use Html;
+use Plugin;
+use Session;
+use Toolbox;
+
 /**
- * Class PluginTasklistsDashboard
+ * Class Dashboard
  */
-class PluginTasklistsDashboard extends CommonGLPI
+class Dashboard extends CommonGLPI
 {
     public $widgets = [];
     private $options;
@@ -39,7 +52,7 @@ class PluginTasklistsDashboard extends CommonGLPI
     private $form;
 
     /**
-     * PluginTasklistsDashboard constructor.
+     * Dashboard constructor.
      *
      * @param array $options
      */
@@ -68,7 +81,7 @@ class PluginTasklistsDashboard extends CommonGLPI
     /**
      * @param $widgetId
      *
-     * @return PluginMydashboardDatatable
+     * @return Datatable
      * @throws \GlpitestSQLError
      */
     public function getWidgetContentForItem($widgetId)
@@ -82,9 +95,9 @@ class PluginTasklistsDashboard extends CommonGLPI
             case $this->getType() . "1":
                 if (Plugin::isPluginActive("tasklists")) {
                     $dbu    = new DbUtils();
-                    $widget = new PluginMydashboardDatatable();
+                    $widget = new Datatable();
 
-                    $st             = new PluginTasklistsTaskState();
+                    $st             = new TaskState();
                     $states_founded = [];
                     $states         = $st->find(['is_finished' => 0]);
                     foreach ($states as $state) {
@@ -129,14 +142,14 @@ class PluginTasklistsDashboard extends CommonGLPI
                         if ($DB->numrows($result)) {
                             while ($data = $DB->fetchArray($result)) {
                                 $ID   = $data['id'];
-                                $task = new PluginTasklistsTask();
+                                $task = new Task();
                                 if ($task->checkVisibility($ID) == true) {
                                     $rand                  = mt_rand();
-                                    $url                   = Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "?id=" . $data['id'];
+                                    $url                   = Toolbox::getItemTypeFormURL(Task::class) . "?id=" . $data['id'];
                                     $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
 
                                     $tasks[$data['id']][0] .= Html::showToolTip(
-                                        Glpi\RichText\RichText::getSafeHtml($data['content']),
+                                        RichText::getSafeHtml($data['content']),
                                         ['applyto' => 'task' . $data["id"] . $rand,
                                          'display' => false]
                                     );
@@ -179,7 +192,7 @@ class PluginTasklistsDashboard extends CommonGLPI
 
                     return $widget;
                 } else {
-                    $widget = new PluginMydashboardDatatable();
+                    $widget = new Datatable();
                     $widget->setWidgetTitle(__("Tasks list", 'tasklists'));
                     return $widget;
                 }

@@ -28,10 +28,11 @@
  */
 
 use Glpi\Exception\Http\BadRequestHttpException;
+use GlpiPlugin\Tasklists\Ticket;
 
 Session::checkLoginUser();
 
-$ticket = new PluginTasklistsTicket();
+$ticket = new Ticket();
 if (isset($_POST["add"])) {
    $ticket->check(-1, CREATE, $_POST);
 

@@ -27,6 +27,9 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\BadRequestHttpException;
+use GlpiPlugin\Tasklists\TaskType;
+
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
@@ -39,9 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 if (!isset($_REQUEST['action'])) {
-   Toolbox::logError("Missing action parameter");
-   http_response_code(400);
-   return;
+    throw new BadRequestHttpException("Missing action parameter");
 }
 $action = $_REQUEST['action'];
 
@@ -80,7 +81,7 @@ if ($_REQUEST['action'] == 'addArchived') {
 if ($_REQUEST['action'] == 'addUsers') {
 
    header("Content-Type: application/json; charset=UTF-8", true);
-   $users = PluginTasklistsTaskType::findUsers($_REQUEST['context']);
+   $users = TaskType::findUsers($_REQUEST['context']);
 
    if (!isset($_SESSION["usersKanban"][Session::getLoginUserID()])) {
       $_SESSION["usersKanban"][Session::getLoginUserID()] = json_encode([-1]);

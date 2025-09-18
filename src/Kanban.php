@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -28,16 +27,23 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
+use CommonGLPI;
+use DbUtils;
+use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Tasklists\Preference;
+use Session;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
-use Glpi\Application\View\TemplateRenderer;
 
 /**
- * Class PluginTasklistsKanban
+ * Class Kanban
  */
-class PluginTasklistsKanban extends CommonGLPI
+class Kanban extends CommonGLPI
 {
     public static $rightname = 'plugin_tasklists';
 
@@ -136,7 +142,7 @@ class PluginTasklistsKanban extends CommonGLPI
                 if ($DB->numrows($result)) {
                     while ($data = $DB->fetchArray($result)) {
                         //                  if (self::countTasksForKanban($data["id"]) > 0) {
-                        if (PluginTasklistsTypeVisibility::isUserHaveRight($data["id"])) {
+                        if (TypeVisibility::isUserHaveRight($data["id"])) {
                             $tabs[$data["id"]] = $data["completename"];
                         }
                         //                  }
@@ -178,7 +184,7 @@ class PluginTasklistsKanban extends CommonGLPI
         if ($ID > 0) {
             $item_id = $ID;
         } else {
-            $item_id = PluginTasklistsPreference::checkPreferenceValue("default_type", Session::getLoginUserID());
+            $item_id = Preference::checkPreferenceValue("default_type", Session::getLoginUserID());
         }
 
         if ($item_id == 0) {
@@ -187,22 +193,22 @@ class PluginTasklistsKanban extends CommonGLPI
         } else {
             //         $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
             //         $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
-            $context = new PluginTasklistsTaskType();
+            $context = new TaskType();
             $context->getFromDB($item_id);
             $supported_itemtypes = [];
 
-            $team_itemtypes = PluginTasklistsTask::getTeamItemtypes();
-            $team_role_ids = PluginTasklistsTask::getTeamRoles();
+            $team_itemtypes = Task::getTeamItemtypes();
+            $team_role_ids = Task::getTeamRoles();
             $team_roles = [];
 
             foreach ($team_role_ids as $role_id) {
-                $team_roles[$role_id] = PluginTasklistsTask::getTeamRoleName($role_id);
+                $team_roles[$role_id] = Task::getTeamRoleName($role_id);
             }
 
-            if (PluginTasklistsTask::canCreate()) {
-                $supported_itemtypes['PluginTasklistsTask'] = [
-                    'name' => PluginTasklistsTask::getTypeName(1),
-                    'icon' => PluginTasklistsTask::getIcon(),
+            if (Task::canCreate()) {
+                $supported_itemtypes[Task::class] = [
+                    'name' => Task::getTypeName(1),
+                    'icon' => Task::getIcon(),
                     'fields' => [
                         'name' => [
                             'placeholder' => __('Name'),
@@ -244,8 +250,8 @@ class PluginTasklistsKanban extends CommonGLPI
             ];
 
             $refresh = 0;
-            if (PluginTasklistsPreference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0) {
-                $refresh = PluginTasklistsPreference::checkPreferenceValue(
+            if (Preference::checkPreferenceValue("automatic_refresh", Session::getLoginUserID()) != 0) {
+                $refresh = Preference::checkPreferenceValue(
                     "automatic_refresh_delay",
                     Session::getLoginUserID()
                 );
@@ -257,9 +263,9 @@ class PluginTasklistsKanban extends CommonGLPI
             //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
             $cancreate_column = json_encode((bool) Session::haveRight("plugin_tasklists_config", READ));
             $limit_addcard_columns = [];
-            $can_order_item = json_encode((bool) PluginTasklistsTypeVisibility::isUserHaveRight($item_id));
+            $can_order_item = json_encode((bool) TypeVisibility::isUserHaveRight($item_id));
 
-            $itemtype = PluginTasklistsTaskType::class;
+            $itemtype = TaskType::class;
 
             $rights = [
                 'create_item' => $canadd_item,

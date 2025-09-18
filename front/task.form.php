@@ -27,8 +27,11 @@
  --------------------------------------------------------------------------
  */
 
-
 Session::checkRight("plugin_tasklists", READ);
+
+use GlpiPlugin\Tasklists\Menu;
+use GlpiPlugin\Tasklists\Task;
+use GlpiPlugin\Tasklists\Ticket;
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
@@ -37,7 +40,7 @@ if (!isset($_GET["withtemplate"])) {
    $_GET["withtemplate"] = "";
 }
 
-$task = new PluginTasklistsTask();
+$task = new Task();
 
 if (isset($_POST["add"])) {
    $task->check(-1, CREATE, $_POST);
@@ -84,8 +87,8 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["ticket_link"])) {
 
-   $ticket = new PluginTasklistsTicket();
-   $task   = new PluginTasklistsTask();
+   $ticket = new Ticket();
+   $task   = new Task();
    $task->check($_POST['plugin_tasklists_tasks_id'], UPDATE);
    $ticket->add(['tickets_id'                => $_POST['tickets_id'],
                  'plugin_tasklists_tasks_id' => $_POST['plugin_tasklists_tasks_id']]);
@@ -95,7 +98,7 @@ if (isset($_POST["add"])) {
 
    $task->checkGlobal(READ);
 
-   Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+   Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
    Html::requireJs('tinymce');
    $task->display(['id' => $_GET["id"], 'withtemplate' => $_GET["withtemplate"]]);

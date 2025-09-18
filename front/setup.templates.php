@@ -27,12 +27,14 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Menu;
+use GlpiPlugin\Tasklists\Task;
 
 global $CFG_GLPI;
-$task = new PluginTasklistsTask();
+$task = new Task();
 
 if ($task->canView() || Session::haveRight("config", UPDATE)) {
-   Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+   Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
    $task->listOfTemplates($CFG_GLPI['root_doc'] . "/plugins/tasklists/front/task.form.php", $_GET["add"]);
 

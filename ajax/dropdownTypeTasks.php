@@ -27,6 +27,8 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Task;
+
 if (strpos($_SERVER['PHP_SELF'], "dropdownTypeTasks.php")) {
     header("Content-Type: text/html; charset=UTF-8");
     Html::header_nocache();
@@ -63,7 +65,7 @@ if (isset($_POST["tasktypes"])) {
 
 
     Dropdown::show(
-        'PluginTasklistsTask',
+        Task::class,
         [
             'name' => $_POST['myname'],
             'used' => $used,

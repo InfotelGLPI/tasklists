@@ -27,20 +27,21 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Task;
 
 Session::checkLoginUser();
 Session::checkRight('plugin_tasklists', UPDATE);
 
 if (isset($_POST['data_id'])
     && isset($_POST['percent_done'])) {
-   $task                  = new PluginTasklistsTask();
+   $task                  = new Task();
    $input['percent_done'] = $_POST['percent_done'];
    $input['id']           = $_POST['data_id'];
    $task->update($input);
 
 } else if (isset($_POST['data_id'])
            && isset($_POST['updatepriority'])) {
-   $task = new PluginTasklistsTask();
+   $task = new Task();
    if ($task->getFromDB($_POST['data_id'])) {
       if ($task->fields["priority"] < 5) {
          $input['priority'] = $task->fields["priority"] + 1;
@@ -50,7 +51,7 @@ if (isset($_POST['data_id'])
    }
 } else if (isset($_POST['data_id'])
            && isset($_POST['archivetask'])) {
-   $task                 = new PluginTasklistsTask();
+   $task                 = new Task();
    $input['is_archived'] = 1;
    $input['id']          = $_POST['data_id'];
    $task->update($input);
@@ -59,13 +60,13 @@ if (isset($_POST['data_id'])
            && isset($_POST['state_id'])
            && isset($_POST['context_id'])) {
 
-   $task  = new PluginTasklistsTask();
+   $task  = new Task();
    $dbu   = new DbUtils();
    $cond  = ["plugin_tasklists_taskstates_id" => $_POST['state_id'],
              "plugin_tasklists_tasktypes_id"  => $_POST['context_id'],
              "is_deleted"                     => 0,
              "is_archived"                    => 0];
-   $tasks = $dbu->getAllDataFromTable($dbu->getTableForItemType('PluginTasklistsTasks'),
+   $tasks = $dbu->getAllDataFromTable($dbu->getTableForItemType(Task::class),
                                       $cond);
    foreach ($tasks as $key => $row) {
       if ($task->getFromDB($row['id'])) {

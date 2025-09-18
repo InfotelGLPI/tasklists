@@ -27,14 +27,23 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
+use CommonDBTM;
+use CommonGLPI;
+use Html;
+use Session;
+use Toolbox;
+use User;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginTasklistsTask_Comment
+ * Class Task_Comment
  */
-class PluginTasklistsTask_Comment extends CommonDBTM {
+class Task_Comment extends CommonDBTM {
 
    static function getTypeName($nb = 0) {
       return _n('Comment', 'Comments', $nb);
@@ -45,7 +54,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
      */
     static function getIcon()
     {
-        return PluginTasklistsTask::getIcon();
+        return Task::getIcon();
     }
 
 
@@ -57,7 +66,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
       $nb = 0;
       if ($_SESSION['glpishow_count_on_tabs']) {
          $where = [];
-         if ($item->getType() == PluginTasklistsTask::getType()) {
+         if ($item->getType() == Task::getType()) {
             $where = [
                'plugin_tasklists_tasks_id' => $item->getID(),
                'language'                  => null
@@ -92,7 +101,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
 
       // Total Number of comments
        global $CFG_GLPI;
-       if ($item->getType() == PluginTasklistsTask::getType()) {
+       if ($item->getType() == Task::getType()) {
          $where                     = [
             'plugin_tasklists_tasks_id' => $item->getID(),
             'language'                  => null
@@ -106,7 +115,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          $plugin_tasklists_tasks_id = $where['plugin_tasklists_tasks_id'];
       }
 
-      $task = new PluginTasklistsTask();
+      $task = new Task();
       $task->getFromDB($plugin_tasklists_tasks_id);
 
       $number = countElementsInTable(
@@ -114,14 +123,14 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          $where
       );
 
-      $entry = new PluginTasklistsTask();
+      $entry = new Task();
       $entry->getFromDB($task->fields['id']);
       $cancomment = true;
       if ($cancomment) {
          echo "<div class='firstbloc'>";
 
          $lang = null;
-         //         if ($item->getType() == PluginTasklistsTaskTranslation::getType()) {
+         //         if ($item->getType() == Tasktranslation::getType()) {
          //            $lang = $item->fields['language'];
          //         }
 
@@ -311,7 +320,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
          }
 
          $html .= "<div class='item_content'>";
-         $html .= Glpi\Toolbox\Sanitizer::unsanitize($comment['comment']);
+         $html .= $comment['comment'];
          $html .= "</div>";
          $html .= "</div>"; // displayed_content
 
@@ -343,7 +352,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
    /**
     * Get comment form
     *
-    * @param integer       $plugin_tasklists_tasks_id PluginTasklistsTask item ID
+    * @param integer       $plugin_tasklists_tasks_id Task item ID
     * @param string        $lang Related item language
     * @param false|integer $edit Comment id to edit, or false
     * @param false|integer $answer Comment id to answer to, or false
@@ -355,7 +364,7 @@ class PluginTasklistsTask_Comment extends CommonDBTM {
 
       $content = '';
       if ($edit !== false) {
-         $comment = new PluginTasklistsTask();
+         $comment = new Task();
          $comment->getFromDB($edit);
          $content = $comment->fields['comment'];
       }

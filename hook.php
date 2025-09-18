@@ -27,6 +27,13 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Menu;
+use GlpiPlugin\Tasklists\NotificationTargetTask;
+use GlpiPlugin\Tasklists\Profile;
+use GlpiPlugin\Tasklists\Task;
+use GlpiPlugin\Tasklists\TaskState;
+use GlpiPlugin\Tasklists\TaskType;
+use GlpiPlugin\Tasklists\Item_Kanban;
 /**
  * @return bool
  */
@@ -34,10 +41,8 @@ function plugin_tasklists_install()
 {
     global $DB;
 
-    include_once(PLUGIN_TASKLISTS_DIR . "/inc/profile.class.php");
-    include_once(PLUGIN_TASKLISTS_DIR . "/inc/task.class.php");
     if (!$DB->tableExists("glpi_plugin_tasklists_tasks")) {
-        $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/empty-2.0.4.sql");
+        $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/empty-2.1.0.sql");
     }
     if (!$DB->tableExists("glpi_plugin_tasklists_taskstates")) {
         $mig = new Migration("1.4.1");
@@ -76,7 +81,7 @@ function plugin_tasklists_install()
                 }
             }
         }
-        $tasklist_item_kanban = new PluginTasklistsItem_Kanban();
+        $tasklist_item_kanban = new Item_Kanban();
         $lists_kanban         = $tasklist_item_kanban->find();
         $states_by_kanban     = [];
         foreach ($lists_unique_kanban as $kanban) {
@@ -119,12 +124,12 @@ function plugin_tasklists_install()
             }
         }
     }
+    $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.1.0.sql");
    // Add record notification
-    include_once(PLUGIN_TASKLISTS_DIR . "/inc/notificationtargettask.class.php");
-    call_user_func(["PluginTasklistsNotificationTargetTask", 'install']);
+    call_user_func([NotificationTargetTask::class, 'install']);
 
-    PluginTasklistsProfile::initProfile();
-    PluginTasklistsProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+    Profile::initProfile();
+    Profile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 
     return true;
 }
@@ -135,9 +140,6 @@ function plugin_tasklists_install()
 function plugin_tasklists_uninstall()
 {
     global $DB;
-
-    include_once(PLUGIN_TASKLISTS_DIR . "/inc/profile.class.php");
-    include_once(PLUGIN_TASKLISTS_DIR . "/inc/menu.class.php");
 
     $tables = ["glpi_plugin_tasklists_tasks",
               "glpi_plugin_tasklists_tasktypes",
@@ -161,12 +163,12 @@ function plugin_tasklists_uninstall()
                    "glpi_documents_items"];
 
     foreach ($tables_glpi as $table_glpi) {
-        $DB->doQuery("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginTasklistsTask%';");
+        $DB->doQuery("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'GlpiPlugin\Tasklists\Task%';");
     }
 
     $notif = new Notification();
 
-    $options = ['itemtype' => 'PluginTasklistsTask',
+    $options = ['itemtype' => Task::class,
                'FIELDS'   => 'id'];
     foreach ($DB->request('glpi_notifications', $options) as $data) {
         $notif->delete($data);
@@ -175,7 +177,7 @@ function plugin_tasklists_uninstall()
    //templates
     $template    = new NotificationTemplate();
     $translation = new NotificationTemplateTranslation();
-    $options     = ['itemtype' => 'PluginTasklistsTask',
+    $options     = ['itemtype' => Task::class,
                    'FIELDS'   => 'id'];
     foreach ($DB->request('glpi_notificationtemplates', $options) as $data) {
         $options_template = ['notificationtemplates_id' => $data['id'],
@@ -188,12 +190,12 @@ function plugin_tasklists_uninstall()
     }
    //Delete rights associated with the plugin
     $profileRight = new ProfileRight();
-    foreach (PluginTasklistsProfile::getAllRights() as $right) {
+    foreach (Profile::getAllRights() as $right) {
         $profileRight->deleteByCriteria(['name' => $right['field']]);
     }
-    PluginTasklistsMenu::removeRightsFromSession();
+    Menu::removeRightsFromSession();
 
-    PluginTasklistsProfile::removeRightsFromSession();
+    Profile::removeRightsFromSession();
 
     return true;
 }
@@ -224,8 +226,8 @@ function plugin_tasklists_getDatabaseRelations()
 function plugin_tasklists_getDropdown()
 {
     if (Plugin::isPluginActive("tasklists")) {
-        return ['PluginTasklistsTaskType'  => PluginTasklistsTaskType::getTypeName(2),
-              'PluginTasklistsTaskState' => PluginTasklistsTaskState::getTypeName(2)];
+        return [TaskType::class  => TaskType::getTypeName(2),
+              TaskState::class => TaskState::getTypeName(2)];
     } else {
         return [];
     }
@@ -240,7 +242,7 @@ function plugin_tasklists_addDefaultWhere($type)
 {
 
     switch ($type) {
-        case "PluginTasklistsTask":
+        case Task::class:
             $who = Session::getLoginUserID();
             if (!Session::haveRight("plugin_tasklists_see_all", 1)) {
                 if (count($_SESSION["glpigroups"])
@@ -278,13 +280,13 @@ function plugin_tasklists_getAddSearchOptions($itemtype) {
 
    $sopt=[];
 
-   if (in_array($itemtype, PluginTasklistsTask::getTypes(true))) {
+   if (in_array($itemtype, Task::getTypes(true))) {
       if (Session::haveRight("plugin_tasklists",READ)) {
 
          $sopt[4411]['table']='glpi_plugin_tasklists_tasktypes';
          $sopt[4411]['field']='name';
-         $sopt[4411]['name']=PluginTasklistsTask::getTypeName(2)." - ".
-                                      PluginTasklistsTaskType::getTypeName(1);
+         $sopt[4411]['name']= Task::getTypeName(2)." - ".
+                                      TaskType::getTypeName(1);
          $sopt[4411]['forcegroupby']=true;
          $sopt[4411]['datatype']       = 'dropdown';
          $sopt[4411]['massiveaction']  = false;
@@ -326,7 +328,7 @@ function plugin_tasklists_displayConfigItem($type, $ID, $data, $num)
  */
 function plugin_tasklists_getRuleActions($options)
 {
-    $task = new PluginTasklistsTask();
+    $task = new Task();
     return $task->getActions();
 }
 
@@ -337,7 +339,7 @@ function plugin_tasklists_getRuleActions($options)
  */
 function plugin_tasklists_getRuleCriterias($options)
 {
-    $task = new PluginTasklistsTask();
+    $task = new Task();
     return $task->getCriterias();
 }
 
@@ -348,6 +350,6 @@ function plugin_tasklists_getRuleCriterias($options)
  */
 function plugin_tasklists_executeActions($options)
 {
-    $task = new PluginTasklistsTask();
+    $task = new Task();
     return $task->executeActions($options['action'], $options['output'], $options['params']);
 }

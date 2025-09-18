@@ -27,10 +27,17 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+use CommonDBTM;
+use CommonGLPI;
+use DbUtils;
+use Dropdown;
+use Session;
+
 /**
- * Class PluginTasklistsPreference
+ * Class Preference
  */
-class PluginTasklistsPreference extends CommonDBTM
+class Preference extends CommonDBTM
 {
 
     static $rightname = 'plugin_tasklists';
@@ -55,7 +62,7 @@ class PluginTasklistsPreference extends CommonDBTM
     */
     static function getIcon()
     {
-        return PluginTasklistsTask::getIcon();
+        return Task::getIcon();
     }
 
 
@@ -92,8 +99,8 @@ class PluginTasklistsPreference extends CommonDBTM
 
         echo "<tr class='tab_bg_1'><td>" . __("Context by default", "tasklists") . "</td>";
         echo "<td>";
-        $types = PluginTasklistsTypeVisibility::seeAllowedTypes();
-        Dropdown::show('PluginTasklistsTaskType', ['name'      => "default_type",
+        $types = TypeVisibility::seeAllowedTypes();
+        Dropdown::show(TaskType::class, ['name'      => "default_type",
                                                  'value'     => $this->fields['default_type'],
                                                  'condition' => ["id" => $types]]);
         echo "</td>";
@@ -158,10 +165,10 @@ class PluginTasklistsPreference extends CommonDBTM
             if ($first[$field] > 0) {
                 return $first[$field];
             } else {
-                $values = PluginTasklistsTaskType::getAllForKanban();
+                $values = TaskType::getAllForKanban();
                 $data   = [];
                 foreach ($values as $key => $value) {
-                    if (PluginTasklistsTypeVisibility::isUserHaveRight($key)) {
+                    if (TypeVisibility::isUserHaveRight($key)) {
                         $data[] = $key;
                     }
                 }
@@ -173,10 +180,10 @@ class PluginTasklistsPreference extends CommonDBTM
                 }
             }
         } else {
-            $values = PluginTasklistsTaskType::getAllForKanban();
+            $values = TaskType::getAllForKanban();
             $data   = [];
             foreach ($values as $key => $value) {
-                if (PluginTasklistsTypeVisibility::isUserHaveRight($key)) {
+                if (TypeVisibility::isUserHaveRight($key)) {
                     $data[] = $key;
                 }
             }

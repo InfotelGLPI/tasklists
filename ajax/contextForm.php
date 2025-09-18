@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
+use GlpiPlugin\Tasklists\TaskState;
 
 Session::checkLoginUser();
 Session::checkRight('plugin_tasklists_config', UPDATE);
@@ -44,7 +44,7 @@ if (isset($_GET['newContext'])) {
 
       'withtemplate' => 0
    ];
-   $task    = new PluginTasklistsTaskState();
+   $task    = new TaskState();
    $task->showForm(0, $options);
 
 }

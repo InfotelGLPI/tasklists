@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -27,15 +28,16 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\TypeVisibility;
 
-$group = new PluginTasklistsTypeVisibility();
+$group = new TypeVisibility();
 
 if (isset($_POST["add_groups"])) {
-   $group->check(-1, UPDATE, $_POST);
-   //add groups
-   foreach ($_POST['groups_id'] as $groups_id) {
-      $group->add(['groups_id'                     => $groups_id,
-                   'plugin_tasklists_tasktypes_id' => $_POST['plugin_tasklists_tasktypes_id']]);
-   }
-   Html::back();
+    $group->check(-1, UPDATE, $_POST);
+    //add groups
+    foreach ($_POST['groups_id'] as $groups_id) {
+        $group->add(['groups_id'                     => $groups_id,
+            'plugin_tasklists_tasktypes_id' => $_POST['plugin_tasklists_tasktypes_id']]);
+    }
+    Html::back();
 }

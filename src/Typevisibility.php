@@ -27,14 +27,26 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
+use CommonDBTM;
+use CommonGLPI;
+use DbUtils;
+use Dropdown;
+use Group;
+use Group_User;
+use Html;
+use Session;
+use Toolbox;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginTasklistsTypeVisibility
+ * Class TypeVisibility
  */
-class PluginTasklistsTypeVisibility extends CommonDBTM
+class TypeVisibility extends CommonDBTM
 {
 
     static $rightname = 'plugin_tasklists';
@@ -54,11 +66,11 @@ class PluginTasklistsTypeVisibility extends CommonDBTM
      */
     static function getIcon()
     {
-        return PluginTasklistsTask::getIcon();
+        return Task::getIcon();
     }
 
 
-    static $types = ['PluginTasklistsTaskType'];
+    static $types = [TaskType::class];
 
    /**
     * Display tab for each users
@@ -73,7 +85,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM
 
         $dbu = new DbUtils();
         if (!$withtemplate) {
-            if ($item->getType() == 'PluginTasklistsTaskType') {
+            if ($item->getType() == TaskType::class) {
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     return self::createTabEntry(
                         self::getTypeName(),
@@ -122,7 +134,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM
 
         $dataGroups = $this->find(['plugin_tasklists_tasktypes_id' => $item->fields['id']]);
 
-        $type    = new PluginTasklistsTaskType();
+        $type    = new TaskType();
         $canedit = $type->can($item->fields['id'], UPDATE);
 
         if ($dataGroups) {
@@ -150,7 +162,7 @@ class PluginTasklistsTypeVisibility extends CommonDBTM
 
         if ($canedit) {
             echo "<form name='form' method='post' action='" .
-              Toolbox::getItemTypeFormURL('PluginTasklistsTypeVisibility') . "'>";
+              Toolbox::getItemTypeFormURL(TypeVisibility::class) . "'>";
 
             echo "<div align='center'><table class='tab_cadre_fixe'>";
             echo "<tr><th colspan='6'>" . __('Add a group', 'tasklists') . "</th></tr>";

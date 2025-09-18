@@ -27,6 +27,8 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Menu;
+use GlpiPlugin\Tasklists\Task;
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
@@ -35,9 +37,9 @@ if (!isset($_GET["withtemplate"])) {
    $_GET["withtemplate"] = "";
 }
 
-Html::header(PluginTasklistsTask::getTypeName(2), '', "helpdesk", "plugintasklistsmenu");
+Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
-$task = new PluginTasklistsTask();
+$task = new Task();
 $task->checkGlobal(READ);
 $task->getFromDB($_GET['id']);
 $note = new Notepad();

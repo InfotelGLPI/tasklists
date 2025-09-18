@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -30,9 +29,14 @@
 
 global $CFG_GLPI;
 
-use Glpi\Plugin\Hooks;
+use GlpiPlugin\Tasklists\Preference;
+use GlpiPlugin\Tasklists\Dashboard;
+use GlpiPlugin\Tasklists\Menu;
+use GlpiPlugin\Tasklists\Profile;
+use GlpiPlugin\Tasklists\Ticket;
+use GlpiPlugin\Tasklists\Task;
 
-define('PLUGIN_TASKLISTS_VERSION', '2.0.4');
+define('PLUGIN_TASKLISTS_VERSION', '2.1.0');
 
 if (!defined("PLUGIN_TASKLISTS_DIR")) {
     define("PLUGIN_TASKLISTS_DIR", Plugin::getPhpDir("tasklists"));
@@ -46,41 +50,39 @@ function plugin_init_tasklists()
     global $PLUGIN_HOOKS, $CFG_GLPI;
 
     $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
-    $PLUGIN_HOOKS['change_profile']['tasklists'] = ['PluginTasklistsProfile', 'initProfile'];
+    $PLUGIN_HOOKS['change_profile']['tasklists'] = [Profile::class, 'initProfile'];
     $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
     //    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
     if (Session::getLoginUserID()) {
 
-        Plugin::registerClass('PluginTasklistsTask', [
-            //         'linkuser_types'              => true,
-            //         'linkgroup_types'             => true,
+        Plugin::registerClass(Task::class, [
             'document_types'              => true,
             'notificationtemplates_types' => true,
         ]);
 
         Plugin::registerClass(
-            'PluginTasklistsTicket',
+            Ticket::class,
             ['addtabon' => 'Ticket']
         );
 
-        $PLUGIN_HOOKS['item_purge']['tasklists']['Ticket'] = ['PluginTasklistsTaskTicket', 'cleanForTicket'];
+        $PLUGIN_HOOKS['item_purge']['tasklists']['Ticket'] = [Ticket::class, 'cleanForTicket'];
 
         Plugin::registerClass(
-            'PluginTasklistsProfile',
+            Profile::class,
             ['addtabon' => 'Profile']
         );
 
         Plugin::registerClass(
-            'PluginTasklistsPreference',
+            Preference::class,
             ['addtabon' => 'Preference']
         );
 
         if (Session::haveRight("plugin_tasklists", READ)) {
-            $PLUGIN_HOOKS['menu_toadd']['tasklists'] = ['helpdesk' => 'PluginTasklistsMenu'];
+            $PLUGIN_HOOKS['menu_toadd']['tasklists'] = ['helpdesk' => Menu::class];
         }
 
         if (class_exists('PluginMydashboardMenu')) {
-            $PLUGIN_HOOKS['mydashboard']['tasklists'] = ["PluginTasklistsDashboard"];
+            $PLUGIN_HOOKS['mydashboard']['tasklists'] = [Dashboard::class];
         }
 
         if (Session::haveRight("plugin_tasklists", CREATE)) {

@@ -27,19 +27,19 @@
  --------------------------------------------------------------------------
  */
 
-use Glpi\Event;
 use Glpi\Exception\Http\BadRequestHttpException;
-
+use GlpiPlugin\Tasklists\Task;
+use GlpiPlugin\Tasklists\Task_Comment;
 
 Session::checkLoginUser();
 
-$comment = new PluginTasklistsTask_Comment();
+$comment = new Task_Comment();
 if (!isset($_POST['plugin_tasklists_tasks_id'])) {
    $message = __('Mandatory fields are not filled!');
    Session::addMessageAfterRedirect($message, false, ERROR);
    Html::back();
 }
-$task = new PluginTasklistsTask();
+$task = new Task();
 $task->getFromDB($_POST['plugin_tasklists_tasks_id']);
 //if (!$task->canComment()) {
 //    Html::displayRightError();

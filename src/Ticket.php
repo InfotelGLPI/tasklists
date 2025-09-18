@@ -27,10 +27,21 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Tasklists;
+
+use CommonDBTM;
+use CommonGLPI;
+use CommonITILObject;
+use DbUtils;
+use Glpi\RichText\RichText;
+use Html;
+use Session;
+use Toolbox;
+
 /**
- * Class PluginTasklistsTicket
+ * Class Ticket
  */
-class PluginTasklistsTicket extends CommonDBTM
+class Ticket extends CommonDBTM
 {
 
     public static $rightname = 'plugin_tasklists';
@@ -52,7 +63,7 @@ class PluginTasklistsTicket extends CommonDBTM
      */
     static function getIcon()
     {
-        return PluginTasklistsTask::getIcon();
+        return Task::getIcon();
     }
 
     /**
@@ -68,7 +79,7 @@ class PluginTasklistsTicket extends CommonDBTM
         $dbu = new DbUtils();
         if (Session::getCurrentInterface() == 'central' && Session::haveRight(self::$rightname, READ)) {
             switch ($item->getType()) {
-                case "PluginTasklistsTask":
+                case Task::class:
                     $nb = 0;
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = $dbu->countElementsInTable(
@@ -106,7 +117,7 @@ class PluginTasklistsTicket extends CommonDBTM
         $ticket = new self();
 
         switch ($item->getType()) {
-            case "PluginTasklistsTask":
+            case Task::class:
                 $ID = $item->getField('id');
                 $ticket->showForTask($ID);
                 break;
@@ -171,7 +182,7 @@ class PluginTasklistsTicket extends CommonDBTM
             echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add task', 'tasklists') . "</th></tr>";
             echo "<tr class='tab_bg_2'><td>";
             echo Html::hidden('tickets_id', ['value' => $ID]);
-            PluginTasklistsTask::dropdown(['used'      => $used,
+            Task::dropdown(['used'      => $used,
                                         'entity'    => $ticket->getEntityID(),
                                         'condition' => ['is_archived' => 0,
                                                         'is_deleted'  => 0,
@@ -219,7 +230,7 @@ class PluginTasklistsTicket extends CommonDBTM
                 echo "</td>";
 
                 echo "<td>";
-                $url = Toolbox::getItemTypeFormURL('PluginTasklistsTask') . "?id=" . $data['id'];
+                $url = Toolbox::getItemTypeFormURL(Task::class) . "?id=" . $data['id'];
                 echo "<a id='task" . $data['id'] . "' href='$url'>" . $data['name'] . "</a>";
                 echo "</td>";
 
@@ -233,7 +244,7 @@ class PluginTasklistsTicket extends CommonDBTM
                 echo "</td>";
 
                 echo "<td>";
-                echo Html::resume_text(Glpi\RichText\RichText::getTextFromHtml($data['content']), 80);
+                echo Html::resume_text(RichText::getTextFromHtml($data['content']), 80);
                 echo "</td>";
 
                 echo "</tr>";
@@ -263,13 +274,13 @@ class PluginTasklistsTicket extends CommonDBTM
     function showForTask($ID)
     {
 
-        $task   = new PluginTasklistsTask();
+        $task   = new Task();
         $ticket = new Ticket();
 
         $task->getFromDB($ID);
         echo "<div class='center'>";
         echo "<form method='post' name='task_form'
-      id='task_form'  action='" . Toolbox::getItemTypeFormURL("PluginTasklistsTask") . "'>";
+      id='task_form'  action='" . Toolbox::getItemTypeFormURL(Task::class) . "'>";
 
         echo "<table class='tab_cadre_fixe'>";
         echo "<tr class='tab_bg_1'>";
@@ -292,7 +303,7 @@ class PluginTasklistsTicket extends CommonDBTM
         Html::closeForm();
         echo "</div>";
 
-        $task_ticket = new PluginTasklistsTicket();
+        $task_ticket = new Ticket();
         $tickets     = $task_ticket->find(['plugin_tasklists_tasks_id' => $task->fields['id']]);
 
         if (count($tickets) > 0) {
@@ -319,7 +330,7 @@ class PluginTasklistsTicket extends CommonDBTM
                     echo Html::convDateTime($ticket->fields["date"]);
                     echo "</td>";
                     echo "<td class='center'>";
-                    echo Ticket::getStatus($ticket->fields["status"]);
+                    echo \Ticket::getStatus($ticket->fields["status"]);
                     echo "</td>";
                     $style = "style=\"background-color:" . $_SESSION["glpipriority_" . $ticket->fields['priority']] . ";\" ";
                     echo "<td class='center' $style>";

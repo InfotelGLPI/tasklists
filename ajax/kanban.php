@@ -39,6 +39,7 @@ use Glpi\Exception\Http\BadRequestHttpException;
 use Glpi\Exception\Http\HttpException;
 use Glpi\Features\KanbanInterface;
 use Glpi\Features\TeamworkInterface;
+use GlpiPlugin\Tasklists\Item_Kanban;
 
 use function Safe\json_encode;
 use function Safe\preg_split;
@@ -181,7 +182,7 @@ if (($_POST['action'] ?? null) === 'update') {
         $can_move = $kanban->canOrderKanbanCard($_POST['kanban']['items_id']);
     }
     if ($can_move) {
-        Item_Kanban::moveCard(
+        \Item_Kanban::moveCard(
             $_POST['kanban']['itemtype'],
             $_POST['kanban']['items_id'],
             $_POST['card'],
@@ -191,24 +192,24 @@ if (($_POST['action'] ?? null) === 'update') {
     }
 } elseif (($_POST['action'] ?? null) === 'show_column') {
     $checkParams(['column', 'kanban']);
-    Item_Kanban::showColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+    \Item_Kanban::showColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'hide_column') {
     $checkParams(['column', 'kanban']);
-    Item_Kanban::hideColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+    \Item_Kanban::hideColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'collapse_column') {
     $checkParams(['column', 'kanban']);
-    Item_Kanban::collapseColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+    \Item_Kanban::collapseColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'expand_column') {
     $checkParams(['column', 'kanban']);
-    Item_Kanban::expandColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
+    \Item_Kanban::expandColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'move_column') {
     $checkParams(['column', 'kanban', 'position']);
-    Item_Kanban::moveColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column'], $_POST['position']);
+    \Item_Kanban::moveColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column'], $_POST['position']);
 } elseif ($_REQUEST['action'] === 'refresh') {
     $checkParams(['column_field']);
     // Get all columns to refresh the kanban
     header("Content-Type: application/json; charset=UTF-8", true);
-    $force_columns = Item_Kanban::getAllShownColumns($itemtype, $_REQUEST['items_id']);
+    $force_columns = \Item_Kanban::getAllShownColumns($itemtype, $_REQUEST['items_id']);
     $columns = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], $force_columns, true);
     echo json_encode($columns, JSON_FORCE_OBJECT);
 } elseif ($_REQUEST['action'] === 'get_switcher_dropdown') {
@@ -247,25 +248,25 @@ if (($_POST['action'] ?? null) === 'update') {
     if (!isset($_POST['state'])) {
         // Do nothing with the state unless it isn't saved yet. Could be that no columns are shown or an error occurred.
         // If the state is supposed to be cleared, it should come through as a clear_column_state request.
-        if (Item_Kanban::hasStateForItem($_POST['itemtype'], $_POST['items_id'])) {
+        if (\Item_Kanban::hasStateForItem($_POST['itemtype'], $_POST['items_id'])) {
             return;
         }
-        Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], []);
+        \Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], []);
         return;
     }
     $checkParams(['items_id', 'state']);
-    Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], $_POST['state']);
+    \Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], $_POST['state']);
 } elseif ($_REQUEST['action'] === 'load_column_state') {
     $checkParams(['items_id', 'last_load']);
     header("Content-Type: application/json; charset=UTF-8", true);
     $response = [
-        'state'     => Item_Kanban::loadStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['last_load']),
+        'state'     => \Item_Kanban::loadStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['last_load']),
         'timestamp' => $_SESSION['glpi_currenttime'],
     ];
     echo json_encode($response, JSON_FORCE_OBJECT);
 } elseif ($_REQUEST['action'] === 'clear_column_state') {
     $checkParams(['items_id']);
-    $result = Item_Kanban::clearStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id']);
+    $result = \Item_Kanban::clearStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id']);
     if (!$result) {
         throw new HttpException(500);
     }

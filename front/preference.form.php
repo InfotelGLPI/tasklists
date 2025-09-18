@@ -27,12 +27,13 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Preference;
 
 Session::checkLoginUser();
 
 //Save user preferences
 if (isset ($_POST['update'])) {
-   $pref = new PluginTasklistsPreference();
+   $pref = new Preference();
    $pref->check(-1, UPDATE, $_POST);
    $pref->update($_POST);
    Html::back();

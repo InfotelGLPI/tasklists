@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Tasklists\Task;
 
 Session::checkLoginUser();
 Session::checkRight('plugin_tasklists', UPDATE);
@@ -44,10 +45,10 @@ if (isset($_GET['id'])) {
       'withtemplate'   => 0
    ];
    echo "<div class='center'>";
-   echo "<a href='" . PluginTasklistsTask::getFormURL(true) . "?id=" . $_GET['id'] . "'>" . __("View this item in his context") . "</a>";
+   echo "<a href='" . Task::getFormURL(true) . "?id=" . $_GET['id'] . "'>" . __("View this item in his context") . "</a>";
    echo "</div>";
    echo "<hr>";
-   $task = new PluginTasklistsTask();
+   $task = new Task();
    $task->showForm($_GET['id'],$options);
 } else if (isset($_GET['plugin_tasklists_tasktypes_id'])
            && isset($_GET['plugin_tasklists_taskstates_id'])) {
@@ -57,7 +58,7 @@ if (isset($_GET['id'])) {
       'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
       'withtemplate'                   => 0
    ];
-   $task    = new PluginTasklistsTask();
+   $task    = new Task();
    if ($id = $task->hasTemplate($options)) {
       $options['withtemplate'] = 2;
       $task->showForm($id, $options);
@@ -66,7 +67,7 @@ if (isset($_GET['id'])) {
    }
 } else if (isset($_GET['clone_id'])) {
    $id   = $_GET['clone_id'];
-   $task = new PluginTasklistsTask();
+   $task = new Task();
    if ($task->getFromDB($id)) {
       $options    = [
          'from_edit_ajax'                 => true,
@@ -80,12 +81,12 @@ if (isset($_GET['id'])) {
          'visibility'                     => $task->fields['visibility'],
          'withtemplate'                   => 0
       ];
-      $taskcloned = new PluginTasklistsTask();
+      $taskcloned = new Task();
       $taskcloned->showForm(0, $options);
    }
 } else if (isset($_GET['task_id'])) {
    $id   = $_GET['task_id'];
-   $task = new PluginTasklistsTask();
+   $task = new Task();
    if ($task->getFromDB($id)) {
       $options = [
          'from_edit_ajax' => true,
