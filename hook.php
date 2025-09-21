@@ -155,39 +155,57 @@ function plugin_tasklists_uninstall()
         $DB->doQuery("DROP TABLE IF EXISTS `$table`;");
     }
 
-    $tables_glpi = ["glpi_displaypreferences",
-                   "glpi_notepads",
-                   "glpi_savedsearches",
-                   "glpi_items_kanbans",
-                   "glpi_logs",
-                   "glpi_documents_items"];
-
-    foreach ($tables_glpi as $table_glpi) {
-        $DB->doQuery("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'GlpiPlugin\Tasklists\Task%';");
+    $itemtypes = ['Alert',
+        'DisplayPreference',
+        'Document_Item',
+        'ImpactItem',
+        'Item_Ticket',
+        'Item_Kanban',
+        'Link_Itemtype',
+        'Notepad',
+        'SavedSearch',
+        'DropdownTranslation',
+        'NotificationTemplate',
+        'Notification'];
+    foreach ($itemtypes as $itemtype) {
+        $item = new $itemtype;
+        $item->deleteByCriteria(['itemtype' => Task::class]);
     }
 
-    $notif = new Notification();
-
-    $options = ['itemtype' => Task::class,
-               'FIELDS'   => 'id'];
-    foreach ($DB->request('glpi_notifications', $options) as $data) {
+    $notif   = new Notification();
+    $options = ['itemtype' => Task::class];
+    foreach ($DB->request([
+        'FROM' => 'glpi_notifications',
+        'WHERE' => $options]) as $data) {
         $notif->delete($data);
     }
 
-   //templates
-    $template    = new NotificationTemplate();
-    $translation = new NotificationTemplateTranslation();
-    $options     = ['itemtype' => Task::class,
-                   'FIELDS'   => 'id'];
-    foreach ($DB->request('glpi_notificationtemplates', $options) as $data) {
-        $options_template = ['notificationtemplates_id' => $data['id'],
-                           'FIELDS'                   => 'id'];
+    //templates
+    $template       = new NotificationTemplate();
+    $translation    = new NotificationTemplateTranslation();
+    $notif_template = new Notification_NotificationTemplate();
+    $options        = ['itemtype' => Task::class];
+    foreach ($DB->request([
+        'FROM' => 'glpi_notificationtemplates',
+        'WHERE' => $options]) as $data) {
+        $options_template = [
+            'notificationtemplates_id' => $data['id']
+        ];
 
-        foreach ($DB->request('glpi_notificationtemplatetranslations', $options_template) as $data_template) {
+        foreach ($DB->request([
+            'FROM' => 'glpi_notificationtemplatetranslations',
+            'WHERE' => $options_template]) as $data_template) {
             $translation->delete($data_template);
         }
         $template->delete($data);
+
+        foreach ($DB->request([
+            'FROM' => 'glpi_notifications_notificationtemplates',
+            'WHERE' => $options_template]) as $data_template) {
+            $notif_template->delete($data_template);
+        }
     }
+
    //Delete rights associated with the plugin
     $profileRight = new ProfileRight();
     foreach (Profile::getAllRights() as $right) {

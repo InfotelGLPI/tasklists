@@ -119,7 +119,6 @@ class Kanban extends CommonGLPI
      * @param int $withtemplate
      *
      * @return array|bool|string
-     * @throws GlpitestSQLError
      */
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
@@ -167,7 +166,6 @@ class Kanban extends CommonGLPI
      * @param int $withtemplate
      *
      * @return bool
-     * @throws GlpitestSQLError
      */
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {

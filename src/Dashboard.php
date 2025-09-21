@@ -31,6 +31,7 @@ namespace GlpiPlugin\Tasklists;
 
 use Ajax;
 use CommonGLPI;
+use CommonITILObject;
 use DbUtils;
 use Dropdown;
 use Glpi\RichText\RichText;

@@ -102,7 +102,7 @@ function plugin_version_tasklists()
         'name'         => __('Tasks list', 'tasklists'),
         'version'      => PLUGIN_TASKLISTS_VERSION,
         'license'      => 'GPLv2+',
-        'author'       => "<a href='http://blogglpi.infotel.com'>Infotel</a>",
+        'author'       => "<a href='https//blogglpi.infotel.com'>Infotel</a>, Xavier CAILLAUD",
         'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
         'requirements' => [
             'glpi' => [
