@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-18 15:07+0000\n"
+"POT-Creation-Date: 2025-09-21 14:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:102 src/Dashboard.php:73 src/Dashboard.php:191
-#: src/Dashboard.php:196 src/Menu.php:50 src/Preference.php:55
+#: setup.php:102 src/Dashboard.php:74 src/Dashboard.php:192
+#: src/Dashboard.php:197 src/Menu.php:50 src/Preference.php:55
 #: src/Profile.php:60
 msgid "Tasks list"
 msgstr ""
@@ -32,24 +32,24 @@ msgstr ""
 msgid "Archived"
 msgstr ""
 
-#: src/Dashboard.php:72
+#: src/Dashboard.php:73
 msgid "Tables"
 msgstr ""
 
-#: src/Dashboard.php:115 src/Task.php:115 src/Task.php:497
+#: src/Dashboard.php:116 src/Task.php:115 src/Task.php:497
 #: src/Taskstate.php:151 src/Taskstate.php:206 src/Tasktype.php:67
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Dashboard.php:121 src/Notificationtargettask.php:234
+#: src/Dashboard.php:122 src/Notificationtargettask.php:234
 #: src/Notificationtargettask.php:284 src/Task.php:153 src/Task.php:587
 #: src/Tasktype.php:246
 msgid "Due date"
 msgstr ""
 
-#: src/Dashboard.php:176 src/Dashboard.php:177 src/Dashboard.php:182
+#: src/Dashboard.php:177 src/Dashboard.php:178 src/Dashboard.php:183
 #: src/Ticket.php:182
 msgid "Add task"
 msgstr ""
@@ -58,11 +58,11 @@ msgstr ""
 msgid "Kanban"
 msgstr ""
 
-#: src/Kanban.php:154
+#: src/Kanban.php:153
 msgid "You don't have the right to see any context"
 msgstr ""
 
-#: src/Kanban.php:192
+#: src/Kanban.php:190
 msgid "There is no accessible context"
 msgstr ""
 
