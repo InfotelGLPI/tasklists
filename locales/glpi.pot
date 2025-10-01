@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tasklists - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-23 12:27+0000\n"
+"POT-Creation-Date: 2025-10-01 10:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: setup.php:102 src/Dashboard.php:74 src/Dashboard.php:192
-#: src/Dashboard.php:197 src/Preference.php:55 src/Menu.php:50
-#: src/Profile.php:60
+#: src/Dashboard.php:197 src/Profile.php:60 src/Menu.php:50
+#: src/Preference.php:55
 msgid "Tasks list"
 msgstr ""
 
@@ -36,8 +36,8 @@ msgstr ""
 msgid "Tables"
 msgstr ""
 
-#: src/Dashboard.php:116 src/Tasktype.php:67 src/Taskstate.php:151
-#: src/Taskstate.php:206 src/Task.php:115 src/Task.php:497
+#: src/Dashboard.php:116 src/Tasktype.php:67 src/Task.php:115 src/Task.php:497
+#: src/Taskstate.php:151 src/Taskstate.php:206
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
@@ -52,42 +52,6 @@ msgstr ""
 #: src/Dashboard.php:177 src/Dashboard.php:178 src/Dashboard.php:183
 #: src/Ticket.php:182
 msgid "Add task"
-msgstr ""
-
-#: src/Preference.php:100
-msgid "Context by default"
-msgstr ""
-
-#: src/Preference.php:108
-msgid "Automatic refreshing of tasklist"
-msgstr ""
-
-#: src/Preference.php:114
-msgid "Refresh every "
-msgstr ""
-
-#: src/Preference.php:121
-msgid "minute(s)"
-msgstr ""
-
-#: src/Kanban.php:82
-msgid "Kanban"
-msgstr ""
-
-#: src/Kanban.php:153
-msgid "You don't have the right to see any context"
-msgstr ""
-
-#: src/Kanban.php:190
-msgid "There is no accessible context"
-msgstr ""
-
-#: src/Typevisibility.php:168
-msgid "Add a group"
-msgstr ""
-
-#: src/Typevisibility.php:210
-msgid "Groups allowed to use context"
 msgstr ""
 
 #: src/Notificationtargettask.php:68
@@ -115,30 +79,6 @@ msgstr ""
 #: src/Task.php:1104
 msgid "Backlog"
 msgstr ""
-
-#: src/Ticket.php:100 src/Ticket.php:212
-msgid "Linked task"
-msgid_plural "Linked tasks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/Ticket.php:255
-msgid "No task linked to this ticket yet"
-msgstr ""
-
-#: src/Ticket.php:287
-msgid "Link a existant ticket"
-msgstr ""
-
-#: src/Ticket.php:312
-msgid "Linked tickets"
-msgstr ""
-
-#: src/Taskstate.php:97
-msgid "Status"
-msgid_plural "Statuses"
-msgstr[0] ""
-msgstr[1] ""
 
 #: src/Profile.php:180 src/Profile.php:224
 msgid "See and update all tasks"
@@ -182,4 +122,64 @@ msgstr ""
 
 #: src/Task.php:1311
 msgid "Choose a template"
+msgstr ""
+
+#: src/Kanban.php:82
+msgid "Kanban"
+msgstr ""
+
+#: src/Kanban.php:153
+msgid "You don't have the right to see any context"
+msgstr ""
+
+#: src/Kanban.php:190
+msgid "There is no accessible context"
+msgstr ""
+
+#: src/Taskstate.php:97
+msgid "Status"
+msgid_plural "Statuses"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Ticket.php:100 src/Ticket.php:212
+msgid "Linked task"
+msgid_plural "Linked tasks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Ticket.php:255
+msgid "No task linked to this ticket yet"
+msgstr ""
+
+#: src/Ticket.php:287
+msgid "Link a existant ticket"
+msgstr ""
+
+#: src/Ticket.php:312
+msgid "Linked tickets"
+msgstr ""
+
+#: src/Typevisibility.php:168
+msgid "Add a group"
+msgstr ""
+
+#: src/Typevisibility.php:210
+msgid "Groups allowed to use context"
+msgstr ""
+
+#: src/Preference.php:100
+msgid "Context by default"
+msgstr ""
+
+#: src/Preference.php:108
+msgid "Automatic refreshing of tasklist"
+msgstr ""
+
+#: src/Preference.php:114
+msgid "Refresh every "
+msgstr ""
+
+#: src/Preference.php:121
+msgid "minute(s)"
 msgstr ""
