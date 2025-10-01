@@ -1306,7 +1306,7 @@ class Task extends CommonDBTM
             $colsup = 0;
         }
 
-        echo "<div align='center'><table class='tab_cadre_fixe'>";
+        echo "<div class='center'><table class='tab_cadre_fixe'>";
         if ($add) {
             echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Choose a template', 'tasklists') . " - " . self::getTypeName(
                     2

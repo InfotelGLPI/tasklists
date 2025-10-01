@@ -164,7 +164,7 @@ class TypeVisibility extends CommonDBTM
             echo "<form name='form' method='post' action='" .
               Toolbox::getItemTypeFormURL(TypeVisibility::class) . "'>";
 
-            echo "<div align='center'><table class='tab_cadre_fixe'>";
+            echo "<div class='center'><table class='tab_cadre_fixe'>";
             echo "<tr><th colspan='6'>" . __('Add a group', 'tasklists') . "</th></tr>";
 
             echo "<tr class='tab_bg_1'>";

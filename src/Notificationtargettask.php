@@ -183,7 +183,7 @@ class NotificationTargetTask extends NotificationTarget
        //         $this->data['##lang.task.realtime##']  = __('Effective duration', 'resources');
        //         $this->data['##lang.task.finished##']  = __('Carried out task', 'resources');
        //         $this->data['##lang.task.comment##']   = __('Comments');
-       //         $this->data['##lang.task.resource##']  = PluginResourcesResource::getTypeName(1);
+       //         $this->data['##lang.task.resource##']  = Resource::getTypeName(1);
        //
        //         foreach ($options['tasks'] as $id => $task) {
        //            $tmp = [];
