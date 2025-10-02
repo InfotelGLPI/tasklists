@@ -36,7 +36,7 @@ use GlpiPlugin\Tasklists\Profile;
 use GlpiPlugin\Tasklists\Ticket;
 use GlpiPlugin\Tasklists\Task;
 
-define('PLUGIN_TASKLISTS_VERSION', '2.1.0');
+define('PLUGIN_TASKLISTS_VERSION', '2.1.1');
 
 if (!defined("PLUGIN_TASKLISTS_DIR")) {
     define("PLUGIN_TASKLISTS_DIR", Plugin::getPhpDir("tasklists"));
