@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tasklists - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-01 10:27+0000\n"
+"POT-Creation-Date: 2025-10-02 11:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,16 +36,15 @@ msgstr ""
 msgid "Tables"
 msgstr ""
 
-#: src/Dashboard.php:116 src/Tasktype.php:67 src/Task.php:115 src/Task.php:497
-#: src/Taskstate.php:151 src/Taskstate.php:206
+#: src/Dashboard.php:116 src/TaskType.php:67 src/Task.php:115 src/Task.php:497
+#: src/TaskState.php:151 src/TaskState.php:206
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Dashboard.php:122 src/Notificationtargettask.php:234
-#: src/Notificationtargettask.php:284 src/Tasktype.php:246 src/Task.php:153
-#: src/Task.php:587
+#: src/Dashboard.php:122 src/TaskType.php:246 src/Task.php:153 src/Task.php:587
+#: src/NotificationTargetTask.php:234 src/NotificationTargetTask.php:284
 msgid "Due date"
 msgstr ""
 
@@ -54,38 +53,22 @@ msgstr ""
 msgid "Add task"
 msgstr ""
 
-#: src/Notificationtargettask.php:68
-msgid "A task has been added"
-msgstr ""
-
-#: src/Notificationtargettask.php:69
-msgid "A task has been updated"
-msgstr ""
-
-#: src/Notificationtargettask.php:70
-msgid "A task has been removed"
-msgstr ""
-
-#: src/Notificationtargettask.php:238 src/Notificationtargettask.php:288
-#: src/Task.php:224 src/Task.php:578
-msgid "Other client"
-msgstr ""
-
-#: src/Notificationtargettask.php:296
-msgid "At creation, update, removal of a task"
-msgstr ""
-
-#: src/Tasktype.php:184 src/Tasktype.php:550 src/Task.php:728 src/Task.php:809
-#: src/Task.php:1104
-msgid "Backlog"
-msgstr ""
-
 #: src/Profile.php:180 src/Profile.php:224
 msgid "See and update all tasks"
 msgstr ""
 
 #: src/Profile.php:189 src/Profile.php:227
 msgid "Configure contexts and statuses"
+msgstr ""
+
+#: src/TaskType.php:184 src/TaskType.php:550 src/Task.php:728 src/Task.php:809
+#: src/Task.php:1104
+msgid "Backlog"
+msgstr ""
+
+#: src/Task.php:224 src/Task.php:578 src/NotificationTargetTask.php:238
+#: src/NotificationTargetTask.php:288
+msgid "Other client"
 msgstr ""
 
 #: src/Task.php:273
@@ -124,6 +107,14 @@ msgstr ""
 msgid "Choose a template"
 msgstr ""
 
+#: src/TypeVisibility.php:168
+msgid "Add a group"
+msgstr ""
+
+#: src/TypeVisibility.php:210
+msgid "Groups allowed to use context"
+msgstr ""
+
 #: src/Kanban.php:82
 msgid "Kanban"
 msgstr ""
@@ -136,11 +127,27 @@ msgstr ""
 msgid "There is no accessible context"
 msgstr ""
 
-#: src/Taskstate.php:97
+#: src/TaskState.php:97
 msgid "Status"
 msgid_plural "Statuses"
 msgstr[0] ""
 msgstr[1] ""
+
+#: src/NotificationTargetTask.php:68
+msgid "A task has been added"
+msgstr ""
+
+#: src/NotificationTargetTask.php:69
+msgid "A task has been updated"
+msgstr ""
+
+#: src/NotificationTargetTask.php:70
+msgid "A task has been removed"
+msgstr ""
+
+#: src/NotificationTargetTask.php:296
+msgid "At creation, update, removal of a task"
+msgstr ""
 
 #: src/Ticket.php:100 src/Ticket.php:212
 msgid "Linked task"
@@ -158,14 +165,6 @@ msgstr ""
 
 #: src/Ticket.php:312
 msgid "Linked tickets"
-msgstr ""
-
-#: src/Typevisibility.php:168
-msgid "Add a group"
-msgstr ""
-
-#: src/Typevisibility.php:210
-msgid "Groups allowed to use context"
 msgstr ""
 
 #: src/Preference.php:100
