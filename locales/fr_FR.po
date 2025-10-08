@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Tasklists Development Team
-# This file is distributed under the same license as the GLPI - Tasklists plugin package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
@@ -9,9 +9,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI - Tasklists plugin\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-21 14:58+0000\n"
+"POT-Creation-Date: 2025-10-08 15:25+0200\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2025\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/79675/fr_FR/)\n"
@@ -21,117 +21,156 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: setup.php:102 src/Dashboard.php:74 src/Dashboard.php:192
-#: src/Dashboard.php:197 src/Menu.php:50 src/Preference.php:55
-#: src/Profile.php:60
-msgid "Tasks list"
-msgstr "Liste des tâches"
+#: src/NotificationTargetTask.php:68
+msgid "A task has been added"
+msgstr "Une tâche a été ajoutée"
 
-#: ajax/addOptions.php:54
-msgid "Not archived"
-msgstr "Non archivé"
+#: src/NotificationTargetTask.php:70
+msgid "A task has been removed"
+msgstr "Une tâche a été supprimée"
 
-#: ajax/addOptions.php:55 src/Task.php:216 src/Task.php:705
-msgid "Archived"
-msgstr "Archivé"
+#: src/NotificationTargetTask.php:69
+msgid "A task has been updated"
+msgstr "Une tâche a été mise à jour"
 
-#: src/Dashboard.php:73
-msgid "Tables"
-msgstr "Tableaux"
-
-#: src/Dashboard.php:116 src/Task.php:115 src/Task.php:497
-#: src/Taskstate.php:151 src/Taskstate.php:206 src/Tasktype.php:67
-msgid "Context"
-msgid_plural "Contexts"
-msgstr[0] "Contexte"
-msgstr[1] "Contextes"
-msgstr[2] "Contextes"
-
-#: src/Dashboard.php:122 src/Notificationtargettask.php:234
-#: src/Notificationtargettask.php:284 src/Task.php:153 src/Task.php:587
-#: src/Tasktype.php:246
-msgid "Due date"
-msgstr "Date d'échéance"
+#: src/TypeVisibility.php:168
+msgid "Add a group"
+msgstr "Ajouter un groupe"
 
 #: src/Dashboard.php:177 src/Dashboard.php:178 src/Dashboard.php:183
 #: src/Ticket.php:182
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
-#: src/Kanban.php:82
-msgid "Kanban"
-msgstr "Kanban"
+#: src/Task.php:1211
+msgid "Affect entity for create task"
+msgstr "Affecter une entité pour une création de tâche"
 
-#: src/Kanban.php:153
-msgid "You don't have the right to see any context"
-msgstr "Vous n'avez pas le droit de voir de contexte"
+#: src/Task.php:1168
+msgctxt "visibility"
+msgid "All"
+msgstr "Tout le monde"
 
-#: src/Kanban.php:190
-msgid "There is no accessible context"
-msgstr "Il n'y a pas de contexte accessible"
+#: ajax/addOptions.php:55 src/Task.php:216 src/Task.php:705
+msgid "Archived"
+msgstr "Archivé"
 
-#: src/Notificationtargettask.php:68
-msgid "A task has been added"
-msgstr "Une tâche a été ajoutée"
-
-#: src/Notificationtargettask.php:69
-msgid "A task has been updated"
-msgstr "Une tâche a été mise à jour"
-
-#: src/Notificationtargettask.php:70
-msgid "A task has been removed"
-msgstr "Une tâche a été supprimée"
-
-#: src/Notificationtargettask.php:238 src/Notificationtargettask.php:288
-#: src/Task.php:224 src/Task.php:578
-msgid "Other client"
-msgstr "Autre client"
-
-#: src/Notificationtargettask.php:296
+#: src/NotificationTargetTask.php:296
 msgid "At creation, update, removal of a task"
 msgstr "A la création, mise à jour et suppression d'un tâche"
-
-#: src/Preference.php:100
-msgid "Context by default"
-msgstr "Contexte par défaut"
 
 #: src/Preference.php:108
 msgid "Automatic refreshing of tasklist"
 msgstr "Rafraîchissement automatique des listes de tâches"
 
-#: src/Preference.php:114
-msgid "Refresh every "
-msgstr "Rafraîchir toutes les"
+#: src/Task.php:728 src/Task.php:809 src/Task.php:1104 src/TaskType.php:184
+#: src/TaskType.php:550
+msgid "Backlog"
+msgstr "Backlog"
 
-#: src/Preference.php:121
-msgid "minute(s)"
-msgstr "minute(s)"
-
-#: src/Profile.php:180 src/Profile.php:224
-msgid "See and update all tasks"
-msgstr "Voir et mettre à jour toutes les tâches"
+#: src/Task.php:1311
+msgid "Choose a template"
+msgstr "Choisissez un gabarit"
 
 #: src/Profile.php:189 src/Profile.php:227
 msgid "Configure contexts and statuses"
 msgstr "Configurer les contextes et les statuts"
+
+#: src/Dashboard.php:116 src/Task.php:115 src/Task.php:497
+#: src/TaskState.php:151 src/TaskState.php:206 src/TaskType.php:67
+msgid "Context"
+msgid_plural "Contexts"
+msgstr[0] "Contexte"
+msgstr[1] "Contextes"
+msgstr[2] "Contextes"
+
+#: src/Preference.php:100
+msgid "Context by default"
+msgstr "Contexte par défaut"
+
+#: src/Dashboard.php:122 src/NotificationTargetTask.php:234
+#: src/NotificationTargetTask.php:284 src/Task.php:153 src/Task.php:587
+#: src/TaskType.php:246
+msgid "Due date"
+msgstr "Date d'échéance"
+
+#: src/Task.php:541
+msgid "Existing client"
+msgstr "Client existant"
+
+#: src/TypeVisibility.php:210
+msgid "Groups allowed to use context"
+msgstr "Groupes autorisés à utiliser ce contexte"
+
+#: src/Kanban.php:82
+msgid "Kanban"
+msgstr "Kanban"
+
+#: src/Ticket.php:287
+msgid "Link a existant ticket"
+msgstr "Lier à un ticket existant"
+
+#: src/Ticket.php:100 src/Ticket.php:212
+msgid "Linked task"
+msgid_plural "Linked tasks"
+msgstr[0] "Tâche liée"
+msgstr[1] "Tâches liées"
+msgstr[2] "Tâches liées"
+
+#: src/Ticket.php:312
+msgid "Linked tickets"
+msgstr "Tickets liés"
+
+#: src/Ticket.php:255
+msgid "No task linked to this ticket yet"
+msgstr "Pas de tâche liée à ce ticket"
+
+#: ajax/addOptions.php:54
+msgid "Not archived"
+msgstr "Non archivé"
 
 #: src/Task.php:273
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr "Nombre de commentaires"
 
-#: src/Task.php:411
-msgid "You cannot archive a task with this state"
-msgstr "Vous ne pouvez pas archiver une tâche ayant ce statut"
+#: src/NotificationTargetTask.php:238 src/NotificationTargetTask.php:288
+#: src/Task.php:224 src/Task.php:578
+msgid "Other client"
+msgstr "Autre client"
 
-#: src/Task.php:541
-msgid "Existing client"
-msgstr "Client existant"
+#: src/Preference.php:114
+msgid "Refresh every "
+msgstr "Rafraîchir toutes les"
 
-#: src/Task.php:728 src/Task.php:809 src/Task.php:1104 src/Tasktype.php:184
-#: src/Tasktype.php:550
-msgid "Backlog"
-msgstr "Backlog"
+#: /c/wamp/www/glpi11symfony/marketplace/tasklists/templates/kanban.html.twig:53
+msgid "Role"
+msgstr "Rôle"
+
+#: src/Profile.php:180 src/Profile.php:224
+msgid "See and update all tasks"
+msgstr "Voir et mettre à jour toutes les tâches"
+
+#: src/TaskState.php:97
+msgid "Status"
+msgid_plural "Statuses"
+msgstr[0] "Statut"
+msgstr[1] "Statuts"
+msgstr[2] "Statuts"
+
+#: src/Dashboard.php:73
+msgid "Tables"
+msgstr "Tableaux"
+
+#: setup.php:102 src/Dashboard.php:74 src/Dashboard.php:192
+#: src/Dashboard.php:197 src/Menu.php:50 src/Preference.php:55
+#: src/Profile.php:60
+msgid "Tasks list"
+msgstr "Liste des tâches"
+
+#: src/Kanban.php:190
+msgid "There is no accessible context"
+msgstr "Il n'y a pas de contexte accessible"
 
 #: src/Task.php:1162
 msgctxt "visibility"
@@ -143,49 +182,14 @@ msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Cet utilisateur et ce groupe"
 
-#: src/Task.php:1168
-msgctxt "visibility"
-msgid "All"
-msgstr "Tout le monde"
+#: src/Task.php:411
+msgid "You cannot archive a task with this state"
+msgstr "Vous ne pouvez pas archiver une tâche ayant ce statut"
 
-#: src/Task.php:1211
-msgid "Affect entity for create task"
-msgstr "Affecter une entité pour une création de tâche"
+#: src/Kanban.php:153
+msgid "You don't have the right to see any context"
+msgstr "Vous n'avez pas le droit de voir de contexte"
 
-#: src/Task.php:1311
-msgid "Choose a template"
-msgstr "Choisissez un gabarit"
-
-#: src/Taskstate.php:97
-msgid "Status"
-msgid_plural "Statuses"
-msgstr[0] "Statut"
-msgstr[1] "Statuts"
-msgstr[2] "Statuts"
-
-#: src/Ticket.php:100 src/Ticket.php:212
-msgid "Linked task"
-msgid_plural "Linked tasks"
-msgstr[0] "Tâche liée"
-msgstr[1] "Tâches liées"
-msgstr[2] "Tâches liées"
-
-#: src/Ticket.php:255
-msgid "No task linked to this ticket yet"
-msgstr "Pas de tâche liée à ce ticket"
-
-#: src/Ticket.php:287
-msgid "Link a existant ticket"
-msgstr "Lier à un ticket existant"
-
-#: src/Ticket.php:312
-msgid "Linked tickets"
-msgstr "Tickets liés"
-
-#: src/Typevisibility.php:168
-msgid "Add a group"
-msgstr "Ajouter un groupe"
-
-#: src/Typevisibility.php:210
-msgid "Groups allowed to use context"
-msgstr "Groupes autorisés à utiliser ce contexte"
+#: src/Preference.php:121
+msgid "minute(s)"
+msgstr "minute(s)"
