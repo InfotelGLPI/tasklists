@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 13:58+0000\n"
+"POT-Creation-Date: 2025-10-31 12:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1644
+#, javascript-format
+msgid "%d other team members"
+msgstr ""
 
 #: src/NotificationTargetTask.php:68
 msgid "A task has been added"
@@ -30,8 +35,27 @@ msgstr ""
 msgid "A task has been updated"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1146
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1761
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1817
+msgid "Add"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2576
+msgctxt "button"
+msgid "Add"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1859
+msgid "Add a column from existing status"
+msgstr ""
+
 #: src/TypeVisibility.php:168
 msgid "Add a group"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:527
+msgid "Add column"
 msgstr ""
 
 #: src/Dashboard.php:177 src/Dashboard.php:178 src/Dashboard.php:183
@@ -48,8 +72,25 @@ msgctxt "visibility"
 msgid "All"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:12
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1138
+msgid "Archive all tasks of this state"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2123
+msgid "Archive this task"
+msgstr ""
+
 #: ajax/addOptions.php:55 src/Task.php:216 src/Task.php:705
 msgid "Archived"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2079
+msgid "Are you sure you want to archive all tasks ?"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2169
+msgid "Are you sure you want to archive this task ?"
 msgstr ""
 
 #: src/NotificationTargetTask.php:296
@@ -63,6 +104,10 @@ msgstr ""
 #: src/TaskType.php:184 src/TaskType.php:550 src/Task.php:728 src/Task.php:809
 #: src/Task.php:1104
 msgid "Backlog"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:464
+msgid "Bulk add"
 msgstr ""
 
 #: src/Task.php:1311
@@ -84,17 +129,58 @@ msgstr[1] ""
 msgid "Context by default"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1866
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1885
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1905
+msgid "Create status"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:416
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:33
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:467
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:483
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:773
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2547
+msgid "Delete"
+msgstr ""
+
 #: src/Dashboard.php:122 src/TaskType.php:246 src/Task.php:153 src/Task.php:587
 #: src/NotificationTargetTask.php:234 src/NotificationTargetTask.php:284
 msgid "Due date"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2626
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2647
+msgid "Error"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:651
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:33
+msgid "Exclude"
 msgstr ""
 
 #: src/Task.php:541
 msgid "Existing client"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2626
+msgid "Failed to add team member"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2647
+msgid "Failed to remove team member"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:477
+msgid "Go to"
+msgstr ""
+
 #: src/TypeVisibility.php:210
 msgid "Groups allowed to use context"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2268
+msgid "Invalid regular expression"
 msgstr ""
 
 #: src/Kanban.php:82
@@ -115,6 +201,10 @@ msgstr[1] ""
 msgid "Linked tickets"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1147
+msgid "More"
+msgstr ""
+
 #: src/Ticket.php:255
 msgid "No task linked to this ticket yet"
 msgstr ""
@@ -128,17 +218,41 @@ msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1790
+msgid "One item per line"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1865
+msgid "Or add a new status"
+msgstr ""
+
 #: src/Task.php:224 src/Task.php:578 src/NotificationTargetTask.php:238
 #: src/NotificationTargetTask.php:288
 msgid "Other client"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:771
+msgid "Purge"
 msgstr ""
 
 #: src/Preference.php:114
 msgid "Refresh every "
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:548
+msgid "Regex"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/templates/kanban.html.twig:53
 msgid "Role"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1024
+msgid "Search"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:525
+msgid "Search or filter results"
 msgstr ""
 
 #: src/Profile.php:180 src/Profile.php:224
@@ -161,8 +275,19 @@ msgstr ""
 msgid "Tasks list"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2267
+msgid ""
+"The regular expression you entered is invalid. Please check it and try again."
+msgstr ""
+
 #: src/Kanban.php:190
 msgid "There is no accessible context"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2068
+msgid ""
+"This column cannot support showing cards due to how many cards would be "
+"shown. You can still drag cards into this column."
 msgstr ""
 
 #: src/Task.php:1162
@@ -173,6 +298,14 @@ msgstr ""
 #: src/Task.php:1165
 msgctxt "visibility"
 msgid "This user and this group"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2026
+msgid "Toggle collapse"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2127
+msgid "Update priority of task"
 msgstr ""
 
 #: src/Task.php:411
