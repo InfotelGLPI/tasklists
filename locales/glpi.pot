@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Tasklists Development Team
-# This file is distributed under the same license as the Tasklists - Accounts plugin package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasklists - Accounts plugin\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 11:23+0000\n"
+"POT-Creation-Date: 2025-10-10 13:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,22 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:102 src/Dashboard.php:74 src/Dashboard.php:192
-#: src/Dashboard.php:197 src/Profile.php:60 src/Menu.php:50
-#: src/Preference.php:55
-msgid "Tasks list"
+#: src/NotificationTargetTask.php:68
+msgid "A task has been added"
 msgstr ""
 
-#: ajax/addOptions.php:54
-msgid "Not archived"
+#: src/NotificationTargetTask.php:70
+msgid "A task has been removed"
+msgstr ""
+
+#: src/NotificationTargetTask.php:69
+msgid "A task has been updated"
+msgstr ""
+
+#: src/TypeVisibility.php:168
+msgid "Add a group"
+msgstr ""
+
+#: src/Dashboard.php:177 src/Dashboard.php:178 src/Dashboard.php:183
+#: src/Ticket.php:182
+msgid "Add task"
+msgstr ""
+
+#: src/Task.php:1211
+msgid "Affect entity for create task"
+msgstr ""
+
+#: src/Task.php:1168
+msgctxt "visibility"
+msgid "All"
 msgstr ""
 
 #: ajax/addOptions.php:55 src/Task.php:216 src/Task.php:705
 msgid "Archived"
 msgstr ""
 
-#: src/Dashboard.php:73
-msgid "Tables"
+#: src/NotificationTargetTask.php:296
+msgid "At creation, update, removal of a task"
+msgstr ""
+
+#: src/Preference.php:108
+msgid "Automatic refreshing of tasklist"
+msgstr ""
+
+#: src/TaskType.php:184 src/TaskType.php:550 src/Task.php:728 src/Task.php:809
+#: src/Task.php:1104
+msgid "Backlog"
+msgstr ""
+
+#: src/Task.php:1311
+msgid "Choose a template"
+msgstr ""
+
+#: src/Profile.php:189 src/Profile.php:227
+msgid "Configure contexts and statuses"
 msgstr ""
 
 #: src/Dashboard.php:116 src/TaskType.php:67 src/Task.php:115 src/Task.php:497
@@ -43,32 +80,47 @@ msgid_plural "Contexts"
 msgstr[0] ""
 msgstr[1] ""
 
+#: src/Preference.php:100
+msgid "Context by default"
+msgstr ""
+
 #: src/Dashboard.php:122 src/TaskType.php:246 src/Task.php:153 src/Task.php:587
 #: src/NotificationTargetTask.php:234 src/NotificationTargetTask.php:284
 msgid "Due date"
 msgstr ""
 
-#: src/Dashboard.php:177 src/Dashboard.php:178 src/Dashboard.php:183
-#: src/Ticket.php:182
-msgid "Add task"
+#: src/Task.php:541
+msgid "Existing client"
 msgstr ""
 
-#: src/Profile.php:180 src/Profile.php:224
-msgid "See and update all tasks"
+#: src/TypeVisibility.php:210
+msgid "Groups allowed to use context"
 msgstr ""
 
-#: src/Profile.php:189 src/Profile.php:227
-msgid "Configure contexts and statuses"
+#: src/Kanban.php:82
+msgid "Kanban"
 msgstr ""
 
-#: src/TaskType.php:184 src/TaskType.php:550 src/Task.php:728 src/Task.php:809
-#: src/Task.php:1104
-msgid "Backlog"
+#: src/Ticket.php:287
+msgid "Link a existant ticket"
 msgstr ""
 
-#: src/Task.php:224 src/Task.php:578 src/NotificationTargetTask.php:238
-#: src/NotificationTargetTask.php:288
-msgid "Other client"
+#: src/Ticket.php:100 src/Ticket.php:212
+msgid "Linked task"
+msgid_plural "Linked tasks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Ticket.php:312
+msgid "Linked tickets"
+msgstr ""
+
+#: src/Ticket.php:255
+msgid "No task linked to this ticket yet"
+msgstr ""
+
+#: ajax/addOptions.php:54
+msgid "Not archived"
 msgstr ""
 
 #: src/Task.php:273
@@ -76,12 +128,41 @@ msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
 
-#: src/Task.php:411
-msgid "You cannot archive a task with this state"
+#: src/Task.php:224 src/Task.php:578 src/NotificationTargetTask.php:238
+#: src/NotificationTargetTask.php:288
+msgid "Other client"
 msgstr ""
 
-#: src/Task.php:541
-msgid "Existing client"
+#: src/Preference.php:114
+msgid "Refresh every "
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/kanban.html.twig:53
+msgid "Role"
+msgstr ""
+
+#: src/Profile.php:180 src/Profile.php:224
+msgid "See and update all tasks"
+msgstr ""
+
+#: src/TaskState.php:97
+msgid "Status"
+msgid_plural "Statuses"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Dashboard.php:73
+msgid "Tables"
+msgstr ""
+
+#: setup.php:102 src/Dashboard.php:74 src/Dashboard.php:192
+#: src/Dashboard.php:197 src/Profile.php:60 src/Menu.php:50
+#: src/Preference.php:55
+msgid "Tasks list"
+msgstr ""
+
+#: src/Kanban.php:190
+msgid "There is no accessible context"
 msgstr ""
 
 #: src/Task.php:1162
@@ -94,89 +175,12 @@ msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
 
-#: src/Task.php:1168
-msgctxt "visibility"
-msgid "All"
-msgstr ""
-
-#: src/Task.php:1211
-msgid "Affect entity for create task"
-msgstr ""
-
-#: src/Task.php:1311
-msgid "Choose a template"
-msgstr ""
-
-#: src/TypeVisibility.php:168
-msgid "Add a group"
-msgstr ""
-
-#: src/TypeVisibility.php:210
-msgid "Groups allowed to use context"
-msgstr ""
-
-#: src/Kanban.php:82
-msgid "Kanban"
+#: src/Task.php:411
+msgid "You cannot archive a task with this state"
 msgstr ""
 
 #: src/Kanban.php:153
 msgid "You don't have the right to see any context"
-msgstr ""
-
-#: src/Kanban.php:190
-msgid "There is no accessible context"
-msgstr ""
-
-#: src/TaskState.php:97
-msgid "Status"
-msgid_plural "Statuses"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/NotificationTargetTask.php:68
-msgid "A task has been added"
-msgstr ""
-
-#: src/NotificationTargetTask.php:69
-msgid "A task has been updated"
-msgstr ""
-
-#: src/NotificationTargetTask.php:70
-msgid "A task has been removed"
-msgstr ""
-
-#: src/NotificationTargetTask.php:296
-msgid "At creation, update, removal of a task"
-msgstr ""
-
-#: src/Ticket.php:100 src/Ticket.php:212
-msgid "Linked task"
-msgid_plural "Linked tasks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/Ticket.php:255
-msgid "No task linked to this ticket yet"
-msgstr ""
-
-#: src/Ticket.php:287
-msgid "Link a existant ticket"
-msgstr ""
-
-#: src/Ticket.php:312
-msgid "Linked tickets"
-msgstr ""
-
-#: src/Preference.php:100
-msgid "Context by default"
-msgstr ""
-
-#: src/Preference.php:108
-msgid "Automatic refreshing of tasklist"
-msgstr ""
-
-#: src/Preference.php:114
-msgid "Refresh every "
 msgstr ""
 
 #: src/Preference.php:121
