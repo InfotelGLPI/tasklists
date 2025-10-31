@@ -5,8 +5,8 @@
 find . -name '*.php' > php_files.list
 
 xgettext --files-from=php_files.list \
-  --copyright-holder='Behaviors Development Team' \
-  --package-name='Behaviors - Accounts plugin' \
+  --copyright-holder='Tasklists Development Team' \
+  --package-name='Tasklists plugin' \
   -o locales/glpi.pot \
   -L PHP \
   --add-comments=TRANS \
@@ -58,3 +58,32 @@ find "$WORKING_DIR/templates" -type f -name "*.twig" | while read -r file; do
     # Corrige les références de fichier dans le POT
     sed -i -r "s|standard input:([0-9]+)|$file:\1|g" "$OUTPUT_FILE"
 done
+# --- Étape 3 : Extraction des chaînes JavaScript ---
+KANBAN_DIR="$WORKING_DIR/public/lib/kanban/js"
+OUTPUT_FILE="$WORKING_DIR/locales/glpi.pot"
+
+# Crée le fichier de sortie s'il n'existe pas
+mkdir -p "$(dirname "$OUTPUT_FILE")"
+touch "$OUTPUT_FILE"
+
+if [ -d "$KANBAN_DIR" ]; then
+    echo "Extraction depuis JavaScript : $KANBAN_DIR"
+    find "$KANBAN_DIR" -type f -name "*.js" > js_files.list
+
+    # xgettext a besoin du fichier de sortie en paramètre explicite APRÈS -j
+    xgettext --files-from=js_files.list \
+      -L JavaScript \
+      --add-comments=TRANS \
+      --from-code=UTF-8 \
+      --force-po \
+      --sort-output \
+      --keyword=_n:1,2 \
+      --keyword=__:1 \
+      --keyword=_x:1c,2 \
+      --keyword=_nx:1c,2,3 \
+      -o "$OUTPUT_FILE" -j
+
+    rm js_files.list
+else
+    echo "⚠️ Dossier $KANBAN_DIR introuvable — étape JavaScript ignorée."
+fi
