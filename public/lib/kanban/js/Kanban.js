@@ -461,10 +461,10 @@ class GLPIKanbanRights {
                 add_itemtype_bulk_dropdown += "<li id='kanban-bulk-add-" + itemtype + "' class='dropdown-item'><span>" + self.supported_itemtypes[itemtype]['name'] + '</span></li>';
             });
             add_itemtype_bulk_dropdown += '</ul>';
-            const add_itemtype_bulk_link = '<a href="#">' + '<i class="fa-fw fas fa-list"></i>' + __('Bulk add') + '</a>';
+            const add_itemtype_bulk_link = '<a href="#">' + '<i class="fa-fw fas fa-list"></i>' + __('Bulk add', 'tasklists') + '</a>';
             column_overflow_dropdown += '<li class="dropdown-trigger dropdown-item">' + add_itemtype_bulk_link + add_itemtype_bulk_dropdown + '</li>';
             if (self.rights.canModifyView()) {
-                column_overflow_dropdown += "<li class='kanban-remove dropdown-item' data-forbid-protected='true'><span>"  + '<i class="fa-fw ti ti-trash"></i>' + __('Delete') + "</span></li>";
+                column_overflow_dropdown += "<li class='kanban-remove dropdown-item' data-forbid-protected='true'><span>"  + '<i class="fa-fw ti ti-trash"></i>' + __('Delete', 'tasklists') + "</span></li>";
             }
             column_overflow_dropdown += '</ul>';
             kanban_container.append(column_overflow_dropdown);
@@ -524,7 +524,7 @@ class GLPIKanbanRights {
             $("<select name='kanban-board-switcher'></select>").appendTo(toolbar);
             let filter_input = $(`<input name='filter' class='form-control ms-1' type='text' placeholder="${__('Search or filter results')}" autocomplete="off"/>`).appendTo(toolbar);
             if (self.rights.canModifyView()) {
-                let add_column = "<buttom rome='button' class='kanban-add-column btn btn-outline-secondary ms-1'>" + __('Add column') + "</button>";
+                let add_column = "<buttom rome='button' class='kanban-add-column btn btn-outline-secondary ms-1'>" + __('Add column', 'tasklists') + "</button>";
                 toolbar.append(add_column);
             }
 
@@ -545,7 +545,7 @@ class GLPIKanbanRights {
                 tokenizer_options: {
                     custom_prefixes: {
                         '#': { // Regex prefix
-                            label: __('Regex'),
+                            label: __('Regex', 'tasklists'),
                             token_color: '#00800080'
                         }
                     }
@@ -1021,7 +1021,7 @@ class GLPIKanbanRights {
             }).done(function(data) {
                 const form_content = $(self.add_column_form + " .kanban-item-content");
                 form_content.empty();
-                form_content.append("<input type='text' class='form-control' name='column-name-filter' placeholder='" + __('Search') + "'/>");
+                form_content.append("<input type='text' class='form-control' name='column-name-filter' placeholder='" + __('Search', 'tasklists') + "'/>");
                 let list = "<ul class='kanban-columns-list'>";
                 $.each(data, function(column_id, column) {
                     let list_item = "<li data-list-id='"+column_id+"'>";
@@ -1143,8 +1143,8 @@ class GLPIKanbanRights {
 
             const column_id = parseInt(getColumnIDFromElement(column['id']));
             if (self.rights.canCreateItem() && (self.rights.getAllowedColumnsForNewCards().length === 0 || self.rights.getAllowedColumnsForNewCards().includes(column_id))) {
-                toolbar_el += "<i id='kanban_add_" + column['id'] + "' class='kanban-add btn btn-sm btn-ghost-secondary fas fa-plus' title='" + __('Add') + "'></i>";
-                toolbar_el += "<i id='kanban_column_overflow_actions_" + column['id'] +"' class='kanban-column-overflow-actions btn btn-sm btn-ghost-secondary ti ti-dots' title='" + __('More') + "'></i>";
+                toolbar_el += "<i id='kanban_add_" + column['id'] + "' class='kanban-add btn btn-sm btn-ghost-secondary fas fa-plus' title='" + __('Add', 'tasklists') + "'></i>";
+                toolbar_el += "<i id='kanban_column_overflow_actions_" + column['id'] +"' class='kanban-column-overflow-actions btn btn-sm btn-ghost-secondary ti ti-dots' title='" + __('More', 'tasklists') + "'></i>";
             }
             toolbar_el += "</span>";
             return toolbar_el;
@@ -1641,7 +1641,7 @@ class GLPIKanbanRights {
             context.textBaseline = 'middle';
             context.fillText("+" + overflow_count, self.team_image_size / 2, self.team_image_size / 2);
             const src = canvas.toDataURL("image/png");
-            return "<span><img src='" + src + "' title='" + __('%d other team members').replace('%d', overflow_count) + "'/></span>";
+            return "<span><img src='" + src + "' title='" + __('%d other team members', 'tasklists').replace('%d', overflow_count) + "'/></span>";
         };
 
         /**
@@ -1758,7 +1758,7 @@ class GLPIKanbanRights {
             const column_id_elements = column_el.prop('id').split('-');
             const column_value = column_id_elements[column_id_elements.length - 1];
             add_form += "<input type='hidden' name='" + self.column_field.id + "' value='" + column_value + "'/>";
-            add_form += "<input type='submit' value='" + __('Add') + "' name='add' class='btn btn-primary'/>";
+            add_form += "<input type='submit' value='" + __('Add', 'tasklists') + "' name='add' class='btn btn-primary'/>";
             add_form += "</form>";
             $(column_el.find('.kanban-body')[0]).append(add_form);
             $('#' + formID).get(0).scrollIntoView(false);
@@ -1814,7 +1814,7 @@ class GLPIKanbanRights {
             const column_id_elements = column_el.prop('id').split('-');
             const column_value = column_id_elements[column_id_elements.length - 1];
             add_form += "<input type='hidden' name='" + self.column_field.id + "' value='" + column_value + "'/>";
-            add_form += "<input type='submit' value='" + __('Add') + "' name='add' class='submit'/>";
+            add_form += "<input type='submit' value='" + __('Add', 'tasklists') + "' name='add' class='submit'/>";
             add_form += "</form>";
             $(column_el.find('.kanban-body')[0]).append(add_form);
             $('#' + formID).get(0).scrollIntoView(false);
@@ -1902,7 +1902,7 @@ class GLPIKanbanRights {
                 }
             });
             create_form += "</div>";
-            create_form += "<button type='submit' class='btn btn-primary'>" + __('Create status') + "</button>";
+            create_form += "<button type='submit' class='btn btn-primary'>" + __('Create status', 'tasklists') + "</button>";
             create_form += "</form></div>";
             $(self.element).prepend(create_form);
         };
@@ -2023,7 +2023,7 @@ class GLPIKanbanRights {
             const column_left = $("<span class=''></span>").appendTo(column_content);
             const column_right = $("<span class=''></span>").appendTo(column_content);
             if (self.rights.canModifyView()) {
-                $(column_left).append("<i class='ti ti-caret-right kanban-collapse-column btn btn-sm btn-ghost-secondary' title='" + __('Toggle collapse') + "'></i>");
+                $(column_left).append("<i class='ti ti-caret-right kanban-collapse-column btn btn-sm btn-ghost-secondary' title='" + __('Toggle collapse', 'tasklists') + "'></i>");
             }
             $(column_left).append("<span class='kanban-column-title badge "+(column['color_class'] || '')+"' style='background-color: "+column['header_color']+"; color: "+column['header_fg_color']+";'>" + column['name'] + "</span></span>");
             $(column_right).append("<span class='kanban_nb badge bg-secondary'>"+count+"</span>");
@@ -2264,8 +2264,8 @@ class GLPIKanbanRights {
                     } catch (e) {
                         // Invalid regex
                         glpi_toast_error(
-                            __('The regular expression you entered is invalid. Please check it and try again.'),
-                            __('Invalid regular expression')
+                            __('The regular expression you entered is invalid. Please check it and try again.', 'tasklists'),
+                            __('Invalid regular expression', 'tasklists')
                         );
                     }
                 };
@@ -2623,7 +2623,7 @@ class GLPIKanbanRights {
                     _backgroundRefreshTimer = window.setTimeout(_backgroundRefresh, self.background_refresh_interval * 60 * 1000);
                 }, false);
             }).fail(() => {
-                glpi_toast_error(__('Failed to add team member'), __('Error'));
+                glpi_toast_error(__('Failed to add team member', 'tasklists'), __('Error', 'tasklists'));
             });
         };
 
@@ -2644,7 +2644,7 @@ class GLPIKanbanRights {
                     _backgroundRefreshTimer = window.setTimeout(_backgroundRefresh, self.background_refresh_interval * 60 * 1000);
                 }, false);
             }).fail(() => {
-                glpi_toast_error(__('Failed to remove team member'), __('Error'));
+                glpi_toast_error(__('Failed to remove team member', 'tasklists'), __('Error', 'tasklists'));
             });
         };
 
