@@ -243,6 +243,7 @@ if (($_POST['action'] ?? null) === 'update') {
     $params = $_POST['params'] ?? [];
     $column_item->add([
             'name'   => $_POST['column_name'],
+            'entities_id'    => $_SESSION['glpiactive_entity'],
         ] + $params);
 } elseif (($_POST['action'] ?? null) === 'save_column_state') {
     if (!isset($_POST['state'])) {

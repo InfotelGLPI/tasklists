@@ -160,7 +160,11 @@ class TaskState extends CommonDropdown
                     $possible_values[$datatype['id']] = $datatype['name'];
                 }
             }
-            $values = json_decode($this->fields['tasktypes']);
+            $values = [];
+            if ($this->fields['tasktypes'] != null) {
+                $values = json_decode($this->fields['tasktypes']);
+            }
+
             if (!is_array($values)) {
                 $values = [];
             }
