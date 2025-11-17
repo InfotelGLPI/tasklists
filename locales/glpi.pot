@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-17 09:11+0000\n"
+"POT-Creation-Date: 2025-11-17 09:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Add task"
 msgstr ""
 
-#: src/Task.php:1211
+#: src/Task.php:1207
 msgid "Affect entity for create task"
 msgstr ""
 
-#: src/Task.php:1168
+#: src/Task.php:1164
 msgctxt "visibility"
 msgid "All"
 msgstr ""
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Archive this task"
 msgstr ""
 
-#: ajax/addOptions.php:55 src/Task.php:216 src/Task.php:705
+#: ajax/addOptions.php:55 src/Task.php:212 src/Task.php:701
 msgid "Archived"
 msgstr ""
 
@@ -101,8 +101,8 @@ msgstr ""
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/TaskType.php:184 src/TaskType.php:550 src/Task.php:728 src/Task.php:809
-#: src/Task.php:1104
+#: src/TaskType.php:184 src/TaskType.php:550 src/Task.php:724 src/Task.php:805
+#: src/Task.php:1100
 msgid "Backlog"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "Bulk add"
 msgstr ""
 
-#: src/Task.php:1311
+#: src/Task.php:1307
 msgid "Choose a template"
 msgstr ""
 
@@ -118,7 +118,7 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/Dashboard.php:116 src/TaskType.php:67 src/Task.php:115 src/Task.php:497
+#: src/Dashboard.php:116 src/TaskType.php:67 src/Task.php:111 src/Task.php:493
 #: src/TaskState.php:151 src/TaskState.php:210
 msgid "Context"
 msgid_plural "Contexts"
@@ -144,7 +144,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/Dashboard.php:122 src/TaskType.php:246 src/Task.php:153 src/Task.php:587
+#: src/Dashboard.php:122 src/TaskType.php:246 src/Task.php:149 src/Task.php:583
 #: src/NotificationTargetTask.php:234 src/NotificationTargetTask.php:284
 msgid "Due date"
 msgstr ""
@@ -159,7 +159,7 @@ msgstr ""
 msgid "Exclude"
 msgstr ""
 
-#: src/Task.php:541
+#: src/Task.php:537
 msgid "Existing client"
 msgstr ""
 
@@ -213,7 +213,7 @@ msgstr ""
 msgid "Not archived"
 msgstr ""
 
-#: src/Task.php:273
+#: src/Task.php:269
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
@@ -226,7 +226,7 @@ msgstr ""
 msgid "Or add a new status"
 msgstr ""
 
-#: src/Task.php:224 src/Task.php:578 src/NotificationTargetTask.php:238
+#: src/Task.php:220 src/Task.php:574 src/NotificationTargetTask.php:238
 #: src/NotificationTargetTask.php:288
 msgid "Other client"
 msgstr ""
@@ -290,12 +290,12 @@ msgid ""
 "shown. You can still drag cards into this column."
 msgstr ""
 
-#: src/Task.php:1162
+#: src/Task.php:1158
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: src/Task.php:1165
+#: src/Task.php:1161
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
@@ -308,7 +308,7 @@ msgstr ""
 msgid "Update priority of task"
 msgstr ""
 
-#: src/Task.php:411
+#: src/Task.php:407
 msgid "You cannot archive a task with this state"
 msgstr ""
 
