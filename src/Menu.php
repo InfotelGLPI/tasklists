@@ -56,15 +56,6 @@ class Menu extends CommonGLPI
     public static function getMenuContent()
     {
 
-        $url             = "";
-        $default_context = 0;
-        if (class_exists(Preference::class)) {
-            $default_context = Preference::checkDefaultType(Session::getLoginUserID());
-        }
-        if ($default_context > 0) {
-            $url = "?itemtype=GlpiPlugin\Tasklists\Kanban&glpi_tab=GlpiPlugin\Tasklists\Kanban$" . $default_context;
-        }
-
         $menu          = [];
         $menu['title'] = self::getMenuName(2);
         $menu['page']  = Kanban::getSearchURL(false) ;
@@ -75,6 +66,9 @@ class Menu extends CommonGLPI
             $menu['links']['template'] = PLUGIN_TASKLISTS_WEBDIR . '/front/setup.templates.php?add=0';
         }
         $menu['links']['summary'] = Kanban::getSearchURL(false);
+
+        $image                 = "<i class='ti ti-checklist pointer' title='" . Task::getTypeName(Session::getPluralNumber()) . "'></i>&nbsp;" . Task::getTypeName(Session::getPluralNumber());
+        $menu['links'][$image] = Task::getSearchURL(false);
 
         $menu['icon']    = self::getIcon();
 
