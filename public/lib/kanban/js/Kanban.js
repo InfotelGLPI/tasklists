@@ -1136,14 +1136,14 @@ class GLPIKanbanRights {
             if (self.rights.canCreateItem) {
                 if (finishState === 1) {
                     var archive_all_tasks = __('Archive all tasks of this state', 'tasklists');
-                    toolbar_el += "<i id='kanban_delete_" + column['id'] + "' class='kanban-delete pointer ti ti-archive' title='" + archive_all_tasks + "'></i>";
+                    toolbar_el += "<i id='kanban_delete_" + column['id'] + "' class='kanban-delete pointer btn btn-sm btn-ghost-secondary ti ti-archive' title='" + archive_all_tasks + "'></i>";
 
                 }
             }
 
             const column_id = parseInt(getColumnIDFromElement(column['id']));
             if (self.rights.canCreateItem() && (self.rights.getAllowedColumnsForNewCards().length === 0 || self.rights.getAllowedColumnsForNewCards().includes(column_id))) {
-                toolbar_el += "<i id='kanban_add_" + column['id'] + "' class='kanban-add btn btn-sm btn-ghost-secondary fas fa-plus' title='" + __('Add', 'tasklists') + "'></i>";
+                toolbar_el += "<i id='kanban_add_" + column['id'] + "' class='kanban-add btn btn-sm btn-ghost-secondary ti ti-plus' title='" + __('Add', 'tasklists') + "'></i>";
                 toolbar_el += "<i id='kanban_column_overflow_actions_" + column['id'] +"' class='kanban-column-overflow-actions btn btn-sm btn-ghost-secondary ti ti-dots' title='" + __('More', 'tasklists') + "'></i>";
             }
             toolbar_el += "</span>";
