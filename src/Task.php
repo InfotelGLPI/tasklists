@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -37,12 +38,8 @@ use DbUtils;
 use Document_Item;
 use Dropdown;
 use DropdownTranslation;
-use Glpi\Plugin\Hooks;
 use Glpi\DBAL\QueryExpression;
-use Glpi\Features\Clonable;
-use Glpi\Features\Teamwork;
 //Needed for save cards
-use Glpi\Features\Kanban;
 use Glpi\RichText\RichText;
 use Group_User;
 use Html;
@@ -62,18 +59,17 @@ if (!defined('GLPI_ROOT')) {
  */
 class Task extends CommonDBTM
 {
-
     public $dohistory = true;
-    static $rightname = 'plugin_tasklists';
+    public static $rightname = 'plugin_tasklists';
     protected $usenotepad = true;
-    static $types = [];
+    public static $types = [];
 
     /**
      * @param int $nb
      *
      * @return string
      */
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
         return _n('Task', 'Tasks', $nb);
     }
@@ -82,7 +78,7 @@ class Task extends CommonDBTM
     /**
      * @return string
      */
-    static function getIcon()
+    public static function getIcon()
     {
         return "ti ti-layout-kanban";
     }
@@ -90,13 +86,13 @@ class Task extends CommonDBTM
     /**
      * @return array
      */
-    function rawSearchOptions()
+    public function rawSearchOptions()
     {
         $tab = [];
 
         $tab[] = [
             'id' => 'common',
-            'name' => self::getTypeName(2)
+            'name' => self::getTypeName(2),
         ];
 
         $tab[] = [
@@ -105,7 +101,7 @@ class Task extends CommonDBTM
             'field' => 'name',
             'name' => __('Name'),
             'datatype' => 'itemlink',
-            'itemlink_type' => $this->getType()
+            'itemlink_type' => $this->getType(),
         ];
 
         $tab[] = [
@@ -113,7 +109,7 @@ class Task extends CommonDBTM
             'table' => 'glpi_plugin_tasklists_tasktypes',
             'field' => 'name',
             'name' => _n('Context', 'Contexts', 1, 'tasklists'),
-            'datatype' => 'dropdown'
+            'datatype' => 'dropdown',
         ];
 
         $tab[] = [
@@ -122,7 +118,7 @@ class Task extends CommonDBTM
             'field' => 'name',
             'linkfield' => 'users_id',
             'name' => __('User'),
-            'datatype' => 'dropdown'
+            'datatype' => 'dropdown',
         ];
 
         $tab[] = [
@@ -131,7 +127,7 @@ class Task extends CommonDBTM
             'field' => 'actiontime',
             'name' => __('Planned duration'),
             'datatype' => 'timestamp',
-            'massiveaction' => false
+            'massiveaction' => false,
         ];
 
         $tab[] = [
@@ -143,7 +139,7 @@ class Task extends CommonDBTM
             'unit' => '%',
             'min' => 0,
             'max' => 100,
-            'step' => 5
+            'step' => 5,
         ];
 
         $tab[] = [
@@ -151,7 +147,7 @@ class Task extends CommonDBTM
             'table' => $this->getTable(),
             'field' => 'due_date',
             'name' => __('Due date', 'tasklists'),
-            'datatype' => 'date'
+            'datatype' => 'date',
         ];
 
         $tab[] = [
@@ -159,7 +155,7 @@ class Task extends CommonDBTM
             'table' => $this->getTable(),
             'field' => 'content',
             'name' => __('Description'),
-            'datatype' => 'text'
+            'datatype' => 'text',
         ];
 
         $tab[] = [
@@ -168,7 +164,7 @@ class Task extends CommonDBTM
             'field' => 'priority',
             'name' => __('Priority'),
             'searchtype' => 'equals',
-            'datatype' => 'specific'
+            'datatype' => 'specific',
         ];
 
         $tab[] = [
@@ -178,7 +174,7 @@ class Task extends CommonDBTM
             'name' => __('Visibility'),
             'searchtype' => 'equals',
             'datatype' => 'specific',
-            'massiveaction' => false
+            'massiveaction' => false,
         ];
 
         $tab[] = [
@@ -188,7 +184,7 @@ class Task extends CommonDBTM
             'linkfield' => 'groups_id',
             'name' => __('Group'),
             'condition' => '`is_usergroup`',
-            'datatype' => 'dropdown'
+            'datatype' => 'dropdown',
         ];
 
         $tab[] = [
@@ -197,7 +193,7 @@ class Task extends CommonDBTM
             'field' => 'plugin_tasklists_taskstates_id',
             'name' => __('Status'),
             'searchtype' => ['equals', 'notequals'],
-            'datatype' => 'specific'
+            'datatype' => 'specific',
         ];
 
         $tab[] = [
@@ -206,7 +202,7 @@ class Task extends CommonDBTM
             'field' => 'date_mod',
             'massiveaction' => false,
             'name' => __('Last update'),
-            'datatype' => 'datetime'
+            'datatype' => 'datetime',
         ];
 
         $tab[] = [
@@ -214,7 +210,7 @@ class Task extends CommonDBTM
             'table' => $this->getTable(),
             'field' => 'is_archived',
             'name' => __('Archived', 'tasklists'),
-            'datatype' => 'bool'
+            'datatype' => 'bool',
         ];
 
         $tab[] = [
@@ -222,7 +218,7 @@ class Task extends CommonDBTM
             'table' => $this->getTable(),
             'field' => 'client',
             'name' => __('Other client', 'tasklists'),
-            'datatype' => 'text'
+            'datatype' => 'text',
         ];
 
         $tab[] = [
@@ -231,7 +227,7 @@ class Task extends CommonDBTM
             'field' => 'date_creation',
             'name' => __('Creation date'),
             'datatype' => 'datetime',
-            'massiveaction' => false
+            'massiveaction' => false,
         ];
 
         $tab[] = [
@@ -239,7 +235,7 @@ class Task extends CommonDBTM
             'table' => $this->getTable(),
             'field' => 'is_recursive',
             'name' => __('Child entities'),
-            'datatype' => 'bool'
+            'datatype' => 'bool',
         ];
 
         $tab[] = [
@@ -247,7 +243,7 @@ class Task extends CommonDBTM
             'table' => $this->getTable(),
             'field' => 'id',
             'name' => __('ID'),
-            'datatype' => 'number'
+            'datatype' => 'number',
         ];
 
         $tab[] = [
@@ -255,7 +251,7 @@ class Task extends CommonDBTM
             'table' => 'glpi_entities',
             'field' => 'completename',
             'name' => __('Entity'),
-            'datatype' => 'dropdown'
+            'datatype' => 'dropdown',
         ];
         $tab[] = [
             'id' => '81',
@@ -263,7 +259,7 @@ class Task extends CommonDBTM
             'field' => 'name',
             'linkfield' => 'users_id_requester',
             'name' => _n('Requester', 'Requesters', 1),
-            'datatype' => 'dropdown'
+            'datatype' => 'dropdown',
         ];
 
         $tab[] = [
@@ -276,8 +272,8 @@ class Task extends CommonDBTM
             'datatype' => 'count',
             'massiveaction' => false,
             'joinparams' => [
-                'jointype' => 'child'
-            ]
+                'jointype' => 'child',
+            ],
         ];
 
         $tab[] = [
@@ -290,8 +286,8 @@ class Task extends CommonDBTM
             'datatype' => 'count',
             'massiveaction' => false,
             'joinparams' => [
-                'jointype' => 'child'
-            ]
+                'jointype' => 'child',
+            ],
         ];
 
         return $tab;
@@ -302,7 +298,7 @@ class Task extends CommonDBTM
      *
      * @return array
      */
-    function defineTabs($options = [])
+    public function defineTabs($options = [])
     {
         $ong = [];
         $this->addDefaultFormTab($ong);
@@ -320,7 +316,7 @@ class Task extends CommonDBTM
     /**
      *
      */
-    function post_getEmpty()
+    public function post_getEmpty()
     {
         $this->fields['priority'] = 3;
         $this->fields['percent_done'] = 0;
@@ -332,7 +328,7 @@ class Task extends CommonDBTM
     {
         return [
             Document_Item::class,
-            Notepad::class
+            Notepad::class,
         ];
     }
 
@@ -341,7 +337,7 @@ class Task extends CommonDBTM
      *
      * @since 0.83.1
      **/
-    function cleanDBonPurge()
+    public function cleanDBonPurge()
     {
         /// Task_Comment does not extends CommonDBConnexity
         $kbic = new Task_Comment();
@@ -353,7 +349,7 @@ class Task extends CommonDBTM
      *
      * @return datas
      */
-    function prepareInputForAdd($input)
+    public function prepareInputForAdd($input)
     {
         if (isset($input['due_date']) && empty($input['due_date'])) {
             $input['due_date'] = 'NULL';
@@ -370,7 +366,7 @@ class Task extends CommonDBTM
         return $input;
     }
 
-    function post_addItem()
+    public function post_addItem()
     {
         global $CFG_GLPI;
 
@@ -389,7 +385,7 @@ class Task extends CommonDBTM
      *
      * @return datas
      */
-    function prepareInputForUpdate($input)
+    public function prepareInputForUpdate($input)
     {
         if (isset($input['due_date']) && empty($input['due_date'])) {
             $input['due_date'] = 'NULL';
@@ -426,7 +422,7 @@ class Task extends CommonDBTM
      *
      * @return void
      */
-    function post_updateItem($history = 1)
+    public function post_updateItem($history = 1)
     {
         global $CFG_GLPI;
 
@@ -442,7 +438,7 @@ class Task extends CommonDBTM
      *
      * @return bool : true if item need to be deleted else false
      **/
-    function pre_deleteItem()
+    public function pre_deleteItem()
     {
         global $CFG_GLPI;
 
@@ -465,7 +461,7 @@ class Task extends CommonDBTM
      *
      * @return bool
      */
-    function showForm($ID, $options = [])
+    public function showForm($ID, $options = [])
     {
         global $CFG_GLPI;
 
@@ -479,14 +475,14 @@ class Task extends CommonDBTM
         echo "<td>" . __('Name') . "</td>";
         echo "<td>";
         echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
-//      if (isset($options['from_edit_ajax'])
-//          && $options['from_edit_ajax']) {
-//         echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
-//      }
-//      if (isset($options['withtemplate']) && empty($options['withtemplate'])) {
-//         $options['withtemplate'] = 0;
-//      }
-//      echo Html::hidden('withtemplate', ['value' => $options['withtemplate']]);
+        //      if (isset($options['from_edit_ajax'])
+        //          && $options['from_edit_ajax']) {
+        //         echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
+        //      }
+        //      if (isset($options['withtemplate']) && empty($options['withtemplate'])) {
+        //         $options['withtemplate'] = 0;
+        //      }
+        //      echo Html::hidden('withtemplate', ['value' => $options['withtemplate']]);
         echo "</td>";
 
         $plugin_tasklists_tasktypes_id = $this->fields["plugin_tasklists_tasktypes_id"];
@@ -517,7 +513,7 @@ class Task extends CommonDBTM
         }
         CommonITILObject::dropdownPriority([
             'value' => $priority,
-            'withmajor' => 1
+            'withmajor' => 1,
         ]);
         echo "</td>";
 
@@ -527,7 +523,7 @@ class Task extends CommonDBTM
             'min' => HOUR_TIMESTAMP * 2,
             'max' => MONTH_TIMESTAMP * 2,
             'step' => HOUR_TIMESTAMP * 2,
-            'value' => $this->fields["actiontime"]
+            'value' => $this->fields["actiontime"],
         ]);
         echo "</td>";
 
@@ -558,7 +554,7 @@ class Task extends CommonDBTM
             $JS = "function plugin_tasklists_load_entities(){";
             $params = [
                 'entities_id' => '__VALUE__',
-                'entity' => $this->fields["entities_id"]
+                'entity' => $this->fields["entities_id"],
             ];
             $JS .= Ajax::updateItemJsCode(
                 "plugin_tasklists_entity",
@@ -602,7 +598,7 @@ class Task extends CommonDBTM
             'name' => "users_id_requester",
             'value' => $users_id_requester,
             'entity' => $this->fields["entities_id"],
-            'right' => 'all'
+            'right' => 'all',
         ]);
         echo "</td>";
 
@@ -624,7 +620,7 @@ class Task extends CommonDBTM
             'name' => "users_id",
             'value' => $users_id,
             'entity' => $this->fields["entities_id"],
-            'right' => 'all'
+            'right' => 'all',
         ]);
         echo "</td>";
 
@@ -635,7 +631,7 @@ class Task extends CommonDBTM
             'min' => 0,
             'max' => 100,
             'step' => 10,
-            'unit' => '%'
+            'unit' => '%',
         ]);
         echo "</td>";
 
@@ -654,7 +650,7 @@ class Task extends CommonDBTM
             'name' => "groups_id",
             'value' => $groups_id,
             'entity' => $this->fields["entities_id"],
-            'condition' => ['is_usergroup' => 1]
+            'condition' => ['is_usergroup' => 1],
         ]);
         echo "</td>";
 
@@ -685,7 +681,7 @@ class Task extends CommonDBTM
             'editor_id' => $content_id,
             'enable_richtext' => true,
             'cols' => $cols,
-            'rows' => $rows
+            'rows' => $rows,
         ]);
         echo "</td>";
 
@@ -721,12 +717,12 @@ class Task extends CommonDBTM
      * @param     $plugin_tasklists_tasktypes_id
      * @param int $plugin_tasklists_taskstates_id
      */
-    static function displayState($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id = 0)
+    public static function displayState($plugin_tasklists_tasktypes_id, $plugin_tasklists_taskstates_id = 0)
     {
         $states[] = [
             'id' => 0,
             'name' => __('Backlog', 'tasklists'),
-            'rank' => 0
+            'rank' => 0,
         ];
 
         $states_ranked = [];
@@ -739,18 +735,18 @@ class Task extends CommonDBTM
                     if (is_array($tasktypes)) {
                         if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
                             if (empty(
-                            $name = DropdownTranslation::getTranslatedValue(
-                                $datastate['id'],
-                                TaskState::class,
-                                'name',
-                                $_SESSION['glpilanguage']
-                            )
+                                $name = DropdownTranslation::getTranslatedValue(
+                                    $datastate['id'],
+                                    TaskState::class,
+                                    'name',
+                                    $_SESSION['glpilanguage']
+                                )
                             )) {
                                 $name = $datastate['name'];
                             }
                             $states[] = [
                                 'id' => $datastate['id'],
-                                'name' => $name
+                                'name' => $name,
                             ];
 
                         }
@@ -765,7 +761,7 @@ class Task extends CommonDBTM
         Dropdown::showFromArray('plugin_tasklists_taskstates_id', $states_ranked, [
             'rand' => $rand,
             'value' => $plugin_tasklists_taskstates_id,
-            'display' => true
+            'display' => true,
         ]);
     }
 
@@ -775,7 +771,7 @@ class Task extends CommonDBTM
      *
      * @param     $plugin_tasklists_tasks_id
      */
-    static function getClosedStateForTask($plugin_tasklists_tasks_id)
+    public static function getClosedStateForTask($plugin_tasklists_tasks_id)
     {
         $task = new Task();
         if ($task->getFromDB($plugin_tasklists_tasks_id)) {
@@ -802,13 +798,13 @@ class Task extends CommonDBTM
      *
      * @return string
      */
-    static function getStateName($value)
+    public static function getStateName($value)
     {
         switch ($value) {
-            case 0 :
+            case 0:
                 return __('Backlog', 'tasklists');
 
-            default :
+            default:
                 // Return $value if not define
                 return Dropdown::getDropdownName("glpi_plugin_tasklists_taskstates", $value);
         }
@@ -829,7 +825,7 @@ class Task extends CommonDBTM
      *
      * @throws \GlpitestSQLError
      */
-    static function dropdownTasklists($options = [])
+    public static function dropdownTasklists($options = [])
     {
         global $DB, $CFG_GLPI;
 
@@ -870,7 +866,7 @@ class Task extends CommonDBTM
         $out = Dropdown::showFromArray('_tasktype', $values, [
             'width' => '30%',
             'rand' => $rand,
-            'display' => false
+            'display' => false,
         ]);
         $field_id = Html::cleanId("dropdown__tasktype$rand");
 
@@ -879,7 +875,7 @@ class Task extends CommonDBTM
             'entity' => $p['entity'],
             'rand' => $rand,
             'myname' => $p['name'],
-            'used' => $p['used']
+            'used' => $p['used'],
         ];
 
         $out .= Ajax::updateItemOnSelectEvent(
@@ -914,7 +910,7 @@ class Task extends CommonDBTM
      *
      * @return array
      */
-    function getSpecificMassiveActions($checkitem = null)
+    public function getSpecificMassiveActions($checkitem = null)
     {
         $isadmin = static::canUpdate();
         $actions = parent::getSpecificMassiveActions($checkitem);
@@ -941,10 +937,10 @@ class Task extends CommonDBTM
      * @see CommonDBTM::showMassiveActionsSubForm()
      *
      */
-    static function showMassiveActionsSubForm(MassiveAction $ma)
+    public static function showMassiveActionsSubForm(MassiveAction $ma)
     {
         switch ($ma->getAction()) {
-            case "transfer" :
+            case "transfer":
                 Dropdown::show('Entity');
                 echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-primary']);
                 return true;
@@ -965,10 +961,10 @@ class Task extends CommonDBTM
      * @since version 0.85
      *
      */
-    static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids)
+    public static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids)
     {
         switch ($ma->getAction()) {
-            case "transfer" :
+            case "transfer":
                 $input = $ma->getInput();
                 if ($item->getType() == Task::class) {
                     foreach ($ids as $key) {
@@ -1005,7 +1001,7 @@ class Task extends CommonDBTM
      * *@since version 1.3.0
      *
      */
-    static function registerType($type)
+    public static function registerType($type)
     {
         if (!in_array($type, self::$types)) {
             self::$types[] = $type;
@@ -1019,7 +1015,7 @@ class Task extends CommonDBTM
      *
      * @return array of types
      * */
-    static function getTypes($all = false)
+    public static function getTypes($all = false)
     {
         if ($all) {
             return self::$types;
@@ -1052,7 +1048,7 @@ class Task extends CommonDBTM
      **@since version 0.83
      *
      */
-    static function getSpecificValueToDisplay($field, $values, array $options = [])
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
     {
         if (!is_array($values)) {
             $values = [$field => $values];
@@ -1078,7 +1074,7 @@ class Task extends CommonDBTM
      **@since version 0.84
      *
      */
-    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
         if (!is_array($values)) {
             $values = [$field => $values];
@@ -1103,7 +1099,7 @@ class Task extends CommonDBTM
                     'value' => $values[$field],
                     'emptylabel' => __('Backlog', 'tasklists'),
                     'display' => false,
-                    'width' => '200px'
+                    'width' => '200px',
                 ]);
         }
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
@@ -1125,7 +1121,7 @@ class Task extends CommonDBTM
      *
      * @return int|string
      */
-    static function dropdownVisibility(array $options = [])
+    public static function dropdownVisibility(array $options = [])
     {
         $p['name'] = 'visibility';
         $p['value'] = 0;
@@ -1155,19 +1151,19 @@ class Task extends CommonDBTM
      *
      * @return priority|string
      */
-    static function getVisibilityName($value)
+    public static function getVisibilityName($value)
     {
         switch ($value) {
-            case 1 :
+            case 1:
                 return _x('visibility', 'This user', 'tasklists');
 
-            case 2 :
+            case 2:
                 return _x('visibility', 'This user and this group', 'tasklists');
 
-            case 3 :
+            case 3:
                 return _x('visibility', 'All', 'tasklists');
 
-            default :
+            default:
                 // Return $value if not define
                 return $value;
         }
@@ -1178,7 +1174,7 @@ class Task extends CommonDBTM
      *
      * @return bool
      */
-    function checkVisibility($id)
+    public function checkVisibility($id)
     {
         if (Session::haveRight("plugin_tasklists_see_all", 1)) {
             return true;
@@ -1190,10 +1186,10 @@ class Task extends CommonDBTM
                 $groups[] = $groupuser["id"];
             }
             if (($this->fields['visibility'] == 1 && ($this->fields['users_id'] == Session::getLoginUserID(
-                        ) || $this->fields['users_id_requester'] == Session::getLoginUserID()))
+            ) || $this->fields['users_id_requester'] == Session::getLoginUserID()))
                 || ($this->fields['visibility'] == 2 && ($this->fields['users_id'] == Session::getLoginUserID(
-                        ) || $this->fields['users_id_requester'] == Session::getLoginUserID()
-                        || in_array(Session::getLoginUserID(), $groups)))
+                ) || $this->fields['users_id_requester'] == Session::getLoginUserID()
+            || in_array(Session::getLoginUserID(), $groups)))
                 || ($this->fields['visibility'] == 3)) {
                 return true;
             }
@@ -1204,7 +1200,7 @@ class Task extends CommonDBTM
     /**
      * @see Rule::getActions()
      * */
-    function getActions()
+    public function getActions()
     {
         $actions = [];
 
@@ -1225,12 +1221,12 @@ class Task extends CommonDBTM
      *
      * @return the $output array modified
      */
-    function executeActions($action, $output, $params)
+    public function executeActions($action, $output, $params)
     {
         switch ($params['rule_itemtype']) {
             case 'RuleMailCollector':
                 switch ($action->fields["field"]) {
-                    case "tasklists" :
+                    case "tasklists":
 
                         if (isset($params['headers']['subject'])) {
                             $input['name'] = $params['headers']['subject'];
@@ -1265,16 +1261,16 @@ class Task extends CommonDBTM
      *
      * @return bool
      */
-    function hasTemplate($options)
+    public function hasTemplate($options)
     {
         $templates = [];
         $dbu = new DbUtils();
-        $restrict = ["is_template" => 1] +
-            ["is_deleted" => 0] +
-            ["is_archived" => 0] +
-            ["plugin_tasklists_tasktypes_id" => $options['plugin_tasklists_tasktypes_id']] +
+        $restrict = ["is_template" => 1]
+            + ["is_deleted" => 0]
+            + ["is_archived" => 0]
+            + ["plugin_tasklists_tasktypes_id" => $options['plugin_tasklists_tasktypes_id']]
             //                  ["users_id" => Session::getLoginUserID()] +
-            $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive());
+            + $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive());
 
         $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
         reset($templates);
@@ -1290,13 +1286,13 @@ class Task extends CommonDBTM
      * @param int $add
      * @param array $options
      */
-    function listOfTemplates($target, $add = 0)
+    public function listOfTemplates($target, $add = 0)
     {
         $dbu = new DbUtils();
 
-        $restrict = ["is_template" => 1] +
-            $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive()) +
-            ["ORDER" => "name"];
+        $restrict = ["is_template" => 1]
+            + $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive())
+            + ["ORDER" => "name"];
 
         $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
 
@@ -1309,8 +1305,8 @@ class Task extends CommonDBTM
         echo "<div class='center'><table class='tab_cadre_fixe'>";
         if ($add) {
             echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Choose a template', 'tasklists') . " - " . self::getTypeName(
-                    2
-                ) . "</th>";
+                2
+            ) . "</th>";
         } else {
             echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Templates') . " - " . self::getTypeName(2) . "</th>";
         }
@@ -1320,8 +1316,8 @@ class Task extends CommonDBTM
             echo "<tr>";
             echo "<td colspan='" . (2 + $colsup) . "' class='center tab_bg_1'>";
             echo "<a href=\"$target?id=-1&amp;withtemplate=2\">&nbsp;&nbsp;&nbsp;" . __(
-                    'Blank Template'
-                ) . "&nbsp;&nbsp;&nbsp;</a></td>";
+                'Blank Template'
+            ) . "&nbsp;&nbsp;&nbsp;</a></td>";
             echo "</tr>";
         }
 
@@ -1427,14 +1423,14 @@ class Task extends CommonDBTM
                     $link_class::getTable() . '.' . $itemtype::getForeignKeyField(),
                     $itemtype::getTable() . '.' . 'name',
                     'realname',
-                    'firstname'
+                    'firstname',
                 ];
             } else {
                 $select = [
                     $link_class::getTable() . '.' . $itemtype::getForeignKeyField(),
                     $itemtype::getTable() . '.' . 'name',
                     new QueryExpression('NULL as realname'),
-                    new QueryExpression('NULL as firstname')
+                    new QueryExpression('NULL as firstname'),
                 ];
             }
 
@@ -1446,10 +1442,10 @@ class Task extends CommonDBTM
                     $itemtype::getTable() => [
                         'ON' => [
                             $itemtype::getTable() => 'id',
-                            $link_class::getTable() => $itemtype::getForeignKeyField()
-                        ]
-                    ]
-                ]
+                            $link_class::getTable() => $itemtype::getForeignKeyField(),
+                        ],
+                    ],
+                ],
             ]);
             foreach ($it as $data) {
                 $items_id = $data[$itemtype::getForeignKeyField()];
@@ -1464,7 +1460,7 @@ class Task extends CommonDBTM
                     'name' => $data['name'],
                     'realname' => $data['realname'],
                     'firstname' => $data['firstname'],
-                    'display_name' => formatUserName($items_id, $data['name'], $data['realname'], $data['firstname'])
+                    'display_name' => formatUserName($items_id, $data['name'], $data['realname'], $data['firstname']),
                 ];
                 $team[] = $member;
             }
@@ -1477,14 +1473,14 @@ class Task extends CommonDBTM
     public static function getTeamRoles(): array
     {
         return [
-            \CommonITILActor::ASSIGN,
+            CommonITILActor::ASSIGN,
         ];
     }
 
     public static function getTeamRoleName(int $role, int $nb = 1): string
     {
         switch ($role) {
-            case \CommonITILActor::ASSIGN:
+            case CommonITILActor::ASSIGN:
                 return _n('Assignee', 'Assignees', $nb);
         }
         return '';
@@ -1516,9 +1512,9 @@ class Task extends CommonDBTM
         /** @var CommonDBTM $itemtype */
         $result = $link_item->update([
             $field => $items_id,
-            'id' => $this->getID()
+            'id' => $this->getID(),
         ]);
-        return (bool)$result;
+        return (bool) $result;
     }
 
     public function deleteTeamMember(string $itemtype, int $items_id, array $params = []): bool
@@ -1546,9 +1542,9 @@ class Task extends CommonDBTM
         /** @var CommonDBTM $itemtype */
         $result = $link_item->update([
             $field => '0',
-            'id' => $this->getID()
+            'id' => $this->getID(),
         ]);
-        return (bool)$result;
+        return (bool) $result;
     }
 
     public static function getDataToDisplayOnKanban($ID, $criteria = [])

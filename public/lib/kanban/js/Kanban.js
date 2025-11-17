@@ -965,7 +965,7 @@ class GLPIKanbanRights {
 
                 const data = {
                     inputs: inputs,
-                    itemtype: form.prop('id').split('_')[2],
+                    itemtype: 'GlpiPlugin\\Tasklists\\Task',
                     action: 'add_item'
                 };
 
@@ -1715,7 +1715,7 @@ class GLPIKanbanRights {
             }
 
             const uniqueID = Math.floor(Math.random() * 999999);
-            const formID = "form_add_" + itemtype + "_" + uniqueID;
+            const formID = "form_add_" + 'Tasklists' + "_" + uniqueID;
             let add_form = "<form id='" + formID + "' class='kanban-add-form card kanban-form no-track'>";
             let form_header = "<div class='kanban-item-header'>";
             form_header += `
@@ -1776,7 +1776,7 @@ class GLPIKanbanRights {
             }
 
             const uniqueID = Math.floor(Math.random() * 999999);
-            const formID = "form_add_" + itemtype + "_" + uniqueID;
+            const formID = "form_add_" + 'Tasklists' + "_" + uniqueID;
             let add_form = "<form id='" + formID + "' class='kanban-add-form kanban-bulk-add-form kanban-form no-track'>";
 
             add_form += `
@@ -1817,7 +1817,7 @@ class GLPIKanbanRights {
             add_form += "<input type='submit' value='" + __('Add', 'tasklists') + "' name='add' class='submit'/>";
             add_form += "</form>";
             $(column_el.find('.kanban-body')[0]).append(add_form);
-            $('#' + formID).get(0).scrollIntoView(false);
+            // $('#' + formID).get(0).scrollIntoView(false);
             $("#" + formID).on('submit', function(e) {
                 e.preventDefault();
                 const form = $(e.target);
@@ -1828,7 +1828,7 @@ class GLPIKanbanRights {
                 });
                 const data = {
                     inputs: inputs,
-                    itemtype: form.prop('id').split('_')[2],
+                    itemtype: 'GlpiPlugin\\Tasklists\\Task',
                     action: 'bulk_add_item'
                 };
 
