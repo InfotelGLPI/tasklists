@@ -127,6 +127,9 @@ function plugin_tasklists_install()
     $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.1.0.sql");
 
     $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.1.4.sql");
+
+    $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.1.5.sql");
+
    // Add record notification
     call_user_func([NotificationTargetTask::class, 'install']);
 
