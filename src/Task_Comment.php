@@ -261,7 +261,7 @@ class Task_Comment extends CommonDBTM {
        $db_comments = $DB->request([
            'FROM'  => 'glpi_plugin_tasklists_tasks_comments',
            'WHERE' => $where,
-           'ORDER' => ['id' => 'ASC']
+           'ORDERBY' => 'id ASC',
        ]);
 
       $comments = [];
