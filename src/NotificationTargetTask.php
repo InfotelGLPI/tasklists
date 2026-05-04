@@ -257,7 +257,7 @@ class NotificationTargetTask extends NotificationTarget
         $this->data['##task.actiontime##']  = Html::timestampToString($this->obj->getField('actiontime'), false, true);
         $this->data['##task.percentdone##'] = Dropdown::getValueWithUnit($this->obj->getField('percent_done'), "%");
         $this->data['##task.duedate##']     = Html::convDate($this->obj->getField('due_date'));
-        $comment                            = stripslashes(str_replace(['\r\n', '\n', '\r'], "<br/>", $this->obj->getField("content")));
+        $comment                            = str_replace(['\r\n', '\n', '\r'], "<br/>", $this->obj->getField("content"));
         $this->data['##task.comment##']     = RichText::getTextFromHtml($comment);
         $this->data['##task.priority##']    = CommonITILObject::getPriorityName($this->obj->getField("priority"));
         $this->data['##task.status##']      = Task::getStateName($this->obj->getField('plugin_tasklists_taskstates_id'));
@@ -308,12 +308,18 @@ class NotificationTargetTask extends NotificationTarget
         $template = new NotificationTemplate();
         $dbu      = new DbUtils();
 
-        $query_id = "SELECT `id` FROM `glpi_notificationtemplates`
-                  WHERE `itemtype`='GlpiPlugin\\Tasklists\\Task' AND `name` = 'Tasks'";
-        $result = $DB->doQuery($query_id) or die($DB->error());
+        $tpl_iterator = $DB->request([
+            'SELECT' => ['id'],
+            'FROM'   => 'glpi_notificationtemplates',
+            'WHERE'  => [
+                'itemtype' => Task::class,
+                'name'     => 'Tasks',
+            ],
+        ]);
 
-        if ($DB->numrows($result) > 0) {
-            $templates_id = $DB->result($result, 0, 'id');
+        if (count($tpl_iterator) > 0) {
+            $tpl_row      = $tpl_iterator->current();
+            $templates_id = $tpl_row['id'];
         } else {
             $tmp          = [
             'name'     => 'Tasks',

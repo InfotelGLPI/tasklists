@@ -45,7 +45,7 @@ if (isset($_GET['id'])) {
       'withtemplate'   => 0
    ];
    echo "<div class='center'>";
-   echo "<a href='" . Task::getFormURL(true) . "?id=" . $_GET['id'] . "'>" . __("View this item in his context") . "</a>";
+   echo "<a href='" . Task::getFormURL(true) . "?id=" . (int) $_GET['id'] . "'>" . __("View this item in his context") . "</a>";
    echo "</div>";
    echo "<hr>";
    $task = new Task();

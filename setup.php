@@ -29,6 +29,7 @@
 
 global $CFG_GLPI;
 
+use Glpi\Plugin\Hooks;
 use GlpiPlugin\Tasklists\Preference;
 use GlpiPlugin\Tasklists\Dashboard;
 use GlpiPlugin\Tasklists\Menu;
@@ -49,9 +50,8 @@ function plugin_init_tasklists()
 {
     global $PLUGIN_HOOKS, $CFG_GLPI;
 
-    $PLUGIN_HOOKS['csrf_compliant']['tasklists'] = true;
-    $PLUGIN_HOOKS['change_profile']['tasklists'] = [Profile::class, 'initProfile'];
-    $PLUGIN_HOOKS['use_rules']['tasklists'] = ['RuleMailCollector'];
+    $PLUGIN_HOOKS[Hooks::CHANGE_PROFILE]['tasklists'] = [Profile::class, 'initProfile'];
+    $PLUGIN_HOOKS[Hooks::USE_RULES]['tasklists'] = ['RuleMailCollector'];
     //    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
     if (Session::getLoginUserID()) {
 
@@ -62,10 +62,10 @@ function plugin_init_tasklists()
 
         Plugin::registerClass(
             Ticket::class,
-            ['addtabon' => 'Ticket']
+            ['addtabon' => \Ticket::class]
         );
 
-        $PLUGIN_HOOKS['item_purge']['tasklists']['Ticket'] = [Ticket::class, 'cleanForTicket'];
+        $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['tasklists'][\Ticket::class] = [Ticket::class, 'cleanForTicket'];
 
         Plugin::registerClass(
             Profile::class,
@@ -78,7 +78,7 @@ function plugin_init_tasklists()
         );
 
         if (Session::haveRight("plugin_tasklists", READ)) {
-            $PLUGIN_HOOKS['menu_toadd']['tasklists'] = ['helpdesk' => Menu::class];
+            $PLUGIN_HOOKS[Hooks::MENU_TOADD]['tasklists'] = ['helpdesk' => Menu::class];
         }
 
         if (class_exists('PluginMydashboardMenu')) {
@@ -86,7 +86,7 @@ function plugin_init_tasklists()
         }
 
         if (Session::haveRight("plugin_tasklists", CREATE)) {
-            $PLUGIN_HOOKS['use_massive_action']['tasklists'] = 1;
+            $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['tasklists'] = 1;
         }
     }
 }

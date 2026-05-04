@@ -125,27 +125,20 @@ class Kanban extends CommonGLPI
         global $DB, $CFG_GLPI;
 
         $dbu = new DbUtils();
-        $query = "SELECT `glpi_plugin_tasklists_tasktypes`.*
-                FROM `glpi_plugin_tasklists_tasktypes` ";
-        $query .= $dbu->getEntitiesRestrictRequest(
-            'WHERE',
-            'glpi_plugin_tasklists_tasktypes',
-            '',
-            $_SESSION["glpiactiveentities"],
-            true
-        );
-        $query .= "ORDER BY `name`";
         $tabs = [];
         if ($item->getType() == __CLASS__) {
-            if ($result = $DB->doQuery($query)) {
-                if ($DB->numrows($result)) {
-                    while ($data = $DB->fetchArray($result)) {
-                        //                  if (self::countTasksForKanban($data["id"]) > 0) {
-                        if (TypeVisibility::isUserHaveRight($data["id"])) {
-                            $tabs[$data["id"]] = $data["completename"];
-                        }
-                        //                  }
-                    }
+            foreach ($DB->request([
+                'FROM'  => 'glpi_plugin_tasklists_tasktypes',
+                'WHERE' => $dbu->getEntitiesRestrictCriteria(
+                    'glpi_plugin_tasklists_tasktypes',
+                    '',
+                    $_SESSION["glpiactiveentities"],
+                    true
+                ),
+                'ORDERBY' => 'name',
+            ]) as $data) {
+                if (TypeVisibility::isUserHaveRight($data["id"])) {
+                    $tabs[$data["id"]] = $data["completename"];
                 }
             }
             if (count($tabs) == 0) {

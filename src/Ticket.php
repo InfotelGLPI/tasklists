@@ -155,23 +155,32 @@ class Ticket extends CommonDBTM
         $canedit = $ticket->canEdit($ID);
         $rand    = mt_rand();
 
-        $query = "SELECT DISTINCT `glpi_plugin_tasklists_tasks`.* , `glpi_plugin_tasklists_tickets`.`id` AS LinkID
-                FROM `glpi_plugin_tasklists_tickets`
-                LEFT JOIN `glpi_plugin_tasklists_tasks`
-                 ON (`glpi_plugin_tasklists_tickets`.`plugin_tasklists_tasks_id`=`glpi_plugin_tasklists_tasks`.`id`)
-                WHERE `glpi_plugin_tasklists_tickets`.`tickets_id` = '$ID'
-                ORDER BY `glpi_plugin_tasklists_tasks`.`date_creation`";
-
-        $result = $DB->doQuery($query);
-        $number = $DB->numrows($result);
+        $iterator = $DB->request([
+            'SELECT'    => [
+                'glpi_plugin_tasklists_tasks.*',
+                'glpi_plugin_tasklists_tickets.id AS LinkID',
+            ],
+            'DISTINCT'  => true,
+            'FROM'      => 'glpi_plugin_tasklists_tickets',
+            'LEFT JOIN' => [
+                'glpi_plugin_tasklists_tasks' => [
+                    'ON' => [
+                        'glpi_plugin_tasklists_tickets' => 'plugin_tasklists_tasks_id',
+                        'glpi_plugin_tasklists_tasks'   => 'id',
+                    ],
+                ],
+            ],
+            'WHERE'   => ['glpi_plugin_tasklists_tickets.tickets_id' => (int) $ID],
+            'ORDERBY' => 'glpi_plugin_tasklists_tasks.date_creation',
+        ]);
+        $number  = count($iterator);
+        $numrows = $number;
 
         $tickets = [];
         $used    = [];
-        if ($numrows = $DB->numrows($result)) {
-            while ($data = $DB->fetchAssoc($result)) {
-                $tickets[$data['id']] = $data;
-                $used[$data['id']]    = $data['id'];
-            }
+        foreach ($iterator as $data) {
+            $tickets[$data['id']] = $data;
+            $used[$data['id']]    = $data['id'];
         }
         if ($canedit) {
             echo "<div class='firstbloc'>";

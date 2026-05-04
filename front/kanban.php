@@ -56,7 +56,7 @@ if ($kanban->canView() || Session::haveRight("config", CREATE)) {
     if (!isset($_GET["context_id"])) {
         $_GET["context_id"] = -1;
     }
-    Kanban::showKanban($_GET["context_id"]);
+    Kanban::showKanban((int) $_GET["context_id"]);
 } else {
     throw new AccessDeniedHttpException();
 }

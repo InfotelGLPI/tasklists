@@ -846,7 +846,8 @@ class Task extends CommonDBTM
         $where .= $dbu->getEntitiesRestrictRequest("AND", 'glpi_plugin_tasklists_tasklists', '', $p['entity'], true);
 
         if (count($p['used'])) {
-            $where .= " AND `id` NOT IN (0, " . implode(",", $p['used']) . ")";
+            $used_ids = implode(",", array_map('intval', $p['used']));
+            $where .= " AND `id` NOT IN (0, $used_ids)";
         }
 
         $query = "SELECT *
@@ -1232,7 +1233,7 @@ class Task extends CommonDBTM
                             $input['name'] = $params['headers']['subject'];
                         }
                         if (isset($params['ticket'])) {
-                            $input['comment'] = addslashes(strip_tags($params['ticket']['content']));
+                            $input['comment'] = strip_tags($params['ticket']['content']);
                         }
                         if (isset($params['headers']['from'])) {
                             $input['users_id'] = User::getOrImportByEmail($params['headers']['from']);

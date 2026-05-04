@@ -59,7 +59,7 @@ class Task_Comment extends CommonDBTM {
 
 
     function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if (!$item->canUpdateItem()) {
+      if (!$item->can($item->getID(), UPDATE)) {
          return '';
       }
 
@@ -320,7 +320,7 @@ class Task_Comment extends CommonDBTM {
          }
 
          $html .= "<div class='item_content'>";
-         $html .= $comment['comment'];
+         $html .= htmlescape($comment['comment']);
          $html .= "</div>";
          $html .= "</div>"; // displayed_content
 

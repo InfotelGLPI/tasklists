@@ -63,13 +63,13 @@
       var kanban = new GLPIKanban({
          root_taslists: "{{ root_tasklists }}",
          element: "#{{ kanban_id|default('kanban') }}",
-         rights: {{ rights|json_encode|raw }},
-         supported_itemtypes: {{ supported_itemtypes|json_encode|raw }},
+         rights: {{ rights|json_encode(64)|raw }},
+         supported_itemtypes: {{ supported_itemtypes|json_encode(64)|raw }},
          max_team_images: 3,
-         column_field: {{ column_field|json_encode|raw }},
+         column_field: {{ column_field|json_encode(64)|raw }},
          background_refresh_interval: {{ background_refresh_interval|default(session('glpirefresh_views')) }},
-         item: {{ item|json_encode|raw }},
-         supported_filters: {{ supported_filters|json_encode|raw }}
+         item: {{ item|json_encode(64)|raw }},
+         supported_filters: {{ supported_filters|json_encode(64)|raw }}
       });
       // Create kanban elements and add data
       kanban.init();

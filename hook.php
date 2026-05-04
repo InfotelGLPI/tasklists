@@ -180,25 +180,17 @@ function plugin_tasklists_install()
                         ]);
                         if (count($iterator2) > 0) {
                             foreach ($iterator2 as $dataid) {
-                                $query = $DB->buildDelete(
+                                $DB->delete(
                                     'glpi_displaypreferences',
-                                    [
-                                        'id' => $dataid['id'],
-                                    ]
+                                    ['id' => $dataid['id']]
                                 );
-                                $DB->doQuery($query);
                             }
                         } else {
-                            $query = $DB->buildUpdate(
+                            $DB->update(
                                 'glpi_displaypreferences',
-                                [
-                                    'itemtype' => $new,
-                                ],
-                                [
-                                    'id' => $data['id'],
-                                ]
+                                ['itemtype' => $new],
+                                ['id' => $data['id']]
                             );
-                            $DB->doQuery($query);
                         }
                     }
                 }
