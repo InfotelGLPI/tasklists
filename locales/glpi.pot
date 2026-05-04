@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-01 17:34+0000\n"
+"POT-Creation-Date: 2026-05-04 15:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,22 +58,22 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Dashboard.php:177 src/Dashboard.php:178 src/Dashboard.php:183
-#: src/Ticket.php:182
+#: src/Ticket.php:191 src/Dashboard.php:177 src/Dashboard.php:178
+#: src/Dashboard.php:183
 msgid "Add task"
 msgstr ""
 
-#: src/Task.php:1207
+#: src/Task.php:1208
 msgid "Affect entity for create task"
 msgstr ""
 
-#: src/Task.php:1164
+#: src/Task.php:1165
 msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:12
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1138
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:12
 msgid "Archive all tasks of this state"
 msgstr ""
 
@@ -102,7 +102,7 @@ msgid "Automatic refreshing of tasklist"
 msgstr ""
 
 #: src/TaskType.php:184 src/TaskType.php:550 src/Task.php:724 src/Task.php:805
-#: src/Task.php:1100
+#: src/Task.php:1101
 msgid "Backlog"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "Bulk add"
 msgstr ""
 
-#: src/Task.php:1307
+#: src/Task.php:1308
 msgid "Choose a template"
 msgstr ""
 
@@ -118,8 +118,8 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/Dashboard.php:116 src/TaskType.php:67 src/Task.php:111 src/Task.php:493
-#: src/TaskState.php:151 src/TaskState.php:210
+#: src/TaskType.php:67 src/TaskState.php:151 src/TaskState.php:210
+#: src/Task.php:111 src/Task.php:493 src/Dashboard.php:116
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
@@ -144,8 +144,9 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/Dashboard.php:122 src/TaskType.php:246 src/Task.php:149 src/Task.php:583
+#: src/TaskType.php:246 src/Task.php:149 src/Task.php:583
 #: src/NotificationTargetTask.php:234 src/NotificationTargetTask.php:284
+#: src/Dashboard.php:122
 msgid "Due date"
 msgstr ""
 
@@ -187,17 +188,17 @@ msgstr ""
 msgid "Kanban"
 msgstr ""
 
-#: src/Ticket.php:287
+#: src/Ticket.php:296
 msgid "Link a existant ticket"
 msgstr ""
 
-#: src/Ticket.php:100 src/Ticket.php:212
+#: src/Ticket.php:100 src/Ticket.php:221
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Ticket.php:312
+#: src/Ticket.php:321
 msgid "Linked tickets"
 msgstr ""
 
@@ -205,7 +206,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/Ticket.php:255
+#: src/Ticket.php:264
 msgid "No task linked to this ticket yet"
 msgstr ""
 
@@ -269,9 +270,8 @@ msgstr[1] ""
 msgid "Tables"
 msgstr ""
 
-#: setup.php:102 src/Dashboard.php:74 src/Dashboard.php:192
-#: src/Dashboard.php:197 src/Profile.php:60 src/Menu.php:50
-#: src/Preference.php:55
+#: src/Preference.php:55 src/Profile.php:60 src/Dashboard.php:74
+#: src/Dashboard.php:192 src/Dashboard.php:197 src/Menu.php:50 setup.php:102
 msgid "Tasks list"
 msgstr ""
 
@@ -280,7 +280,7 @@ msgid ""
 "The regular expression you entered is invalid. Please check it and try again."
 msgstr ""
 
-#: src/Kanban.php:190
+#: src/Kanban.php:183
 msgid "There is no accessible context"
 msgstr ""
 
@@ -290,12 +290,12 @@ msgid ""
 "shown. You can still drag cards into this column."
 msgstr ""
 
-#: src/Task.php:1158
+#: src/Task.php:1159
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: src/Task.php:1161
+#: src/Task.php:1162
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
@@ -312,7 +312,7 @@ msgstr ""
 msgid "You cannot archive a task with this state"
 msgstr ""
 
-#: src/Kanban.php:153
+#: src/Kanban.php:146
 msgid "You don't have the right to see any context"
 msgstr ""
 
