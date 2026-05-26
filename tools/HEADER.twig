@@ -1,6 +1,4 @@
-<?php
-
-/*
+{#
  -------------------------------------------------------------------------
  tasklists plugin for GLPI
  Copyright (C) 2016-2026 by the tasklists Development Team.
@@ -25,14 +23,4 @@
  You should have received a copy of the GNU General Public License
  along with tasklists. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
- */
-
-header("Content-Type: text/html; charset=UTF-8");
-Html::header_nocache();
-
-Session::checkLoginUser();
-Session::checkRight('plugin_tasklists', UPDATE);
-
-if (isset($_POST["entities_id"])) {
-   echo Html::hidden('entities_id', ['value' => $_POST["entities_id"]]);
-}
+ #}
