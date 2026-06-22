@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-26 10:20+0000\n"
+"POT-Creation-Date: 2026-06-22 09:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,8 +72,8 @@ msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1138
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:12
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1138
 msgid "Archive all tasks of this state"
 msgstr ""
 
@@ -118,8 +118,8 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/Dashboard.php:116 src/TaskState.php:151 src/TaskState.php:210
-#: src/TaskType.php:66 src/Task.php:110 src/Task.php:492
+#: src/TaskType.php:66 src/Task.php:110 src/Task.php:492 src/TaskState.php:151
+#: src/TaskState.php:210 src/Dashboard.php:116
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
@@ -144,8 +144,9 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/NotificationTargetTask.php:234 src/NotificationTargetTask.php:284
-#: src/Dashboard.php:122 src/TaskType.php:245 src/Task.php:148 src/Task.php:582
+#: src/TaskType.php:245 src/NotificationTargetTask.php:234
+#: src/NotificationTargetTask.php:284 src/Task.php:148 src/Task.php:582
+#: src/Dashboard.php:122
 msgid "Due date"
 msgstr ""
 
@@ -269,8 +270,9 @@ msgstr[1] ""
 msgid "Tables"
 msgstr ""
 
-#: src/Profile.php:60 src/Dashboard.php:74 src/Dashboard.php:192
-#: src/Dashboard.php:197 src/Menu.php:49 src/Preference.php:55 setup.php:102
+#: src/Profile.php:60 src/Preference.php:55 src/Menu.php:49
+#: src/Dashboard.php:74 src/Dashboard.php:192 src/Dashboard.php:197
+#: setup.php:102
 msgid "Tasks list"
 msgstr ""
 
