@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Task;
 
 Session::checkLoginUser();
@@ -39,17 +40,22 @@ header("Content-Type: text/html; charset=UTF-8");
 echo "<script type='text/javascript'  src='../../../public/lib/tinymce.js'></script>";
 
 if (isset($_GET['id'])) {
+   // IDOR read: gate on object-level right + plugin visibility before showing the task.
+   $tasks_id = (int) $_GET['id'];
+   $task     = new Task();
+   if (!$task->can($tasks_id, READ) || !$task->checkVisibility($tasks_id)) {
+      throw new AccessDeniedHttpException();
+   }
    $options = [
       'from_edit_ajax' => true,
-      'id'             => $_GET['id'],
+      'id'             => $tasks_id,
       'withtemplate'   => 0
    ];
    echo "<div class='center'>";
-   echo "<a href='" . Task::getFormURL(true) . "?id=" . (int) $_GET['id'] . "'>" . __("View this item in his context") . "</a>";
+   echo "<a href='" . Task::getFormURL(true) . "?id=" . $tasks_id . "'>" . __("View this item in his context") . "</a>";
    echo "</div>";
    echo "<hr>";
-   $task = new Task();
-   $task->showForm($_GET['id'],$options);
+   $task->showForm($tasks_id, $options);
 } else if (isset($_GET['plugin_tasklists_tasktypes_id'])
            && isset($_GET['plugin_tasklists_taskstates_id'])) {
    $options = [
@@ -66,8 +72,12 @@ if (isset($_GET['id'])) {
       $task->showForm(0, $options);
    }
 } else if (isset($_GET['clone_id'])) {
-   $id   = $_GET['clone_id'];
+   // IDOR read: only clone a task the caller may actually read and see.
+   $id   = (int) $_GET['clone_id'];
    $task = new Task();
+   if (!$task->can($id, READ) || !$task->checkVisibility($id)) {
+      throw new AccessDeniedHttpException();
+   }
    if ($task->getFromDB($id)) {
       $options    = [
          'from_edit_ajax'                 => true,
@@ -85,8 +95,12 @@ if (isset($_GET['id'])) {
       $taskcloned->showForm(0, $options);
    }
 } else if (isset($_GET['task_id'])) {
-   $id   = $_GET['task_id'];
+   // IDOR read: only pre-fill a ticket from a task the caller may read and see.
+   $id   = (int) $_GET['task_id'];
    $task = new Task();
+   if (!$task->can($id, READ) || !$task->checkVisibility($id)) {
+      throw new AccessDeniedHttpException();
+   }
    if ($task->getFromDB($id)) {
       $options = [
          'from_edit_ajax' => true,

@@ -27,6 +27,8 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
+use GlpiPlugin\Tasklists\Task;
 use GlpiPlugin\Tasklists\Task_Comment;
 
 header("Content-Type: text/html; charset=UTF-8");
@@ -39,15 +41,31 @@ if (!isset($_POST['plugin_tasklists_tasks_id'])) {
    throw new \RuntimeException('Required argument missing!');
 }
 
-$plugin_tasklists_tasks_id = $_POST['plugin_tasklists_tasks_id'];
-$lang                      = null;
+// IDOR read: the endpoint only checked the global plugin right and then rendered the comment
+// form for an arbitrary task/comment id, disclosing the content of comments from tasks outside
+// the caller's entity or visibility scope. Enforce object-level rights on the parent task
+// (can(READ) validates right + entity) plus the plugin visibility model, with ids cast to int.
+$plugin_tasklists_tasks_id = (int) $_POST['plugin_tasklists_tasks_id'];
+$task                      = new Task();
+if (!$task->can($plugin_tasklists_tasks_id, READ) || !$task->checkVisibility($plugin_tasklists_tasks_id)) {
+   throw new AccessDeniedHttpException();
+}
+
+$lang = null;
 if (isset($_POST['language'])) {
    $lang = $_POST['language'];
 }
 
 $edit = false;
 if (isset($_POST['edit'])) {
-   $edit = $_POST['edit'];
+   $edit = (int) $_POST['edit'];
+   // Make sure the edited comment actually belongs to the authorized task, otherwise a caller
+   // could pull any comment by pairing a task they may read with a foreign comment id.
+   $comment = new Task_Comment();
+   if (!$comment->getFromDB($edit)
+       || (int) $comment->fields['plugin_tasklists_tasks_id'] !== $plugin_tasklists_tasks_id) {
+      throw new AccessDeniedHttpException();
+   }
 }
 
 $answer = false;

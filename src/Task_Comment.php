@@ -364,7 +364,8 @@ class Task_Comment extends CommonDBTM {
 
       $content = '';
       if ($edit !== false) {
-         $comment = new Task();
+         // Load the comment being edited from its own table (not Task).
+         $comment = new self();
          $comment->getFromDB($edit);
          $content = $comment->fields['comment'];
       }
@@ -381,7 +382,10 @@ class Task_Comment extends CommonDBTM {
 
       $html .= "<tr class='tab_bg_1'><td><label for='comment'>" . __('Comment') . "</label>
          &nbsp;<span style='color:red'>*</span></td><td>";
-      $html .= "<textarea name='comment' id='comment' required='required'>{$content}</textarea>";
+      // XSS: comment content is stored raw in GLPI 11; escape it before it reaches the
+      // textarea (a payload like </textarea><script> would otherwise break out).
+      $html .= "<textarea name='comment' id='comment' required='required'>"
+             . htmlspecialchars($content, ENT_QUOTES) . "</textarea>";
       $html .= "</td><td class='center'>";
 
       $btn_text = _sx('button', 'Add');
@@ -396,15 +400,17 @@ class Task_Comment extends CommonDBTM {
          $html .= "<input type='reset' name='cancel' value='" . __('Cancel') . "' class='btn btn-primary'>";
       }
 
-      $html .= "<input type='hidden' name='plugin_tasklists_tasks_id' value='$plugin_tasklists_tasks_id'>";
+      // XSS: these values reach single-quoted attributes; cast ids to int and escape the
+      // client-supplied language to prevent attribute break-out / reflected injection.
+      $html .= "<input type='hidden' name='plugin_tasklists_tasks_id' value='" . (int) $plugin_tasklists_tasks_id . "'>";
       if ($lang !== null) {
-         $html .= "<input type='hidden' name='language' value='$lang'>";
+         $html .= "<input type='hidden' name='language' value='" . htmlspecialchars($lang, ENT_QUOTES) . "'>";
       }
       if ($answer !== false) {
-         $html .= "<input type='hidden' name='parent_comment_id' value='{$answer}'/>";
+         $html .= "<input type='hidden' name='parent_comment_id' value='" . (int) $answer . "'/>";
       }
       if ($edit !== false) {
-         $html .= "<input type='hidden' name='id' value='{$edit}'/>";
+         $html .= "<input type='hidden' name='id' value='" . (int) $edit . "'/>";
       }
       $html .= "</td></tr>";
       $html .= "</table>";

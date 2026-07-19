@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Menu;
 use GlpiPlugin\Tasklists\Task;
 
@@ -39,9 +40,15 @@ if (!isset($_GET["withtemplate"])) {
 
 Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
-$task = new Task();
-$task->checkGlobal(READ);
-$task->getFromDB($_GET['id']);
+// IDOR read/write on Notepad: the controller only checked the global plugin right and then
+// loaded an arbitrary $_GET['id'], exposing (and letting the Notepad form write) the internal
+// notes of tasks from other entities or restricted visibility. Enforce object-level rights
+// (can(READ) validates right + entity) plus the plugin visibility model before showForItem().
+$tasks_id = (int) $_GET['id'];
+$task     = new Task();
+if (!$task->can($tasks_id, READ) || !$task->checkVisibility($tasks_id)) {
+   throw new AccessDeniedHttpException();
+}
 $note = new Notepad();
 $note->showForItem($task);
 

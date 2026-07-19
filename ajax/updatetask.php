@@ -27,34 +27,44 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Task;
 
 Session::checkLoginUser();
 Session::checkRight('plugin_tasklists', UPDATE);
 
+// IDOR write: these branches only checked the global plugin right and then updated an
+// arbitrary $_POST['data_id'], so a user could change the percent/priority/archive flag
+// of any task in any entity (and archivealltasks mass-archived across every entity).
+// Every mutation now requires object-level rights (can(UPDATE) enforces right + entity)
+// plus the plugin visibility model (own task / own group / public); ids are cast to int.
 if (isset($_POST['data_id'])
     && isset($_POST['percent_done'])) {
-   $task                  = new Task();
-   $input['percent_done'] = $_POST['percent_done'];
-   $input['id']           = $_POST['data_id'];
-   $task->update($input);
+   $tasks_id = (int) $_POST['data_id'];
+   $task     = new Task();
+   if (!$task->can($tasks_id, UPDATE) || !$task->checkVisibility($tasks_id)) {
+      throw new AccessDeniedHttpException();
+   }
+   $task->update(['id' => $tasks_id, 'percent_done' => (int) $_POST['percent_done']]);
 
 } else if (isset($_POST['data_id'])
            && isset($_POST['updatepriority'])) {
-   $task = new Task();
-   if ($task->getFromDB($_POST['data_id'])) {
-      if ($task->fields["priority"] < 5) {
-         $input['priority'] = $task->fields["priority"] + 1;
-      }
-      $input['id'] = $_POST['data_id'];
-      $task->update($input);
+   $tasks_id = (int) $_POST['data_id'];
+   $task     = new Task();
+   if (!$task->can($tasks_id, UPDATE) || !$task->checkVisibility($tasks_id)) {
+      throw new AccessDeniedHttpException();
+   }
+   if ($task->fields["priority"] < 5) {
+      $task->update(['id' => $tasks_id, 'priority' => $task->fields["priority"] + 1]);
    }
 } else if (isset($_POST['data_id'])
            && isset($_POST['archivetask'])) {
-   $task                 = new Task();
-   $input['is_archived'] = 1;
-   $input['id']          = $_POST['data_id'];
-   $task->update($input);
+   $tasks_id = (int) $_POST['data_id'];
+   $task     = new Task();
+   if (!$task->can($tasks_id, UPDATE) || !$task->checkVisibility($tasks_id)) {
+      throw new AccessDeniedHttpException();
+   }
+   $task->update(['id' => $tasks_id, 'is_archived' => 1]);
 
 } else if (isset($_POST['archivealltasks'])
            && isset($_POST['state_id'])
@@ -62,17 +72,16 @@ if (isset($_POST['data_id'])
 
    $task  = new Task();
    $dbu   = new DbUtils();
-   $cond  = ["plugin_tasklists_taskstates_id" => $_POST['state_id'],
-             "plugin_tasklists_tasktypes_id"  => $_POST['context_id'],
+   $cond  = ["plugin_tasklists_taskstates_id" => (int) $_POST['state_id'],
+             "plugin_tasklists_tasktypes_id"  => (int) $_POST['context_id'],
              "is_deleted"                     => 0,
              "is_archived"                    => 0];
    $tasks = $dbu->getAllDataFromTable($dbu->getTableForItemType(Task::class),
                                       $cond);
    foreach ($tasks as $key => $row) {
-      if ($task->getFromDB($row['id'])) {
-         $input['is_archived'] = 1;
-         $input['id']          = $row['id'];
-         $task->update($input);
+      // Only archive tasks the caller may actually update and see (entity + visibility).
+      if ($task->can((int) $row['id'], UPDATE) && $task->checkVisibility((int) $row['id'])) {
+         $task->update(['id' => (int) $row['id'], 'is_archived' => 1]);
       }
    }
 }
