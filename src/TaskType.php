@@ -135,26 +135,25 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
         if ($ID > 0) {
             // Not already transfer
             // Search init item
-            $query = "SELECT *
-                   FROM `glpi_plugin_tasklists_tasktypes`
-                   WHERE `id` = '$ID'";
+            $iterator = $DB->request([
+                'FROM'  => 'glpi_plugin_tasklists_tasktypes',
+                'WHERE' => ['id' => (int) $ID],
+            ]);
 
-            if ($result = $DB->doQuery($query)) {
-                if ($DB->numrows($result)) {
-                    $data                                   = $DB->fetchAssoc($result);
-                    $input['name']                          = $data['name'];
-                    $input['entities_id']                   = $entity;
-                    $input['is_recursive']                  = $data['is_recursive'];
-                    $input['plugin_tasklists_tasktypes_id'] = $data['plugin_tasklists_tasktypes_id'];
-                    $temp                                   = new self();
-                    $newID                                  = $temp->getID();
+            if (count($iterator)) {
+                $data                                   = $iterator->current();
+                $input['name']                          = $data['name'];
+                $input['entities_id']                   = $entity;
+                $input['is_recursive']                  = $data['is_recursive'];
+                $input['plugin_tasklists_tasktypes_id'] = $data['plugin_tasklists_tasktypes_id'];
+                $temp                                   = new self();
+                $newID                                  = $temp->getID();
 
-                    if ($newID < 0) {
-                        $newID = $temp->import($input);
-                    }
-
-                    return $newID;
+                if ($newID < 0) {
+                    $newID = $temp->import($input);
                 }
+
+                return $newID;
             }
         }
         return 0;
@@ -173,6 +172,14 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
     {
 
         if (!TypeVisibility::isUserHaveRight($ID)) {
+            return [];
+        }
+        // Entity isolation: isUserHaveRight() only reasons about visibility groups and
+        // ignores entities. Refuse to expose a task type (and therefore its tasks) that
+        // lives outside the caller's entity scope, closing the cross-entity Kanban leak.
+        $tasktype = new self();
+        if (!$tasktype->getFromDB($ID)
+            || !Session::haveAccessToEntity($tasktype->fields['entities_id'], $tasktype->fields['is_recursive'])) {
             return [];
         }
         $dbu = new DbUtils();
@@ -272,7 +279,10 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
                     if ($entity->getFromDB($data['entities_id'])) {
                         $entity_name = $entity->fields['name'];
                     }
-                    $client = (empty($data['client'])) ? $entity_name : $data['client'];
+                    // Free-text field rendered as raw HTML into the Kanban card by Kanban.js:
+                    // escape it here (GLPI 11 stores raw, sanitizes on display) to prevent
+                    // stored XSS. entity_name is a raw DB value too, so escape both branches.
+                    $client = htmlescape((empty($data['client'])) ? $entity_name : $data['client']);
 
                     //               $comment = Glpi\Toolbox\Sanitizer::unsanitize($data["content"]);
 
@@ -412,7 +422,8 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
                         'block'          => ($ID > 0 ? $ID : 0),
                         'priority'       => CommonITILObject::getPriorityName($data['priority']),
                         'priority_id'    => $data['priority'],
-                        'bgcolor'        => $bgcolor,
+                        'bgcolor'        => "#FFF",
+                        'bordercolor'        => $bgcolor,
                         'percent'        => $data['percent_done'],
                         'actiontime'     => $actiontime,
                         'duedate'        => $duedate,

@@ -34,6 +34,7 @@ use CommonGLPI;
 use CommonITILObject;
 use DbUtils;
 use Dropdown;
+use Glpi\Application\View\TemplateRenderer;
 use Glpi\RichText\RichText;
 use GlpiPlugin\Mydashboard\Datatable;
 use Group_User;
@@ -120,63 +121,83 @@ class Dashboard extends CommonGLPI
                                 ),
                                 __('User'), __('Percent done'),
                                 __('Due date', 'tasklists')];//, __('Action')
-                    $query   = "SELECT `glpi_plugin_tasklists_tasks`.*,`glpi_plugin_tasklists_tasktypes`.`completename` AS 'type'
-                            FROM `glpi_plugin_tasklists_tasks`
-                            LEFT JOIN `glpi_plugin_tasklists_tasktypes`
-                            ON (`glpi_plugin_tasklists_tasks`.`plugin_tasklists_tasktypes_id` = `glpi_plugin_tasklists_tasktypes`.`id`)
-                            WHERE `glpi_plugin_tasklists_tasks`.`is_deleted` = 0
-                              AND `glpi_plugin_tasklists_tasks`.`is_template` = 0 ";
+                    $tasks_table     = 'glpi_plugin_tasklists_tasks';
+                    $tasktypes_table = 'glpi_plugin_tasklists_tasktypes';
+
+                    $where = [
+                        "$tasks_table.is_deleted"  => 0,
+                        "$tasks_table.is_template" => 0,
+                        "$tasks_table.users_id"    => Session::getLoginUserID(),
+                    ];
                     if (is_array($states) && count($states) > 0) {
-                        $query .= " AND `glpi_plugin_tasklists_tasks`.`plugin_tasklists_taskstates_id` IN (" . implode(",", $states_founded) . ") ";
+                        $where["$tasks_table.plugin_tasklists_taskstates_id"] = $states_founded;
                     }
-                    $query .= " AND (`glpi_plugin_tasklists_tasks`.`users_id` = '" . Session::getLoginUserID() . "'";
-                    //if (count($groups) > 0){
-                    //   $query .= " OR `glpi_plugin_tasklists_tasks`.`groups_id` IN (" . implode(",", $groups_founded) . ")";
-                    //}
-                    //$query .= "OR `glpi_plugin_tasklists_tasks`.`visibility` = 3)";
-                    $query .= ") ";
-                    $query .= $dbu->getEntitiesRestrictRequest('AND', 'glpi_plugin_tasklists_tasks', '', $_SESSION["glpiactiveentities"], true);
-                    $query .= "ORDER BY `glpi_plugin_tasklists_tasks`.`priority` DESC ";
+                    $entities_crit = $dbu->getEntitiesRestrictCriteria($tasks_table, '', $_SESSION["glpiactiveentities"], true);
+                    if (count($entities_crit)) {
+                        $where[] = $entities_crit;
+                    }
+
+                    $iterator = $DB->request([
+                        'SELECT'    => [
+                            "$tasks_table.*",
+                            "$tasktypes_table.completename AS type",
+                        ],
+                        'FROM'      => $tasks_table,
+                        'LEFT JOIN' => [
+                            $tasktypes_table => [
+                                'ON' => [
+                                    $tasks_table     => 'plugin_tasklists_tasktypes_id',
+                                    $tasktypes_table => 'id',
+                                ],
+                            ],
+                        ],
+                        'WHERE'     => $where,
+                        'ORDER'     => "$tasks_table.priority DESC",
+                    ]);
 
                     $tasks = [];
-                    if ($result = $DB->doQuery($query)) {
-                        if ($DB->numrows($result)) {
-                            while ($data = $DB->fetchArray($result)) {
-                                $ID   = $data['id'];
-                                $task = new Task();
-                                if ($task->checkVisibility($ID) == true) {
-                                    $rand                  = mt_rand();
-                                    $url                   = Toolbox::getItemTypeFormURL(Task::class) . "?id=" . $data['id'];
-                                    $tasks[$data['id']][0] = "<a id='task" . $data["id"] . $rand . "' target='_blank' href='$url'>" . $data['name'] . "</a>";
+                    foreach ($iterator as $data) {
+                        $ID   = $data['id'];
+                        $task = new Task();
+                        if ($task->checkVisibility($ID) == true) {
+                            $rand                  = mt_rand();
+                            $url                   = Toolbox::getItemTypeFormURL(Task::class) . "?id=" . $data['id'];
+                            $tasks[$data['id']][0] = TemplateRenderer::getInstance()->render(
+                                '@tasklists/dashboard/task_cell.html.twig',
+                                [
+                                    'dom_id' => $data["id"] . $rand,
+                                    'url'    => $url,
+                                    'name'   => $data['name'],
+                                ]
+                            );
 
-                                    $tasks[$data['id']][0] .= Html::showToolTip(
-                                        RichText::getSafeHtml($data['content']),
-                                        ['applyto' => 'task' . $data["id"] . $rand,
-                                         'display' => false]
-                                    );
+                            $tasks[$data['id']][0] .= Html::showToolTip(
+                                RichText::getSafeHtml($data['content']),
+                                ['applyto' => 'task' . $data["id"] . $rand,
+                                 'display' => false]
+                            );
 
-                                    $bgcolor               = $_SESSION["glpipriority_" . $data['priority']];
-                                    $tasks[$data['id']][1] = "<div class='center' style='background-color:$bgcolor;'>" . CommonITILObject::getPriorityName($data['priority']) . "</div>";
-                                    $tasks[$data['id']][2] = $data['type'];
-                                    $tasks[$data['id']][3] = $dbu->getUserName($data['users_id']);
-                                    $tasks[$data['id']][4] = Dropdown::getValueWithUnit($data['percent_done'], "%");
-                                    $due_date              = $data['due_date'];
-                                    $display               = Html::convDate($data['due_date']);
-                                    if ($due_date <= date('Y-m-d') && !empty($due_date)) {
-                                        $display = "<div class='deleted'>" . Html::convDate($data['due_date']) . "</div>";
-                                    }
-                                    $tasks[$data['id']][5] = $display;
-                                }
+                            $bgcolor               = $_SESSION["glpipriority_" . $data['priority']];
+                            $tasks[$data['id']][1] = "<div class='center' style='background-color:$bgcolor;'>" . CommonITILObject::getPriorityName($data['priority']) . "</div>";
+                            $tasks[$data['id']][2] = htmlescape($data['type']);
+                            $tasks[$data['id']][3] = htmlescape($dbu->getUserName($data['users_id']));
+                            $tasks[$data['id']][4] = Dropdown::getValueWithUnit($data['percent_done'], "%");
+                            $due_date              = $data['due_date'];
+                            $display               = Html::convDate($data['due_date']);
+                            if ($due_date <= date('Y-m-d') && !empty($due_date)) {
+                                $display = "<div class='deleted'>" . Html::convDate($data['due_date']) . "</div>";
                             }
+                            $tasks[$data['id']][5] = $display;
                         }
                     }
                     $widget->setTabDatas($tasks);
                     $widget->setTabNames($headers);
                     //$widget->setOption("bSort", false);
                     $widget->toggleWidgetRefresh();
-                    $link = "<div align='right'><a href='#' data-bs-toggle='modal' data-bs-target='#task' class='submit btn btn-primary' title='" . __('Add task', 'tasklists') . "' >";
-                    $link .= __('Add task', 'tasklists');
-                    $link .= "</a></div>";
+                    $link = TemplateRenderer::getInstance()->render(
+                        '@tasklists/dashboard/add_task_button.html.twig',
+                        ['label' => __('Add task', 'tasklists')]
+                    );
                     $link .= Ajax::createIframeModalWindow(
                         'task',
                         $CFG_GLPI['root_doc'] . "/plugins/tasklists/front/task.form.php",

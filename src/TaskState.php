@@ -235,7 +235,26 @@ class TaskState extends CommonDropdown
        //         return false;
        //      }
 
+        $input = $this->sanitizeColorInput($input);
         return $this->encodeSubtypes($input);
+    }
+
+   /**
+    * Drop a color value that is not a valid hex code, so a forged value can never be
+    * stored and later reflected into a style attribute (defense in depth for the color
+    * display escaping in getSpecificValueToDisplay).
+    *
+    * @param array $input
+    *
+    * @return array
+    */
+    private function sanitizeColorInput($input)
+    {
+        if (isset($input['color'])
+            && !preg_match('/^#(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/', (string) $input['color'])) {
+            unset($input['color']);
+        }
+        return $input;
     }
 
    /**
@@ -249,6 +268,7 @@ class TaskState extends CommonDropdown
        //         return false;
        //      }
 
+        $input = $this->sanitizeColorInput($input);
         return $this->encodeSubtypes($input);
     }
 
@@ -339,8 +359,12 @@ class TaskState extends CommonDropdown
                 $out = implode(", ", $names);
                 return $out;
             case 'color':
-                return "<div style='background-color: $values[$field];'>&nbsp;</div>";
-            break;
+                // Stored as raw data (GLPI 10+): escape before injecting into the style
+                // attribute so a forged color value cannot break out of it (stored XSS).
+                return sprintf(
+                    "<div style='background-color: %s;'>&nbsp;</div>",
+                    htmlspecialchars((string) $values[$field])
+                );
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }

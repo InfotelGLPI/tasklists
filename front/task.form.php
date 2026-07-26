@@ -29,6 +29,7 @@
 
 Session::checkRight("plugin_tasklists", READ);
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Menu;
 use GlpiPlugin\Tasklists\Task;
 use GlpiPlugin\Tasklists\Ticket;
@@ -51,6 +52,12 @@ if (isset($_POST["add"])) {
    Html::back();
 } else if (isset($_POST["delete"])) {
    $task->check($_POST['id'], DELETE);
+   // can() validates the global right and entity but not the plugin visibility model;
+   // enforce checkVisibility() on write paths too (as ajax/updatetask.php already does)
+   // so a same-entity user cannot mutate another user's private task.
+   if (!$task->checkVisibility((int) $_POST['id'])) {
+      throw new AccessDeniedHttpException();
+   }
    $task->delete($_POST);
    if (!isset($_POST["from_edit_ajax"])) {
       $task->redirectToList();
@@ -60,11 +67,17 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["restore"])) {
    $task->check($_POST['id'], PURGE);
+   if (!$task->checkVisibility((int) $_POST['id'])) {
+      throw new AccessDeniedHttpException();
+   }
    $task->restore($_POST);
    $task->redirectToList();
 
 } else if (isset($_POST["purge"])) {
    $task->check($_POST['id'], PURGE);
+   if (!$task->checkVisibility((int) $_POST['id'])) {
+      throw new AccessDeniedHttpException();
+   }
    $task->delete($_POST, 1);
    if (!isset($_POST["from_edit_ajax"])) {
       $task->redirectToList();
@@ -74,11 +87,17 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["update"])) {
    $task->check($_POST['id'], UPDATE);
+   if (!$task->checkVisibility((int) $_POST['id'])) {
+      throw new AccessDeniedHttpException();
+   }
    $task->update($_POST);
    Html::back();
 
 } else if (isset($_POST["done"])) {
    $task->check($_POST['id'], UPDATE);
+   if (!$task->checkVisibility((int) $_POST['id'])) {
+      throw new AccessDeniedHttpException();
+   }
    $options['id']           = $_POST['id'];
    $options['state']        = 2;
    $options['percent_done'] = 100;
@@ -90,8 +109,19 @@ if (isset($_POST["add"])) {
    $ticket = new Ticket();
    $task   = new Task();
    $task->check($_POST['plugin_tasklists_tasks_id'], UPDATE);
-   $ticket->add(['tickets_id'                => $_POST['tickets_id'],
-                 'plugin_tasklists_tasks_id' => $_POST['plugin_tasklists_tasks_id']]);
+   if (!$task->checkVisibility((int) $_POST['plugin_tasklists_tasks_id'])) {
+      throw new AccessDeniedHttpException();
+   }
+   // The target ticket id comes from the client: the UI dropdown is entity-restricted but
+   // that is client-side only. Require READ on the ticket so a forged id cannot link (and
+   // later disclose the metadata of) a ticket outside the caller's scope.
+   $tickets_id = (int) $_POST['tickets_id'];
+   $linked_ticket = new \Ticket();
+   if (!$linked_ticket->can($tickets_id, READ)) {
+      throw new AccessDeniedHttpException();
+   }
+   $ticket->add(['tickets_id'                => $tickets_id,
+                 'plugin_tasklists_tasks_id' => (int) $_POST['plugin_tasklists_tasks_id']]);
    Html::back();
 
 } else {

@@ -232,7 +232,13 @@ class Ticket extends CommonDBTM
             echo "<th>" . __('Description') . "</th>";
             echo "</tr>";
 
+            $task = new Task();
             foreach ($tickets as $data) {
+                // Defense in depth: never disclose the name/content of a task the caller is not
+                // allowed to see, even if a link row was forged (see front/ticket.form.php add path).
+                if (!$task->checkVisibility((int) $data['id'])) {
+                    continue;
+                }
                 echo "<tr class='tab_bg_1'>";
                 echo "<td>";
                 echo Html::getMassiveActionCheckBox(__CLASS__, $data['LinkID']);
@@ -240,7 +246,7 @@ class Ticket extends CommonDBTM
 
                 echo "<td>";
                 $url = Toolbox::getItemTypeFormURL(Task::class) . "?id=" . $data['id'];
-                echo "<a id='task" . $data['id'] . "' href='$url'>" . $data['name'] . "</a>";
+                echo "<a id='task" . $data['id'] . "' href='$url'>" . htmlescape($data['name']) . "</a>";
                 echo "</td>";
 
                 echo "<td>";
@@ -329,21 +335,27 @@ class Ticket extends CommonDBTM
             //         echo "<th>" . __('Associated element', 'tasklists') . "</th>";
             echo "</tr>";
 
+            // Use a real core ticket object: the plugin Ticket class is only the link table
+            // (rightname plugin_tasklists), so its can()/fields would be wrong here.
+            $core_ticket = new \Ticket();
             foreach ($tickets as $data) {
-                if ($ticket->getFromDB($data['tickets_id'])) {
+                // can(READ) validates the global right AND the entity: never disclose the
+                // title/date/status/priority of a linked ticket the caller cannot read
+                // (closes the cross-entity ticket enumeration via forged ticket_link).
+                if ($core_ticket->can((int) $data['tickets_id'], READ)) {
                     echo "<tr class='tab_bg_1'>";
                     echo "<td class='center'>";
-                    echo $ticket->getLink();
+                    echo $core_ticket->getLink();
                     echo "</td>";
                     echo "<td class='center'>";
-                    echo Html::convDateTime($ticket->fields["date"]);
+                    echo Html::convDateTime($core_ticket->fields["date"]);
                     echo "</td>";
                     echo "<td class='center'>";
-                    echo \Ticket::getStatus($ticket->fields["status"]);
+                    echo \Ticket::getStatus($core_ticket->fields["status"]);
                     echo "</td>";
-                    $style = "style=\"background-color:" . $_SESSION["glpipriority_" . $ticket->fields['priority']] . ";\" ";
+                    $style = "style=\"background-color:" . $_SESSION["glpipriority_" . $core_ticket->fields['priority']] . ";\" ";
                     echo "<td class='center' $style>";
-                    echo CommonITILObject::getPriorityName($ticket->fields["priority"]);
+                    echo CommonITILObject::getPriorityName($core_ticket->fields["priority"]);
                     echo "</td>";
                     //               echo "<td class='center'>";
                     //               $item_ticket = new Item_Ticket();

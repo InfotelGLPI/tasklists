@@ -55,6 +55,9 @@ function plugin_init_tasklists()
     //    $PLUGIN_HOOKS[Hooks::ADD_CSS]['tasklists'][]      = "kanban.css";
     if (Session::getLoginUserID()) {
 
+        // Comment thread handlers (reply/edit) — externalized from Task_Comment::showForItem.
+        $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['tasklists'][] = 'js/tasklists_comment.js';
+
         Plugin::registerClass(Task::class, [
             'document_types'              => true,
             'notificationtemplates_types' => true,

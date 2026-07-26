@@ -3,7 +3,11 @@
         "php": ">=8.2"
     },
     "require-dev": {
-        "glpi-project/tools": "^0.8"
+        "glpi-project/tools": "^0.8",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "glpi-project/phpstan-glpi": "^1.1",
+        "phpunit/phpunit": "^11.5"
     },
     "config": {
         "optimize-autoloader": true,
@@ -16,5 +20,16 @@
         "psr-4": {
             "Glpi\\Tools\\": "../../tools/src/"
         }
+    },
+    "scripts": {
+        "lint": "parallel-lint --exclude vendor --exclude node_modules .",
+        "cs": "php-cs-fixer fix --dry-run --diff --ansi",
+        "cs-fix": "php-cs-fixer fix --ansi",
+        "phpstan": "phpstan analyze --ansi --memory-limit=1G",
+        "qa": [
+            "@lint",
+            "@phpstan",
+            "@cs"
+        ]
     }
 }

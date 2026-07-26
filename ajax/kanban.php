@@ -34,6 +34,7 @@ use Glpi\Exception\Http\HttpException;
 use Glpi\Features\KanbanInterface;
 use Glpi\Features\TeamworkInterface;
 use GlpiPlugin\Tasklists\Item_Kanban;
+use GlpiPlugin\Tasklists\Task;
 
 use function Safe\json_encode;
 use function Safe\preg_split;
@@ -69,7 +70,7 @@ if (isset($_REQUEST['items_id'])) {
 
 // Rights Checks
 if ($item !== null) {
-    if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column', 'load_item_panel'])) {
+    if (in_array($action, ['refresh', 'get_switcher_dropdown', 'get_column', 'load_item_panel', 'get_kanbans', 'list_columns'])) {
         if (!$item->canView()) {
             // Missing rights
             throw new AccessDeniedHttpException();
@@ -123,6 +124,11 @@ $checkParams = static function ($required) {
 // Action Processing
 if (($_POST['action'] ?? null) === 'update') {
     $checkParams(['column_field', 'column_value']);
+    // can(UPDATE) is enforced above but ignores the plugin visibility model; a same-entity
+    // user must not mutate another user's private task via the Kanban update path.
+    if ($item instanceof Task && !$item->checkVisibility((int) $_POST['items_id'])) {
+        throw new AccessDeniedHttpException();
+    }
     // Update project or task based on changes made in the Kanban
     $item->update([
         'id'                   => (int) $_POST['items_id'],
@@ -281,6 +287,9 @@ if (($_POST['action'] ?? null) === 'update') {
 } elseif (($_POST['action'] ?? null) === 'delete_item') {
     $checkParams(['items_id']);
     $item->getFromDB($_POST['items_id']);
+    if ($item instanceof Task && !$item->checkVisibility((int) $_POST['items_id'])) {
+        throw new AccessDeniedHttpException();
+    }
     // Check if the item can be trashed and if the request isn't forcing deletion (purge)
     $maybe_deleted = $item->maybeDeleted() && !($_REQUEST['force'] ?? false);
     if (($maybe_deleted && $item->can($_POST['items_id'], DELETE)) || (!$maybe_deleted && $item->can($_POST['items_id'], PURGE))) {
@@ -296,6 +305,9 @@ if (($_POST['action'] ?? null) === 'update') {
 } elseif (($_POST['action'] ?? null) === 'restore_item') {
     $checkParams(['items_id']);
     $item->getFromDB($_POST['items_id']);
+    if ($item instanceof Task && !$item->checkVisibility((int) $_POST['items_id'])) {
+        throw new AccessDeniedHttpException();
+    }
     // Check if the item can be restored
     $maybe_deleted = $item->maybeDeleted();
     if (($maybe_deleted && $item->can($_POST['items_id'], DELETE))) {

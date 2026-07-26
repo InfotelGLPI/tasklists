@@ -27,7 +27,9 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use Glpi\Exception\Http\BadRequestHttpException;
+use GlpiPlugin\Tasklists\Task;
 use GlpiPlugin\Tasklists\Ticket;
 
 Session::checkLoginUser();
@@ -35,6 +37,16 @@ Session::checkLoginUser();
 $ticket = new Ticket();
 if (isset($_POST["add"])) {
    $ticket->check(-1, CREATE, $_POST);
+
+   // check(-1, CREATE) only validates the global plugin_tasklists right, not object access on
+   // the client-supplied task id. Without this, a user with CREATE could forge a link to a task
+   // outside their visibility scope and later read its name/content via the ticket's linked-tasks
+   // tab (showForTicket). Gate the target task with the same READ + checkVisibility as task.form.php.
+   $tasks_id = (int) ($_POST['plugin_tasklists_tasks_id'] ?? 0);
+   $task     = new Task();
+   if (!$task->can($tasks_id, READ) || !$task->checkVisibility($tasks_id)) {
+      throw new AccessDeniedHttpException();
+   }
 
    $ticket->add($_POST);
    Html::back();

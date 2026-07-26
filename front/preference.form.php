@@ -33,6 +33,11 @@ Session::checkLoginUser();
 
 //Save user preferences
 if (isset ($_POST['update'])) {
+   // The preference primary key is the user id. Force it to the current user so a forged
+   // POST id cannot target (and overwrite) another user's preferences: update() loads the
+   // row via getFromDB($input['id']) before prepareInputForUpdate() runs, so the identity
+   // must be pinned here, in the controller, and not only in the model.
+   $_POST['id'] = Session::getLoginUserID();
    $pref = new Preference();
    $pref->check(-1, UPDATE, $_POST);
    $pref->update($_POST);

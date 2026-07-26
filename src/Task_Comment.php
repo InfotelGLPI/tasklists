@@ -31,6 +31,7 @@ namespace GlpiPlugin\Tasklists;
 
 use CommonDBTM;
 use CommonGLPI;
+use Glpi\Application\View\TemplateRenderer;
 use Html;
 use Session;
 use Toolbox;
@@ -126,118 +127,19 @@ class Task_Comment extends CommonDBTM {
       $entry = new Task();
       $entry->getFromDB($task->fields['id']);
       $cancomment = true;
-      if ($cancomment) {
-         echo "<div class='firstbloc'>";
 
-         $lang = null;
-         //         if ($item->getType() == Tasktranslation::getType()) {
-         //            $lang = $item->fields['language'];
-         //         }
-
-         echo self::getCommentForm($plugin_tasklists_tasks_id, $lang);
-         echo "</div>";
-      }
-
-      // No comments in database
-      if ($number < 1) {
-         $no_txt = __('No comments');
-         echo "<div class='center'>";
-         echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th>$no_txt</th></tr>";
-         echo "</table>";
-         echo "</div>";
-         return;
-      }
-
-      // Output events
-      echo "<div class='forcomments timeline_history'>";
-      echo "<ul class='comments left'>";
+      $lang     = null;
       $comments = self::getCommentsForTaskItem($plugin_tasklists_tasks_id, $where['language']);
 
-      $html = self::displayComments($comments, $cancomment);
-      echo $html;
-      $root_doc = $CFG_GLPI['root_doc'] . '/plugins/tasklists';
-      echo "</ul>";
-      echo "<script type='text/javascript'>
-              $(function() {
-                 var _bindForm = function(form) {
-                     form.find('input[type=reset]').on('click', function(e) {
-                        e.preventDefault();
-                        form.remove();
-                        $('.displayed_content').show();
-                     });
-                 };
-
-                 $('.add_answer').on('click', function() {
-                    var _this = $(this);
-                    var _data = {
-                       'plugin_tasklists_tasks_id': _this.data('plugin_tasklists_tasks_id'),
-                       'answer'   : _this.data('id')
-                    };
-
-                    if (_this.data('language') != undefined) {
-                       _data.language = _this.data('language');
-                    }
-
-                    if (_this.parents('.comment').find('#newcomment' + _this.data('id')).length > 0) {
-                       return;
-                    }
-
-                    $.ajax({
-                       url: '$root_doc/ajax/getTaskComment.php',
-                       method: 'post',
-                       cache: false,
-                       data: _data,
-                       success: function(data) {
-                          var _form = $('<div class=\"newcomment ms-3\" id=\"newcomment'+_this.data('id')+'\">' + data + '</div>');
-                          _bindForm(_form);
-                          _this.parents('.h_item').after(_form);
-                       },
-                       error: function() { " .
-                           Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load comment!')) . "
-                       }
-                    });
-                 });
-
-                 $('.edit_item').on('click', function() {
-                    var _this = $(this);
-                    var _data = {
-                       'plugin_tasklists_tasks_id': _this.data('plugin_tasklists_tasks_id'),
-                       'edit'     : _this.data('id')
-                    };
-
-                    if (_this.data('language') != undefined) {
-                       _data.language = _this.data('language');
-                    }
-
-                    if (_this.parents('.comment').find('#editcomment' + _this.data('id')).length > 0) {
-                       return;
-                    }
-
-                    $.ajax({
-                       url: '$root_doc/ajax/getTaskComment.php',
-                       method: 'post',
-                       cache: false,
-                       data: _data,
-                       success: function(data) {
-                          var _form = $('<div class=\"editcomment\" id=\"editcomment'+_this.data('id')+'\">' + data + '</div>');
-                          _bindForm(_form);
-                          _this
-                           .parents('.displayed_content').hide()
-                           .parent()
-                           .append(_form);
-                       },
-                       error: function() { " .
-                           Html::jsAlertCallback(__('Contact your GLPI admin!'), __('Unable to load comment!')) . "
-                       }
-                    });
-                 });
-
-
-              });
-            </script>";
-
-      echo "</div>";
+      // The click handlers ('.add_answer'/'.edit_item') live in js/tasklists_comment.js
+      // (registered via Hooks::ADD_JAVASCRIPT); the endpoint is read from data-ajax-url.
+      TemplateRenderer::getInstance()->display('@tasklists/comment/tab.html.twig', [
+         'cancomment'    => $cancomment,
+         'number'        => $number,
+         'comment_form'  => $cancomment ? self::getCommentForm($plugin_tasklists_tasks_id, $lang) : '',
+         'comments_html' => self::displayComments($comments, $cancomment),
+         'ajax_url'      => $CFG_GLPI['root_doc'] . '/plugins/tasklists/ajax/getTaskComment.php',
+      ]);
    }
 
    /**
@@ -283,70 +185,48 @@ class Task_Comment extends CommonDBTM {
     * @return string
     */
    static public function displayComments($comments, $cancomment, $level = 0) {
-      $html = '';
+      // Twig auto-escapes the comment text and every attribute (recursive thread macro),
+      // removing the stored-XSS surface the manual string concatenation carried.
+      return TemplateRenderer::getInstance()->render('@tasklists/comment/list.html.twig', [
+         'comments'   => self::buildCommentsTree($comments),
+         'cancomment' => $cancomment,
+      ]);
+   }
+
+   /**
+    * Build a view-ready comment tree (recursively) for the Twig thread macro.
+    *
+    * @param array $comments Raw comments (each may hold nested 'answers')
+    *
+    * @return array
+    */
+   static private function buildCommentsTree($comments) {
+      $tree = [];
       foreach ($comments as $comment) {
          $user = new User();
          $user->getFromDB($comment['users_id']);
 
-         $html .= "<li class='comment" . ($level > 0 ? ' subcomment' : '') . "' id='taskcomment{$comment['id']}'>";
-         $html .= "<div class='h_item left'>";
-         if ($level === 0) {
-            $html .= '<hr/>';
-         }
-         $html          .= "<div class='h_info'>";
-         $html          .= "<div class='h_date'>" . Html::convDateTime($comment['date_creation']) . "</div>";
-         $html          .= "<div class='h_user'>";
          $thumbnail_url = User::getThumbnailURLForPicture($user->fields['picture']);
-         $style         = !empty($thumbnail_url) ? "background-image: url(\"$thumbnail_url\")" : ("background-color: " . $user->getUserInitialsBgColor());
-         $html          .= '<a href="' . $user->getLinkURL() . '">';
-         $html          .= "<span class='avatar avatar-md rounded' style='{$style}'>";
-         if (empty($thumbnail_url)) {
-            $html .= $user->getUserInitials();
-         }
-         $html .= '</span></a>';
-         $html .= "</div>"; // h_user
-         $html .= "</div>"; //h_info
+         $avatar_style  = !empty($thumbnail_url)
+            ? 'background-image: url("' . $thumbnail_url . '")'
+            : 'background-color: ' . $user->getUserInitialsBgColor();
 
-         $html .= "<div class='h_content ItilFollowup'>";
-         $html .= "<div class='displayed_content'>";
-
-         if ($cancomment) {
-            if (Session::getLoginUserID() == $comment['users_id']) {
-               $html .= "<span class='edit_item'
-                  data-plugin_tasklists_tasks_id='{$comment['plugin_tasklists_tasks_id']}'
-                  data-lang='{$comment['language']}'
-                  data-id='{$comment['id']}'></span>";
-            }
-         }
-
-         $html .= "<div class='item_content'>";
-         $html .= htmlescape($comment['comment']);
-         $html .= "</div>";
-         $html .= "</div>"; // displayed_content
-
-         if ($cancomment) {
-            $html .= "<span class='add_answer' title='" . __('Add an answer') . "'
-               data-plugin_tasklists_tasks_id='{$comment['plugin_tasklists_tasks_id']}'
-               data-lang='{$comment['language']}'
-               data-id='{$comment['id']}'></span>";
-         }
-
-         $html .= "</div>"; //end h_content
-         $html .= "</div>";
-
-         if (isset($comment['answers']) && count($comment['answers']) > 0) {
-
-            $html .= "<input type='checkbox' id='toggle_{$comment['id']}'
-                             class='toggle_comments' checked='checked'>";
-            $html .= "<label for='toggle_{$comment['id']}' class='toggle_label'>&nbsp;</label>";
-            $html .= "<ul>";
-            $html .= self::displayComments($comment['answers'], $cancomment, $level + 1);
-            $html .= "</ul>";
-         }
-
-         $html .= "</li>";
+         $tree[] = [
+            'id'                        => (int) $comment['id'],
+            'plugin_tasklists_tasks_id' => (int) $comment['plugin_tasklists_tasks_id'],
+            'language'                  => $comment['language'],
+            'comment'                   => $comment['comment'],
+            'date_creation'             => Html::convDateTime($comment['date_creation']),
+            'user_url'                  => $user->getLinkURL(),
+            'avatar_style'              => $avatar_style,
+            'user_initials'             => empty($thumbnail_url) ? $user->getUserInitials() : '',
+            'can_edit'                  => (Session::getLoginUserID() == $comment['users_id']),
+            'answers'                   => (isset($comment['answers']) && count($comment['answers']) > 0)
+               ? self::buildCommentsTree($comment['answers'])
+               : [],
+         ];
       }
-      return $html;
+      return $tree;
    }
 
    /**
@@ -360,8 +240,6 @@ class Task_Comment extends CommonDBTM {
     * @return string
     */
    static public function getCommentForm($plugin_tasklists_tasks_id, $lang = null, $edit = false, $answer = false) {
-      $rand = mt_rand();
-
       $content = '';
       if ($edit !== false) {
          // Load the comment being edited from its own table (not Task).
@@ -370,52 +248,19 @@ class Task_Comment extends CommonDBTM {
          $content = $comment->fields['comment'];
       }
 
-      $html = '';
-      $html .= "<form name='taskcomment_form$rand' id='taskcomment_form$rand'
-                      class='comment_form' method='post'
-            action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-
-      $html .= "<table class='tab_cadre_fixe'>";
-
-      $form_title = ($edit === false ? __('New comment') : __('Edit comment'));
-      $html       .= "<tr class='tab_bg_2'><th colspan='3'>$form_title</th></tr>";
-
-      $html .= "<tr class='tab_bg_1'><td><label for='comment'>" . __('Comment') . "</label>
-         &nbsp;<span style='color:red'>*</span></td><td>";
-      // XSS: comment content is stored raw in GLPI 11; escape it before it reaches the
-      // textarea (a payload like </textarea><script> would otherwise break out).
-      $html .= "<textarea name='comment' id='comment' required='required'>"
-             . htmlspecialchars($content, ENT_QUOTES) . "</textarea>";
-      $html .= "</td><td class='center'>";
-
-      $btn_text = _sx('button', 'Add');
-      $btn_name = 'add';
-
-      if ($edit !== false) {
-         $btn_text = _sx('button', 'Edit');
-         $btn_name = 'edit';
-      }
-      $html .= "<input type='submit' name='$btn_name' value='{$btn_text}' class='btn btn-primary'>";
-      if ($edit !== false || $answer !== false) {
-         $html .= "<input type='reset' name='cancel' value='" . __('Cancel') . "' class='btn btn-primary'>";
-      }
-
-      // XSS: these values reach single-quoted attributes; cast ids to int and escape the
-      // client-supplied language to prevent attribute break-out / reflected injection.
-      $html .= "<input type='hidden' name='plugin_tasklists_tasks_id' value='" . (int) $plugin_tasklists_tasks_id . "'>";
-      if ($lang !== null) {
-         $html .= "<input type='hidden' name='language' value='" . htmlspecialchars($lang, ENT_QUOTES) . "'>";
-      }
-      if ($answer !== false) {
-         $html .= "<input type='hidden' name='parent_comment_id' value='" . (int) $answer . "'/>";
-      }
-      if ($edit !== false) {
-         $html .= "<input type='hidden' name='id' value='" . (int) $edit . "'/>";
-      }
-      $html .= "</td></tr>";
-      $html .= "</table>";
-      $html .= Html::closeForm(false);
-      return $html;
+      // Twig auto-escapes every value below (textarea content, language, ids), which
+      // structurally prevents the attribute/tag break-out this form used to be exposed to.
+      return TemplateRenderer::getInstance()->render('@tasklists/comment/form.html.twig', [
+         'rand'                      => mt_rand(),
+         'action'                    => Toolbox::getItemTypeFormURL(__CLASS__),
+         'content'                   => $content,
+         'plugin_tasklists_tasks_id' => (int) $plugin_tasklists_tasks_id,
+         'lang'                      => $lang,
+         'is_edit'                   => ($edit !== false),
+         'edit'                      => ($edit !== false) ? (int) $edit : 0,
+         'is_answer'                 => ($answer !== false),
+         'answer'                    => ($answer !== false) ? (int) $answer : 0,
+      ]);
    }
 
    function prepareInputForAdd($input) {

@@ -1,6 +1,4 @@
-<?php
-
-/*
+{#
  -------------------------------------------------------------------------
  tasklists plugin for GLPI
  Copyright (C) 2016-2026 by the tasklists Development Team.
@@ -25,21 +23,6 @@
  You should have received a copy of the GNU General Public License
  along with tasklists. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
- */
+ #}
 
-use Glpi\Exception\Http\AccessDeniedHttpException;
-use GlpiPlugin\Tasklists\Menu;
-use GlpiPlugin\Tasklists\Task;
-
-global $CFG_GLPI;
-$task = new Task();
-
-if ($task->canView() || Session::haveRight("config", UPDATE)) {
-   Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
-
-   $task->listOfTemplates($CFG_GLPI['root_doc'] . "/plugins/tasklists/front/task.form.php", $_GET["add"]);
-
-   Html::footer();
-} else {
-    throw new AccessDeniedHttpException();
-}
+<a id="task{{ dom_id }}" target="_blank" href="{{ url }}">{{ name }}</a>

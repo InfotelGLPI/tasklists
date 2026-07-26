@@ -148,7 +148,7 @@ class TypeVisibility extends CommonDBTM
         $condition = [];
         if (count($used_groups) > 0) {
             $condition [] = ["NOT" => [
-            "id" => implode(',', $used_groups)
+            "id" => $used_groups
             ]];
         }
         $condition [] = getEntitiesRestrictCriteria($group->getTable(), '', $_SESSION["glpiactiveentities"], true);
@@ -201,8 +201,8 @@ class TypeVisibility extends CommonDBTM
         $rand = mt_rand();
         echo "<div class='center'>";
         if ($canedit) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['item' => __CLASS__, 'container' => 'mass' . __CLASS__ . $rand];
+            Html::openMassiveActionsForm('mass' .  $rand);
+            $massiveactionparams = ['item' => __CLASS__, 'container' => 'mass' .  $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixe'>";
@@ -212,7 +212,7 @@ class TypeVisibility extends CommonDBTM
         echo "<tr>";
         echo "<th width='10'>";
         if ($canedit) {
-            echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
+            echo Html::getCheckAllAsCheckbox('mass' .  $rand);
         }
         echo "</th>";
         echo "<th>" . __('Name') . "</th>";
@@ -228,13 +228,13 @@ class TypeVisibility extends CommonDBTM
             echo "<td>" . Dropdown::getDropdownName('glpi_groups', $field['groups_id']) . "</td>";
             echo "</tr>";
         }
-
+        echo "</table>";
         if ($canedit) {
             $massiveactionparams['ontop'] = false;
             Html::showMassiveActions($massiveactionparams);
             Html::closeForm();
         }
-        echo "</table>";
+
         echo "</div>";
     }
 

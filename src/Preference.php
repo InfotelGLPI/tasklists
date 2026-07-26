@@ -125,6 +125,21 @@ class Preference extends CommonDBTM
         $this->showFormButtons($options);
     }
 
+    /**
+     * The preference primary key is the user id, so force it to the current user on
+     * update to prevent an authenticated user from overwriting another user's settings
+     * by posting a forged id (IDOR).
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function prepareInputForUpdate($input)
+    {
+        $input['id'] = Session::getLoginUserID();
+        return $input;
+    }
+
    /**
     * @param $users_id
     */

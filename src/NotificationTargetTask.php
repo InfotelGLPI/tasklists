@@ -164,61 +164,6 @@ class NotificationTargetTask extends NotificationTarget
     {
         global $CFG_GLPI;
 
-        $dbu = new DbUtils();
-       //      if ($event == 'alerttasks') {
-       //
-       //         $this->data['##resource.entity##']      =
-       //            Dropdown::getDropdownName('glpi_entities',
-       //                                      $options['entities_id']);
-       //         $this->data['##lang.resource.entity##'] = __('Entity');
-       //         $this->data['##resource.action##']      = __('List of not finished tasks', 'resources');
-       //
-       //         $this->data['##lang.task.name##']      = __('Name');
-       //         $this->data['##lang.task.type##']      = __('Type');
-       //         $this->data['##lang.task.users##']     = __('Technician');
-       //         $this->data['##lang.task.groups##']    = __('Group');
-       //         $this->data['##lang.task.datebegin##'] = __('Begin date');
-       //         $this->data['##lang.task.dateend##']   = __('End date');
-       //         $this->data['##lang.task.planned##']   = __('Used for planning', 'resources');
-       //         $this->data['##lang.task.realtime##']  = __('Effective duration', 'resources');
-       //         $this->data['##lang.task.finished##']  = __('Carried out task', 'resources');
-       //         $this->data['##lang.task.comment##']   = __('Comments');
-       //         $this->data['##lang.task.resource##']  = Resource::getTypeName(1);
-       //
-       //         foreach ($options['tasks'] as $id => $task) {
-       //            $tmp = [];
-       //
-       //            $tmp['##task.name##']   = $task['name'];
-       //            $tmp['##task.type##']   = Dropdown::getDropdownName('glpi_plugin_resources_tasktypes',
-       //                                                                $task['plugin_resources_tasktypes_id']);
-       //            $tmp['##task.users##']  = $dbu->getUserName($task['users_id']);
-       //            $tmp['##task.groups##'] = Dropdown::getDropdownName('glpi_groups',
-       //                                                                $task['groups_id']);
-       //            $restrict               = ["plugin_resources_tasks_id" => $task['id']];
-       //            $plans                  = $dbu->getAllDataFromTable("glpi_plugin_resources_taskplannings", $restrict);
-       //
-       //            if (!empty($plans)) {
-       //               foreach ($plans as $plan) {
-       //                  $tmp['##task.datebegin##'] = Html::convDateTime($plan["begin"]);
-       //                  $tmp['##task.dateend##']   = Html::convDateTime($plan["end"]);
-       //               }
-       //            } else {
-       //               $tmp['##task.datebegin##'] = '';
-       //               $tmp['##task.dateend##']   = '';
-       //            }
-       //
-       //            $tmp['##task.planned##']  = '';
-       //            $tmp['##task.finished##'] = Dropdown::getYesNo($task['is_finished']);
-       //            $tmp['##task.realtime##'] = Ticket::getActionTime($task["actiontime"]);
-       //            $comment                  = stripslashes(str_replace(['\r\n', '\n', '\r'], "<br/>", $task['comment']));
-       //            $tmp['##task.comment##']  = Html::clean($comment);
-       //            $tmp['##task.resource##'] = Dropdown::getDropdownName('glpi_plugin_resources_resources',
-       //                                                                  $task['plugin_resources_resources_id']);
-       //
-       //            $this->data['tasks'][] = $tmp;
-       //         }
-       //      } else {
-
         $events = $this->getAllEvents();
 
         $this->data['##lang.task.title##'] = $events[$event];
@@ -377,70 +322,6 @@ class NotificationTargetTask extends NotificationTarget
                 }
             }
         }
-       //      $query_id = "SELECT `id` FROM `glpi_notificationtemplates`
-       //                  WHERE `itemtype`='GlpiPlugin\\Tasklists\\Task' AND `name` = 'Alert not finished Tasks'";
-       //      $result = $DB->doQuery($query_id) or die($DB->error());
-       //
-       //      if ($DB->numrows($result) > 0) {
-       //         $templates_id = $DB->result($result, 0, 'id');
-       //      } else {
-       //         $tmp          = [
-       //            'name'     => 'Alert not finished Tasks',
-       //            'itemtype' => Task::class,
-       //            'date_mod' => $_SESSION['glpi_currenttime'],
-       //            'comment'  => '',
-       //            'css'      => '',
-       //         ];
-       //         $templates_id = $template->add($tmp);
-       //      }
-       //
-       //      if ($templates_id) {
-       //         $translation = new NotificationTemplateTranslation();
-       //         if (!$dbu->countElementsInTable($translation->getTable(),
-       //                                         ["notificationtemplates_id" => $templates_id])) {
-       //            $tmp['notificationtemplates_id'] = $templates_id;
-       //            $tmp['language']                 = '';
-       //            $tmp['subject']                  = '##resource.action## : ##resource.entity##';
-       //            $tmp['content_text']             = '##FOREACHtasks##
-       //   ##lang.task.name## : ##task.name##
-       //   ##lang.task.type## : ##task.type##
-       //   ##lang.task.users## : ##task.users##
-       //   ##lang.task.groups## : ##task.groups##
-       //   ##lang.task.datebegin## : ##task.datebegin##
-       //   ##lang.task.dateend## : ##task.dateend##
-       //   ##lang.task.comment## : ##task.comment##
-       //   ##lang.task.resource## : ##task.resource##
-       //   ##ENDFOREACHtasks##';
-       //            $tmp['content_html']             = '&lt;table class="tab_cadre" border="1" cellspacing="2" cellpadding="3"&gt;
-       //   &lt;tbody&gt;
-       //   &lt;tr&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.name##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.type##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.users##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.groups##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.datebegin##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.dateend##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.comment##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td style="text-align: left;" bgcolor="#cccccc"&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##lang.task.resource##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;/tr&gt;
-       //   ##FOREACHtasks##
-       //   &lt;tr&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.name##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.type##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.users##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.groups##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.datebegin##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.dateend##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.comment##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;td&gt;&lt;span style="font-family: Verdana; font-size: 11px; text-align: left;"&gt;##task.resource##&lt;/span&gt;&lt;/td&gt;
-       //   &lt;/tr&gt;
-       //   ##ENDFOREACHtasks##
-       //   &lt;/tbody&gt;
-       //   &lt;/table&gt;';
-       //
-       //            $translation->add($tmp);
-       //         }
-       //      }
     }
 
 

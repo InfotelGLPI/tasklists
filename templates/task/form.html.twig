@@ -1,0 +1,89 @@
+{#
+ -------------------------------------------------------------------------
+ tasklists plugin for GLPI
+ Copyright (C) 2016-2026 by the tasklists Development Team.
+
+ https://github.com/InfotelGLPI/tasklists
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of tasklists.
+
+ tasklists is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
+
+ tasklists is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ #}
+
+<tr class="tab_bg_1">
+   {{ id_field|raw }}
+   <td>{{ __('Name') }}</td>
+   <td>{{ name_field|raw }}</td>
+   <td>{{ _n('Context', 'Contexts', 1, 'tasklists') }}</td>
+   <td>{{ type_field|raw }}</td>
+</tr>
+
+<tr class="tab_bg_1">
+   <td>{{ __('Priority') }}</td>
+   <td>{{ priority_field|raw }}</td>
+   <td>{{ __('Planned duration') }}</td>
+   <td>{{ duration_field|raw }}</td>
+</tr>
+
+{% if show_entity %}
+   <tr class="tab_bg_1">
+      <td>{{ __('Existing client', 'tasklists') }}</td>
+      <td>{{ entity_field|raw }}</td>
+      <td colspan="2" id="plugin_tasklists_entity">{{ entity_js|raw }}</td>
+   </tr>
+{% endif %}
+
+<tr class="tab_bg_1">
+   <td>{{ __('Other client', 'tasklists') }}</td>
+   <td>{{ client_field|raw }}</td>
+   <td>{{ __('Due date', 'tasklists') }}</td>
+   <td>{{ due_date_field|raw }}</td>
+</tr>
+
+<tr class="tab_bg_1">
+   <td>{{ _n('Requester', 'Requesters', 1) }}</td>
+   <td>{{ requester_field|raw }}</td>
+   <td></td>
+   <td></td>
+</tr>
+
+<tr class="tab_bg_1">
+   <td>{{ __('Technician') }}</td>
+   <td>{{ technician_field|raw }}</td>
+   <td>{{ __('Percent done') }}</td>
+   <td>{{ percent_field|raw }}</td>
+</tr>
+
+<tr class="tab_bg_1">
+   <td>{{ __('Group') }}</td>
+   <td>{{ group_field|raw }}</td>
+   <td>{{ __('Status') }}</td>
+   <td>{{ status_field|raw }}</td>
+</tr>
+
+<tr class="tab_bg_1">
+   <td>{{ __('Description') }}</td>
+   <td colspan="3" class="center">{{ content_field|raw }}</td>
+</tr>
+
+<tr class="tab_bg_1">
+   <td>{{ __('Visibility') }}</td>
+   <td>{{ visibility_field|raw }}</td>
+   <td>{{ __('Archived', 'tasklists') }}</td>
+   <td>{{ archived_field|raw }}</td>
+</tr>

@@ -71,15 +71,13 @@ function plugin_tasklists_install()
 
        //Migrate glpi_plugin_tasklists_items_kanbans to Item_Kanban
         $lists_unique_kanban = [];
-        $query               = "SELECT * FROM `glpi_plugin_tasklists_items_kanbans`
-                            WHERE `items_id` > 0
-                            GROUP BY `items_id`";
-        if ($result = $DB->doQuery($query)) {
-            if ($DB->numrows($result)) {
-                while ($data = $DB->fetchArray($result)) {
-                    $lists_unique_kanban[] = $data['items_id'];
-                }
-            }
+        $iterator            = $DB->request([
+            'FROM'    => 'glpi_plugin_tasklists_items_kanbans',
+            'WHERE'   => ['items_id' => ['>', 0]],
+            'GROUPBY' => 'items_id',
+        ]);
+        foreach ($iterator as $data) {
+            $lists_unique_kanban[] = $data['items_id'];
         }
         $tasklist_item_kanban = new Item_Kanban();
         $lists_kanban         = $tasklist_item_kanban->find();
@@ -105,23 +103,21 @@ function plugin_tasklists_install()
             }
         }
 
-        $query = "SELECT * FROM `glpi_plugin_tasklists_items_kanbans`
-                            WHERE `items_id` > 0
-                            GROUP BY `items_id`";
-        if ($result = $DB->doQuery($query)) {
-            if ($DB->numrows($result)) {
-                while ($data = $DB->fetchArray($result)) {
-                    $item_kanban            = new Item_Kanban();
-                    $input['itemtype']      = $data['itemtype'];
-                    $input['items_id']      = $data['items_id'];
-                    $input['users_id']      = 0;
-                    $input['date_mod']      = $data['date_mod'];
-                    $input['date_creation'] = $data['date_creation'];
-                    $input['state']         = json_encode($state[$data['items_id']]);
+        $iterator = $DB->request([
+            'FROM'    => 'glpi_plugin_tasklists_items_kanbans',
+            'WHERE'   => ['items_id' => ['>', 0]],
+            'GROUPBY' => 'items_id',
+        ]);
+        foreach ($iterator as $data) {
+            $item_kanban            = new Item_Kanban();
+            $input['itemtype']      = $data['itemtype'];
+            $input['items_id']      = $data['items_id'];
+            $input['users_id']      = 0;
+            $input['date_mod']      = $data['date_mod'];
+            $input['date_creation'] = $data['date_creation'];
+            $input['state']         = json_encode($state[$data['items_id']]);
 
-                    $item_kanban->add($input);
-                }
-            }
+            $item_kanban->add($input);
         }
     }
     $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.1.0.sql");

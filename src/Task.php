@@ -37,7 +37,9 @@ use DbUtils;
 use Document_Item;
 use Dropdown;
 use DropdownTranslation;
+use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\QueryExpression;
+use Glpi\DBAL\QuerySubQuery;
 //Needed for save cards
 use Glpi\RichText\RichText;
 use Group_User;
@@ -469,77 +471,65 @@ class Task extends CommonDBTM
         $this->initForm($ID, $options);
         $this->showFormHeader($options);
 
-        echo "<tr class='tab_bg_1'>";
-        echo Html::hidden('id', ['value' => $ID]);
-        echo "<td>" . __('Name') . "</td>";
-        echo "<td>";
+        // Capture every GLPI dropdown/input (they echo directly) into strings so the Twig
+        // template can lay them out. User-supplied labels are auto-escaped by Twig; these
+        // captured fragments are already-safe framework HTML rendered with |raw.
+        $id_field = Html::hidden('id', ['value' => $ID]);
+
+        ob_start();
         echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
-        //      if (isset($options['from_edit_ajax'])
-        //          && $options['from_edit_ajax']) {
-        //         echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
-        //      }
-        //      if (isset($options['withtemplate']) && empty($options['withtemplate'])) {
-        //         $options['withtemplate'] = 0;
-        //      }
-        //      echo Html::hidden('withtemplate', ['value' => $options['withtemplate']]);
-        echo "</td>";
+        $name_field = ob_get_clean();
 
         $plugin_tasklists_tasktypes_id = $this->fields["plugin_tasklists_tasktypes_id"];
         if (isset($options['plugin_tasklists_tasktypes_id'])
             && $options['plugin_tasklists_tasktypes_id']) {
             $plugin_tasklists_tasktypes_id = $options['plugin_tasklists_tasktypes_id'];
         }
-        echo "<td>" . _n('Context', 'Contexts', 1, 'tasklists') . "</td><td>";
         $types = TypeVisibility::seeAllowedTypes();
-        $rand_type = Dropdown::show(TaskType::class, [
+        ob_start();
+        Dropdown::show(TaskType::class, [
             'name' => "plugin_tasklists_tasktypes_id",
             'value' => $plugin_tasklists_tasktypes_id,
             'entity' => $this->fields["entities_id"],
             'condition' => ['id' => $types],
             'on_change' => "plugin_tasklists_load_states();",
         ]);
-        echo "</td>";
-        echo "</tr>";
+        $type_field = ob_get_clean();
 
-        echo "<tr class='tab_bg_1'>";
-
-        echo "<td>" . __('Priority') . "</td>";
-        echo "<td>";
         $priority = $this->fields['priority'];
         if (isset($options['priority'])
             && $options['priority']) {
             $priority = $options['priority'];
         }
+        ob_start();
         CommonITILObject::dropdownPriority([
             'value' => $priority,
             'withmajor' => 1,
         ]);
-        echo "</td>";
+        $priority_field = ob_get_clean();
 
-        echo "<td>" . __('Planned duration') . "</td>";
-        echo "<td>";
+        ob_start();
         Dropdown::showTimeStamp("actiontime", [
             'min' => HOUR_TIMESTAMP * 2,
             'max' => MONTH_TIMESTAMP * 2,
             'step' => HOUR_TIMESTAMP * 2,
             'value' => $this->fields["actiontime"],
         ]);
-        echo "</td>";
+        $duration_field = ob_get_clean();
 
-        echo "</tr>";
-
+        $show_entity = false;
+        $entity_field = '';
+        $entity_js = '';
         if (isset($_SESSION["glpiactiveentities"])
             && count($_SESSION["glpiactiveentities"]) > 1
             && ($ID == 0 || (isset($options['withtemplate']) && ($options['withtemplate'] == 2)))) {
-            echo "<tr class='tab_bg_1'>";
-
-            echo "<td>" . __('Existing client', 'tasklists') . "</td>";
-            echo "<td>";
+            $show_entity = true;
             $entities_id = $this->fields['entities_id'];
             if (isset($options['entities_id'])
                 && $options['entities_id']) {
                 $entities_id = $options['entities_id'];
             }
+            ob_start();
             $rand_entity = Dropdown::show('Entity', [
                 'name' => "entities_id",
                 'value' => $entities_id,
@@ -547,9 +537,8 @@ class Task extends CommonDBTM
                 'is_recursive' => true,
                 'on_change' => "plugin_tasklists_load_entities();",
             ]);
-            echo "</td>";
+            $entity_field = ob_get_clean();
 
-            echo "<td colspan='2' id='plugin_tasklists_entity'>";
             $JS = "function plugin_tasklists_load_entities(){";
             $params = [
                 'entities_id' => '__VALUE__',
@@ -563,68 +552,49 @@ class Task extends CommonDBTM
                 false
             );
             $JS .= "}";
-            echo Html::scriptBlock($JS);
-            echo "</td>";
-            echo "</tr>";
+            $entity_js = Html::scriptBlock($JS);
         }
 
-        echo "<tr class='tab_bg_1'>";
-
-        echo "<td>" . __('Other client', 'tasklists') . "</td>";
-        echo "<td>";
         $client = $this->fields['client'];
         if (isset($options['client'])
             && $options['client']) {
             $client = $options['client'];
         }
-        echo Html::input('client', ['value' => $client, 'size' => 40]);
-        echo "</td>";
-        echo "<td>" . __("Due date", "tasklists") . "</td>";
-        echo "<td>";
-        Html::showDateField("due_date", ['value' => $this->fields["due_date"]]);
-        echo "</td>";
-        echo "</tr>";
-        echo "<tr class='tab_bg_1'>";
+        $client_field = Html::input('client', ['value' => $client, 'size' => 40]);
 
-        echo "<td>" . _n('Requester', 'Requesters', 1) . "</td><td>";
+        ob_start();
+        Html::showDateField("due_date", ['value' => $this->fields["due_date"]]);
+        $due_date_field = ob_get_clean();
+
         $users_id_requester = $this->fields['users_id_requester'];
         if (isset($options['users_id_requester'])
             && $options['users_id_requester']) {
             $users_id_requester = $options['users_id_requester'];
         }
-
+        ob_start();
         User::dropdown([
             'name' => "users_id_requester",
             'value' => $users_id_requester,
             'entity' => $this->fields["entities_id"],
             'right' => 'all',
         ]);
-        echo "</td>";
+        $requester_field = ob_get_clean();
 
-        echo "<td></td>";
-        echo "<td>";
-        echo "</td>";
-
-        echo "</tr>";
-        echo "<tr class='tab_bg_1'>";
-
-        echo "<td>" . __('Technician') . "</td><td>";
         $users_id = $this->fields['users_id'];
         if (isset($options['users_id'])
             && $options['users_id']) {
             $users_id = $options['users_id'];
         }
-
+        ob_start();
         User::dropdown([
             'name' => "users_id",
             'value' => $users_id,
             'entity' => $this->fields["entities_id"],
             'right' => 'all',
         ]);
-        echo "</td>";
+        $technician_field = ob_get_clean();
 
-        echo "<td>" . __('Percent done') . "</td>";
-        echo "<td>";
+        ob_start();
         Dropdown::showNumber("percent_done", [
             'value' => $this->fields['percent_done'],
             'min' => 0,
@@ -632,77 +602,76 @@ class Task extends CommonDBTM
             'step' => 10,
             'unit' => '%',
         ]);
-        echo "</td>";
+        $percent_field = ob_get_clean();
 
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-
-        echo "<td>" . __('Group') . "</td>";
-        echo "<td>";
         $groups_id = $this->fields['groups_id'];
         if (isset($options['groups_id'])
             && $options['groups_id']) {
             $groups_id = $options['groups_id'];
         }
+        ob_start();
         Dropdown::show('Group', [
             'name' => "groups_id",
             'value' => $groups_id,
             'entity' => $this->fields["entities_id"],
             'condition' => ['is_usergroup' => 1],
         ]);
-        echo "</td>";
+        $group_field = ob_get_clean();
 
-        echo "<td>" . __('Status') . "</td><td>";
-
+        ob_start();
         Dropdown::show(
             TaskState::class,
             ['value' => $this->fields["plugin_tasklists_taskstates_id"]]
         );
+        $status_field = ob_get_clean();
 
-        echo "</td>";
-
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-
-        echo "<td>";
-        echo __('Description') . "</td>";
-        echo "<td colspan = '3' class='center'>";
         $rand_text = mt_rand();
         $content_id = "comment$rand_text";
-        $cols = 100;
-        $rows = 15;
+        ob_start();
         Html::textarea([
             'name' => 'content',
             'value' => $this->fields["content"],
             'rand' => $rand_text,
             'editor_id' => $content_id,
             'enable_richtext' => true,
-            'cols' => $cols,
-            'rows' => $rows,
+            'cols' => 100,
+            'rows' => 15,
         ]);
-        echo "</td>";
+        $content_field = ob_get_clean();
 
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Visibility') . "</td>";
-        echo "<td>";
         $visibility = $this->fields['visibility'];
         if (isset($options['visibility'])
             && $options['visibility']) {
             $visibility = $options['visibility'];
         }
+        ob_start();
         self::dropdownVisibility(['value' => $visibility]);
-        echo "</td>";
+        $visibility_field = ob_get_clean();
 
-        echo "<td>" . __('Archived', 'tasklists') . "</td>";
-        echo "<td>";
+        ob_start();
         Dropdown::showYesNo("is_archived", $this->fields["is_archived"]);
-        echo "</td>";
+        $archived_field = ob_get_clean();
 
-        echo "</tr>";
+        TemplateRenderer::getInstance()->display('@tasklists/task/form.html.twig', [
+            'id_field'         => $id_field,
+            'name_field'       => $name_field,
+            'type_field'       => $type_field,
+            'priority_field'   => $priority_field,
+            'duration_field'   => $duration_field,
+            'show_entity'      => $show_entity,
+            'entity_field'     => $entity_field,
+            'entity_js'        => $entity_js,
+            'client_field'     => $client_field,
+            'due_date_field'   => $due_date_field,
+            'requester_field'  => $requester_field,
+            'technician_field' => $technician_field,
+            'percent_field'    => $percent_field,
+            'group_field'      => $group_field,
+            'status_field'     => $status_field,
+            'content_field'    => $content_field,
+            'visibility_field' => $visibility_field,
+            'archived_field'   => $archived_field,
+        ]);
 
         $this->showFormButtons($options);
 
@@ -841,25 +810,41 @@ class Task extends CommonDBTM
 
         $rand = mt_rand();
         $dbu = new DbUtils();
-        $where = " WHERE `glpi_plugin_tasklists_tasklists`.`is_deleted` = '0'  AND `glpi_plugin_tasklists_tasks`.`is_template` = 0";
-        $where .= $dbu->getEntitiesRestrictRequest("AND", 'glpi_plugin_tasklists_tasklists', '', $p['entity'], true);
+        // NOTE: the legacy query filtered on the non-existent table
+        // `glpi_plugin_tasklists_tasklists`; the columns actually live on
+        // `glpi_plugin_tasklists_tasks`, which is also the subquery source.
+        $tasks_table = 'glpi_plugin_tasklists_tasks';
 
+        $sub_where = [
+            "$tasks_table.is_deleted"  => 0,
+            "$tasks_table.is_template" => 0,
+        ];
+        $entities_crit = $dbu->getEntitiesRestrictCriteria($tasks_table, '', $p['entity'], true);
+        if (count($entities_crit)) {
+            $sub_where[] = $entities_crit;
+        }
         if (count($p['used'])) {
-            $used_ids = implode(",", array_map('intval', $p['used']));
-            $where .= " AND `id` NOT IN (0, $used_ids)";
+            $sub_where[] = [
+                'NOT' => ["$tasks_table.id" => array_merge([0], array_map('intval', $p['used']))],
+            ];
         }
 
-        $query = "SELECT *
-        FROM `glpi_plugin_tasklists_tasktypes`
-        WHERE `id` IN (SELECT DISTINCT `plugin_tasklists_tasktypes_id`
-                       FROM `glpi_plugin_tasklists_tasks`
-                       $where)
-        ORDER BY `name`";
-        $result = $DB->doQuery($query);
+        $iterator = $DB->request([
+            'FROM'  => 'glpi_plugin_tasklists_tasktypes',
+            'WHERE' => [
+                'id' => new QuerySubQuery([
+                    'SELECT'   => "$tasks_table.plugin_tasklists_tasktypes_id",
+                    'DISTINCT' => true,
+                    'FROM'     => $tasks_table,
+                    'WHERE'    => $sub_where,
+                ]),
+            ],
+            'ORDER' => 'name',
+        ]);
 
         $values = [0 => Dropdown::EMPTY_VALUE];
 
-        while ($data = $DB->fetchAssoc($result)) {
+        foreach ($iterator as $data) {
             $values[$data['id']] = $data['name'];
         }
 
@@ -1180,6 +1165,13 @@ class Task extends CommonDBTM
             return true;
         }
         if ($this->getFromDB(($id))) {
+            // Entity isolation: a task always stays within its entity tree, even when
+            // marked public (visibility == 3). Without this gate the Kanban/dashboard
+            // data paths (which rely solely on checkVisibility) would leak tasks of
+            // other entities to any user holding the global plugin READ right.
+            if (!Session::haveAccessToEntity($this->fields['entities_id'], $this->fields['is_recursive'])) {
+                return false;
+            }
             $groupusers = Group_User::getGroupUsers($this->fields['groups_id']);
             $groups = [];
             foreach ($groupusers as $groupuser) {
@@ -1296,74 +1288,47 @@ class Task extends CommonDBTM
 
         $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
 
-        if (Session::isMultiEntitiesMode()) {
-            $colsup = 1;
-        } else {
-            $colsup = 0;
-        }
+        $multi_entities = Session::isMultiEntitiesMode();
+        $colsup = $multi_entities ? 1 : 0;
 
-        echo "<div class='center'><table class='tab_cadre_fixe'>";
-        if ($add) {
-            echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Choose a template', 'tasklists') . " - " . self::getTypeName(
-                2
-            ) . "</th>";
-        } else {
-            echo "<tr><th colspan='" . (2 + $colsup) . "'>" . __('Templates') . " - " . self::getTypeName(2) . "</th>";
-        }
-
-        echo "</tr>";
-        if ($add) {
-            echo "<tr>";
-            echo "<td colspan='" . (2 + $colsup) . "' class='center tab_bg_1'>";
-            echo "<a href=\"$target?id=-1&amp;withtemplate=2\">&nbsp;&nbsp;&nbsp;" . __(
-                'Blank Template'
-            ) . "&nbsp;&nbsp;&nbsp;</a></td>";
-            echo "</tr>";
-        }
-
+        $rows = [];
         foreach ($templates as $template) {
-            $templname = $template["template_name"];
-            if ($_SESSION["glpiis_ids_visible"] || empty($template["template_name"])) {
-                $templname .= "(" . $template["id"] . ")";
+            // Entity label and delete form are framework HTML (rendered |raw); the template
+            // name is passed as plain text and auto-escaped by Twig.
+            $entity_name = '';
+            if ($multi_entities) {
+                $entity_name = Dropdown::getDropdownName("glpi_entities", $template['entities_id']);
             }
 
-            echo "<tr>";
-            echo "<td class='center tab_bg_1'>";
+            $delete_form = '';
             if (!$add) {
-                echo "<a href=\"$target?id=" . $template["id"] . "&amp;withtemplate=1\">&nbsp;&nbsp;&nbsp;$templname&nbsp;&nbsp;&nbsp;</a></td>";
-
-                if (Session::isMultiEntitiesMode()) {
-                    echo "<td class='center tab_bg_2'>";
-                    echo Dropdown::getDropdownName("glpi_entities", $template['entities_id']);
-                    echo "</td>";
-                }
-                echo "<td class='center tab_bg_2'>";
+                ob_start();
                 Html::showSimpleForm(
                     $target,
                     'purge',
                     _x('button', 'Delete permanently'),
                     ['id' => $template["id"], 'withtemplate' => 1]
                 );
-                echo "</td>";
-            } else {
-                echo "<a href=\"$target?id=" . $template["id"] . "&amp;withtemplate=2\">&nbsp;&nbsp;&nbsp;$templname&nbsp;&nbsp;&nbsp;</a></td>";
-
-                if (Session::isMultiEntitiesMode()) {
-                    echo "<td class='center tab_bg_2'>";
-                    echo Dropdown::getDropdownName("glpi_entities", $template['entities_id']);
-                    echo "</td>";
-                }
+                $delete_form = ob_get_clean();
             }
-            echo "</tr>";
+
+            $rows[] = [
+                'id'          => (int) $template["id"],
+                'name'        => $template["template_name"],
+                'show_id'     => ($_SESSION["glpiis_ids_visible"] || empty($template["template_name"])),
+                'entity_name' => $entity_name,
+                'delete_form' => $delete_form,
+            ];
         }
-        if (!$add) {
-            echo "<tr>";
-            echo "<td colspan='" . (2 + $colsup) . "' class='tab_bg_2 center'>";
-            echo "<b><a href=\"$target?withtemplate=1\">" . __('Add a template') . "</a></b>";
-            echo "</td>";
-            echo "</tr>";
-        }
-        echo "</table></div>";
+
+        TemplateRenderer::getInstance()->display('@tasklists/task/list_templates.html.twig', [
+            'add'            => (bool) $add,
+            'colspan'        => 2 + $colsup,
+            'multi_entities' => $multi_entities,
+            'target'         => $target,
+            'typename'       => self::getTypeName(2),
+            'templates'      => $rows,
+        ]);
     }
 
     /**

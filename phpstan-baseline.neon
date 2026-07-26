@@ -1,0 +1,637 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$ID of method GlpiPlugin\\Tasklists\\Task\:\:showForm\(\) expects int, true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ajax/seetask.php
+
+		-
+			message: '#^Parameter \#2 \$force of method CommonDBTM\:\:delete\(\) expects bool, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: front/task.form.php
+
+		-
+			message: '#^Call to an undefined method GlpiPlugin\\Tasklists\\Task\:\:getCriterias\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Function plugin_tasklists_executeActions\(\) has invalid return type the\.$#'
+			identifier: class.notFound
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Function plugin_tasklists_executeActions\(\) should return the but returns GlpiPlugin\\Tasklists\\the\.$#'
+			identifier: return.type
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Call to method appendWidgetHtmlContent\(\) on an unknown class GlpiPlugin\\Mydashboard\\Datatable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Call to method setTabDatas\(\) on an unknown class GlpiPlugin\\Mydashboard\\Datatable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Call to method setTabNames\(\) on an unknown class GlpiPlugin\\Mydashboard\\Datatable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Call to method setWidgetTitle\(\) on an unknown class GlpiPlugin\\Mydashboard\\Datatable\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Dashboard.php
+
+		-
+			message: '#^Call to method toggleWidgetRefresh\(\) on an unknown class GlpiPlugin\\Mydashboard\\Datatable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Instantiated class GlpiPlugin\\Mydashboard\\Datatable not found\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Dashboard.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Dashboard\:\:getWidgetContentForItem\(\) has invalid return type GlpiPlugin\\Mydashboard\\Datatable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Dashboard\:\:getWidgetContentForItem\(\) should return GlpiPlugin\\Mydashboard\\Datatable but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^PHPDoc tag @throws with type GlpitestSQLError is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Parameter \#1 \$ID of method DbUtils\:\:getUserName\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method CommonITILObject\:\:getPriorityName\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method Dropdown\:\:getValueWithUnit\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Property GlpiPlugin\\Tasklists\\Dashboard\:\:\$datas is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Property GlpiPlugin\\Tasklists\\Dashboard\:\:\$form is never written, only read\.$#'
+			identifier: property.onlyRead
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Property GlpiPlugin\\Tasklists\\Dashboard\:\:\$options is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Dashboard.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Item_Kanban\:\:loadStateForItem\(\) has invalid return type GlpiPlugin\\Tasklists\\return\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Item_Kanban.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Item_Kanban\:\:loadStateForItem\(\) should return GlpiPlugin\\Tasklists\\return but returns false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Item_Kanban.php
+
+		-
+			message: '#^Static property GlpiPlugin\\Tasklists\\Item_Kanban\:\:\$checkItem_1_Rights \(1\|2\|3\) does not accept default value of type ''plugin_tasklists''\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: src/Item_Kanban.php
+
+		-
+			message: '#^Call to an undefined method GlpiPlugin\\Tasklists\\Kanban\:\:canModifyGlobalState\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Kanban.php
+
+		-
+			message: '#^Call to an undefined method GlpiPlugin\\Tasklists\\Kanban\:\:getFromDB\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Kanban.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Kanban\:\:getTypeName\(\) has invalid return type GlpiPlugin\\Tasklists\\translated\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Kanban.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Kanban\:\:getTypeName\(\) should return GlpiPlugin\\Tasklists\\translated but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Kanban.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Kanban.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getField\(\)\.$#'
+			identifier: method.notFound
+			count: 14
+			path: src/NotificationTargetTask.php
+
+		-
+			message: '#^Result of method NotificationTarget\<CommonGLPI\>\:\:addUserByField\(\) \(void\) is used\.$#'
+			identifier: method.void
+			count: 2
+			path: src/NotificationTargetTask.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/NotificationTargetTask.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Preference\:\:getTabNameForItem\(\) has invalid return type GlpiPlugin\\Tasklists\\translated\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Preference.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getField\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getID\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Profile\:\:getTabNameForItem\(\) has invalid return type GlpiPlugin\\Tasklists\\translated\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^Parameter \#2 \$openform \(bool\) of method GlpiPlugin\\Tasklists\\Profile\:\:showForm\(\) should be compatible with parameter \$options \(array\<string, mixed\>\) of method Profile\:\:showForm\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^Return type \(void\) of method GlpiPlugin\\Tasklists\\Profile\:\:showForm\(\) should be compatible with return type \(bool\) of method Profile\:\:showForm\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^Access to an undefined property GlpiPlugin\\Tasklists\\Task\:\:\$groups\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Access to an undefined property GlpiPlugin\\Tasklists\\Task\:\:\$users\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''_oldID'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''content'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''due_date'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 6
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''id'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 4
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''is_archived'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''percent_done'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''plugin_tasklists…'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Task.php
+
+		-
+			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 3
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:dropdownTasklists\(\) has invalid return type GlpiPlugin\\Tasklists\\nothing\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:dropdownTasklists\(\) should return GlpiPlugin\\Tasklists\\nothing but returns int\<0, max\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:dropdownTasklists\(\) should return GlpiPlugin\\Tasklists\\nothing but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:executeActions\(\) has invalid return type GlpiPlugin\\Tasklists\\the\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:getVisibilityName\(\) has invalid return type GlpiPlugin\\Tasklists\\priority\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) has invalid return type GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) has invalid return type GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) should return GlpiPlugin\\Tasklists\\datas but returns false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:processMassiveActionsForOneItemtype\(\) has invalid return type GlpiPlugin\\Tasklists\\nothing\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Offset ''name'' on array\{name\: mixed, comment\?\: string, users_id\?\: mixed, entities_id\?\: mixed, state\: 1\} in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$options$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^PHPDoc tag @throws with type GlpitestSQLError is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 2
+			path: src/Task.php
+
+		-
+			message: '#^PHPDoc tag @var with type CommonDBTM is not subtype of native type null\.$#'
+			identifier: varTag.nativeType
+			count: 3
+			path: src/Task.php
+
+		-
+			message: '#^PHPDoc tag @var with type CommonDBTM is not subtype of native type string\.$#'
+			identifier: varTag.nativeType
+			count: 2
+			path: src/Task.php
+
+		-
+			message: '#^Parameter \#1 \$checkitem \(null\) of method GlpiPlugin\\Tasklists\\Task\:\:getSpecificMassiveActions\(\) should be compatible with parameter \$checkitem \(CommonDBTM\) of method CommonDBTM\:\:getSpecificMassiveActions\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Parameter \#1 \$history \(int\) of method GlpiPlugin\\Tasklists\\Task\:\:post_updateItem\(\) should be compatible with parameter \$history \(bool\) of method CommonDBTM\:\:post_updateItem\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Parameter \#1 \$input \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) should be compatible with parameter \$input \(array\<string, mixed\>\) of method CommonDBTM\:\:prepareInputForAdd\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Parameter \#1 \$input \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) should be compatible with parameter \$input \(array\<string, mixed\>\) of method CommonDBTM\:\:prepareInputForUpdate\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Parameter \#4 \$toobserve of static method Ajax\:\:updateItem\(\) expects string, false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Parameter \$input of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) has invalid type GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Parameter \$input of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) has invalid type GlpiPlugin\\Tasklists\\datas\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Return type \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) should be compatible with return type \(array\<string, mixed\>\|false\) of method CommonDBTM\:\:prepareInputForAdd\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Return type \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) should be compatible with return type \(array\<string, mixed\>\|false\) of method CommonDBTM\:\:prepareInputForUpdate\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Variable \$field might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: src/Task.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Task.php
+
+		-
+			message: '#^Access to offset ''tasktypes'' on an unknown class GlpiPlugin\\Tasklists\\type\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/TaskState.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskState\:\:encodeSubtypes\(\) has invalid return type type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TaskState.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskState\:\:encodeSubtypes\(\) should return type but returns GlpiPlugin\\Tasklists\\type\.$#'
+			identifier: return.type
+			count: 1
+			path: src/TaskState.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskState\:\:prepareInputForAdd\(\) has invalid return type type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TaskState.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskState\:\:prepareInputForUpdate\(\) has invalid return type type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TaskState.php
+
+		-
+			message: '#^Parameter \#1 \$input of method GlpiPlugin\\Tasklists\\TaskState\:\:encodeSubtypes\(\) expects GlpiPlugin\\Tasklists\\type, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/TaskState.php
+
+		-
+			message: '#^Parameter \$input of method GlpiPlugin\\Tasklists\\TaskState\:\:encodeSubtypes\(\) has invalid type GlpiPlugin\\Tasklists\\type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TaskState.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: src/TaskState.php
+
+		-
+			message: '#^Variable \$possible_values might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/TaskState.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/TaskState.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskType\:\:getAllKanbanColumns\(\) should return array\<int, array\{id\: int\|string, name\: string, header_color\: string, header_fg_color\?\: string, color_class\?\: string, drop_only\?\: bool\}\> but returns non\-empty\-array\<array\{name\: mixed, header_color\: mixed, header_fg_color\: string, drop_only\: 0\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/TaskType.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskType\:\:getDataToDisplayOnKanban\(\) should return array but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/TaskType.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskType\:\:transfer\(\) has invalid return type GlpiPlugin\\Tasklists\\ID\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TaskType.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\TaskType\:\:transfer\(\) has invalid return type GlpiPlugin\\Tasklists\\the\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TaskType.php
+
+		-
+			message: '#^PHPDoc tag @throws with type GlpitestSQLError is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 1
+			path: src/TaskType.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/TaskType.php
+
+		-
+			message: '#^Access to an undefined property CommonGLPI\:\:\$fields\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Task_Comment.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getID\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Task_Comment.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/Task_Comment.php
+
+		-
+			message: '#^Parameter \#1 \$item of static method GlpiPlugin\\Tasklists\\Task_Comment\:\:showForItem\(\) expects CommonDBTM, CommonGLPI given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Task_Comment.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Task_Comment.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getField\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Ticket.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getID\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Ticket.php
+
+		-
+			message: '#^Method GlpiPlugin\\Tasklists\\Ticket\:\:showForTicket\(\) should return bool but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/Ticket.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$options$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Ticket.php
+
+		-
+			message: '#^PHPDoc tag @throws with type GlpitestSQLError is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 2
+			path: src/Ticket.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: src/Ticket.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getID\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/TypeVisibility.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/TypeVisibility.php

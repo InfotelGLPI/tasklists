@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Task;
 
 if (strpos($_SERVER['PHP_SELF'], "dropdownTypeTasks.php")) {
@@ -38,6 +39,17 @@ Session::checkCentralAccess();
 Session::checkRight('plugin_tasklists', UPDATE);
 
 global $DB;
+
+// The entity used to restrict the dropdown is client-supplied: validate the session
+// actually has access to it, otherwise it could enumerate task names of other entities.
+if (isset($_POST['entity'])) {
+    $entity = (int) $_POST['entity'];
+    if (!Session::haveAccessToEntity($entity)) {
+        throw new AccessDeniedHttpException();
+    }
+} else {
+    $entity = $_SESSION['glpiactive_entity'] ?? 0;
+}
 
 // Make a select box
 if (isset($_POST["tasktypes"])) {
@@ -70,7 +82,7 @@ if (isset($_POST["tasktypes"])) {
             'name' => $_POST['myname'],
             'used' => $used,
             'width' => '50%',
-            'entity' => $_POST['entity'],
+            'entity' => $entity,
             'rand' => $_POST['rand'],
             'condition' => ["glpi_plugin_tasklists_tasks.plugin_tasklists_tasktypes_id" => $_POST["tasktypes"]]
         ]

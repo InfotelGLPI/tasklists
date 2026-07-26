@@ -2128,7 +2128,7 @@ class GLPIKanbanRights {
                 link += '&nbsp;<a id="updatepriority' + items_id + '" href="#" title="' + title_priority + '"><i class="ti ti-arrow-up"></i></a>';
             }
             let card_el = `
-            <li id="${card['id']}" class="kanban-item card ${readonly ? 'readonly' : ''} ${card['is_deleted'] ? 'deleted' : ''}" style="background-color:${card['bgcolor']}">
+            <li id="${card['id']}" class="kanban-item card ${readonly ? 'readonly' : ''} ${card['is_deleted'] ? 'deleted' : ''}" style="background-color:${card['bgcolor']};border-color:${card['bordercolor']}">
                 <div class="kanban-item-header">
                     <span class="kanban-item-title" title="${card['title_tooltip']}">
                     <i class="${self.supported_itemtypes[itemtype]['icon']}"></i>

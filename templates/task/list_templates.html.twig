@@ -1,0 +1,66 @@
+{#
+ -------------------------------------------------------------------------
+ tasklists plugin for GLPI
+ Copyright (C) 2016-2026 by the tasklists Development Team.
+
+ https://github.com/InfotelGLPI/tasklists
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of tasklists.
+
+ tasklists is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
+
+ tasklists is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ #}
+
+<div class="center">
+   <table class="tab_cadre_fixe">
+      <tr>
+         <th colspan="{{ colspan }}">
+            {{ add ? __('Choose a template', 'tasklists') : __('Templates') }} - {{ typename }}
+         </th>
+      </tr>
+
+      {% if add %}
+         <tr>
+            <td colspan="{{ colspan }}" class="center tab_bg_1">
+               <a href="{{ target }}?id=-1&withtemplate=2">&nbsp;&nbsp;&nbsp;{{ __('Blank Template') }}&nbsp;&nbsp;&nbsp;</a>
+            </td>
+         </tr>
+      {% endif %}
+
+      {% for tpl in templates %}
+         <tr>
+            <td class="center tab_bg_1">
+               <a href="{{ target }}?id={{ tpl.id }}&withtemplate={{ add ? 2 : 1 }}">&nbsp;&nbsp;&nbsp;{{ tpl.name }}{% if tpl.show_id %}({{ tpl.id }}){% endif %}&nbsp;&nbsp;&nbsp;</a>
+            </td>
+            {% if multi_entities %}
+               <td class="center tab_bg_2">{{ tpl.entity_name|raw }}</td>
+            {% endif %}
+            {% if not add %}
+               <td class="center tab_bg_2">{{ tpl.delete_form|raw }}</td>
+            {% endif %}
+         </tr>
+      {% endfor %}
+
+      {% if not add %}
+         <tr>
+            <td colspan="{{ colspan }}" class="tab_bg_2 center">
+               <b><a href="{{ target }}?withtemplate=1">{{ __('Add a template') }}</a></b>
+            </td>
+         </tr>
+      {% endif %}
+   </table>
+</div>

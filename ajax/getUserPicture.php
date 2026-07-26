@@ -33,6 +33,9 @@ use function Safe\json_encode;
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
+Session::checkLoginUser();
+Session::checkRight('plugin_tasklists', READ);
+
 if (!isset($_REQUEST['users_id'])) {
     throw new BadRequestHttpException("Missing users_id parameter");
 } elseif (!is_array($_REQUEST['users_id'])) {
