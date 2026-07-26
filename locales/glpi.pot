@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-27 09:46+0000\n"
+"POT-Creation-Date: 2026-07-26 19:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2576
 msgctxt "button"
 msgid "Add"
@@ -54,26 +55,33 @@ msgstr ""
 msgid "Add a group"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:61
+msgid "Add a template"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/list.html.twig:56
+msgid "Add an answer"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:527
 msgid "Add column"
 msgstr ""
 
-#: src/Ticket.php:191 src/Dashboard.php:177 src/Dashboard.php:178
-#: src/Dashboard.php:183
+#: src/Dashboard.php:199 src/Dashboard.php:204 src/Ticket.php:191
 msgid "Add task"
 msgstr ""
 
-#: src/Task.php:1207
+#: src/Task.php:1199
 msgid "Affect entity for create task"
 msgstr ""
 
-#: src/Task.php:1164
+#: src/Task.php:1149
 msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:12
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1138
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:12
 msgid "Archive all tasks of this state"
 msgstr ""
 
@@ -81,7 +89,8 @@ msgstr ""
 msgid "Archive this task"
 msgstr ""
 
-#: src/Task.php:211 src/Task.php:700 ajax/addOptions.php:55
+#: src/Task.php:213 ajax/addOptions.php:55
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr ""
 
@@ -93,7 +102,7 @@ msgstr ""
 msgid "Are you sure you want to archive this task ?"
 msgstr ""
 
-#: src/NotificationTargetTask.php:296
+#: src/NotificationTargetTask.php:241
 msgid "At creation, update, removal of a task"
 msgstr ""
 
@@ -101,25 +110,39 @@ msgstr ""
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/TaskType.php:183 src/TaskType.php:549 src/Task.php:723 src/Task.php:804
-#: src/Task.php:1100
+#: src/Task.php:692 src/Task.php:773 src/Task.php:1085 src/TaskType.php:190
+#: src/TaskType.php:560
 msgid "Backlog"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:39
+msgid "Blank Template"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:464
 msgid "Bulk add"
 msgstr ""
 
-#: src/Task.php:1307
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:48
+msgctxt "button"
+msgid "Cancel"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:32
 msgid "Choose a template"
 msgstr ""
 
-#: src/Profile.php:189 src/Profile.php:227
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:36
+msgid "Comment"
+msgstr ""
+
+#: src/Profile.php:178
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/TaskType.php:66 src/Task.php:110 src/Task.php:492 src/TaskState.php:151
-#: src/TaskState.php:210 src/Dashboard.php:116
+#: src/TaskState.php:151 src/TaskState.php:210 src/Task.php:112
+#: src/Dashboard.php:117 src/TaskType.php:66
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] ""
@@ -135,19 +158,32 @@ msgstr ""
 msgid "Create status"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:416
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:33
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:467
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:483
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:773
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2547
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:416
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:33
 msgid "Delete"
 msgstr ""
 
-#: src/TaskType.php:245 src/NotificationTargetTask.php:234
-#: src/NotificationTargetTask.php:284 src/Task.php:148 src/Task.php:582
-#: src/Dashboard.php:122
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:80
+msgid "Description"
+msgstr ""
+
+#: src/Task.php:150 src/Dashboard.php:123 src/TaskType.php:252
+#: src/NotificationTargetTask.php:179 src/NotificationTargetTask.php:229
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:43
+msgctxt "button"
+msgid "Edit"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:32
+msgid "Edit comment"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2626
@@ -160,7 +196,7 @@ msgstr ""
 msgid "Exclude"
 msgstr ""
 
-#: src/Task.php:536
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:45
 msgid "Existing client"
 msgstr ""
 
@@ -176,6 +212,10 @@ msgstr ""
 msgid "Go to"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
+msgid "Group"
+msgstr ""
+
 #: src/TypeVisibility.php:210
 msgid "Groups allowed to use context"
 msgstr ""
@@ -188,7 +228,7 @@ msgstr ""
 msgid "Kanban"
 msgstr ""
 
-#: src/Ticket.php:296
+#: src/Ticket.php:302
 msgid "Link a existant ticket"
 msgstr ""
 
@@ -198,7 +238,7 @@ msgid_plural "Linked tasks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Ticket.php:321
+#: src/Ticket.php:327
 msgid "Linked tickets"
 msgstr ""
 
@@ -206,7 +246,19 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/Ticket.php:264
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:30
+msgid "Name"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:32
+msgid "New comment"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
+msgid "No comments"
+msgstr ""
+
+#: src/Ticket.php:270
 msgid "No task linked to this ticket yet"
 msgstr ""
 
@@ -214,7 +266,7 @@ msgstr ""
 msgid "Not archived"
 msgstr ""
 
-#: src/Task.php:268
+#: src/Task.php:270
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
@@ -227,9 +279,22 @@ msgstr ""
 msgid "Or add a new status"
 msgstr ""
 
-#: src/NotificationTargetTask.php:238 src/NotificationTargetTask.php:288
-#: src/Task.php:219 src/Task.php:573
+#: src/Task.php:221 src/NotificationTargetTask.php:183
+#: src/NotificationTargetTask.php:233
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:68
+msgid "Percent done"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:39
+msgid "Planned duration"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:37
+msgid "Priority"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:771
@@ -244,8 +309,19 @@ msgstr ""
 msgid "Regex"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:59
+msgid "Requester"
+msgid_plural "Requesters"
+msgstr[0] ""
+msgstr[1] ""
+
 #: /home/runner/work/tasklists/tasklists/templates/kanban.html.twig:49
 msgid "Role"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/profile.html.twig:34
+msgctxt "button"
+msgid "Save"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1024
@@ -256,24 +332,33 @@ msgstr ""
 msgid "Search or filter results"
 msgstr ""
 
-#: src/Profile.php:180 src/Profile.php:224
+#: src/Profile.php:171
 msgid "See and update all tasks"
 msgstr ""
 
 #: src/TaskState.php:97
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
 msgid "Status"
 msgid_plural "Statuses"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Dashboard.php:73
+#: src/Dashboard.php:74
 msgid "Tables"
 msgstr ""
 
-#: src/Profile.php:60 src/Preference.php:55 src/Menu.php:49
-#: src/Dashboard.php:74 src/Dashboard.php:192 src/Dashboard.php:197
-#: setup.php:102
+#: src/Profile.php:61 src/Menu.php:49 src/Preference.php:55
+#: src/Dashboard.php:75 src/Dashboard.php:213 src/Dashboard.php:218
+#: setup.php:105
 msgid "Tasks list"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:66
+msgid "Technician"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:32
+msgid "Templates"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2267
@@ -291,12 +376,12 @@ msgid ""
 "shown. You can still drag cards into this column."
 msgstr ""
 
-#: src/Task.php:1158
+#: src/Task.php:1143
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: src/Task.php:1161
+#: src/Task.php:1146
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
@@ -309,7 +394,11 @@ msgstr ""
 msgid "Update priority of task"
 msgstr ""
 
-#: src/Task.php:406
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:85
+msgid "Visibility"
+msgstr ""
+
+#: src/Task.php:408
 msgid "You cannot archive a task with this state"
 msgstr ""
 
