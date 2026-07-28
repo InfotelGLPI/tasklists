@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-26 19:18+0000\n"
+"POT-Creation-Date: 2026-07-28 07:41+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/79675/fr_FR/)\n"
@@ -54,6 +54,10 @@ msgstr "Ajouter"
 msgid "Add a column from existing status"
 msgstr "Ajouter une colonne depuis un statut existant"
 
+#: /home/runner/work/tasklists/tasklists/templates/comment/list.html.twig:56
+msgid "Add a comment"
+msgstr "Ajouter un commentaire"
+
 #: src/TypeVisibility.php:168
 msgid "Add a group"
 msgstr "Ajouter un groupe"
@@ -61,10 +65,6 @@ msgstr "Ajouter un groupe"
 #: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:61
 msgid "Add a template"
 msgstr "Choisissez un gabarit"
-
-#: /home/runner/work/tasklists/tasklists/templates/comment/list.html.twig:56
-msgid "Add an answer"
-msgstr "Ajouter un commentaire"
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:527
 msgid "Add column"
