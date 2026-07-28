@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-26 19:18+0000\n"
+"POT-Creation-Date: 2026-07-28 07:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,16 +51,16 @@ msgstr ""
 msgid "Add a column from existing status"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/comment/list.html.twig:56
+msgid "Add a comment"
+msgstr ""
+
 #: src/TypeVisibility.php:168
 msgid "Add a group"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:61
 msgid "Add a template"
-msgstr ""
-
-#: /home/runner/work/tasklists/tasklists/templates/comment/list.html.twig:56
-msgid "Add an answer"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:527
