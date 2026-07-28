@@ -118,7 +118,7 @@ class Preference extends CommonDBTM
             [1 => 1, 2 => 2, 5 => 5, 10 => 10, 30 => 30, 60 => 60],
             ["value" => $this->fields['automatic_refresh_delay']]
         );
-        echo " " . __('minute(s)', "mydashboard");
+        echo " " . __('minute(s)', "tasklists");
         echo "</td>";
         echo "</tr>";
 
