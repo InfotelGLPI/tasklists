@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-28 11:38+0000\n"
+"POT-Creation-Date: 2026-07-29 15:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,7 +111,7 @@ msgid "Automatic refreshing of tasklist"
 msgstr ""
 
 #: src/Task.php:692 src/Task.php:773 src/Task.php:1085 src/TaskType.php:190
-#: src/TaskType.php:560
+#: src/TaskType.php:573
 msgid "Backlog"
 msgstr ""
 
