@@ -98,7 +98,12 @@ if ($item !== null) {
     }
     if (in_array($action, ['delete_item'])) {
         $maybe_deleted = $item->maybeDeleted();
-        if (($maybe_deleted && !$item::canDelete()) || (!$maybe_deleted && $item::canPurge())) {
+        // Mirror the GLPI core guard: a non-trashable itemtype requires PURGE, so the
+        // pre-check must deny when the user CANNOT purge (!canPurge()). Dropping the
+        // negation flipped the branch (denying purgers, allowing non-purgers); the
+        // terminal check below still refused the operation, but the pre-check must
+        // express the same intent as the final delete guard.
+        if (($maybe_deleted && !$item::canDelete()) || (!$maybe_deleted && !$item::canPurge())) {
             // Missing rights
             throw new AccessDeniedHttpException();
         }

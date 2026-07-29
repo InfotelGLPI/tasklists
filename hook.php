@@ -327,7 +327,11 @@ function plugin_tasklists_addDefaultWhere($type)
 
     switch ($type) {
         case Task::class:
-            $who = Session::getLoginUserID();
+            // addDefaultWhere must return a raw SQL fragment (GLPI search API), so the
+            // query-builder cannot be used here. Enforce the "session integers only"
+            // invariant by casting every interpolated id to (int): a future change that
+            // routed client data through this string could not turn it into an injection.
+            $who = (int) Session::getLoginUserID();
             if (!Session::haveRight("plugin_tasklists_see_all", 1)) {
                 if (count($_SESSION["glpigroups"])
                  //                && Session::haveRight("plugin_tasklists_my_groups", 1)
@@ -340,7 +344,7 @@ function plugin_tasklists_addDefaultWhere($type)
                         } else {
                              $first_groups = false;
                         }
-                        $groups .= "'" . $val . "'";
+                        $groups .= (int) $val;
                     }
                     return " (`glpi_plugin_tasklists_tasks`.`groups_id` IN (
                SELECT DISTINCT `groups_id`

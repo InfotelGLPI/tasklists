@@ -491,8 +491,21 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
         $dbu   = new DbUtils();
         $users = [];
         $task  = new Task();
-        $tasks = $task->find(["plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id, "is_archived" => 0, "is_deleted" => 0]);
+        // Entity isolation + per-task visibility: this helper is reachable from an AJAX
+        // endpoint (ajax/addOptions.php?action=addUsers) with a client-supplied context
+        // id. Restrict the lookup to accessible entities and drop any task the caller
+        // cannot actually see, so owners' names cannot be enumerated across entities.
+        $criteria = [
+            "plugin_tasklists_tasktypes_id" => $plugin_tasklists_tasktypes_id,
+            "is_archived"                   => 0,
+            "is_deleted"                    => 0,
+        ];
+        $criteria = array_merge($criteria, $dbu->getEntitiesRestrictCriteria(Task::getTable()));
+        $tasks = $task->find($criteria);
         foreach ($tasks as $t) {
+            if (!$task->checkVisibility($t["id"])) {
+                continue;
+            }
             $users[$t["users_id"]] = $dbu->getUserName($t["users_id"]);
         }
         $users     = array_unique($users);
