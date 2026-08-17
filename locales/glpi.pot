@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-29 15:52+0000\n"
+"POT-Creation-Date: 2026-08-17 11:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,8 +80,8 @@ msgctxt "visibility"
 msgid "All"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1138
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:12
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1138
 msgid "Archive all tasks of this state"
 msgstr ""
 
@@ -140,8 +140,8 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/TaskState.php:151 src/TaskState.php:210 src/Task.php:112
-#: src/Dashboard.php:117 src/TaskType.php:66
+#: src/Task.php:112 src/TaskType.php:66 src/TaskState.php:151
+#: src/TaskState.php:210 src/Dashboard.php:117
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
@@ -162,8 +162,8 @@ msgstr ""
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:483
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:773
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2547
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:416
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:33
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:416
 msgid "Delete"
 msgstr ""
 
@@ -171,8 +171,8 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/Task.php:150 src/Dashboard.php:123 src/TaskType.php:252
-#: src/NotificationTargetTask.php:179 src/NotificationTargetTask.php:229
+#: src/Task.php:150 src/TaskType.php:252 src/NotificationTargetTask.php:179
+#: src/NotificationTargetTask.php:229 src/Dashboard.php:123
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr ""
@@ -191,8 +191,8 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:651
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:33
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:651
 msgid "Exclude"
 msgstr ""
 
@@ -347,9 +347,8 @@ msgstr[1] ""
 msgid "Tables"
 msgstr ""
 
-#: src/Profile.php:61 src/Menu.php:49 src/Preference.php:55
-#: src/Dashboard.php:75 src/Dashboard.php:213 src/Dashboard.php:218
-#: setup.php:105
+#: src/Profile.php:61 src/Dashboard.php:75 src/Dashboard.php:213
+#: src/Dashboard.php:218 src/Preference.php:55 src/Menu.php:49 setup.php:105
 msgid "Tasks list"
 msgstr ""
 
