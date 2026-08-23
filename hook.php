@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 use GlpiPlugin\Tasklists\Menu;
@@ -34,6 +34,7 @@ use GlpiPlugin\Tasklists\Task;
 use GlpiPlugin\Tasklists\TaskState;
 use GlpiPlugin\Tasklists\TaskType;
 use GlpiPlugin\Tasklists\Item_Kanban;
+
 /**
  * @return bool
  */
@@ -69,7 +70,7 @@ function plugin_tasklists_install()
         $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.0.0.sql");
         $mig->executeMigration();
 
-       //Migrate glpi_plugin_tasklists_items_kanbans to Item_Kanban
+        //Migrate glpi_plugin_tasklists_items_kanbans to Item_Kanban
         $lists_unique_kanban = [];
         $iterator            = $DB->request([
             'FROM'    => 'glpi_plugin_tasklists_items_kanbans',
@@ -96,10 +97,10 @@ function plugin_tasklists_install()
         $state = [];
         foreach ($states_by_kanban as $kanban => $states) {
             foreach ($states as $k => $v) {
-                $state[$kanban][$v] =["column" => $v,
-                                  "visible" => true,
-                                  "folded" => false,
-                                  "cards" => []];
+                $state[$kanban][$v] = ["column" => $v,
+                    "visible" => true,
+                    "folded" => false,
+                    "cards" => []];
             }
         }
 
@@ -126,7 +127,7 @@ function plugin_tasklists_install()
 
     $DB->runFile(PLUGIN_TASKLISTS_DIR . "/sql/update-2.1.5.sql");
 
-   // Add record notification
+    // Add record notification
     call_user_func([NotificationTargetTask::class, 'install']);
 
     //DisplayPreferences Migration
@@ -136,7 +137,7 @@ function plugin_tasklists_install()
     foreach ($classes as $old => $new) {
         $displayusers = $DB->request([
             'SELECT' => [
-                'users_id'
+                'users_id',
             ],
             'DISTINCT' => true,
             'FROM' => 'glpi_displaypreferences',
@@ -150,13 +151,13 @@ function plugin_tasklists_install()
                 $iterator = $DB->request([
                     'SELECT' => [
                         'num',
-                        'id'
+                        'id',
                     ],
                     'FROM' => 'glpi_displaypreferences',
                     'WHERE' => [
                         'itemtype' => $old,
                         'users_id' => $displayuser['users_id'],
-                        'interface' => 'central'
+                        'interface' => 'central',
                     ],
                 ]);
 
@@ -164,28 +165,28 @@ function plugin_tasklists_install()
                     foreach ($iterator as $data) {
                         $iterator2 = $DB->request([
                             'SELECT' => [
-                                'id'
+                                'id',
                             ],
                             'FROM' => 'glpi_displaypreferences',
                             'WHERE' => [
                                 'itemtype' => $new,
                                 'users_id' => $displayuser['users_id'],
                                 'num' => $data['num'],
-                                'interface' => 'central'
+                                'interface' => 'central',
                             ],
                         ]);
                         if (count($iterator2) > 0) {
                             foreach ($iterator2 as $dataid) {
                                 $DB->delete(
                                     'glpi_displaypreferences',
-                                    ['id' => $dataid['id']]
+                                    ['id' => $dataid['id']],
                                 );
                             }
                         } else {
                             $DB->update(
                                 'glpi_displaypreferences',
                                 ['itemtype' => $new],
-                                ['id' => $data['id']]
+                                ['id' => $data['id']],
                             );
                         }
                     }
@@ -208,18 +209,15 @@ function plugin_tasklists_uninstall()
     global $DB;
 
     $tables = ["glpi_plugin_tasklists_tasks",
-              "glpi_plugin_tasklists_tasktypes",
-              "glpi_plugin_tasklists_taskstates",
-              "glpi_plugin_tasklists_stateorders",
-              "glpi_plugin_tasklists_typevisibilities",
-              "glpi_plugin_tasklists_preferences",
-              "glpi_plugin_tasklists_tasks_comments",
-              "glpi_plugin_tasklists_tickets",
-              "glpi_plugin_tasklists_items_kanbans"];
+        "glpi_plugin_tasklists_tasktypes",
+        "glpi_plugin_tasklists_taskstates",
+        "glpi_plugin_tasklists_stateorders",
+        "glpi_plugin_tasklists_typevisibilities",
+        "glpi_plugin_tasklists_preferences",
+        "glpi_plugin_tasklists_tasks_comments",
+        "glpi_plugin_tasklists_tickets",
+        "glpi_plugin_tasklists_items_kanbans"];
 
-    foreach ($tables as $table) {
-        $DB->doQuery("DROP TABLE IF EXISTS `$table`;");
-    }
 
     $itemtypes = ['Alert',
         'DisplayPreference',
@@ -234,7 +232,7 @@ function plugin_tasklists_uninstall()
         'NotificationTemplate',
         'Notification'];
     foreach ($itemtypes as $itemtype) {
-        $item = new $itemtype;
+        $item = new $itemtype();
         $item->deleteByCriteria(['itemtype' => Task::class]);
     }
 
@@ -255,7 +253,7 @@ function plugin_tasklists_uninstall()
         'FROM' => 'glpi_notificationtemplates',
         'WHERE' => $options]) as $data) {
         $options_template = [
-            'notificationtemplates_id' => $data['id']
+            'notificationtemplates_id' => $data['id'],
         ];
 
         foreach ($DB->request([
@@ -272,11 +270,19 @@ function plugin_tasklists_uninstall()
         }
     }
 
-   //Delete rights associated with the plugin
+    //Delete rights associated with the plugin. getAllRights() must be called
+    // with $all = true, otherwise only the main right is returned and the
+    // secondary rights (_see_all, _config) registered at install stay behind
+    // in glpi_profilerights for every profile.
     $profileRight = new ProfileRight();
-    foreach (Profile::getAllRights() as $right) {
+    foreach (Profile::getAllRights(true) as $right) {
         $profileRight->deleteByCriteria(['name' => $right['field']]);
     }
+
+    foreach ($tables as $table) {
+        $DB->dropTable($table, true);
+    }
+
     Menu::removeRightsFromSession();
 
     Profile::removeRightsFromSession();
@@ -293,11 +299,11 @@ function plugin_tasklists_getDatabaseRelations()
 
     if (Plugin::isPluginActive("tasklists")) {
         return ["glpi_plugin_tasklists_tasktypes"  => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_tasktypes_id"],
-//              "glpi_plugin_tasklists_taskstates" => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_taskstates_id"],
-              "glpi_users"                       => ["glpi_plugin_tasklists_tasks" => "users_id"],
-              "glpi_groups"                      => ["glpi_plugin_tasklists_tasks" => "groups_id"],
-              "glpi_entities"                    => ["glpi_plugin_tasklists_tasks"     => "entities_id",
-                                                     "glpi_plugin_tasklists_tasktypes" => "entities_id"]];
+            //              "glpi_plugin_tasklists_taskstates" => ["glpi_plugin_tasklists_tasks" => "plugin_tasklists_taskstates_id"],
+            "glpi_users"                       => ["glpi_plugin_tasklists_tasks" => "users_id"],
+            "glpi_groups"                      => ["glpi_plugin_tasklists_tasks" => "groups_id"],
+            "glpi_entities"                    => ["glpi_plugin_tasklists_tasks"     => "entities_id",
+                "glpi_plugin_tasklists_tasktypes" => "entities_id"]];
     } else {
         return [];
     }
@@ -311,7 +317,7 @@ function plugin_tasklists_getDropdown()
 {
     if (Plugin::isPluginActive("tasklists")) {
         return [TaskType::class  => TaskType::getTypeName(2),
-              TaskState::class => TaskState::getTypeName(2)];
+            TaskState::class => TaskState::getTypeName(2)];
     } else {
         return [];
     }
@@ -334,15 +340,15 @@ function plugin_tasklists_addDefaultWhere($type)
             $who = (int) Session::getLoginUserID();
             if (!Session::haveRight("plugin_tasklists_see_all", 1)) {
                 if (count($_SESSION["glpigroups"])
-                 //                && Session::haveRight("plugin_tasklists_my_groups", 1)
+                    //                && Session::haveRight("plugin_tasklists_my_groups", 1)
                 ) {
                     $first_groups = true;
                     $groups       = "";
                     foreach ($_SESSION['glpigroups'] as $val) {
                         if (!$first_groups) {
-                              $groups .= ",";
+                            $groups .= ",";
                         } else {
-                             $first_groups = false;
+                            $first_groups = false;
                         }
                         $groups .= (int) $val;
                     }
@@ -404,7 +410,7 @@ function plugin_tasklists_displayConfigItem($type, $ID, $data, $num)
     switch ($table . '.' . $field) {
         case "glpi_plugin_tasklists_tasks.priority":
             return " style=\"background-color:" . $_SESSION["glpipriority_" . $data[$num][0]['name']] . ";\" ";
-         break;
+            break;
     }
     return "";
 }

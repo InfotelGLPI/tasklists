@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Tasklists;
@@ -48,15 +48,14 @@ if (!defined('GLPI_ROOT')) {
  */
 class TypeVisibility extends CommonDBTM
 {
+    public static $rightname = 'plugin_tasklists';
 
-    static $rightname = 'plugin_tasklists';
-
-   /**
-    * @param int $nb
-    *
-    * @return string
-    */
-    static function getTypeName($nb = 0)
+    /**
+     * @param int $nb
+     *
+     * @return string
+     */
+    public static function getTypeName($nb = 0)
     {
         return __('Visibility');
     }
@@ -64,23 +63,23 @@ class TypeVisibility extends CommonDBTM
     /**
      * @return string
      */
-    static function getIcon()
+    public static function getIcon()
     {
         return Task::getIcon();
     }
 
 
-    static $types = [TaskType::class];
+    public static $types = [TaskType::class];
 
-   /**
-    * Display tab for each users
-    *
-    * @param CommonGLPI $item
-    * @param int        $withtemplate
-    *
-    * @return array|string
-    */
-    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    /**
+     * Display tab for each users
+     *
+     * @param CommonGLPI $item
+     * @param int        $withtemplate
+     *
+     * @return array|string
+     */
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
         $dbu = new DbUtils();
@@ -91,8 +90,8 @@ class TypeVisibility extends CommonDBTM
                         self::getTypeName(),
                         $dbu->countElementsInTable(
                             $this->getTable(),
-                            ["plugin_tasklists_tasktypes_id" => $item->getID()]
-                        )
+                            ["plugin_tasklists_tasktypes_id" => $item->getID()],
+                        ),
                     );
                 }
                 return self::createTabEntry(self::getTypeName());
@@ -101,18 +100,18 @@ class TypeVisibility extends CommonDBTM
         return '';
     }
 
-   /**
-    * Display content for each users
-    *
-    * @static
-    *
-    * @param CommonGLPI $item
-    * @param int        $tabnum
-    * @param int        $withtemplate
-    *
-    * @return bool|true
-    */
-    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    /**
+     * Display content for each users
+     *
+     * @static
+     *
+     * @param CommonGLPI $item
+     * @param int        $tabnum
+     * @param int        $withtemplate
+     *
+     * @return bool|true
+     */
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
         $vis = new self();
         if (in_array($item->getType(), self::getTypes(true))) {
@@ -122,12 +121,12 @@ class TypeVisibility extends CommonDBTM
     }
 
 
-   /**
-    * Display form
-    *
-    * @param $item
-    */
-    function showVisibilities($item)
+    /**
+     * Display form
+     *
+     * @param $item
+     */
+    public function showVisibilities($item)
     {
 
         $used_groups = [];
@@ -148,7 +147,7 @@ class TypeVisibility extends CommonDBTM
         $condition = [];
         if (count($used_groups) > 0) {
             $condition [] = ["NOT" => [
-            "id" => $used_groups
+                "id" => $used_groups,
             ]];
         }
         $condition [] = getEntitiesRestrictCriteria($group->getTable(), '', $_SESSION["glpiactiveentities"], true);
@@ -168,12 +167,12 @@ class TypeVisibility extends CommonDBTM
             echo "<tr><th colspan='6'>" . __('Add a group', 'tasklists') . "</th></tr>";
 
             echo "<tr class='tab_bg_1'>";
-           // Dropdown group
+            // Dropdown group
             echo "<td class='center'>";
             echo __('Group') . '&nbsp;';
             Dropdown::showFromArray("groups_id", $groups, ['name'     => 'groups_id',
-                                                        'width'    => '150',
-                                                        'multiple' => true]);
+                'width'    => '150',
+                'multiple' => true]);
             echo "</td>";
             echo "</tr>";
 
@@ -191,18 +190,18 @@ class TypeVisibility extends CommonDBTM
         }
     }
 
-   /**
-    * @param $fields
-    * @param $canedit
-    */
+    /**
+     * @param $fields
+     * @param $canedit
+     */
     private function listItems($fields, $canedit)
     {
 
         $rand = mt_rand();
         echo "<div class='center'>";
         if ($canedit) {
-            Html::openMassiveActionsForm('mass' .  $rand);
-            $massiveactionparams = ['item' => __CLASS__, 'container' => 'mass' .  $rand];
+            Html::openMassiveActionsForm('mass' . $rand);
+            $massiveactionparams = ['item' => __CLASS__, 'container' => 'mass' . $rand];
             Html::showMassiveActions($massiveactionparams);
         }
         echo "<table class='tab_cadre_fixe'>";
@@ -212,7 +211,7 @@ class TypeVisibility extends CommonDBTM
         echo "<tr>";
         echo "<th width='10'>";
         if ($canedit) {
-            echo Html::getCheckAllAsCheckbox('mass' .  $rand);
+            echo Html::getCheckAllAsCheckbox('mass' . $rand);
         }
         echo "</th>";
         echo "<th>" . __('Name') . "</th>";
@@ -224,7 +223,7 @@ class TypeVisibility extends CommonDBTM
                 Html::showMassiveActionCheckBox(__CLASS__, $field['id']);
             }
             echo "</td>";
-           //DATA LINE
+            //DATA LINE
             echo "<td>" . Dropdown::getDropdownName('glpi_groups', $field['groups_id']) . "</td>";
             echo "</tr>";
         }
@@ -238,21 +237,21 @@ class TypeVisibility extends CommonDBTM
         echo "</div>";
     }
 
-   /**
-    * Type than could be linked to a typo
-    *
-    * @param $all boolean, all type, or only allowed ones
-    *
-    * @return array of types
-    * */
-    static function getTypes($all = false)
+    /**
+     * Type than could be linked to a typo
+     *
+     * @param $all boolean, all type, or only allowed ones
+     *
+     * @return array of types
+     * */
+    public static function getTypes($all = false)
     {
 
         if ($all) {
             return self::$types;
         }
 
-       // Only allowed types
+        // Only allowed types
         $types = self::$types;
         $dbu   = new DbUtils();
         foreach ($types as $key => $type) {
@@ -267,18 +266,18 @@ class TypeVisibility extends CommonDBTM
         return $types;
     }
 
-   /**
-    * @param $plugin_tasklists_tasktypes_id
-    *
-    * @return bool
-    */
-    static function isUserHaveRight($plugin_tasklists_tasktypes_id)
+    /**
+     * @param $plugin_tasklists_tasktypes_id
+     *
+     * @return bool
+     */
+    public static function isUserHaveRight($plugin_tasklists_tasktypes_id)
     {
         $dbu = new DbUtils();
-       // Get type groups
+        // Get type groups
         $groups_data = $dbu->getAllDataFromTable(
             'glpi_plugin_tasklists_typevisibilities',
-            ['`plugin_tasklists_tasktypes_id`' => $plugin_tasklists_tasktypes_id]
+            ['`plugin_tasklists_tasktypes_id`' => $plugin_tasklists_tasktypes_id],
         );
         if (!empty($groups_data)) {
             $groups_id = [];
@@ -286,7 +285,7 @@ class TypeVisibility extends CommonDBTM
                 $groups_id[] = $groups['groups_id'];
             }
 
-           // Is the user allowed with his groups ?
+            // Is the user allowed with his groups ?
             $group_user_data = Group_User::getUserGroups(Session::getLoginUserID());
             foreach ($group_user_data as $groups) {
                 if (in_array($groups['id'], $groups_id)) {
@@ -297,14 +296,14 @@ class TypeVisibility extends CommonDBTM
             return false;
         }
 
-       // No restrictions if no group was added in type
+        // No restrictions if no group was added in type
         return true;
     }
 
-   /**
-    * @return array
-    */
-    static function seeAllowedTypes()
+    /**
+     * @return array
+     */
+    public static function seeAllowedTypes()
     {
 
         $allowed_types = [];
@@ -322,53 +321,53 @@ class TypeVisibility extends CommonDBTM
         return $allowed_types;
     }
 
-   /**
-    * @return array
-    */
-    function rawSearchOptions()
+    /**
+     * @return array
+     */
+    public function rawSearchOptions()
     {
 
         $tab = [];
 
         $tab[] = [
-         'id'   => 'common',
-         'name' => self::getTypeName(1)
+            'id'   => 'common',
+            'name' => self::getTypeName(1),
         ];
 
         $tab[] = [
-         'id'            => '1',
-         'table'         => $this->getTable(),
-         'field'         => 'name',
-         'name'          => __('Name'),
-         'datatype'      => 'itemlink',
-         'itemlink_type' => $this->getType()
+            'id'            => '1',
+            'table'         => $this->getTable(),
+            'field'         => 'name',
+            'name'          => __('Name'),
+            'datatype'      => 'itemlink',
+            'itemlink_type' => $this->getType(),
         ];
 
         $tab[] = [
-         'id'       => '30',
-         'table'    => $this->getTable(),
-         'field'    => 'id',
-         'name'     => __('ID'),
-         'datatype' => 'number'
+            'id'       => '30',
+            'table'    => $this->getTable(),
+            'field'    => 'id',
+            'name'     => __('ID'),
+            'datatype' => 'number',
         ];
 
         $tab[] = [
-         'id'       => '92',
-         'table'    => 'glpi_groups',
-         'field'    => 'name',
-         'name'     => __('Group'),
-         'datatype' => 'dropdown'
+            'id'       => '92',
+            'table'    => 'glpi_groups',
+            'field'    => 'name',
+            'name'     => __('Group'),
+            'datatype' => 'dropdown',
         ];
 
         return $tab;
     }
 
-   /**
-    * @param array $input
-    *
-    * @return array|bool
-    */
-    function prepareInputForAdd($input)
+    /**
+     * @param array $input
+     *
+     * @return array|bool
+     */
+    public function prepareInputForAdd($input)
     {
         if (!$this->checkMandatoryFields($input)) {
             return false;
@@ -377,12 +376,12 @@ class TypeVisibility extends CommonDBTM
         return $input;
     }
 
-   /**
-    * @param $input
-    *
-    * @return array|bool
-    */
-    function prepareInputForUpdate($input)
+    /**
+     * @param $input
+     *
+     * @return array|bool
+     */
+    public function prepareInputForUpdate($input)
     {
         if (!$this->checkMandatoryFields($input)) {
             return false;
@@ -391,12 +390,12 @@ class TypeVisibility extends CommonDBTM
         return $input;
     }
 
-   /**
-    * @param $input
-    *
-    * @return bool
-    */
-    function checkMandatoryFields($input)
+    /**
+     * @param $input
+     *
+     * @return bool
+     */
+    public function checkMandatoryFields($input)
     {
         $msg     = [];
         $checkKo = false;

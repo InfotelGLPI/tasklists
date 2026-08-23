@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Tasklists;
@@ -46,8 +46,7 @@ if (!defined('GLPI_ROOT')) {
  */
 class TaskState extends CommonDropdown
 {
-
-    static $rightname = 'plugin_tasklists_config';
+    public static $rightname = 'plugin_tasklists_config';
 
     /**
      * Have I the global right to "create" the Object
@@ -87,22 +86,22 @@ class TaskState extends CommonDropdown
         return false;
     }
 
-   /**
-    * @param int $nb
-    *
-    * @return string
-    */
-    static function getTypeName($nb = 0)
+    /**
+     * @param int $nb
+     *
+     * @return string
+     */
+    public static function getTypeName($nb = 0)
     {
         return _n('Status', 'Statuses', $nb, 'tasklists');
     }
 
-   /**
-    * @param       $ID
-    * @param array $options
-    *
-    * @return bool
-    */
+    /**
+     * @param       $ID
+     * @param array $options
+     *
+     * @return bool
+     */
     public function showForm($ID, $options = [])
     {
 
@@ -122,11 +121,11 @@ class TaskState extends CommonDropdown
         echo "<td rowspan='4'>" . __('Description') . "</td>";
         echo "<td rowspan='4'>";
         Html::textarea(['name'            => 'comment',
-                      'value'           => $this->fields['comment'],
-                      'id'           => 'comment',
-                      'cols'       => 45,
-                      'rows'       => 3,
-                      'enable_richtext' => false]);
+            'value'           => $this->fields['comment'],
+            'id'           => 'comment',
+            'cols'       => 45,
+            'rows'       => 3,
+            'enable_richtext' => false]);
         echo "</td>";
         echo "</tr>";
 
@@ -173,7 +172,7 @@ class TaskState extends CommonDropdown
                 "tasktypes",
                 $possible_values,
                 ['values'   => $values,
-                'multiple' => 'multiples']
+                    'multiple' => 'multiples'],
             );
 
 
@@ -187,67 +186,67 @@ class TaskState extends CommonDropdown
     }
 
 
-   /**
-    * @return array
-    */
-    function rawSearchOptions()
+    /**
+     * @return array
+     */
+    public function rawSearchOptions()
     {
         $tab = parent::rawSearchOptions();
 
         $tab[] = [
-         'id'         => 11,
-         'table'      => $this->getTable(),
-         'field'      => 'color',
-         'name'       => __('Color'),
-         'searchtype' => 'contains',
-         'datatype'   => 'specific',
+            'id'         => 11,
+            'table'      => $this->getTable(),
+            'field'      => 'color',
+            'name'       => __('Color'),
+            'searchtype' => 'contains',
+            'datatype'   => 'specific',
         ];
 
         $tab[] = [
-         'id'           => '12',
-         'table'        => $this->getTable(),
-         'field'        => 'tasktypes',
-         'name'         => _n('Context', 'Contexts', 1, 'tasklists'),
-         'nosearch'     => true,
-         'masiveaction' => false,
-         'datatype'     => 'specific'
+            'id'           => '12',
+            'table'        => $this->getTable(),
+            'field'        => 'tasktypes',
+            'name'         => _n('Context', 'Contexts', 1, 'tasklists'),
+            'nosearch'     => true,
+            'masiveaction' => false,
+            'datatype'     => 'specific',
         ];
 
         $tab[] = [
-         'id'       => '13',
-         'table'    => $this->getTable(),
-         'field'    => 'is_finished',
-         'name'     => __('Finished state'),
-         'datatype' => 'bool'
+            'id'       => '13',
+            'table'    => $this->getTable(),
+            'field'    => 'is_finished',
+            'name'     => __('Finished state'),
+            'datatype' => 'bool',
         ];
 
         return $tab;
     }
 
-   /**
-    * @param $input
-    *
-    * @return array|\type
-    */
-    function prepareInputForAdd($input)
+    /**
+     * @param $input
+     *
+     * @return array|\type
+     */
+    public function prepareInputForAdd($input)
     {
-       //      if (!$this->checkMandatoryFields($input)) {
-       //         return false;
-       //      }
+        //      if (!$this->checkMandatoryFields($input)) {
+        //         return false;
+        //      }
 
         $input = $this->sanitizeColorInput($input);
         return $this->encodeSubtypes($input);
     }
 
-   /**
-    * Drop a color value that is not a valid hex code, so a forged value can never be
-    * stored and later reflected into a style attribute (defense in depth for the color
-    * display escaping in getSpecificValueToDisplay).
-    *
-    * @param array $input
-    *
-    * @return array
-    */
+    /**
+     * Drop a color value that is not a valid hex code, so a forged value can never be
+     * stored and later reflected into a style attribute (defense in depth for the color
+     * display escaping in getSpecificValueToDisplay).
+     *
+     * @param array $input
+     *
+     * @return array
+     */
     private function sanitizeColorInput($input)
     {
         if (isset($input['color'])
@@ -257,29 +256,29 @@ class TaskState extends CommonDropdown
         return $input;
     }
 
-   /**
-    * @param $input
-    *
-    * @return array|\type
-    */
-    function prepareInputForUpdate($input)
+    /**
+     * @param $input
+     *
+     * @return array|\type
+     */
+    public function prepareInputForUpdate($input)
     {
-       //      if (!$this->checkMandatoryFields($input)) {
-       //         return false;
-       //      }
+        //      if (!$this->checkMandatoryFields($input)) {
+        //         return false;
+        //      }
 
         $input = $this->sanitizeColorInput($input);
         return $this->encodeSubtypes($input);
     }
 
-   /**
-    * Encode sub types
-    *
-    * @param type $input
-    *
-    * @return \type
-    */
-    function encodeSubtypes($input)
+    /**
+     * Encode sub types
+     *
+     * @param type $input
+     *
+     * @return \type
+     */
+    public function encodeSubtypes($input)
     {
         if (!empty($input['tasktypes'])) {
             $input['tasktypes'] = json_encode(array_values($input['tasktypes']));
@@ -288,15 +287,15 @@ class TaskState extends CommonDropdown
         return $input;
     }
 
-   /**
-    * @param $field
-    * @param $name (default '')
-    * @param $values (default '')
-    * @param $options      array
-    **@since 0.84
-    *
-    */
-    static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    /**
+     * @param $field
+     * @param $name (default '')
+     * @param $values (default '')
+     * @param $options      array
+     **@since 0.84
+     *
+     */
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
         if (!is_array($values)) {
             $values = [$field => $values];
@@ -315,28 +314,28 @@ class TaskState extends CommonDropdown
                     $name,
                     $possible_values,
                     ['display'  => false,
-                                            'value'    => $values[$field],
-                    'multiple' => 'multiples']
+                        'value'    => $values[$field],
+                        'multiple' => 'multiples'],
                 );
 
-             break;
+                break;
         }
 
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
     }
 
 
-   /**
-    * @param $field
-    * @param $values
-    * @param $options   array
-    **
-    *
-    * @return string
-    * @since 0.84
-    *
-    */
-    static function getSpecificValueToDisplay($field, $values, array $options = [])
+    /**
+     * @param $field
+     * @param $values
+     * @param $options   array
+     **
+     *
+     * @return string
+     * @since 0.84
+     *
+     */
+    public static function getSpecificValueToDisplay($field, $values, array $options = [])
     {
 
         if (!is_array($values)) {
@@ -363,44 +362,44 @@ class TaskState extends CommonDropdown
                 // attribute so a forged color value cannot break out of it (stored XSS).
                 return sprintf(
                     "<div style='background-color: %s;'>&nbsp;</div>",
-                    htmlspecialchars((string) $values[$field])
+                    htmlspecialchars((string) $values[$field]),
                 );
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }
 
-   /**
-    * @return mixed
-    */
-    function getFinishedState()
+    /**
+     * @return mixed
+     */
+    public function getFinishedState()
     {
         return $this->fields['is_finished'];
     }
 
-   /**
-    * @return mixed
-    */
-//   static function getAllKanbanColumns() {
-//
-//      $taskStates = new self();
-//      $columns    = ['plugin_tasklists_taskstates_id' => []];
-//      $restrict   = [];
-//      $allstates  = $taskStates->find($restrict, ['is_finished ASC', 'id']);
-//      foreach ($allstates as $state) {
-//         $columns['plugin_tasklists_taskstates_id'][$state['id']] = [
-//            'name'         => $state['name'],
-//            'header_color' => $state['color']
-//         ];
-//      }
-//
-//      return $columns['plugin_tasklists_taskstates_id'];
-//
-//   }
+    /**
+     * @return mixed
+     */
+    //   static function getAllKanbanColumns() {
+    //
+    //      $taskStates = new self();
+    //      $columns    = ['plugin_tasklists_taskstates_id' => []];
+    //      $restrict   = [];
+    //      $allstates  = $taskStates->find($restrict, ['is_finished ASC', 'id']);
+    //      foreach ($allstates as $state) {
+    //         $columns['plugin_tasklists_taskstates_id'][$state['id']] = [
+    //            'name'         => $state['name'],
+    //            'header_color' => $state['color']
+    //         ];
+    //      }
+    //
+    //      return $columns['plugin_tasklists_taskstates_id'];
+    //
+    //   }
 
-   /**
-    * Have I the global right to "create" the Object
-    * May be overloaded if needed (ex KnowbaseItem)
-    *
-    * @return boolean
-    **/
+    /**
+     * Have I the global right to "create" the Object
+     * May be overloaded if needed (ex KnowbaseItem)
+     *
+     * @return boolean
+     **/
 }

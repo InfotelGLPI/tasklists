@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Tasklists;
@@ -51,33 +51,32 @@ if (!defined('GLPI_ROOT')) {
  */
 class NotificationTargetTask extends NotificationTarget
 {
+    public const TASK_USER  = 6303;
+    public const TASK_GROUP = 6304;
+    public const TASK_REQUESTER = 6305;
 
-    const TASK_USER  = 6303;
-    const TASK_GROUP = 6304;
-    const TASK_REQUESTER = 6305;
-
-   /**
-    * Return main notification events for the object type
-    * Internal use only => should use getAllEvents
-    *
-    * @return array array which contains : event => event label
-    */
-    function getEvents()
+    /**
+     * Return main notification events for the object type
+     * Internal use only => should use getAllEvents
+     *
+     * @return array array which contains : event => event label
+     */
+    public function getEvents()
     {
 
         return ['newtask'    => __('A task has been added', 'tasklists'),
-              'updatetask' => __('A task has been updated', 'tasklists'),
-              'deletetask' => __('A task has been removed', 'tasklists'),
-              //              'alerttasks'      => __('Reminder of unfinished tasks', 'tasklists')
+            'updatetask' => __('A task has been updated', 'tasklists'),
+            'deletetask' => __('A task has been removed', 'tasklists'),
+            //              'alerttasks'      => __('Reminder of unfinished tasks', 'tasklists')
         ];
     }
 
-   /**
-    * Get additionnals targets for Tickets
-    *
-    * @param string $event
-    */
-    function addAdditionalTargets($event = '')
+    /**
+     * Get additionnals targets for Tickets
+     *
+     * @param string $event
+     */
+    public function addAdditionalTargets($event = '')
     {
 
         if ($event == 'newtask'
@@ -89,18 +88,18 @@ class NotificationTargetTask extends NotificationTarget
         }
     }
 
-   /**
-    * Add targets by a method not defined in NotificationTarget (specific to an itemtype)
-    *
-    * @param array $data Data
-    * @param array $options Options
-    *
-    * @return void
-    **/
-    function addSpecificTargets($data, $options)
+    /**
+     * Add targets by a method not defined in NotificationTarget (specific to an itemtype)
+     *
+     * @param array $data Data
+     * @param array $options Options
+     *
+     * @return void
+     **/
+    public function addSpecificTargets($data, $options)
     {
 
-       //Look for all targets whose type is Notification::ITEM_USER
+        //Look for all targets whose type is Notification::ITEM_USER
         switch ($data['items_id']) {
             case self::TASK_USER:
                 $this->getUserAddress();
@@ -115,18 +114,18 @@ class NotificationTargetTask extends NotificationTarget
     }
 
 
-   //Get recipient
-    function getUserAddress()
+    //Get recipient
+    public function getUserAddress()
     {
         return $this->addUserByField("users_id");
     }
-    function getRequesterAddress()
+    public function getRequesterAddress()
     {
         return $this->addUserByField("users_id_requester");
     }
 
 
-    function getGroupAddress()
+    public function getGroupAddress()
     {
         global $DB;
 
@@ -137,12 +136,12 @@ class NotificationTargetTask extends NotificationTarget
             $criteria                                         = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
             $criteria['FROM']                                 = User::getTable();
             $criteria['LEFT JOIN']                            = ['glpi_groups_users' => ['ON' => ['glpi_groups_users' => 'users_id',
-                                                                                               'glpi_users'        => 'id']]];
+                'glpi_users'        => 'id']]];
             $criteria['WHERE']['glpi_groups_users.groups_id'] = $this->obj->fields[$group_field];
             $iterator                                         = $DB->request($criteria);
 
             foreach ($iterator as $data) {
-               //Add the user email and language in the notified users list
+                //Add the user email and language in the notified users list
                 $this->addToRecipientsList($data);
                 $iterator->next();
             }
@@ -150,17 +149,17 @@ class NotificationTargetTask extends NotificationTarget
     }
 
 
-   /**
-    * Get all data needed for template processing
-    * Provides minimum information for alerts
-    * Can be overridden by each NotificationTartget class if needed
-    *
-    * @param string $event Event name
-    * @param array  $options Options
-    *
-    * @return void
-    **/
-    function addDataForTemplate($event, $options = [])
+    /**
+     * Get all data needed for template processing
+     * Provides minimum information for alerts
+     * Can be overridden by each NotificationTartget class if needed
+     *
+     * @param string $event Event name
+     * @param array  $options Options
+     *
+     * @return void
+     **/
+    public function addDataForTemplate($event, $options = [])
     {
         global $CFG_GLPI;
 
@@ -191,13 +190,13 @@ class NotificationTargetTask extends NotificationTarget
         $this->data['##task.client##']      = $entity_name;
         $this->data['##task.type##']        = Dropdown::getDropdownName(
             'glpi_plugin_tasklists_tasktypes',
-            $this->obj->getField('plugin_tasklists_tasktypes_id')
+            $this->obj->getField('plugin_tasklists_tasktypes_id'),
         );
         $this->data['##task.users##']       = getUserName($this->obj->getField("users_id"));
         $this->data['##task.requester##']       = getUserName($this->obj->getField("users_id_requester"));
         $this->data['##task.groups##']      = Dropdown::getDropdownName(
             'glpi_groups',
-            $this->obj->getField("groups_id")
+            $this->obj->getField("groups_id"),
         );
         $this->data['##task.actiontime##']  = Html::timestampToString($this->obj->getField('actiontime'), false, true);
         $this->data['##task.percentdone##'] = Dropdown::getValueWithUnit($this->obj->getField('percent_done'), "%");
@@ -212,36 +211,36 @@ class NotificationTargetTask extends NotificationTarget
         $this->data['##task.url##']      = urldecode($CFG_GLPI["url_base"] . "/index.php?redirect=GlpiPlugin\Tasklists\Task_" . $this->obj->getField("id"));
     }
 
-   /**
-    * @return array|void
-    */
-    function getTags()
+    /**
+     * @return array|void
+     */
+    public function getTags()
     {
 
         $tags = ['task.id'          => 'ID',
-               'task.name'        => __('Name'),
-               'task.type'        => __('Type'),
-               'task.users'       => _n('User', 'Users', 1),
-               'task.requester'       => _n('Requester', 'Requesters', 1),
-               'task.groups'      => _n('Group', 'Groups', 1),
-               'task.actiontime'  => __('Planned duration'),
-               'task.percentdone' => __('Percent done'),
-               'task.duedate'     => __('Due date', 'tasklists'),
-               'task.comment'     => __('Description'),
-               'task.priority'    => __('Priority'),
-               'task.state'       => __('Status'),
-               'task.otherclient' => __('Other client', 'tasklists'),
+            'task.name'        => __('Name'),
+            'task.type'        => __('Type'),
+            'task.users'       => _n('User', 'Users', 1),
+            'task.requester'       => _n('Requester', 'Requesters', 1),
+            'task.groups'      => _n('Group', 'Groups', 1),
+            'task.actiontime'  => __('Planned duration'),
+            'task.percentdone' => __('Percent done'),
+            'task.duedate'     => __('Due date', 'tasklists'),
+            'task.comment'     => __('Description'),
+            'task.priority'    => __('Priority'),
+            'task.state'       => __('Status'),
+            'task.otherclient' => __('Other client', 'tasklists'),
         ];
         foreach ($tags as $tag => $label) {
             $this->addTagToList(['tag'   => $tag, 'label' => $label,
-                              'value' => true]);
+                'value' => true]);
         }
 
         $this->addTagToList(['tag'     => 'tasks',
-                           'label'   => __('At creation, update, removal of a task', 'tasklists'),
-                           'value'   => false,
-                           'foreach' => true,
-                           'events'  => ['newtask', 'updatetask', 'deletetask']]);
+            'label'   => __('At creation, update, removal of a task', 'tasklists'),
+            'value'   => false,
+            'foreach' => true,
+            'events'  => ['newtask', 'updatetask', 'deletetask']]);
 
         asort($this->tag_descriptions);
     }
@@ -267,11 +266,11 @@ class NotificationTargetTask extends NotificationTarget
             $templates_id = $tpl_row['id'];
         } else {
             $tmp          = [
-            'name'     => 'Tasks',
-            'itemtype' => Task::class,
-            'date_mod' => $_SESSION['glpi_currenttime'],
-            'comment'  => '',
-            'css'      => '',
+                'name'     => 'Tasks',
+                'itemtype' => Task::class,
+                'date_mod' => $_SESSION['glpi_currenttime'],
+                'comment'  => '',
+                'css'      => '',
             ];
             $templates_id = $template->add($tmp);
         }
@@ -279,7 +278,7 @@ class NotificationTargetTask extends NotificationTarget
             $translation = new NotificationTemplateTranslation();
             if (!$dbu->countElementsInTable(
                 $translation->getTable(),
-                ["notificationtemplates_id" => $templates_id]
+                ["notificationtemplates_id" => $templates_id],
             )) {
                 $tmp['notificationtemplates_id'] = $templates_id;
                 $tmp['language']                 = '';
@@ -291,9 +290,9 @@ class NotificationTargetTask extends NotificationTarget
             }
 
             $notifs = [
-            'New Task'    => 'newtask',
-            'Update Task' => 'updatetask',
-            'Delete Task' => 'deletetask',
+                'New Task'    => 'newtask',
+                'Update Task' => 'updatetask',
+                'Delete Task' => 'deletetask',
             ];
 
             $notification         = new Notification();
@@ -302,23 +301,23 @@ class NotificationTargetTask extends NotificationTarget
                 if (!$dbu->countElementsInTable(
                     "glpi_notifications",
                     ["itemtype" => Task::class,
-                    "event"    => $name]
+                        "event"    => $name],
                 )) {
                     $tmp             = [
-                    'name'         => $label,
-                    'entities_id'  => 0,
-                    'itemtype'     => Task::class,
-                    'event'        => $name,
-                    'comment'      => '',
-                    'is_recursive' => 1,
-                    'is_active'    => 1,
-                    'date_mod'     => $_SESSION['glpi_currenttime'],
+                        'name'         => $label,
+                        'entities_id'  => 0,
+                        'itemtype'     => Task::class,
+                        'event'        => $name,
+                        'comment'      => '',
+                        'is_recursive' => 1,
+                        'is_active'    => 1,
+                        'date_mod'     => $_SESSION['glpi_currenttime'],
                     ];
                     $notification_id = $notification->add($tmp);
 
                     $notificationtemplate->add(['notificationtemplates_id' => $templates_id,
-                                           'mode'                     => 'mailing',
-                                           'notifications_id'         => $notification_id]);
+                        'mode'                     => 'mailing',
+                        'notifications_id'         => $notification_id]);
                 }
             }
         }
@@ -332,11 +331,11 @@ class NotificationTargetTask extends NotificationTarget
     }
 
 
-   /**
-    * @return string
-    */
+    /**
+     * @return string
+     */
 
-    static function getContentText()
+    public static function getContentText()
     {
         return '##lang.task.url##  : ##task.url##
 
@@ -349,11 +348,11 @@ class NotificationTargetTask extends NotificationTarget
    ##ENDIFtask.comment## ';
     }
 
-   /**
-    * @return string
-    */
+    /**
+     * @return string
+     */
 
-    static function getContentHtml()
+    public static function getContentHtml()
     {
         return "&lt;p&gt;&lt;span style=\"font-family: Verdana; font-size: 11px; text-align: left;\"&gt;
                         &lt;strong&gt;##lang.task.url##

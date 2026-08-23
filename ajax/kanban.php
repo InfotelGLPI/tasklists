@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 use Glpi\Application\View\TemplateRenderer;
@@ -41,7 +41,8 @@ use function Safe\preg_split;
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
-Session::checkLoginUser();
+
+Session::checkRight('plugin_tasklists', READ);
 
 if (!isset($_REQUEST['action'])) {
     throw new BadRequestHttpException("Missing action parameter");
@@ -79,6 +80,14 @@ if ($item !== null) {
     if (in_array($action, ['update', 'load_item_panel', 'delete_teammember'])) {
         if (!$item->can($_REQUEST['items_id'], UPDATE)) {
             // Missing rights
+            throw new AccessDeniedHttpException();
+        }
+        // can(UPDATE) enforces the global right + entity access but NOT the
+        // plugin's own visibility model: a same-entity user could otherwise read
+        // or mutate another user's private (visibility=1) or group (visibility=2)
+        // task. Replay the visibility guard here for every UPDATE-gated Task
+        // action at once (load_item_panel was the single path that omitted it).
+        if ($item instanceof Task && !$item->checkVisibility((int) $_REQUEST['items_id'])) {
             throw new AccessDeniedHttpException();
         }
     }
@@ -193,7 +202,7 @@ if (($_POST['action'] ?? null) === 'update') {
             $_POST['kanban']['items_id'],
             $_POST['card'],
             $_POST['column'],
-            $_POST['position']
+            $_POST['position'],
         );
     }
 } elseif (($_POST['action'] ?? null) === 'show_column') {
@@ -248,9 +257,9 @@ if (($_POST['action'] ?? null) === 'update') {
     }
     $params = $_POST['params'] ?? [];
     $column_item->add([
-            'name'   => $_POST['column_name'],
-            'entities_id'    => $_SESSION['glpiactive_entity'],
-        ] + $params);
+        'name'   => $_POST['column_name'],
+        'entities_id'    => $_SESSION['glpiactive_entity'],
+    ] + $params);
 } elseif (($_POST['action'] ?? null) === 'save_column_state') {
     if (!isset($_POST['state'])) {
         // Do nothing with the state unless it isn't saved yet. Could be that no columns are shown or an error occurred.

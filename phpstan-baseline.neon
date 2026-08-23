@@ -91,24 +91,6 @@ parameters:
 			path: src/Dashboard.php
 
 		-
-			message: '#^Parameter \#1 \$ID of method DbUtils\:\:getUserName\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Dashboard.php
-
-		-
-			message: '#^Parameter \#1 \$value of static method CommonITILObject\:\:getPriorityName\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Dashboard.php
-
-		-
-			message: '#^Parameter \#1 \$value of static method Dropdown\:\:getValueWithUnit\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Dashboard.php
-
-		-
 			message: '#^Property GlpiPlugin\\Tasklists\\Dashboard\:\:\$datas is unused\.$#'
 			identifier: property.unused
 			count: 1
@@ -211,26 +193,8 @@ parameters:
 			path: src/Profile.php
 
 		-
-			message: '#^Call to an undefined method CommonGLPI\:\:getID\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Profile.php
-
-		-
 			message: '#^Method GlpiPlugin\\Tasklists\\Profile\:\:getTabNameForItem\(\) has invalid return type GlpiPlugin\\Tasklists\\translated\.$#'
 			identifier: class.notFound
-			count: 1
-			path: src/Profile.php
-
-		-
-			message: '#^Parameter \#2 \$openform \(bool\) of method GlpiPlugin\\Tasklists\\Profile\:\:showForm\(\) should be compatible with parameter \$options \(array\<string, mixed\>\) of method Profile\:\:showForm\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: src/Profile.php
-
-		-
-			message: '#^Return type \(void\) of method GlpiPlugin\\Tasklists\\Profile\:\:showForm\(\) should be compatible with return type \(bool\) of method Profile\:\:showForm\(\)$#'
-			identifier: method.childReturnType
 			count: 1
 			path: src/Profile.php
 
@@ -291,6 +255,12 @@ parameters:
 		-
 			message: '#^Access to offset ''plugin_tasklists…'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
 			identifier: class.notFound
+			count: 2
+			path: src/Task.php
+
+		-
+			message: '#^Call to an undefined method CommonDBTM\:\:checkVisibility\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: src/Task.php
 
@@ -493,7 +463,7 @@ parameters:
 			path: src/TaskState.php
 
 		-
-			message: '#^Parameter \#1 \$input of method GlpiPlugin\\Tasklists\\TaskState\:\:encodeSubtypes\(\) expects GlpiPlugin\\Tasklists\\type, array\<string, mixed\> given\.$#'
+			message: '#^Parameter \#1 \$input of method GlpiPlugin\\Tasklists\\TaskState\:\:encodeSubtypes\(\) expects GlpiPlugin\\Tasklists\\type, array given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/TaskState.php
@@ -507,7 +477,7 @@ parameters:
 		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
-			count: 2
+			count: 1
 			path: src/TaskState.php
 
 		-
@@ -571,14 +541,14 @@ parameters:
 			path: src/Task_Comment.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
+			message: '#^Parameter \#1 \$item of static method GlpiPlugin\\Tasklists\\Task_Comment\:\:showForItem\(\) expects CommonDBTM, CommonGLPI given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Task_Comment.php
 
 		-
-			message: '#^Parameter \#1 \$item of static method GlpiPlugin\\Tasklists\\Task_Comment\:\:showForItem\(\) expects CommonDBTM, CommonGLPI given\.$#'
-			identifier: argument.type
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
 			count: 1
 			path: src/Task_Comment.php
 

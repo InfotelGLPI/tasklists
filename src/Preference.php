@@ -1,33 +1,34 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Tasklists;
+
 use CommonDBTM;
 use CommonGLPI;
 use DbUtils;
@@ -39,16 +40,15 @@ use Session;
  */
 class Preference extends CommonDBTM
 {
+    public static $rightname = 'plugin_tasklists';
 
-    static $rightname = 'plugin_tasklists';
-
-   /**
-    * @param CommonGLPI $item
-    * @param int        $withtemplate
-    *
-    * @return string|translated
-    */
-    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    /**
+     * @param CommonGLPI $item
+     * @param int        $withtemplate
+     *
+     * @return string|translated
+     */
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         if (Session::haveRight('plugin_tasklists', READ)
           && $item->getType() == 'Preference') {
@@ -57,41 +57,41 @@ class Preference extends CommonDBTM
         return '';
     }
 
-   /**
-    * @return string
-    */
-    static function getIcon()
+    /**
+     * @return string
+     */
+    public static function getIcon()
     {
         return Task::getIcon();
     }
 
 
-   /**
-    * @param CommonGLPI $item
-    * @param int        $tabnum
-    * @param int        $withtemplate
-    *
-    * @return bool
-    */
-    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    /**
+     * @param CommonGLPI $item
+     * @param int        $tabnum
+     * @param int        $withtemplate
+     *
+     * @return bool
+     */
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
         $pref = new self();
         $pref->showPreferenceForm(Session::getLoginUserID());
         return true;
     }
 
-   /**
-    * @param $user_id
-    */
-    function showPreferenceForm($user_id)
+    /**
+     * @param $user_id
+     */
+    public function showPreferenceForm($user_id)
     {
-       //If user has no preferences yet, we set default values
+        //If user has no preferences yet, we set default values
         if (!$this->getFromDB($user_id)) {
             $this->initPreferences($user_id);
             $this->getFromDB($user_id);
         }
 
-       //Preferences are not deletable
+        //Preferences are not deletable
         $options['candel']  = false;
         $options['colspan'] = 1;
 
@@ -101,8 +101,8 @@ class Preference extends CommonDBTM
         echo "<td>";
         $types = TypeVisibility::seeAllowedTypes();
         Dropdown::show(TaskType::class, ['name'      => "default_type",
-                                                 'value'     => $this->fields['default_type'],
-                                                 'condition' => ["id" => $types]]);
+            'value'     => $this->fields['default_type'],
+            'condition' => ["id" => $types]]);
         echo "</td>";
         echo "</tr>";
         echo "<tr class='tab_bg_1'><td>" . __("Automatic refreshing of tasklist", "tasklists") . "</td>";
@@ -116,7 +116,7 @@ class Preference extends CommonDBTM
         Dropdown::showFromArray(
             "automatic_refresh_delay",
             [1 => 1, 2 => 2, 5 => 5, 10 => 10, 30 => 30, 60 => 60],
-            ["value" => $this->fields['automatic_refresh_delay']]
+            ["value" => $this->fields['automatic_refresh_delay']],
         );
         echo " " . __('minute(s)', "tasklists");
         echo "</td>";
@@ -140,9 +140,9 @@ class Preference extends CommonDBTM
         return $input;
     }
 
-   /**
-    * @param $users_id
-    */
+    /**
+     * @param $users_id
+     */
     public function initPreferences($users_id)
     {
 
@@ -152,22 +152,22 @@ class Preference extends CommonDBTM
         $this->add($input);
     }
 
-   /**
-    * @param $users_id
-    *
-    * @return int
-    */
+    /**
+     * @param $users_id
+     *
+     * @return int
+     */
     public static function checkDefaultType($users_id)
     {
         return self::checkPreferenceValue('default_type', $users_id);
     }
 
-   /**
-    * @param     $field
-    * @param int $users_id
-    *
-    * @return int
-    */
+    /**
+     * @param     $field
+     * @param int $users_id
+     *
+     * @return int
+     */
     public static function checkPreferenceValue($field, $users_id = 0)
     {
         $dbu  = new DbUtils();

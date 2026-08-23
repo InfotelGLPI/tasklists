@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Tasklists;
@@ -43,16 +43,15 @@ use Toolbox;
  */
 class Ticket extends CommonDBTM
 {
-
     public static $rightname = 'plugin_tasklists';
 
-   /**
-    * Returns the type name with consideration of plural
-    *
-    * @param int $nb Number of item(s)
-    *
-    * @return string Itemtype name
-    */
+    /**
+     * Returns the type name with consideration of plural
+     *
+     * @param int $nb Number of item(s)
+     *
+     * @return string Itemtype name
+     */
     public static function getTypeName($nb = 0)
     {
         return _n('Ticket', 'Tickets', $nb);
@@ -61,7 +60,7 @@ class Ticket extends CommonDBTM
     /**
      * @return string
      */
-    static function getIcon()
+    public static function getIcon()
     {
         return Task::getIcon();
     }
@@ -84,34 +83,34 @@ class Ticket extends CommonDBTM
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = $dbu->countElementsInTable(
                             'glpi_plugin_tasklists_tickets',
-                            ["plugin_tasklists_tasks_id" => $item->getID()]
+                            ["plugin_tasklists_tasks_id" => $item->getID()],
                         );
                     }
                     return self::createTabEntry(self::getTypeName(2), $nb);
-                break;
+                    break;
                 case "Ticket":
                     $nb = 0;
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = $dbu->countElementsInTable(
                             'glpi_plugin_tasklists_tickets',
-                            ["tickets_id" => $item->getID()]
+                            ["tickets_id" => $item->getID()],
                         );
                     }
                     return self::createTabEntry(_n('Linked task', 'Linked tasks', $nb, 'tasklists'), $nb);
-                break;
+                    break;
             }
         }
         return '';
     }
 
-   /**
-    * @param CommonGLPI $item
-    * @param int        $tabnum
-    * @param int        $withtemplate
-    *
-    * @return void
-    * @throws \GlpitestSQLError
-    */
+    /**
+     * @param CommonGLPI $item
+     * @param int        $tabnum
+     * @param int        $withtemplate
+     *
+     * @return void
+     * @throws \GlpitestSQLError
+     */
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
         $ticket = new self();
@@ -127,23 +126,23 @@ class Ticket extends CommonDBTM
         }
     }
 
-   /**
-    * @param $item
-    */
-    static function cleanForTicket($item)
+    /**
+     * @param $item
+     */
+    public static function cleanForTicket($item)
     {
 
         $temp = new self();
         $temp->deleteByCriteria(['tickets_id' => $item->getID()]);
     }
 
-   /**
-    * @param $ticket
-    *
-    * @return bool
-    * @throws \GlpitestSQLError
-    */
-    function showForTicket($ticket)
+    /**
+     * @param $ticket
+     *
+     * @return bool
+     * @throws \GlpitestSQLError
+     */
+    public function showForTicket($ticket)
     {
         global $DB;
 
@@ -192,10 +191,10 @@ class Ticket extends CommonDBTM
             echo "<tr class='tab_bg_2'><td>";
             echo Html::hidden('tickets_id', ['value' => $ID]);
             Task::dropdown(['used'      => $used,
-                                        'entity'    => $ticket->getEntityID(),
-                                        'condition' => ['is_archived' => 0,
-                                                        'is_deleted'  => 0,
-                                                        'is_template' => 0]]);
+                'entity'    => $ticket->getEntityID(),
+                'condition' => ['is_archived' => 0,
+                    'is_deleted'  => 0,
+                    'is_template' => 0]]);
             echo "</td><td class='center'>";
             echo Html::submit(_sx('button', 'Add'), ['name' => 'add', 'class' => 'btn btn-primary']);
             echo "</td>";
@@ -209,9 +208,9 @@ class Ticket extends CommonDBTM
             Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
             $massiveactionparams
             = ['num_displayed'    => min($_SESSION['glpilist_limit'], $numrows),
-               'specific_actions' => ['purge' => _x('button', 'Delete permanently')],
-               'container'        => 'mass' . __CLASS__ . $rand,
- //               'extraparams'      => ['tickets_id' => $ticket->getID()]
+                'specific_actions' => ['purge' => _x('button', 'Delete permanently')],
+                'container'        => 'mass' . __CLASS__ . $rand,
+                //               'extraparams'      => ['tickets_id' => $ticket->getID()]
             ];
             Html::showMassiveActions($massiveactionparams);
         }
@@ -226,8 +225,8 @@ class Ticket extends CommonDBTM
             echo "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
             echo "<th>" . __('Name') . "</th>";
             echo "<th>" . __('Date') . "</th>";
-           //         echo "<th>" . _n('Context', 'Contexts', 1, 'tasklists') . "</th>";
-           //         echo "<th>" . __('Status') . "</th>";
+            //         echo "<th>" . _n('Context', 'Contexts', 1, 'tasklists') . "</th>";
+            //         echo "<th>" . __('Status') . "</th>";
             echo "<th>" . __('Priority') . "</th>";
             echo "<th>" . __('Description') . "</th>";
             echo "</tr>";
@@ -282,11 +281,11 @@ class Ticket extends CommonDBTM
         Html::closeForm();
     }
 
-   /**
-    * @param       $ID
-    * @param array $options
-    */
-    function showForTask($ID)
+    /**
+     * @param       $ID
+     * @param array $options
+     */
+    public function showForTask($ID)
     {
 
         $task   = new Task();
@@ -303,9 +302,9 @@ class Ticket extends CommonDBTM
         echo "<tr class='tab_bg_1'>";
         echo "<td>";
         Ticket::dropdown(['name'        => "tickets_id",
-                        'entity'      => $task->getEntityID(),
-                        'entity_sons' => $task->isRecursive(),
-                        'displaywith' => ['id']]);
+            'entity'      => $task->getEntityID(),
+            'entity_sons' => $task->isRecursive(),
+            'displaywith' => ['id']]);
 
         echo "</td></tr>";
 

@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Tasklists;
@@ -407,7 +407,7 @@ class Task extends CommonDBTM
                     Session::addMessageAfterRedirect(
                         __('You cannot archive a task with this state', 'tasklists'),
                         false,
-                        ERROR
+                        ERROR,
                     );
                     return false;
                 }
@@ -549,7 +549,7 @@ class Task extends CommonDBTM
                 $CFG_GLPI['root_doc'] . "/plugins/tasklists/ajax/inputEntity.php",
                 $params,
                 'dropdown_entities_id' . $rand_entity,
-                false
+                false,
             );
             $JS .= "}";
             $entity_js = Html::scriptBlock($JS);
@@ -621,7 +621,7 @@ class Task extends CommonDBTM
         ob_start();
         Dropdown::show(
             TaskState::class,
-            ['value' => $this->fields["plugin_tasklists_taskstates_id"]]
+            ['value' => $this->fields["plugin_tasklists_taskstates_id"]],
         );
         $status_field = ob_get_clean();
 
@@ -707,7 +707,7 @@ class Task extends CommonDBTM
                                     $datastate['id'],
                                     TaskState::class,
                                     'name',
-                                    $_SESSION['glpilanguage']
+                                    $_SESSION['glpilanguage'],
                                 )
                             )) {
                                 $name = $datastate['name'];
@@ -868,7 +868,7 @@ class Task extends CommonDBTM
             "show_" . $p['name'] . $rand,
             $CFG_GLPI['root_doc'] . "/plugins/tasklists/ajax/dropdownTypeTasks.php",
             $params,
-            false
+            false,
         );
 
         $out .= "<span id='show_" . $p['name'] . "$rand'>";
@@ -879,7 +879,7 @@ class Task extends CommonDBTM
             "show_" . $p['name'] . $rand,
             $CFG_GLPI['root_doc'] . "/plugins/tasklists/ajax/dropdownTypeTasks.php",
             $params,
-            false
+            false,
         );
         if ($p['display']) {
             echo $out;
@@ -905,7 +905,7 @@ class Task extends CommonDBTM
                 if (Session::haveRight('transfer', READ) && Session::isMultiEntitiesMode()
                 ) {
                     $actions['GlpiPlugin\Tasklists\Task' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
-                        'Transfer'
+                        'Transfer',
                     );
                 }
             }
@@ -953,10 +953,23 @@ class Task extends CommonDBTM
                 $input = $ma->getInput();
                 if ($item->getType() == Task::class) {
                     foreach ($ids as $key) {
+                        // Massive-action hardening: the core trusts previous stages and does
+                        // NOT replay per-item rights at the process stage (MassiveAction), and
+                        // the ids come straight from the POST. Re-check the UPDATE right and the
+                        // plugin visibility model before mutating, and confine the transfer
+                        // target to an entity the current user can actually access — otherwise a
+                        // forged request could transfer another user's private/other-entity task
+                        // into the attacker's entity (read escalation).
+                        if (!$item->can((int) $key, UPDATE)
+                            || !$item->checkVisibility((int) $key)
+                            || !Session::haveAccessToEntity((int) $input['entities_id'])) {
+                            $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                            continue;
+                        }
                         $item->getFromDB($key);
                         $type = TaskType::transfer(
                             $item->fields["plugin_tasklists_tasktypes_id"],
-                            $input['entities_id']
+                            $input['entities_id'],
                         );
                         if ($type > 0) {
                             $values["id"] = $key;
@@ -975,6 +988,19 @@ class Task extends CommonDBTM
                     }
                 }
                 return;
+        }
+
+        // Standard actions (update / delete / purge / ...) are inherited from the core, which
+        // replays can() (global right + entity) but NEVER the plugin's own visibility model.
+        // Drop from $ids any task the current user may not see, so a forged POST at the process
+        // stage cannot update/delete/purge another user's private (1) or group (2) tasks.
+        if ($item->getType() == Task::class) {
+            foreach ($ids as $index => $id) {
+                if (!$item->checkVisibility((int) $id)) {
+                    $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                    unset($ids[$index]);
+                }
+            }
         }
         parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
     }
@@ -1307,7 +1333,7 @@ class Task extends CommonDBTM
                     $target,
                     'purge',
                     _x('button', 'Delete permanently'),
-                    ['id' => $template["id"], 'withtemplate' => 1]
+                    ['id' => $template["id"], 'withtemplate' => 1],
                 );
                 $delete_form = ob_get_clean();
             }

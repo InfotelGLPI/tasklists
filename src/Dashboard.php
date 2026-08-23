@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- tasklists plugin for GLPI
- Copyright (C) 2016-2026 by the tasklists Development Team.
-
- https://github.com/InfotelGLPI/tasklists
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of tasklists.
-
- tasklists is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- tasklists is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with tasklists. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * tasklists plugin for GLPI
+ * Copyright (C) 2016-2026 by the tasklists Development Team.
+ *
+ * https://github.com/InfotelGLPI/tasklists
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of tasklists.
+ *
+ * tasklists is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * tasklists is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Tasklists;
@@ -63,19 +63,16 @@ class Dashboard extends CommonGLPI
         $this->options = $options;
     }
 
-    public function init()
-    {
-    }
-
+    public function init() {}
 
     public function getWidgetsForItem()
     {
         $widgets = [
-           __('Tables', "mydashboard") => [
-              $this->getType() . "1" => ["title"   => __("Tasks list", 'tasklists'),
-                                         "icon"    => "ti ti-table",
-                                         "comment" => ""],
-           ],
+            __('Tables', "mydashboard") => [
+                $this->getType() . "1" => ["title"   => __("Tasks list", 'tasklists'),
+                    "icon"    => "ti ti-table",
+                    "comment" => ""],
+            ],
         ];
         return $widgets;
     }
@@ -112,15 +109,15 @@ class Dashboard extends CommonGLPI
                     }
 
                     $headers = [__('Name'),
-                                __('Priority'),
-                                _n(
-                                    'Context',
-                                    'Contexts',
-                                    1,
-                                    'tasklists'
-                                ),
-                                __('User'), __('Percent done'),
-                                __('Due date', 'tasklists')];//, __('Action')
+                        __('Priority'),
+                        _n(
+                            'Context',
+                            'Contexts',
+                            1,
+                            'tasklists',
+                        ),
+                        __('User'), __('Percent done'),
+                        __('Due date', 'tasklists')];//, __('Action')
                     $tasks_table     = 'glpi_plugin_tasklists_tasks';
                     $tasktypes_table = 'glpi_plugin_tasklists_tasktypes';
 
@@ -168,13 +165,13 @@ class Dashboard extends CommonGLPI
                                     'dom_id' => $data["id"] . $rand,
                                     'url'    => $url,
                                     'name'   => $data['name'],
-                                ]
+                                ],
                             );
 
                             $tasks[$data['id']][0] .= Html::showToolTip(
                                 RichText::getSafeHtml($data['content']),
                                 ['applyto' => 'task' . $data["id"] . $rand,
-                                 'display' => false]
+                                    'display' => false],
                             );
 
                             $bgcolor               = $_SESSION["glpipriority_" . $data['priority']];
@@ -196,17 +193,17 @@ class Dashboard extends CommonGLPI
                     $widget->toggleWidgetRefresh();
                     $link = TemplateRenderer::getInstance()->render(
                         '@tasklists/dashboard/add_task_button.html.twig',
-                        ['label' => __('Add task', 'tasklists')]
+                        ['label' => __('Add task', 'tasklists')],
                     );
                     $link .= Ajax::createIframeModalWindow(
                         'task',
                         $CFG_GLPI['root_doc'] . "/plugins/tasklists/front/task.form.php",
                         ['title'         => __('Add task', 'tasklists'),
-                         'reloadonclose' => false,
-                         'width'         => 1180,
-                         'display'       => false,
-                         'height'        => 600
-                        ]
+                            'reloadonclose' => false,
+                            'width'         => 1180,
+                            'display'       => false,
+                            'height'        => 600,
+                        ],
                     );
                     $widget->appendWidgetHtmlContent($link);
 
