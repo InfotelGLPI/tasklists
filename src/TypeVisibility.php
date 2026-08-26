@@ -224,7 +224,10 @@ class TypeVisibility extends CommonDBTM
             }
             echo "</td>";
             //DATA LINE
-            echo "<td>" . Dropdown::getDropdownName('glpi_groups', $field['groups_id']) . "</td>";
+            // Escape the group name: getDropdownName() returns the raw completename from
+            // the DB (getTreeValueCompleteName does not htmlspecialchars it), so a group
+            // named with markup would otherwise execute in the config admin's session.
+            echo "<td>" . htmlescape(Dropdown::getDropdownName('glpi_groups', $field['groups_id'])) . "</td>";
             echo "</tr>";
         }
         echo "</table>";

@@ -37,7 +37,11 @@ $task = new Task();
 if ($task->canView() || Session::haveRight("config", UPDATE)) {
     Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
-    $task->listOfTemplates($CFG_GLPI['root_doc'] . "/plugins/tasklists/front/task.form.php", $_GET["add"]);
+    // Default the flag when the controller is reached without ?add=... : other
+    // controllers initialise their $_GET params likewise, and this avoids the PHP 8
+    // "Undefined array key" notice plus a non-deterministic mode downstream.
+    $add = (int) ($_GET["add"] ?? 0);
+    $task->listOfTemplates($CFG_GLPI['root_doc'] . "/plugins/tasklists/front/task.form.php", $add);
 
     Html::footer();
 } else {
