@@ -128,6 +128,17 @@ if (isset($_POST["add"])) {
 
     $task->checkGlobal(READ);
 
+    // IDOR read: for an existing task, display() resolves to CommonGLPI::display() ->
+    // can($id, READ), which only checks entity membership (Task overrides neither
+    // canViewItem() nor display()) and never applies the plugin visibility model.
+    // Enforce it here - mirroring every mutation branch above and ajax/seetask.php - so a
+    // same-entity user cannot view another user's private/group task via a forged id.
+    // ($id <= 0 is the blank creation form, which carries no task to disclose.)
+    $id = (int) $_GET["id"];
+    if ($id > 0 && (!$task->can($id, READ) || !$task->checkVisibility($id))) {
+        throw new AccessDeniedHttpException();
+    }
+
     Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
     Html::requireJs('tinymce');

@@ -352,16 +352,29 @@ function plugin_tasklists_addDefaultWhere($type)
                         }
                         $groups .= (int) $val;
                     }
-                    return " (`glpi_plugin_tasklists_tasks`.`groups_id` IN (
-               SELECT DISTINCT `groups_id`
-               FROM `glpi_groups_users`
-               WHERE `groups_id` IN ($groups)
-               )
-               OR `glpi_plugin_tasklists_tasks`.`users_id` = '$who'
-               OR `glpi_plugin_tasklists_tasks`.`visibility` = '3') ";
-                } else { // Only personal ones
-                    return " (`glpi_plugin_tasklists_tasks`.`users_id` = '$who'
-                OR `glpi_plugin_tasklists_tasks`.`visibility` = '3')";
+                    // Mirror Task::checkVisibility() exactly: visibility=1 -> owner/requester
+                    // only; visibility=2 -> owner/requester/member of the task's group;
+                    // visibility=3 -> everyone. Previously the group clause was applied
+                    // regardless of visibility (leaking a private task that happened to carry
+                    // a shared group) and the requester relationship was ignored, so the
+                    // search grid diverged from the object-level checkVisibility() guard.
+                    return " (
+               (`glpi_plugin_tasklists_tasks`.`visibility` = '1'
+                  AND (`glpi_plugin_tasklists_tasks`.`users_id` = '$who'
+                       OR `glpi_plugin_tasklists_tasks`.`users_id_requester` = '$who'))
+               OR (`glpi_plugin_tasklists_tasks`.`visibility` = '2'
+                  AND (`glpi_plugin_tasklists_tasks`.`users_id` = '$who'
+                       OR `glpi_plugin_tasklists_tasks`.`users_id_requester` = '$who'
+                       OR `glpi_plugin_tasklists_tasks`.`groups_id` IN ($groups)))
+               OR `glpi_plugin_tasklists_tasks`.`visibility` = '3'
+            ) ";
+                } else { // No groups: visibility=2 group access cannot apply, only owner/requester
+                    return " (
+               (`glpi_plugin_tasklists_tasks`.`visibility` IN ('1', '2')
+                  AND (`glpi_plugin_tasklists_tasks`.`users_id` = '$who'
+                       OR `glpi_plugin_tasklists_tasks`.`users_id_requester` = '$who'))
+               OR `glpi_plugin_tasklists_tasks`.`visibility` = '3'
+            ) ";
                 }
             }
     }
