@@ -345,11 +345,6 @@ class Task extends CommonDBTM
         $kbic->deleteByCriteria(['plugin_tasklists_tasks_id' => $this->fields['id']]);
     }
 
-    /**
-     * @param datas $input
-     *
-     * @return datas
-     */
     public function prepareInputForAdd($input)
     {
         if (isset($input['due_date']) && empty($input['due_date'])) {
@@ -381,11 +376,6 @@ class Task extends CommonDBTM
         }
     }
 
-    /**
-     * @param datas $input
-     *
-     * @return datas
-     */
     public function prepareInputForUpdate($input)
     {
         if (isset($input['due_date']) && empty($input['due_date'])) {

@@ -209,229 +209,111 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Access to an undefined property GlpiPlugin\\Tasklists\\Task\:\:\$users\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Task.php
-
-		-
-			message: '#^Access to offset ''_oldID'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Access to offset ''content'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 3
-			path: src/Task.php
-
-		-
-			message: '#^Access to offset ''due_date'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 6
-			path: src/Task.php
-
-		-
-			message: '#^Access to offset ''id'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 4
-			path: src/Task.php
-
-		-
-			message: '#^Access to offset ''is_archived'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 2
-			path: src/Task.php
-
-		-
-			message: '#^Access to offset ''percent_done'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Access to offset ''plugin_tasklists…'' on an unknown class GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 2
-			path: src/Task.php
-
 		-
 			message: '#^Call to an undefined method CommonDBTM\:\:checkVisibility\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: src/Task.php
-
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
 			identifier: glpi.forbidDynamicInstantiation
 			count: 3
 			path: src/Task.php
-
 		-
 			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:dropdownTasklists\(\) has invalid return type GlpiPlugin\\Tasklists\\nothing\.$#'
 			identifier: class.notFound
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:dropdownTasklists\(\) should return GlpiPlugin\\Tasklists\\nothing but returns int\<0, max\>\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:dropdownTasklists\(\) should return GlpiPlugin\\Tasklists\\nothing but returns string\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:executeActions\(\) has invalid return type GlpiPlugin\\Tasklists\\the\.$#'
 			identifier: class.notFound
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:getVisibilityName\(\) has invalid return type GlpiPlugin\\Tasklists\\priority\.$#'
 			identifier: class.notFound
 			count: 1
 			path: src/Task.php
-
-		-
-			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) has invalid return type GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) has invalid return type GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) should return GlpiPlugin\\Tasklists\\datas but returns false\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Task.php
-
 		-
 			message: '#^Method GlpiPlugin\\Tasklists\\Task\:\:processMassiveActionsForOneItemtype\(\) has invalid return type GlpiPlugin\\Tasklists\\nothing\.$#'
 			identifier: class.notFound
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Offset ''name'' on array\{name\: mixed, comment\?\: string, users_id\?\: mixed, entities_id\?\: mixed, state\: 1\} in isset\(\) always exists and is not nullable\.$#'
 			identifier: isset.offset
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^PHPDoc tag @param references unknown parameter\: \$options$#'
 			identifier: parameter.notFound
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^PHPDoc tag @throws with type GlpitestSQLError is not subtype of Throwable$#'
 			identifier: throws.notThrowable
 			count: 2
 			path: src/Task.php
-
 		-
 			message: '#^PHPDoc tag @var with type CommonDBTM is not subtype of native type null\.$#'
 			identifier: varTag.nativeType
 			count: 3
 			path: src/Task.php
-
 		-
 			message: '#^PHPDoc tag @var with type CommonDBTM is not subtype of native type string\.$#'
 			identifier: varTag.nativeType
 			count: 2
 			path: src/Task.php
-
 		-
 			message: '#^Parameter \#1 \$checkitem \(null\) of method GlpiPlugin\\Tasklists\\Task\:\:getSpecificMassiveActions\(\) should be compatible with parameter \$checkitem \(CommonDBTM\) of method CommonDBTM\:\:getSpecificMassiveActions\(\)$#'
 			identifier: method.childParameterType
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Parameter \#1 \$history \(int\) of method GlpiPlugin\\Tasklists\\Task\:\:post_updateItem\(\) should be compatible with parameter \$history \(bool\) of method CommonDBTM\:\:post_updateItem\(\)$#'
 			identifier: method.childParameterType
 			count: 1
 			path: src/Task.php
-
-		-
-			message: '#^Parameter \#1 \$input \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) should be compatible with parameter \$input \(array\<string, mixed\>\) of method CommonDBTM\:\:prepareInputForAdd\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Parameter \#1 \$input \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) should be compatible with parameter \$input \(array\<string, mixed\>\) of method CommonDBTM\:\:prepareInputForUpdate\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: src/Task.php
-
 		-
 			message: '#^Parameter \#4 \$toobserve of static method Ajax\:\:updateItem\(\) expects string, false given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Task.php
-
-		-
-			message: '#^Parameter \$input of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) has invalid type GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Parameter \$input of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) has invalid type GlpiPlugin\\Tasklists\\datas\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Return type \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForAdd\(\) should be compatible with return type \(array\<string, mixed\>\|false\) of method CommonDBTM\:\:prepareInputForAdd\(\)$#'
-			identifier: method.childReturnType
-			count: 1
-			path: src/Task.php
-
-		-
-			message: '#^Return type \(GlpiPlugin\\Tasklists\\datas\) of method GlpiPlugin\\Tasklists\\Task\:\:prepareInputForUpdate\(\) should be compatible with return type \(array\<string, mixed\>\|false\) of method CommonDBTM\:\:prepareInputForUpdate\(\)$#'
-			identifier: method.childReturnType
-			count: 1
-			path: src/Task.php
-
 		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Variable \$field might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
 			path: src/Task.php
-
 		-
 			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
 			identifier: glpi.forbidExit
 			count: 1
 			path: src/Task.php
-
 		-
 			message: '#^Access to offset ''tasktypes'' on an unknown class GlpiPlugin\\Tasklists\\type\.$#'
 			identifier: class.notFound
