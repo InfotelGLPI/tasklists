@@ -391,6 +391,11 @@ class Task extends CommonDBTM
         if (isset($input['due_date']) && empty($input['due_date'])) {
             $input['due_date'] = 'NULL';
         }
+        // Mirror prepareInputForAdd(): sanitize the rich-text content on update as well, so the
+        // stored value cannot carry unfiltered markup regardless of how a future path renders it.
+        if (isset($input['content'])) {
+            $input['content'] = RichText::getSafeHtml($input['content'], true);
+        }
         if (isset($input['plugin_tasklists_taskstates_id'])) {
             $state = new TaskState();
             if ($state->getFromDB($input['plugin_tasklists_taskstates_id'])) {
