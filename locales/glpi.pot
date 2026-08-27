@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-27 07:53+0000\n"
+"POT-Creation-Date: 2026-08-27 09:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,11 +71,11 @@ msgstr ""
 msgid "Add task"
 msgstr ""
 
-#: src/Task.php:1260
+#: src/Task.php:1265
 msgid "Affect entity for create task"
 msgstr ""
 
-#: src/Task.php:1175
+#: src/Task.php:1180
 msgctxt "visibility"
 msgid "All"
 msgstr ""
@@ -110,7 +110,7 @@ msgstr ""
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/Task.php:692 src/Task.php:773 src/Task.php:1111 src/TaskType.php:190
+#: src/Task.php:697 src/Task.php:778 src/Task.php:1116 src/TaskType.php:190
 #: src/TaskType.php:573
 msgid "Backlog"
 msgstr ""
@@ -375,12 +375,12 @@ msgid ""
 "shown. You can still drag cards into this column."
 msgstr ""
 
-#: src/Task.php:1169
+#: src/Task.php:1174
 msgctxt "visibility"
 msgid "This user"
 msgstr ""
 
-#: src/Task.php:1172
+#: src/Task.php:1177
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr ""
@@ -389,7 +389,7 @@ msgstr ""
 msgid "Toggle collapse"
 msgstr ""
 
-#: src/Task.php:908
+#: src/Task.php:913
 msgid "Transfer"
 msgstr ""
 
@@ -401,7 +401,7 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: src/Task.php:408
+#: src/Task.php:413
 msgid "You cannot archive a task with this state"
 msgstr ""
 
