@@ -1181,6 +1181,41 @@ class Task extends CommonDBTM
     }
 
     /**
+     * Enforce the task visibility model on every per-record right check.
+     *
+     * Task registers standard tabs (Notepad, Task_Comment, Document_Item, Log) that the
+     * generic core loader ajax/common.tabs.php gates solely with $item->can($id, READ).
+     * can() resolves to canView() && canViewItem(); the default canViewItem() only checks
+     * the entity, so without this override a same-entity user holding the base plugin right
+     * could read another user's private (visibility 1) or group-restricted (visibility 2)
+     * task's notes, comments, documents and history through those tabs, bypassing
+     * checkVisibility(). Overriding the can*Item() primitives closes every caller of
+     * can() at a single point. parent:: is kept so the core entity check (checkEntity)
+     * still runs — it must never be replaced by a bare global haveRight().
+     *
+     * @return bool
+     */
+    public function canViewItem(): bool
+    {
+        return parent::canViewItem() && $this->checkVisibility($this->fields['id']);
+    }
+
+    public function canUpdateItem(): bool
+    {
+        return parent::canUpdateItem() && $this->checkVisibility($this->fields['id']);
+    }
+
+    public function canDeleteItem(): bool
+    {
+        return parent::canDeleteItem() && $this->checkVisibility($this->fields['id']);
+    }
+
+    public function canPurgeItem(): bool
+    {
+        return parent::canPurgeItem() && $this->checkVisibility($this->fields['id']);
+    }
+
+    /**
      * @param $id
      *
      * @return bool
