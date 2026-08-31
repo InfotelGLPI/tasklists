@@ -2,191 +2,426 @@
 # Copyright (C) YEAR Tasklists Development Team
 # This file is distributed under the same license as the GLPI - Tasklists plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Paulo Henrique <atual.paulo@gmail.com>, 2021
 # Luis José Machado Sousa <luisjosemachado@gmail.com>, 2021
 # Rafael Gomes <madrafael.gsilva@gmail.com>, 2022
 # Eduardo Mozart de Oliveira <eduardomozart182@gmail.com>, 2025
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 13:55+0000\n"
+"POT-Creation-Date: 2026-08-31 14:55+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
-"Last-Translator: Eduardo Mozart de Oliveira <eduardomozart182@gmail.com>, 2025\n"
-"Language-Team: Portuguese (Brazil) (https://app.transifex.com/infotelGLPI/teams/79675/pt_BR/)\n"
+"Last-Translator: Eduardo Mozart de Oliveira <eduardomozart182@gmail.com>, "
+"2025\n"
+"Language-Team: Portuguese (Brazil) (https://app.transifex.com/infotelGLPI/"
+"teams/79675/pt_BR/)\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
-#: setup.php:87 inc/dashboard.class.php:60 inc/dashboard.class.php:178
-#: inc/dashboard.class.php:183 inc/menu.class.php:44
-#: inc/preference.class.php:46 inc/profile.class.php:52
-msgid "Tasks list"
-msgstr "Lista de tarefas"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1671
+#, javascript-format
+msgid "%d other team members"
+msgstr ""
 
-#: ajax/addOptions.php:30
-msgid "Not archived"
-msgstr "Não arquivado"
+#: src/NotificationTargetTask.php:67
+msgid "A task has been added"
+msgstr "Uma tarefa foi adicionada"
 
-#: ajax/addOptions.php:31 inc/task.class.php:197 inc/task.class.php:686
+#: src/NotificationTargetTask.php:69
+msgid "A task has been removed"
+msgstr "Uma tarefa foi removida"
+
+#: src/NotificationTargetTask.php:68
+msgid "A task has been updated"
+msgstr "Uma tarefa foi atualizada"
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1173
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1788
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1844
+msgid "Add"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2603
+msgctxt "button"
+msgid "Add"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1886
+msgid "Add a column from existing status"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/list.html.twig:56
+msgid "Add a comment"
+msgstr ""
+
+#: src/TypeVisibility.php:167
+msgid "Add a group"
+msgstr "Adicionar um grupo"
+
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:61
+msgid "Add a template"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:554
+msgid "Add column"
+msgstr ""
+
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
+msgid "Add task"
+msgstr "Adicionar tarefa"
+
+#: src/Task.php:1255
+msgid "Affect entity for create task"
+msgstr "Afetar entidade para criar tarefa"
+
+#: src/Task.php:1170
+msgctxt "visibility"
+msgid "All"
+msgstr "Todos"
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:39
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1165
+msgid "Archive all tasks of this state"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2150
+msgid "Archive this task"
+msgstr ""
+
+#: src/Task.php:213 ajax/addOptions.php:53
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Arquivado"
 
-#: inc/dashboard.class.php:59
-msgid "Tables"
-msgstr "Tabelas"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2106
+msgid "Are you sure you want to archive all tasks ?"
+msgstr ""
 
-#: inc/dashboard.class.php:102 inc/task.class.php:96 inc/task.class.php:478
-#: inc/taskstate.class.php:137 inc/taskstate.class.php:189
-#: inc/tasktype.class.php:52
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2196
+msgid "Are you sure you want to archive this task ?"
+msgstr ""
+
+#: src/NotificationTargetTask.php:240
+msgid "At creation, update, removal of a task"
+msgstr "Na criação, atualização, remoção de uma tarefa"
+
+#: src/Preference.php:108
+msgid "Automatic refreshing of tasklist"
+msgstr "Atualização automática da lista de tarefas"
+
+#: src/Task.php:687 src/Task.php:768 src/Task.php:1106 src/TaskType.php:190
+#: src/TaskType.php:573
+msgid "Backlog"
+msgstr "Lista de pendências"
+
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:39
+msgid "Blank Template"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:491
+msgid "Bulk add"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:48
+msgctxt "button"
+msgid "Cancel"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:32
+msgid "Choose a template"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:36
+msgid "Comment"
+msgstr ""
+
+#: src/Profile.php:178
+msgid "Configure contexts and statuses"
+msgstr "Configurar contextos e status"
+
+#: src/Task.php:112 src/TaskType.php:66 src/TaskState.php:150
+#: src/TaskState.php:209 src/Dashboard.php:114
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Contexto"
 msgstr[1] "Contextos"
 msgstr[2] "Contextos"
 
-#: inc/dashboard.class.php:108 inc/notificationtargettask.class.php:213
-#: inc/notificationtargettask.class.php:259 inc/task.class.php:134
-#: inc/task.class.php:568 inc/tasktype.class.php:229
-msgid "Due date"
-msgstr "Data de vencimento"
-
-#: inc/dashboard.class.php:163 inc/dashboard.class.php:164
-#: inc/dashboard.class.php:169 inc/ticket.class.php:154
-msgid "Add task"
-msgstr "Adicionar tarefa"
-
-#: inc/kanban.class.php:76
-msgid "Kanban"
-msgstr "Kanban"
-
-#: inc/kanban.class.php:148
-msgid "You don't have the right to see any context"
-msgstr "Você não tem o direito de ver nenhum contexto"
-
-#: inc/kanban.class.php:185
-msgid "There is no accessible context"
-msgstr "Sem contexto acessível"
-
-#: inc/notificationtargettask.class.php:51
-msgid "A task has been added"
-msgstr "Uma tarefa foi adicionada"
-
-#: inc/notificationtargettask.class.php:52
-msgid "A task has been updated"
-msgstr "Uma tarefa foi atualizada"
-
-#: inc/notificationtargettask.class.php:53
-msgid "A task has been removed"
-msgstr "Uma tarefa foi removida"
-
-#: inc/notificationtargettask.class.php:217
-#: inc/notificationtargettask.class.php:263 inc/task.class.php:205
-#: inc/task.class.php:559
-msgid "Other client"
-msgstr "Outro cliente"
-
-#: inc/notificationtargettask.class.php:271
-msgid "At creation, update, removal of a task"
-msgstr "Na criação, atualização, remoção de uma tarefa"
-
-#: inc/preference.class.php:88
+#: src/Preference.php:100
 msgid "Context by default"
 msgstr "Contexto por padrão"
 
-#: inc/preference.class.php:96
-msgid "Automatic refreshing of tasklist"
-msgstr "Atualização automática da lista de tarefas"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1893
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1912
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1932
+msgid "Create status"
+msgstr ""
 
-#: inc/preference.class.php:102
-msgid "Refresh every "
-msgstr "Atualizar a cada"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:494
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:510
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:800
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2574
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:443
+msgid "Delete"
+msgstr ""
 
-#: inc/preference.class.php:106
-msgid "minute(s)"
-msgstr "minuto(s)"
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:80
+msgid "Description"
+msgstr ""
 
-#: inc/profile.class.php:164 inc/profile.class.php:208
-msgid "See and update all tasks"
-msgstr "Veja e atualize todas as tarefas"
+#: src/Task.php:150 src/TaskType.php:252 src/NotificationTargetTask.php:178
+#: src/NotificationTargetTask.php:228 src/Dashboard.php:120
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
+msgid "Due date"
+msgstr "Data de vencimento"
 
-#: inc/profile.class.php:173 inc/profile.class.php:211
-msgid "Configure contexts and statuses"
-msgstr "Configurar contextos e status"
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:43
+msgctxt "button"
+msgid "Edit"
+msgstr ""
 
-#: inc/task.class.php:254
-msgctxt "quantity"
-msgid "Number of comments"
-msgstr "Número de comentários"
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:32
+msgid "Edit comment"
+msgstr ""
 
-#: inc/task.class.php:392
-msgid "You cannot archive a task with this state"
-msgstr "Você não pode arquivar uma tarefa com este estado"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2653
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2674
+msgid "Error"
+msgstr ""
 
-#: inc/task.class.php:522
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:678
+msgid "Exclude"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:45
 msgid "Existing client"
 msgstr "Cliente existente"
 
-#: inc/task.class.php:709 inc/task.class.php:790 inc/task.class.php:1085
-#: inc/tasktype.class.php:165 inc/tasktype.class.php:526
-msgid "Backlog"
-msgstr "Lista de pendências"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2653
+msgid "Failed to add team member"
+msgstr ""
 
-#: inc/task.class.php:1143
-msgctxt "visibility"
-msgid "This user"
-msgstr "Este usuário"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2674
+msgid "Failed to remove team member"
+msgstr ""
 
-#: inc/task.class.php:1146
-msgctxt "visibility"
-msgid "This user and this group"
-msgstr "Este usuário e este grupo"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:504
+msgid "Go to"
+msgstr ""
 
-#: inc/task.class.php:1149
-msgctxt "visibility"
-msgid "All"
-msgstr "Todos"
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
+msgid "Group"
+msgstr ""
 
-#: inc/task.class.php:1192
-msgid "Affect entity for create task"
-msgstr "Afetar entidade para criar tarefa"
+#: src/TypeVisibility.php:209
+msgid "Groups allowed to use context"
+msgstr "Grupos autorizados a usar o contexto"
 
-#: inc/taskstate.class.php:84
-msgid "Status"
-msgid_plural "Statuses"
-msgstr[0] "Status"
-msgstr[1] "Status"
-msgstr[2] "Status"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2295
+msgid "Invalid regular expression"
+msgstr ""
 
-#: inc/ticket.class.php:74 inc/ticket.class.php:184
+#: src/Kanban.php:82
+msgid "Kanban"
+msgstr "Kanban"
+
+#: src/Ticket.php:301
+msgid "Link a existant ticket"
+msgstr "Vincular a um chamado existente"
+
+#: src/Ticket.php:99 src/Ticket.php:220
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Tarefa vinculada"
 msgstr[1] "Tarefas vinculadas"
 msgstr[2] "Tarefas vinculadas"
 
-#: inc/ticket.class.php:228
-msgid "No task linked to this ticket yet"
-msgstr "Nenhuma tarefa vinculada a este chamado ainda"
-
-#: inc/ticket.class.php:259
-msgid "Link a existant ticket"
-msgstr "Vincular a um chamado existente"
-
-#: inc/ticket.class.php:285
+#: src/Ticket.php:326
 msgid "Linked tickets"
 msgstr "Vincular chamados"
 
-#: inc/typevisibility.class.php:138
-msgid "Add a group"
-msgstr "Adicionar um grupo"
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1174
+msgid "More"
+msgstr ""
 
-#: inc/typevisibility.class.php:179
-msgid "Groups allowed to use context"
-msgstr "Grupos autorizados a usar o contexto"
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:30
+msgid "Name"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:32
+msgid "New comment"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
+msgid "No comments"
+msgstr ""
+
+#: src/Ticket.php:269
+msgid "No task linked to this ticket yet"
+msgstr "Nenhuma tarefa vinculada a este chamado ainda"
+
+#: ajax/addOptions.php:52
+msgid "Not archived"
+msgstr "Não arquivado"
+
+#: src/Task.php:270
+msgctxt "quantity"
+msgid "Number of comments"
+msgstr "Número de comentários"
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1817
+msgid "One item per line"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1892
+msgid "Or add a new status"
+msgstr ""
+
+#: src/Task.php:221 src/NotificationTargetTask.php:182
+#: src/NotificationTargetTask.php:232
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
+msgid "Other client"
+msgstr "Outro cliente"
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:68
+msgid "Percent done"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:39
+msgid "Planned duration"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:37
+msgid "Priority"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:798
+msgid "Purge"
+msgstr ""
+
+#: src/Preference.php:114
+msgid "Refresh every "
+msgstr "Atualizar a cada"
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:575
+msgid "Regex"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:59
+msgid "Requester"
+msgid_plural "Requesters"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: /home/runner/work/tasklists/tasklists/templates/kanban.html.twig:49
+msgid "Role"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/profile.html.twig:34
+msgctxt "button"
+msgid "Save"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1051
+msgid "Search"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:552
+msgid "Search or filter results"
+msgstr ""
+
+#: src/Profile.php:171
+msgid "See and update all tasks"
+msgstr "Veja e atualize todas as tarefas"
+
+#: src/TaskState.php:96
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
+msgid "Status"
+msgid_plural "Statuses"
+msgstr[0] "Status"
+msgstr[1] "Status"
+msgstr[2] "Status"
+
+#: src/Dashboard.php:71
+msgid "Tables"
+msgstr "Tabelas"
+
+#: src/Profile.php:61 src/Dashboard.php:72 src/Dashboard.php:210
+#: src/Dashboard.php:215 src/Preference.php:55 src/Menu.php:49 setup.php:105
+msgid "Tasks list"
+msgstr "Lista de tarefas"
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:66
+msgid "Technician"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:32
+msgid "Templates"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2294
+msgid ""
+"The regular expression you entered is invalid. Please check it and try again."
+msgstr ""
+
+#: src/Kanban.php:183
+msgid "There is no accessible context"
+msgstr "Sem contexto acessível"
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2095
+msgid ""
+"This column cannot support showing cards due to how many cards would be "
+"shown. You can still drag cards into this column."
+msgstr ""
+
+#: src/Task.php:1164
+msgctxt "visibility"
+msgid "This user"
+msgstr "Este usuário"
+
+#: src/Task.php:1167
+msgctxt "visibility"
+msgid "This user and this group"
+msgstr "Este usuário e este grupo"
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2053
+msgid "Toggle collapse"
+msgstr ""
+
+#: src/Task.php:903
+msgid "Transfer"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2154
+msgid "Update priority of task"
+msgstr ""
+
+#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:85
+msgid "Visibility"
+msgstr ""
+
+#: src/Task.php:403
+msgid "You cannot archive a task with this state"
+msgstr "Você não pode arquivar uma tarefa com este estado"
+
+#: src/Kanban.php:146
+msgid "You don't have the right to see any context"
+msgstr "Você não tem o direito de ver nenhum contexto"
+
+#: src/Preference.php:121
+msgid "minute(s)"
+msgstr "minuto(s)"
