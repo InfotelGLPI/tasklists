@@ -89,6 +89,8 @@ find "$WORKING_DIR/templates" -type f -name "*.twig" | while read -r file; do
         --keyword=_x:$F_ARGS_X \
         --keyword=_nx:$F_ARGS_NX \
         --keyword=_sn:$F_ARGS_SN \
+        --keyword=__s:$F_ARGS__S \
+        --keyword=_sx:$F_ARGS_SX \
         -
 
     # Corrige les références de fichier dans le POT
@@ -123,3 +125,11 @@ if [ -d "$KANBAN_DIR" ]; then
 else
     echo "⚠️ Dossier $KANBAN_DIR introuvable — étape JavaScript ignorée."
 fi
+
+# --- Report des nouvelles chaînes dans les traductions existantes ---
+# xgettext ne met à jour que le .pot : sans cette étape, les chaînes déjà traduites
+# restent marquées obsolètes (#~) dans les .po et ne sont plus compilées dans les .mo.
+for po_file in locales/*.po; do
+    [ -e "$po_file" ] || continue
+    msgmerge --quiet --no-fuzzy-matching --backup=none --update "$po_file" locales/glpi.pot
+done
