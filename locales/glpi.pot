@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-02 07:28+0000\n"
+"POT-Creation-Date: 2026-09-07 08:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
+#: src/Ticket.php:190 src/Dashboard.php:196 src/Dashboard.php:201
 msgid "Add task"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "Archive this task"
 msgstr ""
 
-#: src/Task.php:213 ajax/addOptions.php:53
+#: ajax/addOptions.php:53 src/Task.php:213
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr ""
@@ -110,8 +110,8 @@ msgstr ""
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/Task.php:687 src/Task.php:768 src/Task.php:1106 src/TaskType.php:190
-#: src/TaskType.php:573
+#: src/TaskType.php:190 src/TaskType.php:573 src/Task.php:687 src/Task.php:768
+#: src/Task.php:1106
 msgid "Backlog"
 msgstr ""
 
@@ -140,8 +140,8 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/Task.php:112 src/TaskType.php:66 src/TaskState.php:150
-#: src/TaskState.php:209 src/Dashboard.php:114
+#: src/TaskState.php:150 src/TaskState.php:209 src/TaskType.php:66
+#: src/Dashboard.php:114 src/Task.php:112
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
@@ -171,8 +171,8 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/Task.php:150 src/TaskType.php:252 src/NotificationTargetTask.php:178
-#: src/NotificationTargetTask.php:228 src/Dashboard.php:120
+#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
+#: src/TaskType.php:252 src/Dashboard.php:120 src/Task.php:150
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr ""
@@ -279,8 +279,8 @@ msgstr ""
 msgid "Or add a new status"
 msgstr ""
 
-#: src/Task.php:221 src/NotificationTargetTask.php:182
-#: src/NotificationTargetTask.php:232
+#: src/NotificationTargetTask.php:182 src/NotificationTargetTask.php:232
+#: src/Task.php:221
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
 msgstr ""
@@ -347,8 +347,8 @@ msgstr[1] ""
 msgid "Tables"
 msgstr ""
 
-#: src/Profile.php:61 src/Dashboard.php:72 src/Dashboard.php:210
-#: src/Dashboard.php:215 src/Preference.php:55 src/Menu.php:49 setup.php:105
+#: setup.php:105 src/Menu.php:49 src/Preference.php:55 src/Profile.php:61
+#: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
 msgid "Tasks list"
 msgstr ""
 
