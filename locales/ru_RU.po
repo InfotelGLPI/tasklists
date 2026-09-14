@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-07 08:10+0000\n"
+"POT-Creation-Date: 2026-09-14 07:01+0000\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Denis Arkhipov <arhipovdv@mtgroup-it.ru>, 2019\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/infotelGLPI/"
@@ -24,36 +24,36 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1671
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1695
 #, javascript-format
 msgid "%d other team members"
 msgstr ""
 
-#: src/NotificationTargetTask.php:67
+#: src/NotificationTargetTask.php:63
 msgid "A task has been added"
 msgstr "Задача была добавлена"
 
-#: src/NotificationTargetTask.php:69
+#: src/NotificationTargetTask.php:65
 msgid "A task has been removed"
 msgstr "Задача была удалена"
 
-#: src/NotificationTargetTask.php:68
+#: src/NotificationTargetTask.php:64
 msgid "A task has been updated"
 msgstr "Задача была обновлена"
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1173
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1788
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1844
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1812
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1868
 msgid "Add"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2603
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
 msgid "Add"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1886
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1910
 msgid "Add a column from existing status"
 msgstr ""
 
@@ -61,11 +61,11 @@ msgstr ""
 msgid "Add a comment"
 msgstr ""
 
-#: src/TypeVisibility.php:167
+#: src/TypeVisibility.php:163
 msgid "Add a group"
 msgstr "Добавить группу"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:61
+#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:68
 msgid "Add a template"
 msgstr ""
 
@@ -77,11 +77,11 @@ msgstr ""
 msgid "Add task"
 msgstr "Добавить задачу"
 
-#: src/Task.php:1255
+#: src/Task.php:1357
 msgid "Affect entity for create task"
 msgstr "Влияние организации на создание задачи"
 
-#: src/Task.php:1170
+#: src/Task.php:1272
 msgctxt "visibility"
 msgid "All"
 msgstr "Все"
@@ -91,24 +91,24 @@ msgstr "Все"
 msgid "Archive all tasks of this state"
 msgstr "Заархивировать задачи с таким статусом"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2150
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2174
 msgid "Archive this task"
 msgstr "Архивировать эту задачу"
 
-#: ajax/addOptions.php:53 src/Task.php:213
+#: ajax/addOptions.php:53 src/Task.php:208
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Заархивирован"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2106
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2130
 msgid "Are you sure you want to archive all tasks ?"
 msgstr "Вы уверены, что хотите заархивировать все задачи?"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2196
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2220
 msgid "Are you sure you want to archive this task ?"
 msgstr "Вы уверены, что хотите заархивировать эту задачу?"
 
-#: src/NotificationTargetTask.php:240
+#: src/NotificationTargetTask.php:236
 msgid "At creation, update, removal of a task"
 msgstr "При создании, изменении, удалении задачи"
 
@@ -116,8 +116,8 @@ msgstr "При создании, изменении, удалении задач
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/TaskType.php:190 src/TaskType.php:573 src/Task.php:687 src/Task.php:768
-#: src/Task.php:1106
+#: src/TaskType.php:200 src/TaskType.php:565 src/Task.php:785 src/Task.php:862
+#: src/Task.php:1208
 msgid "Backlog"
 msgstr "Бэклог"
 
@@ -146,8 +146,8 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/TaskState.php:150 src/TaskState.php:209 src/TaskType.php:66
-#: src/Dashboard.php:114 src/Task.php:112
+#: src/TaskState.php:116 src/TaskState.php:175 src/TaskType.php:62
+#: src/Dashboard.php:114 src/Task.php:107
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
@@ -160,16 +160,16 @@ msgstr[3] "Контексты"
 msgid "Context by default"
 msgstr "Контекст по умолчанию"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1893
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1912
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1932
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1917
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1936
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1956
 msgid "Create status"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:494
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:510
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:800
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2574
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2598
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:443
 msgid "Delete"
@@ -179,8 +179,8 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: src/TaskType.php:252 src/Dashboard.php:120 src/Task.php:150
+#: src/NotificationTargetTask.php:174 src/NotificationTargetTask.php:224
+#: src/TaskType.php:262 src/Dashboard.php:120 src/Task.php:145
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "Срок исполнения"
@@ -194,8 +194,8 @@ msgstr ""
 msgid "Edit comment"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2653
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2674
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2677
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2698
 msgid "Error"
 msgstr ""
 
@@ -208,11 +208,11 @@ msgstr ""
 msgid "Existing client"
 msgstr "Существующий клиент"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2653
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2677
 msgid "Failed to add team member"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2674
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2698
 msgid "Failed to remove team member"
 msgstr ""
 
@@ -224,15 +224,15 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: src/TypeVisibility.php:209
+#: src/TypeVisibility.php:205
 msgid "Groups allowed to use context"
 msgstr "Группы с разрешением использовать контекст"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2295
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2319
 msgid "Invalid regular expression"
 msgstr ""
 
-#: src/Kanban.php:82
+#: src/Kanban.php:78
 msgid "Kanban"
 msgstr "Канбан"
 
@@ -276,21 +276,21 @@ msgstr "Нет связанных с заявкой задач"
 msgid "Not archived"
 msgstr ""
 
-#: src/Task.php:270
+#: src/Task.php:265
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1817
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1841
 msgid "One item per line"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1892
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1916
 msgid "Or add a new status"
 msgstr ""
 
-#: src/NotificationTargetTask.php:182 src/NotificationTargetTask.php:232
-#: src/Task.php:221
+#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
+#: src/Task.php:216
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
 msgstr "Другой клиент"
@@ -344,11 +344,11 @@ msgstr ""
 msgid "Search or filter results"
 msgstr ""
 
-#: src/Profile.php:171
+#: src/Profile.php:167
 msgid "See and update all tasks"
 msgstr "Посмотреть и обновить все задачи"
 
-#: src/TaskState.php:96
+#: src/TaskState.php:62
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
 msgid "Status"
 msgid_plural "Statuses"
@@ -361,7 +361,7 @@ msgstr[3] ""
 msgid "Tables"
 msgstr ""
 
-#: setup.php:105 src/Menu.php:49 src/Preference.php:55 src/Profile.php:61
+#: setup.php:105 src/Menu.php:49 src/Preference.php:55 src/Profile.php:57
 #: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
 msgid "Tasks list"
 msgstr "Список задач"
@@ -374,40 +374,40 @@ msgstr ""
 msgid "Templates"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2294
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2318
 msgid ""
 "The regular expression you entered is invalid. Please check it and try again."
 msgstr ""
 
-#: src/Kanban.php:183
+#: src/Kanban.php:179
 msgid "There is no accessible context"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2095
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2119
 msgid ""
 "This column cannot support showing cards due to how many cards would be "
 "shown. You can still drag cards into this column."
 msgstr ""
 
-#: src/Task.php:1164
+#: src/Task.php:1266
 msgctxt "visibility"
 msgid "This user"
 msgstr "Этот пользователь"
 
-#: src/Task.php:1167
+#: src/Task.php:1269
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Этот пользователь и эта группа"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2053
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2077
 msgid "Toggle collapse"
 msgstr ""
 
-#: src/Task.php:903
+#: src/Task.php:997
 msgid "Transfer"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2154
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2178
 msgid "Update priority of task"
 msgstr "Обновить приоритет задачи"
 
@@ -415,11 +415,15 @@ msgstr "Обновить приоритет задачи"
 msgid "Visibility"
 msgstr ""
 
-#: src/Task.php:403
+#: src/Task.php:372
+msgid "You are not allowed to use this context"
+msgstr ""
+
+#: src/Task.php:466
 msgid "You cannot archive a task with this state"
 msgstr "Вы не можете заархивировать задачу с таким статусом"
 
-#: src/Kanban.php:146
+#: src/Kanban.php:142
 msgid "You don't have the right to see any context"
 msgstr "У вас нет прав на просмотр контекста"
 
