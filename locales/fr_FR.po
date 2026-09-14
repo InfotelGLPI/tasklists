@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 12:55+0000\n"
+"POT-Creation-Date: 2026-09-14 14:18+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
@@ -46,6 +46,7 @@ msgstr "Une tâche a été mise à jour"
 msgid "Add"
 msgstr "Ajouter"
 
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
@@ -60,7 +61,7 @@ msgstr "Ajouter une colonne depuis un statut existant"
 msgid "Add a comment"
 msgstr "Ajouter un commentaire"
 
-#: src/TypeVisibility.php:172
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:34
 msgid "Add a group"
 msgstr "Ajouter un groupe"
 
@@ -111,11 +112,11 @@ msgstr "Etes-vous sur de vouloir archiver cette tâche ?"
 msgid "At creation, update, removal of a task"
 msgstr "A la création, mise à jour et suppression d'un tâche"
 
-#: src/Preference.php:108
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:34
 msgid "Automatic refreshing of tasklist"
 msgstr "Rafraîchissement automatique des listes de tâches"
 
-#: src/TaskType.php:236 src/TaskType.php:646 src/Task.php:989 src/Task.php:1066
+#: src/TaskType.php:236 src/TaskType.php:659 src/Task.php:989 src/Task.php:1066
 #: src/Task.php:1412
 msgid "Backlog"
 msgstr "Backlog"
@@ -137,6 +138,10 @@ msgstr "Annuler"
 msgid "Choose a template"
 msgstr "Choisissez un gabarit"
 
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:39
+msgid "Color"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:36
 msgid "Comment"
 msgstr "Commentaire"
@@ -145,16 +150,17 @@ msgstr "Commentaire"
 msgid "Configure contexts and statuses"
 msgstr "Configurer les contextes et les statuts"
 
-#: src/TaskState.php:117 src/TaskState.php:185 src/TaskType.php:84
-#: src/Dashboard.php:114 src/Task.php:109
+#: src/TaskState.php:181 src/TaskType.php:84 src/Dashboard.php:114
+#: src/Task.php:109
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:52
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Contexte"
 msgstr[1] "Contextes"
 msgstr[2] "Contextes"
 
-#: src/Preference.php:100
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:29
 msgid "Context by default"
 msgstr "Contexte par défaut"
 
@@ -174,6 +180,7 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:80
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:34
 msgid "Description"
 msgstr "Description"
 
@@ -214,15 +221,20 @@ msgstr "Ajout d'un membre d'équipe échoué"
 msgid "Failed to remove team member"
 msgstr "Suppression d'un membre d'équipe échoué"
 
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:44
+msgid "Finished state"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:504
 msgid "Go to"
 msgstr "Aller à"
 
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:38
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
 msgid "Group"
 msgstr "Groupe"
 
-#: src/TypeVisibility.php:214
+#: src/TypeVisibility.php:215
 msgid "Groups allowed to use context"
 msgstr "Groupes autorisés à utiliser ce contexte"
 
@@ -254,6 +266,7 @@ msgid "More"
 msgstr "Plus"
 
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:30
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:29
 msgid "Name"
 msgstr "Nom"
 
@@ -308,7 +321,7 @@ msgstr "Priorité"
 msgid "Purge"
 msgstr "Supprimer définitivement"
 
-#: src/Preference.php:114
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:39
 msgid "Refresh every "
 msgstr "Rafraîchir toutes les"
 
@@ -344,7 +357,7 @@ msgstr "Chercher ou filtrer les résultats"
 msgid "See and update all tasks"
 msgstr "Voir et mettre à jour toutes les tâches"
 
-#: src/TaskState.php:63
+#: src/TaskState.php:64
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
 msgid "Status"
 msgid_plural "Statuses"
@@ -356,7 +369,7 @@ msgstr[2] "Statuts"
 msgid "Tables"
 msgstr "Tableaux"
 
-#: setup.php:105 src/Menu.php:49 src/Preference.php:55 src/Profile.php:57
+#: setup.php:105 src/Menu.php:49 src/Preference.php:56 src/Profile.php:57
 #: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
 msgid "Tasks list"
 msgstr "Liste des tâches"
@@ -442,6 +455,6 @@ msgstr "Vous ne pouvez pas archiver une tâche ayant ce statut"
 msgid "You don't have the right to see any context"
 msgstr "Vous n'avez pas le droit de voir de contexte"
 
-#: src/Preference.php:121
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr "minute(s)"
