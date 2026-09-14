@@ -367,12 +367,19 @@ function plugin_tasklists_addDefaultWhere($type)
             // routed client data through this string could not turn it into an injection.
             $who = (int) Session::getLoginUserID();
             if (!Session::haveRight("plugin_tasklists_see_all", 1)) {
-                if (count($_SESSION["glpigroups"])
+                // $_SESSION['glpigroups'] is not always set - it is absent from the API and CLI
+                // sessions and from a session that has not been through the entity switch - and
+                // count(null) has been a fatal TypeError since PHP 8.0, not a warning. This hook
+                // sits on the search engine, so the whole task search answered a 500 instead of
+                // falling back on the "no group" branch right below. Every other read of the key
+                // in the plugin already defaults it (src/Task.php:1548).
+                $session_groups = $_SESSION['glpigroups'] ?? [];
+                if (count($session_groups)
                     //                && Session::haveRight("plugin_tasklists_my_groups", 1)
                 ) {
                     $first_groups = true;
                     $groups       = "";
-                    foreach ($_SESSION['glpigroups'] as $val) {
+                    foreach ($session_groups as $val) {
                         if (!$first_groups) {
                             $groups .= ",";
                         } else {

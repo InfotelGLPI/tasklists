@@ -179,13 +179,27 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
                 $input['is_recursive']                  = $data['is_recursive'];
                 $input['plugin_tasklists_tasktypes_id'] = $data['plugin_tasklists_tasktypes_id'];
                 $temp                                   = new self();
-                $newID                                  = $temp->getID();
 
-                if ($newID < 0) {
-                    $newID = $temp->import($input);
+                // $temp has just been instantiated, so getID() could only ever answer -1 and the
+                // test that stood here was always true. The lookup it was meant to perform lives
+                // inside import(), which calls findID() before adding anything; splitting the
+                // two makes explicit which half is a read and which half is a write.
+                //
+                // TaskType is protected by plugin_tasklists_config, deliberately separate from
+                // plugin_tasklists so that a profile may use the plugin without touching its
+                // referential - the canCreate()/canUpdate() overrides were removed from these
+                // classes for exactly that reason. The massive action reaching this method is
+                // gated by "transfer" READ and Task::canUpdate() only, neither of which says
+                // anything about the configuration right: transferring tasks used to create
+                // contexts in the target entity on behalf of a caller who cannot write that
+                // referential, and those contexts then appeared in the dropdowns and the Kanban
+                // columns of everyone in that entity. Without the bit, the transfer resolves an
+                // already existing equivalent and stops there.
+                if (Session::haveRight(self::$rightname, CREATE)) {
+                    return $temp->import($input);
                 }
 
-                return $newID;
+                return max(0, (int) $temp->findID($input));
             }
         }
         return 0;
@@ -277,11 +291,22 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
             $datas          = $task->find($task_crit, ['priority DESC,name']);
 
             foreach ($datas as $data) {
+                // Read back defensively: the session may still hold a value written by an older
+                // version of ajax/addOptions.php - the empty string, the literal "null", or a
+                // scalar - and json_decode() answers null for all three, which in_array() turns
+                // into a fatal TypeError since PHP 8.0. Falling back on the defaults the
+                // dropdowns are seeded with restores the board instead of breaking it.
                 $array = isset($_SESSION["archive"][Session::getLoginUserID()]) ? json_decode($_SESSION["archive"][Session::getLoginUserID()]) : [0];
+                if (!is_array($array)) {
+                    $array = [0];
+                }
                 if (!in_array($data["is_archived"], $array)) {
                     continue;
                 }
                 $usersallowed = isset($_SESSION["usersKanban"][Session::getLoginUserID()]) ? json_decode($_SESSION["usersKanban"][Session::getLoginUserID()]) : [-1];
+                if (!is_array($usersallowed)) {
+                    $usersallowed = [-1];
+                }
                 if (!in_array(-1, $usersallowed) && !in_array($data['users_id'], $usersallowed)) {
                     continue;
                 }

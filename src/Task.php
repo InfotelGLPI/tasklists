@@ -340,6 +340,19 @@ class Task extends CommonDBTM
         /// Task_Comment does not extends CommonDBConnexity
         $kbic = new Task_Comment();
         $kbic->deleteByCriteria(['plugin_tasklists_tasks_id' => $this->fields['id']]);
+
+        // The ticket link table was not cleaned, although the opposite direction is:
+        // Ticket::cleanForTicket() is wired on Hooks::ITEM_PURGE and removes the same rows when
+        // it is the ticket that disappears. Purging a task therefore left rows pointing at an
+        // identifier that no longer exists, and MySQL reuses AUTO_INCREMENT values on an InnoDB
+        // table after a server restart or a restore - a task created later, possibly in another
+        // entity and with a private visibility, then silently inherited the links of the purged
+        // one and showed up in the tab of tickets its own visibility model excluded it from.
+        // Ticket here is GlpiPlugin\Tasklists\Ticket, the link table of the plugin: this file
+        // has no `use Ticket;`, so the name resolves in the plugin namespace and not to the core
+        // class it shares its name with.
+        $task_ticket = new Ticket();
+        $task_ticket->deleteByCriteria(['plugin_tasklists_tasks_id' => $this->fields['id']]);
     }
 
     /**
@@ -496,6 +509,32 @@ class Task extends CommonDBTM
                 || !TypeVisibility::isUserHaveRight($input['plugin_tasklists_tasktypes_id'])) {
                 Session::addMessageAfterRedirect(
                     __('You are not allowed to use this context', 'tasklists'),
+                    false,
+                    ERROR,
+                );
+                return false;
+            }
+        }
+
+        // The Kanban drag and drop validates the state it posts against the states the task type
+        // declares (ajax/kanban.php, update action), and that was the only path doing so: the
+        // creation and edition forms accepted any row of the state table, including one
+        // belonging to another type or another entity. A task parked in a state its type does
+        // not declare is rendered in no column of its board and is unreachable from the dropdown
+        // that would have moved it back. getAllowedStates() is the single source of truth all
+        // the paths now share. The type used is the posted one when the input carries it, the
+        // stored one otherwise, since the edition form posts the state on its own.
+        if (isset($input['plugin_tasklists_taskstates_id'])) {
+            $posted_state = (int) $input['plugin_tasklists_taskstates_id'];
+            $tasktypes_id = (int) ($input['plugin_tasklists_tasktypes_id']
+                ?? $this->fields['plugin_tasklists_tasktypes_id']
+                ?? 0);
+            // An unchanged value is always accepted: a state can be detached from a type after
+            // the fact, and refusing it here would freeze every task still holding it.
+            if ($posted_state !== (int) ($this->fields['plugin_tasklists_taskstates_id'] ?? -1)
+                && !in_array($posted_state, self::getAllowedStates($tasktypes_id), true)) {
+                Session::addMessageAfterRedirect(
+                    __('You are not allowed to use this status', 'tasklists'),
                     false,
                     ERROR,
                 );
@@ -913,6 +952,28 @@ class Task extends CommonDBTM
         }
 
         return $allowed;
+    }
+
+    /**
+     * Columns a Kanban card creation is allowed to set.
+     *
+     * The add-item form of the board declares five fields - see the supported_itemtypes array
+     * built in src/Kanban.php - and the Vue component adds the column field of the board to the
+     * payload. Nothing else belongs in a card creation, so ajax/kanban.php reduces the posted
+     * inputs to this list rather than handing CommonDBTM a client-shaped array.
+     *
+     * @return string[]
+     */
+    public static function getKanbanCreationFields(): array
+    {
+        return [
+            'name',
+            'content',
+            'entities_id',
+            'users_id',
+            'plugin_tasklists_tasktypes_id',
+            'plugin_tasklists_taskstates_id',
+        ];
     }
 
     /**
@@ -1656,17 +1717,39 @@ class Task extends CommonDBTM
     {
         $dbu = new DbUtils();
 
-        $restrict = ["is_template" => 1]
-            + $dbu->getEntitiesRestrictCriteria($this->getTable(), '', '', $this->maybeRecursive())
+        // Every other read path of tasks in this plugin narrows by the plugin's own visibility
+        // model - getVisibilityCriteria() in SQL for ajax/dropdownTypeTasks.php,
+        // Kanban::showKanban() and the searches, checkVisibility() row by row for
+        // ajax/seetask.php, ajax/updatetask.php and front/task.form.php. This one narrowed by
+        // entity alone, so a template stored private (visibility 1) or restricted to a group
+        // (visibility 2) was listed to every holder of the plugin READ right in the entity, name
+        // and real identifier included - the ?id=<id>&withtemplate=2 link turned a blind
+        // enumeration of identifiers into a directed one. is_deleted and is_archived are
+        // excluded here too, to match hasTemplate(): templates sent to the bin stayed listed and
+        // stayed clickable. getVisibilityCriteria() carries its own entity restriction, so the
+        // getEntitiesRestrictCriteria() call it replaces is not lost.
+        $restrict = ["is_template" => 1, "is_deleted" => 0, "is_archived" => 0]
+            + self::getVisibilityCriteria()
             + ["ORDER" => "name"];
 
         $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
+
+        // Defence in depth: getVisibilityCriteria() is the SQL mirror of checkVisibility(), and
+        // the two have to keep agreeing. Replaying the row-by-row test costs one query per
+        // template on a page that lists a handful of them, and it is the same belt-and-braces
+        // pair the Kanban paths already apply. A dedicated instance is used so the loop does not
+        // overwrite the fields of the object rendering the page.
+        $visibility = new self();
 
         $multi_entities = Session::isMultiEntitiesMode();
         $colsup = $multi_entities ? 1 : 0;
 
         $rows = [];
         foreach ($templates as $template) {
+            if (!$visibility->checkVisibility((int) $template["id"])) {
+                continue;
+            }
+
             // Only the delete form is framework HTML (rendered |raw); the entity label and
             // the template name are plain text, auto-escaped by Twig.
             $entity_name = '';
@@ -1860,6 +1943,16 @@ class Task extends CommonDBTM
         // or - for a group - that it is a user group at all. prepareInputForUpdate() below now
         // replays the same test through update(), but refusing here returns false to the client
         // instead of relying on a side effect of the model.
+        // Defence in depth on the task itself, next to the write: this method is the
+        // TeamworkInterface entry point, it reassigns the task, and its caller
+        // (ajax/kanban.php, action add_teammember) is one of the $nonkanban_actions - the ones
+        // the Kanban context check deliberately skips - so the guard up there is the only thing
+        // standing between a request and the reassignment. Replaying the visibility model here
+        // means the boundary no longer depends on a single remote call site.
+        if (!$this->checkVisibility($this->getID())) {
+            return false;
+        }
+
         $entities_id = (int) $this->fields['entities_id'];
         if ($field === 'users_id' && !self::isUserAllowedInEntity($items_id, $entities_id)) {
             return false;

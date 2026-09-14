@@ -42,9 +42,60 @@ use User;
  */
 class Task_Comment extends CommonDBTM
 {
+    // The class declared no rightname, which makes every global right test of CommonGLPI answer
+    // false, and its table carries no entities_id, which makes CommonDBTM::checkEntity() a
+    // no-op: object-level rights on a comment decided nothing at all, and every path guarding a
+    // comment had to remember to guard its task by hand instead. Reading or writing a comment
+    // is an operation on its task, so the plugin right is declared here and the item-level
+    // tests are delegated to the parent task below: can() then enforces the global right, the
+    // entity of the task and the plugin's own visibility model in one call.
+    public static $rightname = 'plugin_tasklists';
+
     public static function getTypeName($nb = 0)
     {
         return _n('Comment', 'Comments', $nb);
+    }
+
+    /**
+     * Resolve the task a comment belongs to.
+     */
+    private function getParentTask(): ?Task
+    {
+        $tasks_id = (int) ($this->fields['plugin_tasklists_tasks_id'] ?? 0);
+        if ($tasks_id <= 0) {
+            return null;
+        }
+        $task = new Task();
+        if (!$task->getFromDB($tasks_id)) {
+            return null;
+        }
+        return $task;
+    }
+
+    public function canViewItem(): bool
+    {
+        $task = $this->getParentTask();
+        return $task !== null
+            && $task->can($task->getID(), READ)
+            && $task->checkVisibility($task->getID());
+    }
+
+    public function canUpdateItem(): bool
+    {
+        $task = $this->getParentTask();
+        return $task !== null
+            && $task->can($task->getID(), UPDATE)
+            && $task->checkVisibility($task->getID());
+    }
+
+    public function canCreateItem(): bool
+    {
+        return $this->canUpdateItem();
+    }
+
+    public function canPurgeItem(): bool
+    {
+        return $this->canUpdateItem();
     }
 
     /**
@@ -124,8 +175,16 @@ class Task_Comment extends CommonDBTM
         );
 
         $entry = new Task();
-        $entry->getFromDB($task->fields['id']);
-        $cancomment = true;
+        $entry->getFromDB($task->fields['id'] ?? 0);
+        // The tab is only offered when the caller may update the task, but showForItem() is
+        // public and this flag decides whether the comment form and the reply/edit affordances
+        // are rendered: hard-coded to true, it advertised a write the caller may not be allowed
+        // to perform, and any other path reaching this renderer inherited the same claim. The
+        // right tested is the one front/task_comment.form.php and ajax/getTaskComment.php
+        // enforce on the write itself.
+        $cancomment = $entry->getID() > 0
+            && $entry->can($entry->getID(), UPDATE)
+            && $entry->checkVisibility($entry->getID());
 
         $lang     = null;
         $comments = self::getCommentsForTaskItem($plugin_tasklists_tasks_id, $where['language']);
@@ -272,6 +331,28 @@ class Task_Comment extends CommonDBTM
             $input["users_id"] = 0;
             if ($uid = Session::getLoginUserID()) {
                 $input["users_id"] = $uid;
+            }
+        }
+
+        // parent_comment_id comes from a hidden field of the reply form and was stored as it
+        // arrived. front/task_comment.form.php authorises the task and pins
+        // plugin_tasklists_tasks_id, but nothing tied the parent to that task: naming the id of
+        // a comment belonging to another task - including one outside the caller's entity or
+        // visibility scope - grafted the new comment into a foreign thread, where
+        // buildCommentsTree() then rendered it under a parent the author was never allowed to
+        // see. A reply is only ever a reply to a comment of the same task.
+        $parent_id = (int) ($input['parent_comment_id'] ?? 0);
+        if ($parent_id > 0) {
+            $parent = new self();
+            if (!$parent->getFromDB($parent_id)
+                || (int) $parent->fields['plugin_tasklists_tasks_id']
+                    !== (int) ($input['plugin_tasklists_tasks_id'] ?? 0)) {
+                Session::addMessageAfterRedirect(
+                    __('You are not allowed to reply to this comment', 'tasklists'),
+                    false,
+                    ERROR,
+                );
+                return false;
             }
         }
 

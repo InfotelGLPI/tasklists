@@ -83,34 +83,71 @@ class Item_Kanban extends CommonDBRelation
     }
 
 
+    /**
+     * Fold a Kanban column for the current user
+     *
+     * @param string $itemtype Type of the item.
+     * @param int    $items_id ID of the item.
+     * @param int    $column   column id
+     *
+     * @return bool
+     */
     public static function collapseColumn($itemtype, $items_id, $column)
     {
-        $item = new self();
-        $item->getFromDBByCrit([
-            'users_id'                       => Session::getLoginUserID(),
-            'itemtype'                       => $itemtype,
-            'items_id'                       => $items_id,
-            'plugin_tasklists_taskstates_id' => $column,
-        ]);
-        $input             = $item->fields;
-        $input["state"]    = true;
-        $input["date_mod"] = $_SESSION['glpi_currenttime'];
-        $item->update($input);
+        return self::setColumnState($itemtype, $items_id, $column, true);
     }
 
+    /**
+     * Unfold a Kanban column for the current user
+     *
+     * @param string $itemtype Type of the item.
+     * @param int    $items_id ID of the item.
+     * @param int    $column   column id
+     *
+     * @return bool
+     */
     public static function expandColumn($itemtype, $items_id, $column)
     {
+        return self::setColumnState($itemtype, $items_id, $column, false);
+    }
 
-        $item = new self();
-        $item->getFromDBByCrit([
+    /**
+     * Persist the folded state of one Kanban column for the current user
+     *
+     * getFromDBByCrit() returns false as long as the row has not been materialised, which is the
+     * nominal case the first time a user folds a column: $item->fields was then empty, update()
+     * received a payload without id and silently did nothing, so the preference was lost on the
+     * next reload. loadStateForItem() creates the missing row, after which the read succeeds and
+     * the outcome of the write is returned to the caller.
+     *
+     * @param string $itemtype Type of the item.
+     * @param int    $items_id ID of the item.
+     * @param int    $column   column id
+     * @param bool   $state    true to fold, false to unfold
+     *
+     * @return bool
+     */
+    private static function setColumnState($itemtype, $items_id, $column, $state)
+    {
+        $crit = [
             'users_id'                       => Session::getLoginUserID(),
             'itemtype'                       => $itemtype,
             'items_id'                       => $items_id,
             'plugin_tasklists_taskstates_id' => $column,
+        ];
+
+        $item = new self();
+        if (!$item->getFromDBByCrit($crit)) {
+            self::loadStateForItem($itemtype, $items_id, $column);
+            if (!$item->getFromDBByCrit($crit)) {
+                return false;
+            }
+        }
+
+        return $item->update([
+            'id'       => $item->getID(),
+            'state'    => $state,
+            'date_mod' => $_SESSION['glpi_currenttime'],
         ]);
-        $input             = $item->fields;
-        $input["state"]    = false;
-        $input["date_mod"] = $_SESSION['glpi_currenttime'];
-        $item->update($input);
     }
 }

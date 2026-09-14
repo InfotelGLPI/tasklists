@@ -69,7 +69,17 @@ if (isset($_POST['edit'])) {
 
 $answer = false;
 if (isset($_POST['answer'])) {
-    $answer = $_POST['answer'];
+    $answer = (int) $_POST['answer'];
+    // Same check as $edit above, which this branch was missing: the comment being replied to
+    // has to belong to the task that has just been authorised, otherwise the reply form came
+    // back carrying a parent_comment_id pointing into another thread.
+    if ($answer > 0) {
+        $parent = new Task_Comment();
+        if (!$parent->getFromDB($answer)
+            || (int) $parent->fields['plugin_tasklists_tasks_id'] !== $plugin_tasklists_tasks_id) {
+            throw new AccessDeniedHttpException();
+        }
+    }
 }
 
 echo Task_Comment::getCommentForm($plugin_tasklists_tasks_id, $lang, $edit, $answer);

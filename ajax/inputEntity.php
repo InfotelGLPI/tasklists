@@ -27,11 +27,20 @@
  * --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
+
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkRight('plugin_tasklists', UPDATE);
 
 if (isset($_POST["entities_id"])) {
-    echo Html::hidden('entities_id', ['value' => $_POST["entities_id"]]);
+    // Every other entry point of the plugin types the posted entity and confronts it with the
+    // caller's scope before using it; this fragment reflected it untouched, so the task form was
+    // primed on a foreign entity until the write was finally refused further down.
+    $entities_id = (int) $_POST["entities_id"];
+    if (!Session::haveAccessToEntity($entities_id)) {
+        throw new AccessDeniedHttpException();
+    }
+    echo Html::hidden('entities_id', ['value' => $entities_id]);
 }

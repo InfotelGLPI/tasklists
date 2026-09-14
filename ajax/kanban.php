@@ -110,6 +110,17 @@ if ($item !== null) {
             // Missing rights
             throw new AccessDeniedHttpException();
         }
+        // Same blind spot as the block above, and the last two UPDATE-gated Task actions that
+        // did not close it: GlpiPlugin\Tasklists\Task declares no canAssign(), so the ternary
+        // always falls back on can($id, UPDATE), which knows the global right and the entity but
+        // nothing of the plugin's visibility model. add_teammember is a write - it rewrites the
+        // users_id or the groups_id of the task - and both actions are listed in
+        // $nonkanban_actions, so $checkKanbanContext never covers them either: a same-entity
+        // user could take over a private (visibility 1) or group (visibility 2) task belonging
+        // to somebody else, or read its assignment form.
+        if ($item instanceof Task && !$item->checkVisibility((int) $_REQUEST['items_id'])) {
+            throw new AccessDeniedHttpException();
+        }
     }
     if (in_array($action, ['bulk_add_item', 'add_item'])) {
         if (!$item->canCreate()) {
@@ -143,6 +154,22 @@ $checkParams = static function ($required) {
     foreach ($required as $param) {
         if (!isset($_REQUEST[$param])) {
             throw new BadRequestHttpException("Missing $param parameter");
+        }
+    }
+};
+
+/**
+ * Helper to reject the arrays PHP lets through any parameter name.
+ *
+ * $checkParams above only answers "is it there": a value posted as card[]=1 passes it and reaches
+ * the core helpers, which are written for scalars - array_splice() takes an int-typed offset, the
+ * comparisons are made with ===, and the request died on an uncaught TypeError, a 500 where a 400
+ * was meant.
+ */
+$checkScalarParams = static function (array $required): void {
+    foreach ($required as $param) {
+        if (!is_scalar($_REQUEST[$param] ?? null)) {
+            throw new BadRequestHttpException("Invalid $param parameter");
         }
     }
 };
@@ -210,7 +237,17 @@ if (($_POST['action'] ?? null) === 'update') {
         throw new BadRequestHttpException();
     }
 
-    $inputs = $_POST['inputs'];
+    // Mass assignment: $_POST['inputs'] is the serialised card form and went whole into add().
+    // CommonDBTM writes every key of the input matching a column of the table, so the client
+    // could also set is_template, is_deleted, is_archived, is_recursive, visibility,
+    // users_id_requester or the date columns - creating from the Kanban a task template that
+    // then appeared in the template list, a task born deleted or archived, or one made public
+    // (visibility 3) regardless of what the form offered. The payload is reduced to the fields
+    // the board actually posts; rights, entity and context are still settled by
+    // can(-1, CREATE, ...) and by Task::validatePostedContext().
+    $inputs = is_array($_POST['inputs'])
+        ? array_intersect_key($_POST['inputs'], array_flip(Task::getKanbanCreationFields()))
+        : [];
 
     if (!$item->can(-1, CREATE, $inputs)) {
         throw new AccessDeniedHttpException();
@@ -228,11 +265,13 @@ if (($_POST['action'] ?? null) === 'update') {
         throw new BadRequestHttpException();
     }
 
-    $inputs = $_POST['inputs'];
-
-    $bulk_item_list = preg_split('/\r\n|[\r\n]/', $inputs['bulk_item_list']);
+    // Same whitelist as add_item above. bulk_item_list is not a column of the table and is
+    // consumed here, so it is read before the payload is reduced - which also replaces the
+    // unset() that used to do half the job.
+    $inputs = is_array($_POST['inputs']) ? $_POST['inputs'] : [];
+    $bulk_item_list = preg_split('/\r\n|[\r\n]/', (string) ($inputs['bulk_item_list'] ?? ''));
+    $inputs = array_intersect_key($inputs, array_flip(Task::getKanbanCreationFields()));
     if ($bulk_item_list !== []) {
-        unset($inputs['bulk_item_list']);
         foreach ($bulk_item_list as $item_entry) {
             $item_entry = trim($item_entry);
             if (!empty($item_entry)) {
@@ -251,13 +290,20 @@ if (($_POST['action'] ?? null) === 'update') {
     if (method_exists($kanban, 'canOrderKanbanCard')) {
         $can_move = $kanban->canOrderKanbanCard($_POST['kanban']['items_id']);
     }
+    // card, column and position reached \Item_Kanban::moveCard() untouched: position ends up as
+    // the offset of array_splice(), which is typed int, so a value posted as position[]=1 raised
+    // an uncaught TypeError - a 500 where a 400 was meant. Only position is cast: moveCard()
+    // compares card and column with === against the values read back from the stored state,
+    // which json_decode() returns as the strings the form encoding produced, so pinning a type
+    // on them would stop every comparison from matching and silently break the drag and drop.
+    $checkScalarParams(['card', 'column', 'position']);
     if ($can_move) {
         \Item_Kanban::moveCard(
             $_POST['kanban']['itemtype'],
             $_POST['kanban']['items_id'],
             $_POST['card'],
             $_POST['column'],
-            $_POST['position'],
+            (int) $_POST['position'],
         );
     }
 } elseif (($_POST['action'] ?? null) === 'show_column') {
@@ -351,7 +397,38 @@ if (($_POST['action'] ?? null) === 'update') {
         return;
     }
     $checkParams(['items_id', 'state']);
-    \Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], $_POST['state']);
+    // The posted state went straight into json_encode() and into glpi_items_kanbans: its shape
+    // and its size were the client's, per user and per board, and the Kanban reads the blob
+    // back on every load. The interface produces exactly four keys per column (see
+    // getUpdatedColumnState() in js/src/vue/Kanban/Kanban.vue), so the payload is rebuilt from
+    // them instead of being trusted - extra keys, nested structures or an object in place of a
+    // card identifier were persisted verbatim. The scalars are kept as they arrive rather than
+    // coerced: the flags travel as the strings "true"/"false" and the column identifiers as
+    // strings, and Item_Kanban compares them with === against what was stored, so changing
+    // their type here would break showColumn()/hideColumn()/moveCard().
+    $posted_state = $_POST['state'];
+    if (!is_array($posted_state)) {
+        throw new BadRequestHttpException("Invalid state parameter");
+    }
+    $state = [];
+    foreach ($posted_state as $column_index => $posted_column) {
+        if (!is_array($posted_column) || !isset($posted_column['column']) || !is_scalar($posted_column['column'])) {
+            continue;
+        }
+        $cards = [];
+        foreach ((array) ($posted_column['cards'] ?? []) as $card_id) {
+            if (is_scalar($card_id)) {
+                $cards[] = (string) $card_id;
+            }
+        }
+        $state[(int) $column_index] = [
+            'column'  => (string) $posted_column['column'],
+            'folded'  => is_scalar($posted_column['folded'] ?? null) ? (string) $posted_column['folded'] : 'false',
+            'visible' => is_scalar($posted_column['visible'] ?? null) ? (string) $posted_column['visible'] : 'true',
+            'cards'   => $cards,
+        ];
+    }
+    \Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], $state);
 } elseif ($_REQUEST['action'] === 'load_column_state') {
     $checkParams(['itemtype', 'items_id', 'last_load']);
     $checkKanbanContext($_REQUEST['itemtype'], $_REQUEST['items_id']);
@@ -423,8 +500,12 @@ if (($_POST['action'] ?? null) === 'update') {
         throw new BadRequestHttpException();
     }
     $checkParams(['itemtype_teammember', 'items_id_teammember']);
+    // role is neither required by $checkParams nor guaranteed to be scalar, and reading it raw
+    // emitted an "Undefined array key" warning in the middle of an AJAX response. Cast like the
+    // delete_teammember branch does; Task::addTeamMember() ignores the key and pins the role to
+    // CommonITILActor::ASSIGN anyway.
     $item->addTeamMember($_POST['itemtype_teammember'], (int) $_POST['items_id_teammember'], [
-        'role' => $_POST['role'],
+        'role' => (int) ($_POST['role'] ?? 0),
     ]);
 } elseif (($_POST['action'] ?? null) === 'delete_teammember') {
     if (!($item instanceof TeamworkInterface)) {

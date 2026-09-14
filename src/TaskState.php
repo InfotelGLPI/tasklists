@@ -33,6 +33,7 @@ use CommonDropdown;
 use DbUtils;
 use Dropdown;
 use Html;
+use Session;
 
 // Class for a Dropdown
 
@@ -199,9 +200,9 @@ class TaskState extends CommonDropdown
     }
 
     /**
-     * @param $input
+     * @param array $input
      *
-     * @return array|\type
+     * @return array
      */
     public function prepareInputForAdd($input)
     {
@@ -232,9 +233,9 @@ class TaskState extends CommonDropdown
     }
 
     /**
-     * @param $input
+     * @param array $input
      *
-     * @return array|\type
+     * @return array
      */
     public function prepareInputForUpdate($input)
     {
@@ -249,14 +250,39 @@ class TaskState extends CommonDropdown
     /**
      * Encode sub types
      *
-     * @param type $input
+     * @param array $input
      *
-     * @return \type
+     * @return array
      */
     public function encodeSubtypes($input)
     {
         if (!empty($input['tasktypes'])) {
-            $input['tasktypes'] = json_encode(array_values($input['tasktypes']));
+            // The value comes from a multiple select, but nothing guarantees the request keeps
+            // that shape: a scalar reached array_values() and raised a fatal TypeError on PHP 8.
+            // The identifiers are then confronted with the very criterion showForm() applies to
+            // the list it offers, so a context belonging to another entity cannot be linked by
+            // replaying the POST.
+            $posted   = is_array($input['tasktypes']) ? $input['tasktypes'] : [$input['tasktypes']];
+            $tasktype = new TaskType();
+            $allowed  = [];
+            foreach ($posted as $tasktypes_id) {
+                if (!is_scalar($tasktypes_id)) {
+                    continue;
+                }
+                $tasktypes_id = (int) $tasktypes_id;
+                if ($tasktypes_id <= 0 || !$tasktype->getFromDB($tasktypes_id)) {
+                    continue;
+                }
+                if (!Session::haveAccessToEntity(
+                    $tasktype->fields['entities_id'],
+                    $tasktype->fields['is_recursive'],
+                )) {
+                    continue;
+                }
+                $allowed[$tasktypes_id] = $tasktypes_id;
+            }
+
+            $input['tasktypes'] = json_encode(array_values($allowed));
         }
 
         return $input;

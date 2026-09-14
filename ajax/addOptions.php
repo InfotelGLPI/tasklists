@@ -87,7 +87,19 @@ if ($_REQUEST['action'] == 'addArchived') {
 
 } elseif ($_REQUEST['action'] == 'changeArchive') {
     if (!empty($_REQUEST['vals'])) {
-        $_SESSION["archive"][Session::getLoginUserID()] = json_encode($_REQUEST['vals']);
+        // The value is json_encode()d into the session and read back by
+        // TaskType::getKanbanColumns() to filter the board, so its shape was the client's all
+        // the way: a nested array or a plain string survived the round trip and came back as
+        // something in_array() could never match, emptying the Kanban of that user until the
+        // session was dropped. Only the two values the dropdown offers are kept - 0 "Not
+        // archived" and 1 "Archived".
+        $archive_vals = array_values(array_intersect(
+            array_map('intval', array_filter((array) $_REQUEST['vals'], 'is_scalar')),
+            [0, 1],
+        ));
+        if ($archive_vals !== []) {
+            $_SESSION["archive"][Session::getLoginUserID()] = json_encode($archive_vals);
+        }
     }
 
 } elseif ($_REQUEST['action'] == 'addUsers') {
@@ -120,7 +132,19 @@ if ($_REQUEST['action'] == 'addArchived') {
 
 } elseif ($_REQUEST['action'] == 'changeUsers') {
     if (!empty($_REQUEST['vals'])) {
-        $_SESSION["usersKanban"][Session::getLoginUserID()] = json_encode($_REQUEST['vals']);
+        // Same normalisation as changeArchive above, to a flat list of integers. -1 is the
+        // pseudo value meaning "every user" that the addUsers branch seeds the filter with; the
+        // others are user identifiers. The list is typed rather than matched against the offered
+        // set, which would require re-posting the context: this is a display filter, the entity
+        // and visibility boundaries being enforced by Task::checkVisibility() when the cards are
+        // built.
+        $users_vals = array_values(array_unique(array_map(
+            'intval',
+            array_filter((array) $_REQUEST['vals'], 'is_scalar'),
+        )));
+        if ($users_vals !== []) {
+            $_SESSION["usersKanban"][Session::getLoginUserID()] = json_encode($users_vals);
+        }
     }
 
 }
