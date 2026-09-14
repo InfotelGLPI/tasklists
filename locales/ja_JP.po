@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 12:55+0000\n"
+"POT-Creation-Date: 2026-09-14 14:18+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: INOUE Daisuke, 2026\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/"
@@ -45,6 +45,7 @@ msgstr "タスクを更新しました"
 msgid "Add"
 msgstr "追加"
 
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
@@ -59,7 +60,7 @@ msgstr "既存の状態から項目を追加"
 msgid "Add a comment"
 msgstr ""
 
-#: src/TypeVisibility.php:172
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:34
 msgid "Add a group"
 msgstr "グループを追加"
 
@@ -110,11 +111,11 @@ msgstr "このタスクをアーカイブします。よろしいですか？"
 msgid "At creation, update, removal of a task"
 msgstr "タスクの作成、更新、削除時"
 
-#: src/Preference.php:108
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:34
 msgid "Automatic refreshing of tasklist"
 msgstr "タスクリストの自動画面更新"
 
-#: src/TaskType.php:236 src/TaskType.php:646 src/Task.php:989 src/Task.php:1066
+#: src/TaskType.php:236 src/TaskType.php:659 src/Task.php:989 src/Task.php:1066
 #: src/Task.php:1412
 msgid "Backlog"
 msgstr "バックログ"
@@ -136,6 +137,10 @@ msgstr ""
 msgid "Choose a template"
 msgstr "テンプレートを選択してください"
 
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:39
+msgid "Color"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:36
 msgid "Comment"
 msgstr ""
@@ -144,14 +149,15 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr "コンテキストと状態の設定"
 
-#: src/TaskState.php:117 src/TaskState.php:185 src/TaskType.php:84
-#: src/Dashboard.php:114 src/Task.php:109
+#: src/TaskState.php:181 src/TaskType.php:84 src/Dashboard.php:114
+#: src/Task.php:109
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:52
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "コンテキスト"
 
-#: src/Preference.php:100
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:29
 msgid "Context by default"
 msgstr "デフォルトのコンテキスト"
 
@@ -171,6 +177,7 @@ msgid "Delete"
 msgstr "削除"
 
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:80
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:34
 msgid "Description"
 msgstr ""
 
@@ -211,15 +218,20 @@ msgstr "チームメンバーの追加に失敗"
 msgid "Failed to remove team member"
 msgstr "チームメンバーの削除に失敗"
 
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:44
+msgid "Finished state"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:504
 msgid "Go to"
 msgstr "行先"
 
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:38
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
 msgid "Group"
 msgstr ""
 
-#: src/TypeVisibility.php:214
+#: src/TypeVisibility.php:215
 msgid "Groups allowed to use context"
 msgstr "コンテキストの利用を許可しているグループ"
 
@@ -249,6 +261,7 @@ msgid "More"
 msgstr "さらに..."
 
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:30
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:29
 msgid "Name"
 msgstr ""
 
@@ -303,7 +316,7 @@ msgstr ""
 msgid "Purge"
 msgstr "抹消"
 
-#: src/Preference.php:114
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:39
 msgid "Refresh every "
 msgstr "更新間隔"
 
@@ -337,7 +350,7 @@ msgstr "検索または結果フィルター"
 msgid "See and update all tasks"
 msgstr "すべてのタスクを表示・更新"
 
-#: src/TaskState.php:63
+#: src/TaskState.php:64
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
 msgid "Status"
 msgid_plural "Statuses"
@@ -347,7 +360,7 @@ msgstr[0] "状態"
 msgid "Tables"
 msgstr "テーブル"
 
-#: setup.php:105 src/Menu.php:49 src/Preference.php:55 src/Profile.php:57
+#: setup.php:105 src/Menu.php:49 src/Preference.php:56 src/Profile.php:57
 #: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
 msgid "Tasks list"
 msgstr "タスクリスト"
@@ -431,6 +444,6 @@ msgstr "この状態のタスクを保管できません"
 msgid "You don't have the right to see any context"
 msgstr "コンテキストを表示する権限がありません"
 
-#: src/Preference.php:121
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr "分"

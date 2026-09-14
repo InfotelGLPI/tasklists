@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 12:55+0000\n"
+"POT-Creation-Date: 2026-09-14 14:18+0000\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Markku Vepsä, 2018\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/infotelGLPI/"
@@ -45,6 +45,7 @@ msgstr "Tehtävä on päivitetty"
 msgid "Add"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
@@ -59,7 +60,7 @@ msgstr ""
 msgid "Add a comment"
 msgstr ""
 
-#: src/TypeVisibility.php:172
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:34
 msgid "Add a group"
 msgstr "Lisää ryhmä"
 
@@ -110,11 +111,11 @@ msgstr "Haluatko varmasti arkistoida tämän tehtävän?"
 msgid "At creation, update, removal of a task"
 msgstr "Luonti, päivitys, tehtävän poisto"
 
-#: src/Preference.php:108
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:34
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/TaskType.php:236 src/TaskType.php:646 src/Task.php:989 src/Task.php:1066
+#: src/TaskType.php:236 src/TaskType.php:659 src/Task.php:989 src/Task.php:1066
 #: src/Task.php:1412
 msgid "Backlog"
 msgstr "Jono"
@@ -136,6 +137,10 @@ msgstr ""
 msgid "Choose a template"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:39
+msgid "Color"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:36
 msgid "Comment"
 msgstr ""
@@ -144,15 +149,16 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/TaskState.php:117 src/TaskState.php:185 src/TaskType.php:84
-#: src/Dashboard.php:114 src/Task.php:109
+#: src/TaskState.php:181 src/TaskType.php:84 src/Dashboard.php:114
+#: src/Task.php:109
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:52
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "Asiayhteys"
 msgstr[1] "Asiayhteydet"
 
-#: src/Preference.php:100
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:29
 msgid "Context by default"
 msgstr "Asiayhteys oletuksena"
 
@@ -172,6 +178,7 @@ msgid "Delete"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:80
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:34
 msgid "Description"
 msgstr ""
 
@@ -212,15 +219,20 @@ msgstr ""
 msgid "Failed to remove team member"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:44
+msgid "Finished state"
+msgstr ""
+
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:504
 msgid "Go to"
 msgstr ""
 
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:38
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
 msgid "Group"
 msgstr ""
 
-#: src/TypeVisibility.php:214
+#: src/TypeVisibility.php:215
 msgid "Groups allowed to use context"
 msgstr "Sallitut ryhmät"
 
@@ -251,6 +263,7 @@ msgid "More"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:30
+#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:29
 msgid "Name"
 msgstr ""
 
@@ -305,7 +318,7 @@ msgstr ""
 msgid "Purge"
 msgstr ""
 
-#: src/Preference.php:114
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:39
 msgid "Refresh every "
 msgstr ""
 
@@ -340,7 +353,7 @@ msgstr ""
 msgid "See and update all tasks"
 msgstr "Näytä ja päivitä kaikki tehtävät"
 
-#: src/TaskState.php:63
+#: src/TaskState.php:64
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
 msgid "Status"
 msgid_plural "Statuses"
@@ -351,7 +364,7 @@ msgstr[1] ""
 msgid "Tables"
 msgstr ""
 
-#: setup.php:105 src/Menu.php:49 src/Preference.php:55 src/Profile.php:57
+#: setup.php:105 src/Menu.php:49 src/Preference.php:56 src/Profile.php:57
 #: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
 msgid "Tasks list"
 msgstr "Tehtävien luettelo"
@@ -433,7 +446,7 @@ msgstr "Et voi arkistoida tässä tilassa olevaa tehtävää"
 msgid "You don't have the right to see any context"
 msgstr "Sinulla ei ole oikeutta nähdä mitään asiayhteyttä"
 
-#: src/Preference.php:121
+#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr ""
 
