@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 07:01+0000\n"
+"POT-Creation-Date: 2026-09-14 11:30+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Alan Lehoux, 2026\n"
 "Language-Team: Spanish (Argentina) (https://app.transifex.com/infotelGLPI/"
@@ -60,7 +60,7 @@ msgstr "Agregar una columna desde un estado existente"
 msgid "Add a comment"
 msgstr "Agregar un comentario"
 
-#: src/TypeVisibility.php:163
+#: src/TypeVisibility.php:172
 msgid "Add a group"
 msgstr "Agregar un grupo"
 
@@ -76,11 +76,11 @@ msgstr "Agregar columna"
 msgid "Add task"
 msgstr "Agregar tarea"
 
-#: src/Task.php:1357
+#: src/Task.php:1571
 msgid "Affect entity for create task"
 msgstr "Asignar entidad para crear la tarea"
 
-#: src/Task.php:1272
+#: src/Task.php:1415
 msgctxt "visibility"
 msgid "All"
 msgstr "Todos"
@@ -94,7 +94,7 @@ msgstr "Archivar todas las tareas de este estado"
 msgid "Archive this task"
 msgstr "Archivar esta tarea"
 
-#: ajax/addOptions.php:53 src/Task.php:208
+#: ajax/addOptions.php:64 src/Task.php:210
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Archivada"
@@ -107,7 +107,7 @@ msgstr "¿Estás seguro/a de que querés archivar todas las tareas?"
 msgid "Are you sure you want to archive this task ?"
 msgstr "¿Estás seguro/a de que querés archivar esta tarea?"
 
-#: src/NotificationTargetTask.php:236
+#: src/NotificationTargetTask.php:240
 msgid "At creation, update, removal of a task"
 msgstr "Al crear, actualizar o eliminar una tarea"
 
@@ -115,8 +115,8 @@ msgstr "Al crear, actualizar o eliminar una tarea"
 msgid "Automatic refreshing of tasklist"
 msgstr "Actualización automática de la lista de tareas"
 
-#: src/TaskType.php:200 src/TaskType.php:565 src/Task.php:785 src/Task.php:862
-#: src/Task.php:1208
+#: src/TaskType.php:222 src/TaskType.php:621 src/Task.php:928 src/Task.php:1005
+#: src/Task.php:1351
 msgid "Backlog"
 msgstr "Tareas pendientes"
 
@@ -145,8 +145,8 @@ msgstr "Comentario"
 msgid "Configure contexts and statuses"
 msgstr "Configurar contextos y estados"
 
-#: src/TaskState.php:116 src/TaskState.php:175 src/TaskType.php:62
-#: src/Dashboard.php:114 src/Task.php:107
+#: src/TaskState.php:116 src/TaskState.php:184 src/TaskType.php:84
+#: src/Dashboard.php:114 src/Task.php:109
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
@@ -177,8 +177,8 @@ msgstr "Eliminar"
 msgid "Description"
 msgstr "Descripción"
 
-#: src/NotificationTargetTask.php:174 src/NotificationTargetTask.php:224
-#: src/TaskType.php:262 src/Dashboard.php:120 src/Task.php:145
+#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
+#: src/TaskType.php:303 src/Dashboard.php:120 src/Task.php:147
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "Fecha de vencimiento"
@@ -222,7 +222,7 @@ msgstr "Ir a"
 msgid "Group"
 msgstr "Grupo"
 
-#: src/TypeVisibility.php:205
+#: src/TypeVisibility.php:214
 msgid "Groups allowed to use context"
 msgstr "Grupos autorizados a usar el contexto"
 
@@ -234,18 +234,18 @@ msgstr "Expresión regular no válida"
 msgid "Kanban"
 msgstr "Kanban"
 
-#: src/Ticket.php:301
+#: src/Ticket.php:306
 msgid "Link a existant ticket"
 msgstr "Vincular a un ticket existente"
 
-#: src/Ticket.php:99 src/Ticket.php:220
+#: src/Ticket.php:99 src/Ticket.php:225
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Tarea vinculada"
 msgstr[1] "Tareas vinculadas"
 msgstr[2] "Tareas vinculadas"
 
-#: src/Ticket.php:326
+#: src/Ticket.php:331
 msgid "Linked tickets"
 msgstr "Tickets vinculados"
 
@@ -265,15 +265,15 @@ msgstr "Nuevo comentario"
 msgid "No comments"
 msgstr "Sin comentarios"
 
-#: src/Ticket.php:269
+#: src/Ticket.php:274
 msgid "No task linked to this ticket yet"
 msgstr "Todavía no hay tareas vinculadas a este ticket"
 
-#: ajax/addOptions.php:52
+#: ajax/addOptions.php:63
 msgid "Not archived"
 msgstr "Sin archivar"
 
-#: src/Task.php:265
+#: src/Task.php:267
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr "Cantidad de comentarios"
@@ -286,8 +286,8 @@ msgstr "Un elemento por línea"
 msgid "Or add a new status"
 msgstr "O agregar un nuevo estado"
 
-#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: src/Task.php:216
+#: src/NotificationTargetTask.php:182 src/NotificationTargetTask.php:232
+#: src/Task.php:218
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
 msgstr "Otro cliente"
@@ -388,12 +388,12 @@ msgstr ""
 "Esta columna no puede mostrar las tarjetas debido a la cantidad que se "
 "mostrarían. De todas formas, podés arrastrar tarjetas a esta columna."
 
-#: src/Task.php:1266
+#: src/Task.php:1409
 msgctxt "visibility"
 msgid "This user"
 msgstr "Este usuario"
 
-#: src/Task.php:1269
+#: src/Task.php:1412
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Este usuario y este grupo"
@@ -402,7 +402,7 @@ msgstr "Este usuario y este grupo"
 msgid "Toggle collapse"
 msgstr "Alternar contraído"
 
-#: src/Task.php:997
+#: src/Task.php:1140
 msgid "Transfer"
 msgstr "Transferir"
 
@@ -414,11 +414,19 @@ msgstr "Actualizar prioridad de la tarea"
 msgid "Visibility"
 msgstr "Visibilidad"
 
-#: src/Task.php:372
+#: src/Task.php:498
 msgid "You are not allowed to use this context"
 msgstr ""
 
-#: src/Task.php:466
+#: src/Task.php:473
+msgid "You are not allowed to use this group"
+msgstr ""
+
+#: src/Task.php:462
+msgid "You are not allowed to use this user"
+msgstr ""
+
+#: src/Task.php:609
 msgid "You cannot archive a task with this state"
 msgstr "No podés archivar una tarea con este estado"
 

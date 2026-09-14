@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 07:01+0000\n"
+"POT-Creation-Date: 2026-09-14 11:30+0000\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Markku Vepsä, 2018\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/infotelGLPI/"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Add a comment"
 msgstr ""
 
-#: src/TypeVisibility.php:163
+#: src/TypeVisibility.php:172
 msgid "Add a group"
 msgstr "Lisää ryhmä"
 
@@ -75,11 +75,11 @@ msgstr ""
 msgid "Add task"
 msgstr "Lisää tehtävä"
 
-#: src/Task.php:1357
+#: src/Task.php:1571
 msgid "Affect entity for create task"
 msgstr "Kohdista tehtävä yksikköön"
 
-#: src/Task.php:1272
+#: src/Task.php:1415
 msgctxt "visibility"
 msgid "All"
 msgstr "Kaikki"
@@ -93,7 +93,7 @@ msgstr "Arkistoi kaikki tässä tilassa olevat tehtävät"
 msgid "Archive this task"
 msgstr "Arkistoi tämä tehtävä"
 
-#: ajax/addOptions.php:53 src/Task.php:208
+#: ajax/addOptions.php:64 src/Task.php:210
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Arkistoitu"
@@ -106,7 +106,7 @@ msgstr "Haluatko varmasti arkistoida kaikki tehtävät?"
 msgid "Are you sure you want to archive this task ?"
 msgstr "Haluatko varmasti arkistoida tämän tehtävän?"
 
-#: src/NotificationTargetTask.php:236
+#: src/NotificationTargetTask.php:240
 msgid "At creation, update, removal of a task"
 msgstr "Luonti, päivitys, tehtävän poisto"
 
@@ -114,8 +114,8 @@ msgstr "Luonti, päivitys, tehtävän poisto"
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/TaskType.php:200 src/TaskType.php:565 src/Task.php:785 src/Task.php:862
-#: src/Task.php:1208
+#: src/TaskType.php:222 src/TaskType.php:621 src/Task.php:928 src/Task.php:1005
+#: src/Task.php:1351
 msgid "Backlog"
 msgstr "Jono"
 
@@ -144,8 +144,8 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/TaskState.php:116 src/TaskState.php:175 src/TaskType.php:62
-#: src/Dashboard.php:114 src/Task.php:107
+#: src/TaskState.php:116 src/TaskState.php:184 src/TaskType.php:84
+#: src/Dashboard.php:114 src/Task.php:109
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
@@ -175,8 +175,8 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/NotificationTargetTask.php:174 src/NotificationTargetTask.php:224
-#: src/TaskType.php:262 src/Dashboard.php:120 src/Task.php:145
+#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
+#: src/TaskType.php:303 src/Dashboard.php:120 src/Task.php:147
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "Määräaika"
@@ -220,7 +220,7 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: src/TypeVisibility.php:205
+#: src/TypeVisibility.php:214
 msgid "Groups allowed to use context"
 msgstr "Sallitut ryhmät"
 
@@ -232,17 +232,17 @@ msgstr ""
 msgid "Kanban"
 msgstr "Taulu"
 
-#: src/Ticket.php:301
+#: src/Ticket.php:306
 msgid "Link a existant ticket"
 msgstr "Liitä olemassa oleva tiketti"
 
-#: src/Ticket.php:99 src/Ticket.php:220
+#: src/Ticket.php:99 src/Ticket.php:225
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Liitetty tehtävä"
 msgstr[1] "Liitetyt tehtävät"
 
-#: src/Ticket.php:326
+#: src/Ticket.php:331
 msgid "Linked tickets"
 msgstr "Liitetyt tiketit"
 
@@ -262,15 +262,15 @@ msgstr ""
 msgid "No comments"
 msgstr ""
 
-#: src/Ticket.php:269
+#: src/Ticket.php:274
 msgid "No task linked to this ticket yet"
 msgstr "Tikettiin ei vielä ole liitetty tehtävää"
 
-#: ajax/addOptions.php:52
+#: ajax/addOptions.php:63
 msgid "Not archived"
 msgstr ""
 
-#: src/Task.php:265
+#: src/Task.php:267
 msgctxt "quantity"
 msgid "Number of comments"
 msgstr ""
@@ -283,8 +283,8 @@ msgstr ""
 msgid "Or add a new status"
 msgstr ""
 
-#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: src/Task.php:216
+#: src/NotificationTargetTask.php:182 src/NotificationTargetTask.php:232
+#: src/Task.php:218
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
 msgstr "Muu asiakas"
@@ -379,12 +379,12 @@ msgid ""
 "shown. You can still drag cards into this column."
 msgstr ""
 
-#: src/Task.php:1266
+#: src/Task.php:1409
 msgctxt "visibility"
 msgid "This user"
 msgstr "Tämä käyttäjä"
 
-#: src/Task.php:1269
+#: src/Task.php:1412
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Tämä käyttäjä ja tämä ryhmä"
@@ -393,7 +393,7 @@ msgstr "Tämä käyttäjä ja tämä ryhmä"
 msgid "Toggle collapse"
 msgstr ""
 
-#: src/Task.php:997
+#: src/Task.php:1140
 msgid "Transfer"
 msgstr ""
 
@@ -405,11 +405,19 @@ msgstr "Päivitä tehtävän prioriteetti"
 msgid "Visibility"
 msgstr ""
 
-#: src/Task.php:372
+#: src/Task.php:498
 msgid "You are not allowed to use this context"
 msgstr ""
 
-#: src/Task.php:466
+#: src/Task.php:473
+msgid "You are not allowed to use this group"
+msgstr ""
+
+#: src/Task.php:462
+msgid "You are not allowed to use this user"
+msgstr ""
+
+#: src/Task.php:609
 msgid "You cannot archive a task with this state"
 msgstr "Et voi arkistoida tässä tilassa olevaa tehtävää"
 
