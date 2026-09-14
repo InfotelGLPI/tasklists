@@ -370,7 +370,11 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
                     $content      .= "</div>";
                     $rich_content = "";
                     if ($data['content'] != null) {
-                        $rich_content = RichText::getTextFromHtml($data['content'], false, true, true);
+                        // No fourth argument: Kanban.js interpolates 'content' raw into the card
+                        // body, and Html::resume_text() below already escapes exactly once.
+                        // Escaping here too turned every apostrophe of a task description into a
+                        // visible &#039; on the board.
+                        $rich_content = RichText::getTextFromHtml($data['content'], false, true);
                     }
                     $content .= Html::resume_text($rich_content, 100);
                     $content .= "</div>";
@@ -475,13 +479,13 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
 
                     $rich_content = "";
                     if ($data['content'] != null) {
-                        // The fourth argument re-encodes the output: getTextFromHtml() ends on
-                        // html_entity_decode(), so without it the plain text handed back still
-                        // carries the markup that was stored in the task content. The value is
-                        // published as 'title_tooltip' and interpolated by Kanban.js straight
-                        // into a title="" attribute, which closed on the first quote. Same call
-                        // as the sibling one in getKanbanColumns() above.
-                        $rich_content = RichText::getTextFromHtml($data['content'], false, true, true);
+                        // Kanban.js builds the tooltip as title="${escapeHtml(title_tooltip)}":
+                        // the attribute is closed client-side, so this value has to reach it as
+                        // plain text. It was escaped twice before that - once by the fourth
+                        // argument, once by Html::resume_text() - and the tooltip of any task
+                        // whose description held a quote or an ampersand displayed the raw
+                        // entities. Same call as the sibling one in getKanbanColumns().
+                        $rich_content = RichText::getTextFromHtml($data['content'], false, true);
                     }
 
                     $title = Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments;
@@ -493,9 +497,18 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
                     //                  $title .= "&nbsp;<a id='updatepriority$ID' href='#' title='" . __('Update priority of task', 'tasklists') . "'><i class='ti ti-arrow-up'></i></a>";
                     //               }
 
+                    // Plain-text truncation rather than Html::resume_text(), which escapes: the
+                    // tooltip is escaped by Kanban.js at the interpolation site. The suffix is
+                    // written with a real space for the same reason - &nbsp; would be displayed
+                    // verbatim inside the attribute.
+                    $tooltip = $rich_content;
+                    if (mb_strlen($tooltip, 'UTF-8') > 100) {
+                        $tooltip = mb_substr($tooltip, 0, 100, 'UTF-8') . ' (...)';
+                    }
+
                     $tasks[] = ['id'            => "{$itemtype}-{$data['id']}",
                         'title'         => $title,
-                        'title_tooltip' => Html::resume_text($rich_content, 100),
+                        'title_tooltip' => $tooltip,
                         'is_deleted'    => $data['is_deleted'] ?? false,
                         'content'       => $content,
                         '_team'         => $team,

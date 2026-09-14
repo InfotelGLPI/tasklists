@@ -33,6 +33,7 @@ use CommonDBTM;
 use CommonGLPI;
 use DbUtils;
 use Dropdown;
+use Glpi\Application\View\TemplateRenderer;
 use Session;
 
 /**
@@ -97,30 +98,28 @@ class Preference extends CommonDBTM
 
         $this->showFormHeader($options);
 
-        echo "<tr class='tab_bg_1'><td>" . __("Context by default", "tasklists") . "</td>";
-        echo "<td>";
-        $types = TypeVisibility::seeAllowedTypes();
-        Dropdown::show(TaskType::class, ['name'      => "default_type",
+        $types               = TypeVisibility::seeAllowedTypes();
+        $default_type_field  = Dropdown::show(TaskType::class, ['name'      => "default_type",
             'value'     => $this->fields['default_type'],
-            'condition' => ["id" => $types]]);
-        echo "</td>";
-        echo "</tr>";
-        echo "<tr class='tab_bg_1'><td>" . __("Automatic refreshing of tasklist", "tasklists") . "</td>";
-        echo "<td>";
-        Dropdown::showYesNo("automatic_refresh", $this->fields['automatic_refresh']);
-        echo "</td>";
-        echo "</tr>";
+            'condition' => ["id" => $types],
+            'display'   => false]);
 
-        echo "<tr class='tab_bg_1'><td>" . __("Refresh every ", "tasklists") . "</td>";
-        echo "<td>";
-        Dropdown::showFromArray(
+        ob_start();
+        Dropdown::showYesNo("automatic_refresh", $this->fields['automatic_refresh']);
+        $automatic_refresh_field = ob_get_clean();
+
+        $refresh_delay_field = Dropdown::showFromArray(
             "automatic_refresh_delay",
             [1 => 1, 2 => 2, 5 => 5, 10 => 10, 30 => 30, 60 => 60],
-            ["value" => $this->fields['automatic_refresh_delay']],
+            ["value"   => $this->fields['automatic_refresh_delay'],
+                'display' => false],
         );
-        echo " " . __('minute(s)', "tasklists");
-        echo "</td>";
-        echo "</tr>";
+
+        TemplateRenderer::getInstance()->display('@tasklists/preference/form.html.twig', [
+            'default_type_field'      => $default_type_field,
+            'automatic_refresh_field' => $automatic_refresh_field,
+            'refresh_delay_field'     => $refresh_delay_field,
+        ]);
 
         $this->showFormButtons($options);
     }
@@ -179,35 +178,29 @@ class Preference extends CommonDBTM
             }
             if ($first[$field] > 0) {
                 return $first[$field];
-            } else {
-                $values = TaskType::getAllForKanban();
-                $data   = [];
-                foreach ($values as $key => $value) {
-                    if (TypeVisibility::isUserHaveRight($key)) {
-                        $data[] = $key;
-                    }
-                }
-                if (!empty($data)) {
-                    $first = reset($data);
-                    return $first;
-                } else {
-                    return 0;
-                }
-            }
-        } else {
-            $values = TaskType::getAllForKanban();
-            $data   = [];
-            foreach ($values as $key => $value) {
-                if (TypeVisibility::isUserHaveRight($key)) {
-                    $data[] = $key;
-                }
-            }
-            if (!empty($data)) {
-                $first = reset($data);
-                return $first;
-            } else {
-                return 0;
             }
         }
+
+        return self::getFirstVisibleTaskType();
+    }
+
+
+    /**
+     * Get the first task type the current user is allowed to open on the kanban
+     *
+     * Both fallbacks of checkPreferenceValue() - no preference row at all, and a preference row
+     * holding an empty default type - carried a byte-identical copy of this lookup.
+     *
+     * @return int task type id, 0 when the user is allowed on none
+     */
+    private static function getFirstVisibleTaskType()
+    {
+        foreach (array_keys(TaskType::getAllForKanban()) as $tasktypes_id) {
+            if (TypeVisibility::isUserHaveRight($tasktypes_id)) {
+                return (int) $tasktypes_id;
+            }
+        }
+
+        return 0;
     }
 }

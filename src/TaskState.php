@@ -32,6 +32,7 @@ namespace GlpiPlugin\Tasklists;
 use CommonDropdown;
 use DbUtils;
 use Dropdown;
+use Glpi\Application\View\TemplateRenderer;
 use Html;
 use Session;
 
@@ -75,49 +76,36 @@ class TaskState extends CommonDropdown
         $this->initForm($ID, $options);
         $this->showFormHeader($options);
 
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Name') . "</td>";
-        echo "<td>";
-        echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
-        echo "</td>";
-        if (isset($options['from_edit_ajax'])
-          && $options['from_edit_ajax']) {
-            echo Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
+        $from_edit_ajax = isset($options['from_edit_ajax']) && $options['from_edit_ajax'];
+
+        $name_field = Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
+
+        $from_edit_ajax_field = '';
+        if ($from_edit_ajax) {
+            $from_edit_ajax_field = Html::hidden('from_edit_ajax', ['value' => $options['from_edit_ajax']]);
         }
 
-        echo "<td rowspan='4'>" . __('Description') . "</td>";
-        echo "<td rowspan='4'>";
+        ob_start();
         Html::textarea(['name'            => 'comment',
             'value'           => $this->fields['comment'],
             'id'           => 'comment',
             'cols'       => 45,
             'rows'       => 3,
             'enable_richtext' => false]);
-        echo "</td>";
-        echo "</tr>";
+        $comment_field = ob_get_clean();
 
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Color') . "</td>";
-        echo "<td>";
+        ob_start();
         Html::showColorField('color', ['value' => $this->fields['color']]);
-        echo "</td>";
-        echo "</tr>";
+        $color_field = ob_get_clean();
 
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Finished state') . "</td>";
-        echo "<td>";
+        ob_start();
         Dropdown::showYesNo('is_finished', $this->fields['is_finished']);
-        echo "</td>";
-        echo "</tr>";
-        if (isset($options["from_edit_ajax"]) && $options["from_edit_ajax"]) {
-            echo Html::hidden("tasktypes");
-        } else {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>"
-              . _n('Context', 'Contexts', 1, 'tasklists') . "</td>";
-            echo "</td>";
-            echo "<td>";
-            echo Html::hidden("tasktypes");
+        $finished_field = ob_get_clean();
+
+        $tasktypes_hidden = Html::hidden("tasktypes");
+        $tasktypes_field  = '';
+
+        if (!$from_edit_ajax) {
             $possible_values = [];
             $dbu             = new DbUtils();
             // glpi_plugin_tasklists_tasktypes carries entities_id and is_recursive, and every
@@ -144,17 +132,25 @@ class TaskState extends CommonDropdown
                 $values = [];
             }
 
-            Dropdown::showFromArray(
+            $tasktypes_field = Dropdown::showFromArray(
                 "tasktypes",
                 $possible_values,
                 ['values'   => $values,
-                    'multiple' => 'multiples'],
+                    'multiple' => 'multiples',
+                    'display'  => false],
             );
-
-
-            echo "</td>";
-            echo "</tr>";
         }
+
+        TemplateRenderer::getInstance()->display('@tasklists/taskstate/form.html.twig', [
+            'name_field'           => $name_field,
+            'from_edit_ajax'       => $from_edit_ajax,
+            'from_edit_ajax_field' => $from_edit_ajax_field,
+            'comment_field'        => $comment_field,
+            'color_field'          => $color_field,
+            'finished_field'       => $finished_field,
+            'tasktypes_hidden'     => $tasktypes_hidden,
+            'tasktypes_field'      => $tasktypes_field,
+        ]);
 
         $this->showFormButtons($options);
 

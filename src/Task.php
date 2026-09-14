@@ -1993,6 +1993,17 @@ class Task extends CommonDBTM
             return false;
         }
 
+        // addTeamMember() above replays the visibility model before reassigning the task; this
+        // method clears the same two columns and carried no check whatsoever. Its caller
+        // (ajax/kanban.php, action delete_teammember) is one of the $nonkanban_actions the Kanban
+        // context check deliberately skips, so anyone holding the global plugin right could strip
+        // the assignee or the group of any task of the instance, including tasks of a type their
+        // groups are not allowed to see. The guard belongs here, next to the write, so the method
+        // is safe whatever the caller.
+        if (!$this->can($this->getID(), UPDATE) || !$this->checkVisibility($this->getID())) {
+            return false;
+        }
+
         $link_item = new $link_class();
         /** @var CommonDBTM $itemtype */
         $result = $link_item->update([

@@ -33,9 +33,9 @@ use CommonDBTM;
 use CommonGLPI;
 use DbUtils;
 use Dropdown;
+use Glpi\Application\View\TemplateRenderer;
 use Group;
 use Group_User;
-use Html;
 use Session;
 use Toolbox;
 
@@ -165,30 +165,16 @@ class TypeVisibility extends CommonDBTM
         }
 
         if ($canedit) {
-            echo "<form name='form' method='post' action='" .
-              Toolbox::getItemTypeFormURL(TypeVisibility::class) . "'>";
-
-            echo "<div class='center'><table class='tab_cadre_fixe'>";
-            echo "<tr><th colspan='6'>" . __('Add a group', 'tasklists') . "</th></tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            // Dropdown group
-            echo "<td class='center'>";
-            echo __('Group') . '&nbsp;';
-            Dropdown::showFromArray("groups_id", $groups, ['name'     => 'groups_id',
+            $groups_field = Dropdown::showFromArray("groups_id", $groups, ['name'     => 'groups_id',
                 'width'    => '150',
-                'multiple' => true]);
-            echo "</td>";
-            echo "</tr>";
+                'multiple' => true,
+                'display'  => false]);
 
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='6'>";
-            echo Html::hidden('plugin_tasklists_tasktypes_id', ['value' => $item->fields['id']]);
-            echo Html::submit(_sx('button', 'Add'), ['name' => 'add_groups', 'class' => 'btn btn-primary']);
-            echo "</td>";
-            echo "</tr>";
-            echo "</table></div>";
-            Html::closeForm();
+            TemplateRenderer::getInstance()->display('@tasklists/typevisibility/add_group.html.twig', [
+                'form_action'  => Toolbox::getItemTypeFormURL(self::class),
+                'tasktypes_id' => (int) $item->fields['id'],
+                'groups_field' => $groups_field,
+            ]);
         }
         if ($dataGroups) {
             $this->listItems($dataGroups, $canedit);
@@ -203,46 +189,43 @@ class TypeVisibility extends CommonDBTM
     {
 
         $rand = mt_rand();
-        echo "<div class='center'>";
-        if ($canedit) {
-            Html::openMassiveActionsForm('mass' . $rand);
-            $massiveactionparams = ['item' => __CLASS__, 'container' => 'mass' . $rand];
-            Html::showMassiveActions($massiveactionparams);
-        }
-        echo "<table class='tab_cadre_fixe'>";
-        echo "<tr>";
-        echo "<th colspan='3'>" . __('Groups allowed to use context', 'tasklists') . "</th>";
-        echo "</tr>";
-        echo "<tr>";
-        echo "<th width='10'>";
-        if ($canedit) {
-            echo Html::getCheckAllAsCheckbox('mass' . $rand);
-        }
-        echo "</th>";
-        echo "<th>" . __('Name') . "</th>";
-        echo "</tr>";
+
+        $entries = [];
         foreach ($fields as $field) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td width='10'>";
-            if ($canedit) {
-                Html::showMassiveActionCheckBox(__CLASS__, $field['id']);
-            }
-            echo "</td>";
-            //DATA LINE
-            // Escape the group name: getDropdownName() returns the raw completename from
-            // the DB (getTreeValueCompleteName does not htmlspecialchars it), so a group
-            // named with markup would otherwise execute in the config admin's session.
-            echo "<td>" . htmlescape(Dropdown::getDropdownName('glpi_groups', $field['groups_id'])) . "</td>";
-            echo "</tr>";
-        }
-        echo "</table>";
-        if ($canedit) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
+            $entries[] = [
+                'itemtype' => self::class,
+                'id'       => $field['id'],
+                // getDropdownName() returns the raw completename from the DB
+                // (getTreeValueCompleteName does not htmlspecialchars it), so a group named with
+                // markup would otherwise execute in the config admin's session. The column is
+                // declared raw_html below because the name may carry the > separators of a tree.
+                'name'     => htmlescape(Dropdown::getDropdownName('glpi_groups', $field['groups_id'])),
+            ];
         }
 
-        echo "</div>";
+        // The hand-written table used to emit its own massive-action form and checkboxes, which
+        // GLPI 11 no longer wires up: every action came back with "no item selected". The core
+        // datatable component owns that plumbing.
+        TemplateRenderer::getInstance()->display('components/datatable.html.twig', [
+            'datatable_id'        => 'typevisibilitylist' . $rand,
+            'is_tab'              => true,
+            'nofilter'            => true,
+            'nosort'              => true,
+            'columns'             => [
+                'name' => __('Groups allowed to use context', 'tasklists'),
+            ],
+            'formatters'          => [
+                'name' => 'raw_html',
+            ],
+            'entries'             => $entries,
+            'total_number'        => count($entries),
+            'filtered_number'     => count($entries),
+            'showmassiveactions'  => $canedit,
+            'massiveactionparams' => [
+                'num_displayed' => min($_SESSION['glpilist_limit'], count($entries)),
+                'container'     => 'mass' . self::class . $rand,
+            ],
+        ]);
     }
 
     /**
@@ -326,7 +309,7 @@ class TypeVisibility extends CommonDBTM
         // Get type groups
         $groups_data = $dbu->getAllDataFromTable(
             'glpi_plugin_tasklists_typevisibilities',
-            ['`plugin_tasklists_tasktypes_id`' => $plugin_tasklists_tasktypes_id],
+            ['plugin_tasklists_tasktypes_id' => (int) $plugin_tasklists_tasktypes_id],
         );
         if (!empty($groups_data)) {
             $groups_id = [];

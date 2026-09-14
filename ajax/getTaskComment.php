@@ -60,9 +60,14 @@ if (isset($_POST['edit'])) {
     $edit = (int) $_POST['edit'];
     // Make sure the edited comment actually belongs to the authorized task, otherwise a caller
     // could pull any comment by pairing a task they may read with a foreign comment id.
+    // Ownership is part of that test: only the author may edit a comment - buildCommentsTree()
+    // gates the affordance on can_edit and front/task_comment.form.php refuses the write - but
+    // this endpoint returned the populated edit form for a comment written by anyone else on the
+    // same task, which is the disclosure the write guard cannot undo.
     $comment = new Task_Comment();
     if (!$comment->getFromDB($edit)
-        || (int) $comment->fields['plugin_tasklists_tasks_id'] !== $plugin_tasklists_tasks_id) {
+        || (int) $comment->fields['plugin_tasklists_tasks_id'] !== $plugin_tasklists_tasks_id
+        || (int) $comment->fields['users_id'] !== (int) Session::getLoginUserID()) {
         throw new AccessDeniedHttpException();
     }
 }
