@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-31 14:55+0000\n"
+"POT-Creation-Date: 2026-09-07 08:10+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
@@ -72,7 +72,7 @@ msgstr "Choisissez un gabarit"
 msgid "Add column"
 msgstr "Ajouter une colonne"
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
+#: src/Ticket.php:190 src/Dashboard.php:196 src/Dashboard.php:201
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
@@ -94,7 +94,7 @@ msgstr "Archiver toutes les tâches ayant ce statut"
 msgid "Archive this task"
 msgstr "Archiver cette tâche"
 
-#: src/Task.php:213 ajax/addOptions.php:53
+#: ajax/addOptions.php:53 src/Task.php:213
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Archivé"
@@ -115,8 +115,8 @@ msgstr "A la création, mise à jour et suppression d'un tâche"
 msgid "Automatic refreshing of tasklist"
 msgstr "Rafraîchissement automatique des listes de tâches"
 
-#: src/Task.php:687 src/Task.php:768 src/Task.php:1106 src/TaskType.php:190
-#: src/TaskType.php:573
+#: src/TaskType.php:190 src/TaskType.php:573 src/Task.php:687 src/Task.php:768
+#: src/Task.php:1106
 msgid "Backlog"
 msgstr "Backlog"
 
@@ -145,8 +145,8 @@ msgstr "Commentaire"
 msgid "Configure contexts and statuses"
 msgstr "Configurer les contextes et les statuts"
 
-#: src/Task.php:112 src/TaskType.php:66 src/TaskState.php:150
-#: src/TaskState.php:209 src/Dashboard.php:114
+#: src/TaskState.php:150 src/TaskState.php:209 src/TaskType.php:66
+#: src/Dashboard.php:114 src/Task.php:112
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
 msgid_plural "Contexts"
@@ -177,8 +177,8 @@ msgstr "Supprimer"
 msgid "Description"
 msgstr "Description"
 
-#: src/Task.php:150 src/TaskType.php:252 src/NotificationTargetTask.php:178
-#: src/NotificationTargetTask.php:228 src/Dashboard.php:120
+#: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
+#: src/TaskType.php:252 src/Dashboard.php:120 src/Task.php:150
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "Date d'échéance"
@@ -286,8 +286,8 @@ msgstr "Un objet par ligne"
 msgid "Or add a new status"
 msgstr "Ou ajouter un nouveau statut"
 
-#: src/Task.php:221 src/NotificationTargetTask.php:182
-#: src/NotificationTargetTask.php:232
+#: src/NotificationTargetTask.php:182 src/NotificationTargetTask.php:232
+#: src/Task.php:221
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
 msgstr "Autre client"
@@ -356,8 +356,8 @@ msgstr[2] "Statuts"
 msgid "Tables"
 msgstr "Tableaux"
 
-#: src/Profile.php:61 src/Dashboard.php:72 src/Dashboard.php:210
-#: src/Dashboard.php:215 src/Preference.php:55 src/Menu.php:49 setup.php:105
+#: setup.php:105 src/Menu.php:49 src/Preference.php:55 src/Profile.php:61
+#: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
 msgid "Tasks list"
 msgstr "Liste des tâches"
 
