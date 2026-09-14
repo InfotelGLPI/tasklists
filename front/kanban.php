@@ -34,29 +34,32 @@ use GlpiPlugin\Tasklists\Menu;
 use GlpiPlugin\Tasklists\Task;
 use GlpiPlugin\Tasklists\Kanban;
 
-Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
-
 $kanban = new Kanban();
 
-if ($kanban->canView() || Session::haveRight("config", CREATE)) {
-    //AS module for SearchTokenizer
-    //   echo "<script type='module' src='../../../js/modules/Kanban/Kanban.js'></script>";
-    echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchTokenizerResult.js'></script>";
-    echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchToken.js'></script>";
-    echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchTokenizer.js'></script>";
-    echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchInput.js'></script>";
-    echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/Kanban.js'></script>";
-
-    Html::requireJs('sortable');
-    //   Html::requireJs('kanban');
-    echo Html::css(PLUGIN_TASKLISTS_WEBDIR . '/lib/kanban/css/kanban.css');
-    //   echo Html::script(PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/kanban-actions.js");
-    if (!isset($_GET["context_id"])) {
-        $_GET["context_id"] = -1;
-    }
-    Kanban::showKanban((int) $_GET["context_id"]);
-} else {
+// The refusal used to come after Html::header(), so an unauthorised caller was served a
+// complete page shell - menu, breadcrumb, title - before the 403, which both blurs the refusal
+// and hands out a little enumeration. Nothing is emitted before the right is settled.
+if (!$kanban->canView() && !Session::haveRight("config", CREATE)) {
     throw new AccessDeniedHttpException();
 }
+
+Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
+
+//AS module for SearchTokenizer
+//   echo "<script type='module' src='../../../js/modules/Kanban/Kanban.js'></script>";
+echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchTokenizerResult.js'></script>";
+echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchToken.js'></script>";
+echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchTokenizer.js'></script>";
+echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchInput.js'></script>";
+echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/Kanban.js'></script>";
+
+Html::requireJs('sortable');
+//   Html::requireJs('kanban');
+echo Html::css(PLUGIN_TASKLISTS_WEBDIR . '/lib/kanban/css/kanban.css');
+//   echo Html::script(PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/kanban-actions.js");
+if (!isset($_GET["context_id"])) {
+    $_GET["context_id"] = -1;
+}
+Kanban::showKanban((int) $_GET["context_id"]);
 
 Html::footer();

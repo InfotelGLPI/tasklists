@@ -29,10 +29,6 @@
 
 namespace GlpiPlugin\Tasklists;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 // Class for a Dropdown
 use CommonITILObject;
 use CommonTreeDropdown;
@@ -97,13 +93,27 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
     public static function getAllForKanban($active = true, $current_id = -1)
     {
         $self = new self();
+        $dbu  = new DbUtils();
 
-        $list  = $self->find([], ["completename ASC"]);
+        // find() adds no entity boundary of its own and isUserHaveRight() only reasons about
+        // visibility groups, so both filters are applied here. The criteria used to be empty:
+        // ajax/kanban.php (actions get_kanbans and get_switcher_dropdown, guarded by nothing
+        // more than plugin_tasklists in READ) answered with the completename of every context
+        // of every entity, including the ones restricted to groups the caller does not belong
+        // to. Every other entry point handing out a context - getKanbanColumns(),
+        // Kanban::getTabNameForItem(), Preference - already applies exactly these two filters.
+        $list  = $self->find(
+            $dbu->getEntitiesRestrictCriteria(self::getTable(), '', $_SESSION['glpiactiveentities'], true),
+            ["completename ASC"],
+        );
         $items = [
 
         ];
 
         foreach ($list as $key => $value) {
+            if (!TypeVisibility::isUserHaveRight($value['id'])) {
+                continue;
+            }
             $self->getFromDB($value['id']);
             if (!$self->haveChildren()) {
                 $items[$value['id']] = $value['completename'];
@@ -515,35 +525,17 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
         return $users;
     }
 
-    /**
-     * Have I the global right to "create" the Object
-     * May be overloaded if needed (ex KnowbaseItem)
-     *
-     * @return boolean
-     **/
-    public static function canCreate(): bool
-    {
-        if (static::$rightname) {
-            return Session::haveRight(static::$rightname, 1);
-        }
-        return false;
-    }
-
-    public static function canUpdate(): bool
-    {
-        if (static::$rightname) {
-            return Session::haveRight(static::$rightname, 1);
-        }
-        return false;
-    }
-
-    public static function canDelete(): bool
-    {
-        if (static::$rightname) {
-            return Session::haveRight(static::$rightname, 1);
-        }
-        return false;
-    }
+    // canCreate(), canUpdate() and canDelete() used to be overridden here as
+    // Session::haveRight(static::$rightname, 1). The literal 1 is READ, not the bit each
+    // operation calls for (CREATE = 4, UPDATE = 2, PURGE = 32), so the three write
+    // operations were gated on read access. This dropdown is reachable through the generic
+    // Glpi\Controller\DropdownFormController, whose sequence is exactly canView() then
+    // check(-1, CREATE) / check($id, UPDATE) / check($id, PURGE): a profile holding
+    // plugin_tasklists in read-only mode could create, rename and purge the Kanban contexts,
+    // taking their TypeVisibility rows with them and orphaning every task filed under them.
+    // The inherited CommonDropdown implementations test the right bit, so the overrides are
+    // gone. A separate right for context management would have to be declared in
+    // Profile::getAllRights() and tested explicitly, not folded into this one.
 
     public static function getDataToDisplayOnKanban($ID, $criteria = [])
     {

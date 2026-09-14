@@ -32,13 +32,9 @@ namespace GlpiPlugin\Tasklists;
 use CommonGLPI;
 use DbUtils;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Preference;
 use Session;
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 
 /**
  * Class Kanban
@@ -184,8 +180,16 @@ class Kanban extends CommonGLPI
         } else {
             //         $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
             //         $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);
+            // The context used to be loaded straight from the requested id, so front/kanban.php
+            // rendered the title and the header of a context belonging to another entity, or to
+            // a group the caller is not part of, for any id handed in the query string. The two
+            // checks are the ones getKanbanColumns() and getTabNameForItem() already apply.
             $context = new TaskType();
-            $context->getFromDB($item_id);
+            if (!$context->getFromDB($item_id)
+                || !Session::haveAccessToEntity($context->fields['entities_id'], $context->fields['is_recursive'])
+                || !TypeVisibility::isUserHaveRight($item_id)) {
+                throw new AccessDeniedHttpException();
+            }
             $supported_itemtypes = [];
 
             $team_itemtypes = Task::getTeamItemtypes();

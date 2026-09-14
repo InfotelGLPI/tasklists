@@ -33,11 +33,6 @@ use CommonDropdown;
 use DbUtils;
 use Dropdown;
 use Html;
-use Session;
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
 
 // Class for a Dropdown
 
@@ -48,43 +43,14 @@ class TaskState extends CommonDropdown
 {
     public static $rightname = 'plugin_tasklists_config';
 
-    /**
-     * Have I the global right to "create" the Object
-     * May be overloaded if needed (ex KnowbaseItem)
-     *
-     * @return boolean
-     **/
-    public static function canCreate(): bool
-    {
-        if (static::$rightname) {
-            return Session::haveRight(static::$rightname, READ);
-        }
-        return false;
-    }
-
-    public static function canUpdate(): bool
-    {
-        if (static::$rightname) {
-            return Session::haveRight(static::$rightname, READ);
-        }
-        return false;
-    }
-
-    public static function canDelete(): bool
-    {
-        if (static::$rightname) {
-            return Session::haveRight(static::$rightname, READ);
-        }
-        return false;
-    }
-
-    public static function canPurge(): bool
-    {
-        if (static::$rightname) {
-            return Session::haveRight(static::$rightname, READ);
-        }
-        return false;
-    }
+    // canCreate(), canUpdate(), canDelete() and canPurge() used to be overridden here, all
+    // four returning Session::haveRight(static::$rightname, READ). The right was registered
+    // with the READ bit alone, so those overrides were the only thing making the dropdown
+    // writable - and they made "may read the configuration" and "may rewrite the statuses"
+    // the same permission, through Glpi\Controller\DropdownFormController which calls
+    // check(-1, CREATE) / check($id, UPDATE) / check($id, PURGE). The write bits are now
+    // declared in Profile::getAllRights(), the inherited CommonDropdown implementations test
+    // them, and the profile matrix can finally express the difference.
 
     /**
      * @param int $nb

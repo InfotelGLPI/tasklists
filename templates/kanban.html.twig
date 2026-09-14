@@ -53,19 +53,27 @@
    </template>
 {% endfor %}
 
+{# Encoding flags for the payloads spliced into the script block below. The bare 64
+   (JSON_UNESCAPED_SLASHES) they used to carry leaves "<" and "&" untouched, so a free-text
+   value added later to any of these arrays - a custom column label, a filter name - would
+   be able to close the <script> element and run as markup. JSON_HEX_TAG and JSON_HEX_AMP
+   encode both characters and cost nothing, JSON.parse reading them back unchanged.
+   JSON_HEX_QUOT and JSON_HEX_APOS are deliberately left out: they would break the object
+   literal these values are pasted into. #}
+{% set json_flags = constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') %}
 <script>
    $(function(){
       // Create Kanban
       var kanban = new GLPIKanban({
          root_taslists: "{{ root_tasklists }}",
          element: "#{{ kanban_id|default('kanban') }}",
-         rights: {{ rights|json_encode(64)|raw }},
-         supported_itemtypes: {{ supported_itemtypes|json_encode(64)|raw }},
+         rights: {{ rights|json_encode(json_flags)|raw }},
+         supported_itemtypes: {{ supported_itemtypes|json_encode(json_flags)|raw }},
          max_team_images: 3,
-         column_field: {{ column_field|json_encode(64)|raw }},
+         column_field: {{ column_field|json_encode(json_flags)|raw }},
          background_refresh_interval: {{ background_refresh_interval|default(session('glpirefresh_views')) }},
-         item: {{ item|json_encode(64)|raw }},
-         supported_filters: {{ supported_filters|json_encode(64)|raw }}
+         item: {{ item|json_encode(json_flags)|raw }},
+         supported_filters: {{ supported_filters|json_encode(json_flags)|raw }}
       });
       // Create kanban elements and add data
       kanban.init();

@@ -195,6 +195,25 @@ function plugin_tasklists_install()
         }
     }
 
+    // plugin_tasklists_config was registered with the READ bit alone while TaskState overrode
+    // its four write checks with a READ test: holding the right in read mode was, in practice,
+    // holding it in write mode. The overrides are gone and the matrix now carries real write
+    // bits, so the profiles that already exercised those permissions keep them instead of
+    // silently losing the statuses screen on upgrade. The elevation disarms itself as soon as
+    // one profile holds a write bit on the right, so an administrator who deliberately puts a
+    // profile back to read-only is not overruled by the next upgrade.
+    $config_writers = $DB->request([
+        'FROM'  => 'glpi_profilerights',
+        'WHERE' => ['name' => 'plugin_tasklists_config', 'rights' => ['>', READ]],
+    ]);
+    if (count($config_writers) == 0) {
+        $DB->update(
+            'glpi_profilerights',
+            ['rights' => READ | CREATE | UPDATE | PURGE],
+            ['name' => 'plugin_tasklists_config', 'rights' => READ],
+        );
+    }
+
     Profile::initProfile();
     Profile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 
@@ -235,6 +254,15 @@ function plugin_tasklists_uninstall()
         $item = new $itemtype();
         $item->deleteByCriteria(['itemtype' => Task::class]);
     }
+
+    // ajax/kanban.php saves the column states through the core \Item_Kanban with
+    // itemtype = TaskType::class, never Task::class, so the loop above cleaned rows the plugin
+    // never wrote and left every row it did write behind - pointing, once the plugin is gone,
+    // at a class that no longer exists. The plugin's own Item_Kanban class is deliberately kept:
+    // it is what the 2.0.0 migration above reads the legacy table with, and its table is
+    // dropped with the others.
+    $core_kanban = new \Item_Kanban();
+    $core_kanban->deleteByCriteria(['itemtype' => TaskType::class]);
 
     $notif   = new Notification();
     $options = ['itemtype' => Task::class];

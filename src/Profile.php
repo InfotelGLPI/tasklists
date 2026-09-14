@@ -36,10 +36,6 @@ use Html;
 use ProfileRight;
 use Session;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 /**
  * Class Profile
  */
@@ -113,8 +109,8 @@ class Profile extends \Profile
         self::addDefaultProfileInfos(
             $ID,
             ['plugin_tasklists'         => ALLSTANDARDRIGHT + READNOTE + UPDATENOTE,
-                'plugin_tasklists_see_all' => 1,
-                'plugin_tasklists_config'  => 1],
+                'plugin_tasklists_see_all' => READ,
+                'plugin_tasklists_config'  => READ | CREATE | UPDATE | PURGE],
             true,
         );
     }
@@ -174,11 +170,18 @@ class Profile extends \Profile
                     READ => __('Read'),
                 ]];
 
+            // The write bits have to be offered by the matrix now that TaskState no longer
+            // overrides its canCreate()/canUpdate()/canDelete()/canPurge() with a READ test.
+            // The right used to carry READ alone, which is why those overrides existed at all:
+            // the only way to make the statuses editable was to accept the read bit everywhere.
             $rights[] = ['itemtype' => Task::class,
                 'label'    => __('Configure contexts and statuses', 'tasklists'),
                 'field'    => 'plugin_tasklists_config',
                 'rights' => [
-                    READ => __('Read'),
+                    READ   => __('Read'),
+                    CREATE => _x('button', 'Add'),
+                    UPDATE => __('Update'),
+                    PURGE  => _x('button', 'Delete permanently'),
                 ]];
         }
         return $rights;
@@ -232,7 +235,12 @@ class Profile extends \Profile
             'FROM'  => 'glpi_profilerights',
             'WHERE' => [
                 'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-                'name' => "LIKE '%plugin_tasklists%'",
+                // Written as a plain string, this criterion compiled to a strict equality on
+                // the literal "LIKE '%plugin_tasklists%'" - DBmysqlIterator::analyseCriterion
+                // treats a scalar string as a value, not as an operator - so the iterator was
+                // always empty and the reload below was dead code. The array form is what the
+                // query builder expects for an operator.
+                'name' => ['LIKE', '%plugin_tasklists%'],
             ],
         ];
         foreach ($DB->request($options) as $prof) {

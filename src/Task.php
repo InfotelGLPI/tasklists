@@ -50,11 +50,6 @@ use NotificationEvent;
 use Session;
 use User;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
-
 /**
  * Class Task
  */
@@ -345,8 +340,68 @@ class Task extends CommonDBTM
         $kbic->deleteByCriteria(['plugin_tasklists_tasks_id' => $this->fields['id']]);
     }
 
+    /**
+     * Revalidate the context and the entity a task is being written into.
+     *
+     * plugin_tasklists_tasktypes_id and entities_id are posted by the client on both the full
+     * form and the Kanban, where Kanban::showKanban() declares them as hidden fields, and
+     * can(-1, CREATE) / can($id, UPDATE) say nothing about their values. The rules replayed
+     * here are the ones the interface itself is built on: a context the caller may open
+     * (TaskType::getKanbanColumns() and Kanban::showKanban() use exactly this pair of tests),
+     * and an entity of the dropdown showForm() renders, which is restricted to the active
+     * entities of the session.
+     *
+     * @param array $input
+     *
+     * @return array|false The input, or false to refuse the write.
+     */
+    private function validatePostedContext($input)
+    {
+        // No session means no posted form: the mail collector rule creates tasks from the
+        // cron, with an entity coming from the rule action and no context at all.
+        if (Session::getLoginUserID() === false) {
+            return $input;
+        }
+
+        if (isset($input['plugin_tasklists_tasktypes_id']) && $input['plugin_tasklists_tasktypes_id'] > 0) {
+            $tasktype = new TaskType();
+            if (!$tasktype->getFromDB($input['plugin_tasklists_tasktypes_id'])
+                || !Session::haveAccessToEntity($tasktype->fields['entities_id'], $tasktype->fields['is_recursive'])
+                || !TypeVisibility::isUserHaveRight($input['plugin_tasklists_tasktypes_id'])) {
+                Session::addMessageAfterRedirect(
+                    __('You are not allowed to use this context', 'tasklists'),
+                    false,
+                    ERROR,
+                );
+                return false;
+            }
+        }
+
+        if (isset($input['entities_id']) && !Session::haveAccessToEntity($input['entities_id'])) {
+            return false;
+        }
+
+        return $input;
+    }
+
     public function prepareInputForAdd($input)
     {
+        $input = $this->validatePostedContext($input);
+        if ($input === false) {
+            return false;
+        }
+
+        // The Kanban posts users_id as a hidden field too, so the author of a card was whatever
+        // the client said it was: the task was attributed to a colleague, who then received the
+        // notification raised by post_addItem(). front/task_comment.form.php already pins the
+        // owner to the session for the same reason. canUpdate() is the plugin's administration
+        // flag, the one getSpecificMassiveActions() reads to decide what a profile may do to
+        // other people's tasks, so a profile holding it keeps the ability to file a task on
+        // somebody else's behalf.
+        if (Session::getLoginUserID() !== false && !static::canUpdate()) {
+            $input['users_id'] = Session::getLoginUserID();
+        }
+
         if (isset($input['due_date']) && empty($input['due_date'])) {
             $input['due_date'] = 'NULL';
         }
@@ -378,6 +433,14 @@ class Task extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
+        // The same two fields are posted by the edition form, and CommonDBTM::update() does not
+        // revalidate either of them: check($id, UPDATE) settles the row the caller is editing,
+        // never the entity or the context they are moving it to.
+        $input = $this->validatePostedContext($input);
+        if ($input === false) {
+            return false;
+        }
+
         if (isset($input['due_date']) && empty($input['due_date'])) {
             $input['due_date'] = 'NULL';
         }
@@ -675,6 +738,41 @@ class Task extends CommonDBTM
 
 
     /**
+     * Identifiers of the states a task of the given type is allowed to hold.
+     *
+     * This is the rule the state dropdown is built on. It lives in its own method so that the
+     * paths which accept a state from the client - the Kanban drag and drop of ajax/kanban.php
+     * above all - can replay it at the point where the value is written, rather than restate
+     * it and drift from it. Entity is deliberately not part of it: the dropdown itself does
+     * not filter states on the entity, so filtering here would refuse values the interface
+     * legitimately offers.
+     *
+     * @param int|string $plugin_tasklists_tasktypes_id
+     *
+     * @return int[] Backlog (0) included.
+     */
+    public static function getAllowedStates($plugin_tasklists_tasktypes_id): array
+    {
+        // Backlog is the pseudo state the dropdown prepends; it is the empty column of the
+        // Kanban and carries no row of its own in the state table.
+        $allowed = [0];
+
+        $dbu = new DbUtils();
+        $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType(TaskState::class));
+        foreach ($datastates as $datastate) {
+            if ($datastate['tasktypes'] == null) {
+                continue;
+            }
+            $tasktypes = json_decode($datastate['tasktypes']);
+            if (is_array($tasktypes) && in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
+                $allowed[] = (int) $datastate['id'];
+            }
+        }
+
+        return $allowed;
+    }
+
+    /**
      * States by type dropdown list
      *
      * @param     $plugin_tasklists_tasktypes_id
@@ -688,32 +786,28 @@ class Task extends CommonDBTM
             'rank' => 0,
         ];
 
+        $allowed_states = self::getAllowedStates($plugin_tasklists_tasktypes_id);
+
         $states_ranked = [];
         $dbu = new DbUtils();
         $datastates = $dbu->getAllDataFromTable($dbu->getTableForItemType(TaskState::class));
         if (!empty($datastates)) {
             foreach ($datastates as $datastate) {
-                if ($datastate['tasktypes'] != null) {
-                    $tasktypes = json_decode($datastate['tasktypes']);
-                    if (is_array($tasktypes)) {
-                        if (in_array($plugin_tasklists_tasktypes_id, $tasktypes)) {
-                            if (empty(
-                                $name = DropdownTranslation::getTranslatedValue(
-                                    $datastate['id'],
-                                    TaskState::class,
-                                    'name',
-                                    $_SESSION['glpilanguage'],
-                                )
-                            )) {
-                                $name = $datastate['name'];
-                            }
-                            $states[] = [
-                                'id' => $datastate['id'],
-                                'name' => $name,
-                            ];
-
-                        }
+                if (in_array((int) $datastate['id'], $allowed_states, true)) {
+                    if (empty(
+                        $name = DropdownTranslation::getTranslatedValue(
+                            $datastate['id'],
+                            TaskState::class,
+                            'name',
+                            $_SESSION['glpilanguage'],
+                        )
+                    )) {
+                        $name = $datastate['name'];
                     }
+                    $states[] = [
+                        'id' => $datastate['id'],
+                        'name' => $name,
+                    ];
                 }
             }
         }
@@ -1065,7 +1159,15 @@ class Task extends CommonDBTM
             case 'visibility':
                 return self::getVisibilityName($values[$field]);
             case 'plugin_tasklists_taskstates_id':
-                return self::getStateName($values[$field]);
+                // getStateName() falls back on Dropdown::getDropdownName(), which returns the
+                // raw name stored in glpi_plugin_tasklists_taskstates, and the value returned
+                // here is spliced into the search results as HTML. Escape it as the core does
+                // in its own getSpecificValueToDisplay() implementations (Contract::alert,
+                // CommonITILObject::requesttypes_id). The two labels above are translated
+                // constants and need nothing. getStateName() itself is left untouched because
+                // NotificationTargetTask feeds it into the mail templates, where HTML entities
+                // would be displayed literally.
+                return htmlescape(self::getStateName($values[$field]));
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }
@@ -1349,8 +1451,8 @@ class Task extends CommonDBTM
 
         $rows = [];
         foreach ($templates as $template) {
-            // Entity label and delete form are framework HTML (rendered |raw); the template
-            // name is passed as plain text and auto-escaped by Twig.
+            // Only the delete form is framework HTML (rendered |raw); the entity label and
+            // the template name are plain text, auto-escaped by Twig.
             $entity_name = '';
             if ($multi_entities) {
                 $entity_name = Dropdown::getDropdownName("glpi_entities", $template['entities_id']);

@@ -1058,11 +1058,11 @@ class GLPIKanbanRights {
                         list_item += "<input type='checkbox' class='form-check-input' />";
                     }
                     if (typeof column['color_class'] !== "undefined") {
-                        list_item += "<span class='kanban-color-preview "+column['color_class']+"'></span>";
+                        list_item += "<span class='kanban-color-preview "+escapeHtml(column['color_class'])+"'></span>";
                     } else {
-                        list_item += "<span class='kanban-color-preview' style='background-color: "+column['header_color']+"'></span>";
+                        list_item += "<span class='kanban-color-preview' style='background-color: "+escapeHtml(column['header_color'])+"'></span>";
                     }
-                    list_item += column['name'] + "</li>";
+                    list_item += escapeHtml(column['name']) + "</li>";
                     list += list_item;
                 });
                 list += "</ul>";
@@ -1553,6 +1553,30 @@ class GLPIKanbanRights {
         };
 
         /**
+       * Escape a value before interpolating it into an HTML string.
+       * This file is a frozen fork of the jQuery Kanban the core has since rewritten in Vue,
+       * and it predates the escaping the core added there: js/src/vue/Kanban/TeamBadgeProvider.js
+       * applies _.escape() to the very same team member name and badge colour. Every value
+       * neutralised through this helper - team member names, column names, column colours -
+       * reaches the browser straight from the database through ajax/kanban.php, which
+       * serialises it raw, so the escaping has to happen here. Quotes are covered too because
+       * most of these values are interpolated inside an attribute rather than a text node.
+       * @param {*} value Raw value coming from the server.
+       * @returns {string} The value, safe to concatenate into markup.
+       */
+        const escapeHtml = function(value) {
+            if (value === undefined || value === null) {
+                return '';
+            }
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+
+        /**
        * Compute a new badge color or retrieve the cached color from session storage.
        * @since 9.5.0
        * @param {Object} teammember The teammember this badge is for.
@@ -1622,7 +1646,7 @@ class GLPIKanbanRights {
             context.textBaseline = 'middle';
             context.fillText(initials, self.team_image_size / 2, self.team_image_size / 2);
             const src = canvas.toDataURL("image/png");
-            return "<span><img src='" + src + "' title='" + teammember['name'] + "'/></span>";
+            return "<span><img src='" + src + "' title='" + escapeHtml(teammember['name']) + "'/></span>";
         };
 
         /**
@@ -1637,8 +1661,8 @@ class GLPIKanbanRights {
 
             return `
             <span class='fa-stack fa-lg' style='font-size: ${(self.team_image_size / 2)}px'>
-                <i class='fas fa-circle fa-stack-2x' style="color: ${bg_color}" title="${teammember['name']}"></i>
-                <i class='fas ${icon} fa-stack-1x' title="${teammember['name']}"></i>
+                <i class='fas fa-circle fa-stack-2x' style="color: ${escapeHtml(bg_color)}" title="${escapeHtml(teammember['name'])}"></i>
+                <i class='fas ${icon} fa-stack-1x' title="${escapeHtml(teammember['name'])}"></i>
             </span>
          `;
         };
@@ -2029,7 +2053,7 @@ class GLPIKanbanRights {
             const _protected = column['_protected'] ? 'kanban-protected' : '';
             const column_classes = "kanban-column card " + collapse + " " + _protected;
 
-            const column_top_color = (typeof column['header_color'] !== 'undefined') ? column['header_color'] : '';
+            const column_top_color = (typeof column['header_color'] !== 'undefined') ? escapeHtml(column['header_color']) : '';
             const column_html = "<div id='" + column['id'] + "' style='border-top-color: "+column_top_color+"' class='"+column_classes+"'></div>";
             let column_el = null;
             if (position < 0) {
@@ -2052,7 +2076,7 @@ class GLPIKanbanRights {
             if (self.rights.canModifyView()) {
                 $(column_left).append("<i class='ti ti-caret-right kanban-collapse-column btn btn-sm btn-ghost-secondary' title='" + __('Toggle collapse', 'tasklists') + "'></i>");
             }
-            $(column_left).append("<span class='kanban-column-title badge "+(column['color_class'] || '')+"' style='background-color: "+column['header_color']+"; color: "+column['header_fg_color']+";'>" + column['name'] + "</span></span>");
+            $(column_left).append("<span class='kanban-column-title badge "+escapeHtml(column['color_class'] || '')+"' style='background-color: "+escapeHtml(column['header_color'])+"; color: "+escapeHtml(column['header_fg_color'])+";'>" + escapeHtml(column['name']) + "</span></span>");
             $(column_right).append("<span class='kanban_nb badge bg-secondary'>"+count+"</span>");
             $(column_right).append(getColumnToolbarElement(column));
             $(column_el).prepend(column_header);

@@ -38,17 +38,18 @@ if (!isset($_GET["withtemplate"])) {
     $_GET["withtemplate"] = "";
 }
 
-Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
-
 // IDOR read/write on Notepad: the controller only checked the global plugin right and then
 // loaded an arbitrary $_GET['id'], exposing (and letting the Notepad form write) the internal
 // notes of tasks from other entities or restricted visibility. Enforce object-level rights
 // (can(READ) validates right + entity) plus the plugin visibility model before showForItem().
+// The guard also runs before Html::header(): a refusal must not ship a rendered page shell.
 $tasks_id = (int) $_GET['id'];
 $task     = new Task();
 if (!$task->can($tasks_id, READ) || !$task->checkVisibility($tasks_id)) {
     throw new AccessDeniedHttpException();
 }
+
+Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 $note = new Notepad();
 $note->showForItem($task);
 

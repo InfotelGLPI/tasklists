@@ -40,7 +40,13 @@ if (!isset($_POST['plugin_tasklists_tasks_id'])) {
 }
 $tasks_id = (int) $_POST['plugin_tasklists_tasks_id'];
 $task = new Task();
-if (!$task->can($tasks_id, READ) || !$task->checkVisibility($tasks_id)) {
+// Every branch of this controller writes, so the right tested is UPDATE, not READ. The two
+// other paths exposing the same feature already required it - Task_Comment::getTabNameForItem()
+// hides the tab unless can($id, UPDATE) and ajax/getTaskComment.php calls
+// Session::checkRight('plugin_tasklists', UPDATE) - so a read-only profile simply never saw
+// the tab, while the controller receiving the POST accepted it: the protection was interface
+// concealment. checkVisibility() stays, it enforces the plugin's own visibility model.
+if (!$task->can($tasks_id, UPDATE) || !$task->checkVisibility($tasks_id)) {
     throw new AccessDeniedHttpException();
 }
 

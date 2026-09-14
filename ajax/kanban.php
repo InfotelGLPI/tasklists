@@ -33,8 +33,9 @@ use Glpi\Exception\Http\BadRequestHttpException;
 use Glpi\Exception\Http\HttpException;
 use Glpi\Features\KanbanInterface;
 use Glpi\Features\TeamworkInterface;
-use GlpiPlugin\Tasklists\Item_Kanban;
 use GlpiPlugin\Tasklists\Task;
+use GlpiPlugin\Tasklists\TaskType;
+use GlpiPlugin\Tasklists\TypeVisibility;
 
 use function Safe\json_encode;
 use function Safe\preg_split;
@@ -59,6 +60,16 @@ if (isset($_REQUEST['itemtype'])) {
     if (!in_array($_REQUEST['action'], $nonkanban_actions) && !is_a($_REQUEST['itemtype'], KanbanInterface::class, true)) {
         // Bad request
         // For all actions, except those in $nonkanban_actions, we expect to be manipulating the Kanban itself.
+        throw new BadRequestHttpException("Invalid itemtype parameter");
+    }
+    // The test above lets any KanbanInterface implementation through, and for the actions
+    // listed in $nonkanban_actions it does not even run, so getItemForItemtype() below was
+    // instantiating a class named by the client. This endpoint serves one Kanban and one only,
+    // the plugin's: the board is a TaskType and the cards are Tasks. Anything else is a request
+    // driving a foreign class - core or plugin - through the plugin_tasklists right, which is
+    // not the right that class is protected by. The whitelist is applied to every action, not
+    // just to the Kanban ones, precisely because the exemption was the hole.
+    if (!in_array($_REQUEST['itemtype'], [Task::class, TaskType::class], true)) {
         throw new BadRequestHttpException("Invalid itemtype parameter");
     }
     $itemtype = $_REQUEST['itemtype'];
@@ -135,6 +146,30 @@ $checkParams = static function ($required) {
     }
 };
 
+/**
+ * Helper to validate the board a column action addresses.
+ *
+ * The \Item_Kanban rows are keyed on (itemtype, items_id) alone and the core writes them with
+ * no check of its own, so the column actions below - saving, loading, clearing, showing,
+ * hiding, collapsing, expanding and reordering columns, and moving a card - reached the board
+ * of any task type whose id the caller typed, in any entity, visible to them or not, with
+ * nothing but the plugin READ right the page opens with. The two tests are the ones
+ * Kanban::showKanban() applies before rendering the very same board and the ones
+ * TaskType::getKanbanColumns() applies before returning its columns; the ajax endpoint is a
+ * parallel path to both and has to replay them.
+ */
+$checkKanbanContext = static function ($itemtype, $items_id): void {
+    if ($itemtype !== TaskType::class) {
+        throw new BadRequestHttpException("Invalid itemtype parameter");
+    }
+    $context = new TaskType();
+    if (!$context->getFromDB((int) $items_id)
+        || !Session::haveAccessToEntity($context->fields['entities_id'], $context->fields['is_recursive'])
+        || !TypeVisibility::isUserHaveRight((int) $items_id)) {
+        throw new AccessDeniedHttpException();
+    }
+};
+
 // Action Processing
 if (($_POST['action'] ?? null) === 'update') {
     $checkParams(['column_field', 'column_value']);
@@ -143,10 +178,28 @@ if (($_POST['action'] ?? null) === 'update') {
     if ($item instanceof Task && !$item->checkVisibility((int) $_POST['items_id'])) {
         throw new AccessDeniedHttpException();
     }
+    // The key of the update array used to be $_POST['column_field'], so the client named the
+    // column it wrote: any field of glpi_plugin_tasklists_tasks - users_id, entities_id,
+    // plugin_tasklists_tasktypes_id, is_archived - could be set through the Kanban with
+    // nothing but the UPDATE right on the task. The Kanban of this plugin has exactly one
+    // column field, the one Kanban.php hands to the template, so it is settled here instead
+    // of being taken from the request, and the parameter is only honoured as the assertion it
+    // was meant to be.
+    if (!$item instanceof Task || $_POST['column_field'] !== 'plugin_tasklists_taskstates_id') {
+        throw new BadRequestHttpException("Invalid column_field parameter");
+    }
+    // The value is a state identifier, and not any state: the drop target must be one of the
+    // columns the task type actually declares, which is the same rule Task::displayState()
+    // builds its dropdown on. check(UPDATE) settles the row, never the posted value.
+    $taskstates_id = (int) $_POST['column_value'];
+    if (!in_array($taskstates_id, Task::getAllowedStates($item->fields['plugin_tasklists_tasktypes_id']), true)) {
+        throw new AccessDeniedHttpException();
+    }
+
     // Update project or task based on changes made in the Kanban
     $item->update([
-        'id'                   => (int) $_POST['items_id'],
-        $_POST['column_field'] => $_POST['column_value'],
+        'id'                             => (int) $_POST['items_id'],
+        'plugin_tasklists_taskstates_id' => $taskstates_id,
     ]);
 } elseif (($_POST['action'] ?? null) === 'add_item') {
     $checkParams(['inputs']);
@@ -191,6 +244,7 @@ if (($_POST['action'] ?? null) === 'update') {
     }
 } elseif (($_POST['action'] ?? null) === 'move_item') {
     $checkParams(['card', 'column', 'position', 'kanban']);
+    $checkKanbanContext($_POST['kanban']['itemtype'] ?? null, $_POST['kanban']['items_id'] ?? 0);
     $kanban = getItemForItemtype($_POST['kanban']['itemtype']);
     $can_move = false;
     if (method_exists($kanban, 'canOrderKanbanCard')) {
@@ -207,18 +261,23 @@ if (($_POST['action'] ?? null) === 'update') {
     }
 } elseif (($_POST['action'] ?? null) === 'show_column') {
     $checkParams(['column', 'kanban']);
+    $checkKanbanContext($_POST['kanban']['itemtype'] ?? null, $_POST['kanban']['items_id'] ?? 0);
     \Item_Kanban::showColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'hide_column') {
     $checkParams(['column', 'kanban']);
+    $checkKanbanContext($_POST['kanban']['itemtype'] ?? null, $_POST['kanban']['items_id'] ?? 0);
     \Item_Kanban::hideColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'collapse_column') {
     $checkParams(['column', 'kanban']);
+    $checkKanbanContext($_POST['kanban']['itemtype'] ?? null, $_POST['kanban']['items_id'] ?? 0);
     \Item_Kanban::collapseColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'expand_column') {
     $checkParams(['column', 'kanban']);
+    $checkKanbanContext($_POST['kanban']['itemtype'] ?? null, $_POST['kanban']['items_id'] ?? 0);
     \Item_Kanban::expandColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column']);
 } elseif (($_POST['action'] ?? null) === 'move_column') {
     $checkParams(['column', 'kanban', 'position']);
+    $checkKanbanContext($_POST['kanban']['itemtype'] ?? null, $_POST['kanban']['items_id'] ?? 0);
     \Item_Kanban::moveColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column'], $_POST['position']);
 } elseif ($_REQUEST['action'] === 'refresh') {
     $checkParams(['column_field']);
@@ -261,6 +320,8 @@ if (($_POST['action'] ?? null) === 'update') {
         'entities_id'    => $_SESSION['glpiactive_entity'],
     ] + $params);
 } elseif (($_POST['action'] ?? null) === 'save_column_state') {
+    $checkParams(['itemtype', 'items_id']);
+    $checkKanbanContext($_POST['itemtype'], $_POST['items_id']);
     if (!isset($_POST['state'])) {
         // Do nothing with the state unless it isn't saved yet. Could be that no columns are shown or an error occurred.
         // If the state is supposed to be cleared, it should come through as a clear_column_state request.
@@ -273,7 +334,8 @@ if (($_POST['action'] ?? null) === 'update') {
     $checkParams(['items_id', 'state']);
     \Item_Kanban::saveStateForItem($_POST['itemtype'], $_POST['items_id'], $_POST['state']);
 } elseif ($_REQUEST['action'] === 'load_column_state') {
-    $checkParams(['items_id', 'last_load']);
+    $checkParams(['itemtype', 'items_id', 'last_load']);
+    $checkKanbanContext($_REQUEST['itemtype'], $_REQUEST['items_id']);
     header("Content-Type: application/json; charset=UTF-8", true);
     $response = [
         'state'     => \Item_Kanban::loadStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id'], $_REQUEST['last_load']),
@@ -281,7 +343,8 @@ if (($_POST['action'] ?? null) === 'update') {
     ];
     echo json_encode($response, JSON_FORCE_OBJECT);
 } elseif ($_REQUEST['action'] === 'clear_column_state') {
-    $checkParams(['items_id']);
+    $checkParams(['itemtype', 'items_id']);
+    $checkKanbanContext($_REQUEST['itemtype'], $_REQUEST['items_id']);
     $result = \Item_Kanban::clearStateForItem($_REQUEST['itemtype'], $_REQUEST['items_id']);
     if (!$result) {
         throw new HttpException(500);

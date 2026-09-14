@@ -47,7 +47,14 @@
                <a href="{{ target }}?id={{ tpl.id }}&withtemplate={{ add ? 2 : 1 }}">&nbsp;&nbsp;&nbsp;{{ tpl.name }}{% if tpl.show_id %}({{ tpl.id }}){% endif %}&nbsp;&nbsp;&nbsp;</a>
             </td>
             {% if multi_entities %}
-               <td class="center tab_bg_2">{{ tpl.entity_name|raw }}</td>
+               {# The entity name is a plain label read from glpi_entities, not markup: it is
+                  rendered through the normal auto-escaping. It used to carry |raw, so the
+                  completename returned by Dropdown::getDropdownName() - raw database content
+                  since GLPI 10 stores data unescaped - reached the page verbatim and any
+                  entity name holding a script fired for every profile allowed to open this
+                  list. The sibling column below keeps |raw because it really is a
+                  pre-rendered framework form. #}
+               <td class="center tab_bg_2">{{ tpl.entity_name }}</td>
             {% endif %}
             {% if not add %}
                <td class="center tab_bg_2">{{ tpl.delete_form|raw }}</td>
