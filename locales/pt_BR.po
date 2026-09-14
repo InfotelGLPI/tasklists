@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 11:30+0000\n"
+"POT-Creation-Date: 2026-09-14 12:55+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Eduardo Mozart de Oliveira <eduardomozart182@gmail.com>, "
 "2025\n"
@@ -80,11 +80,11 @@ msgstr ""
 msgid "Add task"
 msgstr "Adicionar tarefa"
 
-#: src/Task.php:1571
+#: src/Task.php:1632
 msgid "Affect entity for create task"
 msgstr "Afetar entidade para criar tarefa"
 
-#: src/Task.php:1415
+#: src/Task.php:1476
 msgctxt "visibility"
 msgid "All"
 msgstr "Todos"
@@ -119,8 +119,8 @@ msgstr "Na criação, atualização, remoção de uma tarefa"
 msgid "Automatic refreshing of tasklist"
 msgstr "Atualização automática da lista de tarefas"
 
-#: src/TaskType.php:222 src/TaskType.php:621 src/Task.php:928 src/Task.php:1005
-#: src/Task.php:1351
+#: src/TaskType.php:236 src/TaskType.php:646 src/Task.php:989 src/Task.php:1066
+#: src/Task.php:1412
 msgid "Backlog"
 msgstr "Lista de pendências"
 
@@ -149,7 +149,7 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr "Configurar contextos e status"
 
-#: src/TaskState.php:116 src/TaskState.php:184 src/TaskType.php:84
+#: src/TaskState.php:117 src/TaskState.php:185 src/TaskType.php:84
 #: src/Dashboard.php:114 src/Task.php:109
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
@@ -182,7 +182,7 @@ msgid "Description"
 msgstr ""
 
 #: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: src/TaskType.php:303 src/Dashboard.php:120 src/Task.php:147
+#: src/TaskType.php:328 src/Dashboard.php:120 src/Task.php:147
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "Data de vencimento"
@@ -348,7 +348,7 @@ msgstr ""
 msgid "See and update all tasks"
 msgstr "Veja e atualize todas as tarefas"
 
-#: src/TaskState.php:62
+#: src/TaskState.php:63
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
 msgid "Status"
 msgid_plural "Statuses"
@@ -388,12 +388,12 @@ msgid ""
 "shown. You can still drag cards into this column."
 msgstr ""
 
-#: src/Task.php:1409
+#: src/Task.php:1470
 msgctxt "visibility"
 msgid "This user"
 msgstr "Este usuário"
 
-#: src/Task.php:1412
+#: src/Task.php:1473
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "Este usuário e este grupo"
@@ -402,7 +402,7 @@ msgstr "Este usuário e este grupo"
 msgid "Toggle collapse"
 msgstr ""
 
-#: src/Task.php:1140
+#: src/Task.php:1201
 msgid "Transfer"
 msgstr ""
 
@@ -414,19 +414,27 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: src/Task.php:498
+#: src/Task_Comment.php:351
+msgid "You are not allowed to reply to this comment"
+msgstr ""
+
+#: src/Task.php:511
 msgid "You are not allowed to use this context"
 msgstr ""
 
-#: src/Task.php:473
+#: src/Task.php:486
 msgid "You are not allowed to use this group"
 msgstr ""
 
-#: src/Task.php:462
+#: src/Task.php:537
+msgid "You are not allowed to use this status"
+msgstr ""
+
+#: src/Task.php:475
 msgid "You are not allowed to use this user"
 msgstr ""
 
-#: src/Task.php:609
+#: src/Task.php:648
 msgid "You cannot archive a task with this state"
 msgstr "Você não pode arquivar uma tarefa com este estado"
 

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 11:30+0000\n"
+"POT-Creation-Date: 2026-09-14 12:55+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: INOUE Daisuke, 2026\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/"
@@ -75,11 +75,11 @@ msgstr "項目追加"
 msgid "Add task"
 msgstr "タスクの追加"
 
-#: src/Task.php:1571
+#: src/Task.php:1632
 msgid "Affect entity for create task"
 msgstr "タスクを作成してエンティティ―に影響を与える"
 
-#: src/Task.php:1415
+#: src/Task.php:1476
 msgctxt "visibility"
 msgid "All"
 msgstr "すべて"
@@ -114,8 +114,8 @@ msgstr "タスクの作成、更新、削除時"
 msgid "Automatic refreshing of tasklist"
 msgstr "タスクリストの自動画面更新"
 
-#: src/TaskType.php:222 src/TaskType.php:621 src/Task.php:928 src/Task.php:1005
-#: src/Task.php:1351
+#: src/TaskType.php:236 src/TaskType.php:646 src/Task.php:989 src/Task.php:1066
+#: src/Task.php:1412
 msgid "Backlog"
 msgstr "バックログ"
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr "コンテキストと状態の設定"
 
-#: src/TaskState.php:116 src/TaskState.php:184 src/TaskType.php:84
+#: src/TaskState.php:117 src/TaskState.php:185 src/TaskType.php:84
 #: src/Dashboard.php:114 src/Task.php:109
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 msgid "Context"
@@ -175,7 +175,7 @@ msgid "Description"
 msgstr ""
 
 #: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: src/TaskType.php:303 src/Dashboard.php:120 src/Task.php:147
+#: src/TaskType.php:328 src/Dashboard.php:120 src/Task.php:147
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "期限"
@@ -337,7 +337,7 @@ msgstr "検索または結果フィルター"
 msgid "See and update all tasks"
 msgstr "すべてのタスクを表示・更新"
 
-#: src/TaskState.php:62
+#: src/TaskState.php:63
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
 msgid "Status"
 msgid_plural "Statuses"
@@ -377,12 +377,12 @@ msgstr ""
 "この列は、表示するカード数の制限により、カードの表示を保証できません。ひきつ"
 "づきカードをこの列にドラッグすることはできます。"
 
-#: src/Task.php:1409
+#: src/Task.php:1470
 msgctxt "visibility"
 msgid "This user"
 msgstr "このユーザー"
 
-#: src/Task.php:1412
+#: src/Task.php:1473
 msgctxt "visibility"
 msgid "This user and this group"
 msgstr "このユーザーとグループ"
@@ -391,7 +391,7 @@ msgstr "このユーザーとグループ"
 msgid "Toggle collapse"
 msgstr "折りたたみ切り替え"
 
-#: src/Task.php:1140
+#: src/Task.php:1201
 msgid "Transfer"
 msgstr ""
 
@@ -403,19 +403,27 @@ msgstr "タスクの優先度を更新"
 msgid "Visibility"
 msgstr ""
 
-#: src/Task.php:498
+#: src/Task_Comment.php:351
+msgid "You are not allowed to reply to this comment"
+msgstr ""
+
+#: src/Task.php:511
 msgid "You are not allowed to use this context"
 msgstr ""
 
-#: src/Task.php:473
+#: src/Task.php:486
 msgid "You are not allowed to use this group"
 msgstr ""
 
-#: src/Task.php:462
+#: src/Task.php:537
+msgid "You are not allowed to use this status"
+msgstr ""
+
+#: src/Task.php:475
 msgid "You are not allowed to use this user"
 msgstr ""
 
-#: src/Task.php:609
+#: src/Task.php:648
 msgid "You cannot archive a task with this state"
 msgstr "この状態のタスクを保管できません"
 
