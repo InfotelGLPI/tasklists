@@ -46,7 +46,26 @@ if (isset($_POST["add"])) {
         throw new AccessDeniedHttpException();
     }
 
-    $ticket->add($_POST);
+    // The other end of the link was never validated. check(-1, CREATE) above reads the global
+    // plugin_tasklists right only - this class is a plain link CommonDBTM whose $rightname is
+    // plugin_tasklists, so nothing in it ever looks at the core ticket - and $_POST['tickets_id']
+    // went verbatim into the insert. The twin path front/task.form.php, which performs the same
+    // linking from the task form, does gate it with can($tickets_id, READ): the two controllers
+    // diverged on one and the same operation. Without this, any holder of the plugin CREATE right
+    // could hang one of their own tasks off any ticket of the instance, and the ticket's
+    // linked-tasks tab and its notifications would carry it to that ticket's actors.
+    $tickets_id  = (int) ($_POST['tickets_id'] ?? 0);
+    $core_ticket = new \Ticket();
+    if (!$core_ticket->can($tickets_id, READ)) {
+        throw new AccessDeniedHttpException();
+    }
+
+    // The link is made of exactly two columns, both now validated and cast; handing over the
+    // whole $_POST let the client name any other field of the relation table.
+    $ticket->add([
+        'tickets_id'                => $tickets_id,
+        'plugin_tasklists_tasks_id' => $tasks_id,
+    ]);
     Html::back();
 
 }

@@ -49,7 +49,29 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
 {
     use \Glpi\Features\Kanban;
 
-    public static $rightname = 'plugin_tasklists';
+    // Contexts are the boards of the Kanban and, at the same time, configuration objects:
+    // Glpi\Controller\DropdownFormController gates create/update/purge on this very property
+    // (check(-1, CREATE), check($id, UPDATE), check($id, PURGE)). Declaring the class under
+    // plugin_tasklists therefore meant that every user allowed to file a task was also allowed
+    // to create, rename, move and purge the contexts of the whole instance - and purging one
+    // cascades on its TypeVisibility rows and orphans every task filed under it. Writing now
+    // follows the configuration right, as TaskState already does; reading is kept on the user
+    // right by the canView() override below, because the dropdown and the board switcher have
+    // to stay readable by everyone.
+    public static $rightname = 'plugin_tasklists_config';
+
+    /**
+     * Read access is deliberately decoupled from $rightname: a context is both a configuration
+     * object and the dropdown every task is filed under, so it has to remain visible to the
+     * ordinary users of the plugin while its write operations stay with the administrators.
+     * Dropdown::show() and the tabs test canView(), never $rightname directly.
+     *
+     * @return bool
+     */
+    public static function canView(): bool
+    {
+        return (bool) Session::haveRight('plugin_tasklists', READ);
+    }
 
     /**
      * @param int $nb
@@ -207,7 +229,16 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
 
         if (!empty($column_ids)) {
             $TaskState = new TaskState();
-            $datastates               = $TaskState->find(["id" => $column_ids]);
+            // The statuses are entity-scoped - glpi_plugin_tasklists_taskstates carries
+            // entities_id and is_recursive, and ajax/kanban.php forces the active entity at
+            // creation - but this listing queried on the posted ids alone, so naming an id of
+            // another entity returned its label and its colour.
+            $states_crit   = ["id" => $column_ids];
+            $entities_crit = $dbu->getEntitiesRestrictCriteria(TaskState::getTable(), '', '', true);
+            if (count($entities_crit)) {
+                $states_crit[] = $entities_crit;
+            }
+            $datastates               = $TaskState->find($states_crit);
         }
 
         if (!empty($column_ids) && !empty($datastates)) {
@@ -230,10 +261,20 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
         foreach ($states as $state) {
             $selected_state = $state;
             $tasks          = [];
-            $datas          = $task->find(["plugin_tasklists_tasktypes_id"  => $ID,
+            $task_crit      = ["plugin_tasklists_tasktypes_id"  => $ID,
                 "plugin_tasklists_taskstates_id" => $state['id'],
                 'is_deleted'                     => 0,
-                'is_template'                    => 0], ['priority DESC,name']);
+                'is_template'                    => 0];
+            // Defence in depth: this find() filters on the task type, the state and the flags,
+            // and the entity boundary of the whole path rests on the single checkVisibility()
+            // call further down. Restricting the query itself means the boundary no longer
+            // depends on one call site remaining correct, which is what Dashboard::showWidget()
+            // and findUsers() already do.
+            $entities_crit  = $dbu->getEntitiesRestrictCriteria(Task::getTable(), '', '', true);
+            if (count($entities_crit)) {
+                $task_crit[] = $entities_crit;
+            }
+            $datas          = $task->find($task_crit, ['priority DESC,name']);
 
             foreach ($datas as $data) {
                 $array = isset($_SESSION["archive"][Session::getLoginUserID()]) ? json_decode($_SESSION["archive"][Session::getLoginUserID()]) : [0];
@@ -409,7 +450,13 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
 
                     $rich_content = "";
                     if ($data['content'] != null) {
-                        $rich_content = RichText::getTextFromHtml($data['content'], false, true);
+                        // The fourth argument re-encodes the output: getTextFromHtml() ends on
+                        // html_entity_decode(), so without it the plain text handed back still
+                        // carries the markup that was stored in the task content. The value is
+                        // published as 'title_tooltip' and interpolated by Kanban.js straight
+                        // into a title="" attribute, which closed on the first quote. Same call
+                        // as the sibling one in getKanbanColumns() above.
+                        $rich_content = RichText::getTextFromHtml($data['content'], false, true, true);
                     }
 
                     $title = Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments;
@@ -552,7 +599,16 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
 
         if ($column_field === null || $column_field === 'plugin_tasklists_taskstates_id') {
             $columns  = ['plugin_tasklists_taskstates_id' => []];
-            $restrict = [];
+            // Security: this listing feeds the column picker of the Kanban and ran with no
+            // criterion at all, so it enumerated the statuses - name and colour - configured in
+            // every entity of the instance. The table is entity-scoped; the scope was simply not
+            // applied on the way out.
+            $dbu           = new DbUtils();
+            $restrict      = [];
+            $entities_crit = $dbu->getEntitiesRestrictCriteria(TaskState::getTable(), '', '', true);
+            if (count($entities_crit)) {
+                $restrict[] = $entities_crit;
+            }
             //         if (!empty($column_ids) && !$get_default) {
             //            $restrict = ['id' => $column_ids];
             //         }

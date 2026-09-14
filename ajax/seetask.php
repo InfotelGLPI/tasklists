@@ -29,14 +29,24 @@
 
 use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Task;
+use GlpiPlugin\Tasklists\TaskType;
+use GlpiPlugin\Tasklists\TypeVisibility;
 
 Session::checkRight('plugin_tasklists', UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
-//Html::requireJs('tinymce');
-echo "<script type='text/javascript'  src='../../../public/lib/tinymce.js'></script>";
+// No script tag is emitted here any more. The one that stood at this line pointed at
+// ../../../public/lib/tinymce.js: from /plugins/tasklists/ajax/ that resolves to
+// <glpi>/public/lib/tinymce.js, a GLPI 10 layout - in GLPI 11 the directory served as the web
+// root IS public/, so the asset lives at <glpi>/lib/tinymce.js and the request returned a 404 on
+// every opening of the modal. Restoring Html::requireJs('tinymce') would not help either: it
+// only pushes onto $_SESSION['glpi_js_toload'], which is drained by Html::footer() during a full
+// page render, so in an AJAX fragment the entry would simply leak into the next page. It is
+// unnecessary in the first place - Html::includeHeader() calls requireJs('tinymce')
+// unconditionally (src/Html.php), so the document this fragment is injected into has already
+// loaded the editor.
 
 if (isset($_GET['id'])) {
     // IDOR read: gate on object-level right + plugin visibility before showing the task.
@@ -57,14 +67,43 @@ if (isset($_GET['id'])) {
     $task->showForm($tasks_id, $options);
 } elseif (isset($_GET['plugin_tasklists_tasktypes_id'])
            && isset($_GET['plugin_tasklists_taskstates_id'])) {
+    // The three other branches of this endpoint all replay can($id, READ) then
+    // checkVisibility($id) before showing anything; this one showed the template task of a
+    // context named by the client, checking neither end. hasTemplate() filters on is_template,
+    // is_deleted, is_archived, the requested context and the entity criteria, nothing else: it
+    // replays neither Session::haveAccessToEntity() nor TypeVisibility::isUserHaveRight() on the
+    // context - the pair that Kanban::showKanban(), ajax/dropdownState.php,
+    // ajax/dropdownTypeTasks.php and the $checkKanbanContext helper of ajax/kanban.php all apply
+    // - and Task::showForm() performs no access control of its own. Enumerating the context
+    // identifiers over a plain GET therefore returned the whole template form - name, RichText
+    // description, requester, technician, group, client, priority, due date - of every context
+    // restricted to a group the caller is not a member of, which is exactly what the group
+    // visibility model exists to prevent.
+    $tasktypes_id = (int) $_GET['plugin_tasklists_tasktypes_id'];
+    $tasktype     = new TaskType();
+    if (!$tasktype->getFromDB($tasktypes_id)
+        || !Session::haveAccessToEntity($tasktype->fields['entities_id'], $tasktype->fields['is_recursive'])
+        || !TypeVisibility::isUserHaveRight($tasktypes_id)) {
+        throw new AccessDeniedHttpException();
+    }
+
     $options = [
         'from_edit_ajax'                 => true,
-        'plugin_tasklists_tasktypes_id'  => $_GET['plugin_tasklists_tasktypes_id'],
-        'plugin_tasklists_taskstates_id' => $_GET['plugin_tasklists_taskstates_id'],
+        // Both identifiers used to reach $options - and from there the query and the form -
+        // without ever being cast.
+        'plugin_tasklists_tasktypes_id'  => $tasktypes_id,
+        'plugin_tasklists_taskstates_id' => (int) $_GET['plugin_tasklists_taskstates_id'],
         'withtemplate'                   => 0,
     ];
     $task    = new Task();
-    if ($id = $task->hasTemplate($options)) {
+    $id      = (int) $task->hasTemplate($options);
+    if ($id > 0) {
+        // A template is a task like any other: same pair as the neighbouring branches. Checking
+        // the context is not enough on its own, since the template carries its own visibility
+        // level and its own owner.
+        if (!$task->can($id, READ) || !$task->checkVisibility($id)) {
+            throw new AccessDeniedHttpException();
+        }
         $options['withtemplate'] = 2;
         $task->showForm($id, $options);
     } else {
@@ -111,7 +150,13 @@ if (isset($_GET['id'])) {
             //'client'                         => $task->fields['client'],
             'entities_id'    => $task->fields['entities_id'],
             'name'           => $task->fields['name'],
-            'content'        => $task->fields['comment'],
+            // glpi_plugin_tasklists_tasks has no comment column: the schema declares content
+            // (sql/empty-2.1.0.sql), and content is what prepareInputForAdd()/Update(),
+            // showForm() and NotificationTargetTask manipulate. The description of the task was
+            // therefore never carried over to the ticket, and PHP 8.2 raised an "Undefined array
+            // key" on every call. comment only exists on the neighbouring tables - tasktypes,
+            // taskstates, notifications - which is where the confusion came from.
+            'content'        => $task->fields['content'],
             'withtemplate'   => 0,
         ];
         $ticket  = new Ticket();

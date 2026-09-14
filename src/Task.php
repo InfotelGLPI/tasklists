@@ -42,11 +42,13 @@ use Glpi\DBAL\QueryExpression;
 use Glpi\DBAL\QuerySubQuery;
 //Needed for save cards
 use Glpi\RichText\RichText;
+use Group;
 use Group_User;
 use Html;
 use MassiveAction;
 use Notepad;
 use NotificationEvent;
+use Profile_User;
 use Session;
 use User;
 
@@ -355,6 +357,130 @@ class Task extends CommonDBTM
      *
      * @return array|false The input, or false to refuse the write.
      */
+    /**
+     * Replay, on the server, the restriction the User dropdowns of showForm() carry.
+     *
+     * The form renders users_id and users_id_requester with 'entity' => the entity of the task,
+     * which restricts the offered list to the users holding a profile there. That restriction
+     * lives in the client only: the sink accepted whatever identifier was posted back. The
+     * criterion of the dropdown is exactly the entity set of the target user, which
+     * Profile_User::getUserEntities() resolves, recursive profiles expanded.
+     *
+     * @param int $users_id
+     * @param int $entities_id Entity of the task, not the active entity of the caller.
+     *
+     * @return bool
+     */
+    public static function isUserAllowedInEntity(int $users_id, int $entities_id): bool
+    {
+        $user = new User();
+        if ($users_id <= 0 || !$user->getFromDB($users_id)) {
+            return false;
+        }
+
+        $entities = array_map('intval', Profile_User::getUserEntities($users_id, true));
+
+        return in_array($entities_id, $entities, true);
+    }
+
+    /**
+     * Replay, on the server, the restriction the Group dropdown of showForm() carries.
+     *
+     * showForm() renders it with 'entity' => the entity of the task and
+     * 'condition' => ['is_usergroup' => 1]. A dropdown restricted to an entity offers the rows
+     * of that entity plus the recursive rows of its ancestors, which is what the test below
+     * rebuilds. The is_usergroup flag matters as much as the entity: a group that is not a user
+     * group has no members to notify and has no business owning a task.
+     *
+     * @param int $groups_id
+     * @param int $entities_id Entity of the task, not the active entity of the caller.
+     *
+     * @return bool
+     */
+    public static function isGroupAllowedInEntity(int $groups_id, int $entities_id): bool
+    {
+        $group = new Group();
+        if ($groups_id <= 0 || !$group->getFromDB($groups_id)) {
+            return false;
+        }
+        if (!$group->fields['is_usergroup']) {
+            return false;
+        }
+
+        $group_entity = (int) $group->fields['entities_id'];
+        if ($group_entity === $entities_id) {
+            return true;
+        }
+        if (!$group->fields['is_recursive']) {
+            return false;
+        }
+
+        $dbu = new DbUtils();
+
+        return in_array(
+            $group_entity,
+            array_map('intval', $dbu->getAncestorsOf('glpi_entities', $entities_id)),
+            true,
+        );
+    }
+
+    /**
+     * Security: the three actor fields of the form were restricted to the entity of the task by
+     * their dropdowns and by nothing else. The sink revalidated the context and the entity but
+     * never the actors, so a caller posted the identifier of a user or of a group of any other
+     * entity - identifiers are sequential, they are guessed, not discovered. The exit point is
+     * the notification channel: post_addItem() raises "newtask", and
+     * NotificationTargetTask::getGroupAddress() joins glpi_groups_users with no entity
+     * restriction whatsoever, so the name and the content of the task were mailed to a
+     * perimeter the entity isolation forbids. checkVisibility() holds that isolation for every
+     * application read; it was the e-mail that walked around it.
+     *
+     * The validation bears on the entity of the TASK - the one the dropdowns were rendered with
+     * and the one validatePostedContext() has just settled - and not on the active entity of
+     * the caller, which may be an ancestor.
+     *
+     * @param array $input
+     *
+     * @return array|false The input, or false to refuse the write.
+     */
+    private function validatePostedActors($input)
+    {
+        // No session means no posted form: the mail collector rule creates tasks from the cron,
+        // with actors coming from the rule action rather than from a client.
+        if (Session::getLoginUserID() === false) {
+            return $input;
+        }
+
+        $entities_id = (int) ($input['entities_id'] ?? $this->fields['entities_id'] ?? Session::getActiveEntity());
+
+        foreach (['users_id', 'users_id_requester'] as $field) {
+            if (!isset($input[$field]) || (int) $input[$field] <= 0) {
+                continue;
+            }
+            if (!self::isUserAllowedInEntity((int) $input[$field], $entities_id)) {
+                Session::addMessageAfterRedirect(
+                    __('You are not allowed to use this user', 'tasklists'),
+                    false,
+                    ERROR,
+                );
+                return false;
+            }
+        }
+
+        if (isset($input['groups_id']) && (int) $input['groups_id'] > 0) {
+            if (!self::isGroupAllowedInEntity((int) $input['groups_id'], $entities_id)) {
+                Session::addMessageAfterRedirect(
+                    __('You are not allowed to use this group', 'tasklists'),
+                    false,
+                    ERROR,
+                );
+                return false;
+            }
+        }
+
+        return $input;
+    }
+
     private function validatePostedContext($input)
     {
         // No session means no posted form: the mail collector rule creates tasks from the
@@ -402,6 +528,15 @@ class Task extends CommonDBTM
             $input['users_id'] = Session::getLoginUserID();
         }
 
+        // After the pinning above, so that the value it forces is checked like any other: the
+        // session user always belongs to the entity validatePostedContext() has just accepted,
+        // so the test is free for him and closes the branch where canUpdate() lets the client
+        // keep its own users_id.
+        $input = $this->validatePostedActors($input);
+        if ($input === false) {
+            return false;
+        }
+
         if (isset($input['due_date']) && empty($input['due_date'])) {
             $input['due_date'] = 'NULL';
         }
@@ -437,6 +572,14 @@ class Task extends CommonDBTM
         // revalidate either of them: check($id, UPDATE) settles the row the caller is editing,
         // never the entity or the context they are moving it to.
         $input = $this->validatePostedContext($input);
+        if ($input === false) {
+            return false;
+        }
+
+        // Same reason as on add, and the same blind spot: check($id, UPDATE) settles the row
+        // being edited, never the actors it is being reassigned to. The entity used is the one
+        // the row is moving to when the input carries it, the current one otherwise.
+        $input = $this->validatePostedActors($input);
         if ($input === false) {
             return false;
         }
@@ -1319,32 +1462,103 @@ class Task extends CommonDBTM
      */
     public function checkVisibility($id)
     {
+        if (!$this->getFromDB($id)) {
+            return false;
+        }
+
+        // Entity isolation: a task always stays within its entity tree, even when
+        // marked public (visibility == 3). Without this gate the Kanban/dashboard
+        // data paths (which rely solely on checkVisibility) would leak tasks of
+        // other entities to any user holding the global plugin READ right.
+        //
+        // Security: plugin_tasklists_see_all used to return true above this gate, before the
+        // record was even read. It relaxes the visibility model - 1 mine, 2 mine and my
+        // groups', 3 everyone's - and nothing else: GLPI grants a right profile by profile AND
+        // entity by entity, so holding it in one entity is not a pass to the instance. Order
+        // mattered more here than anywhere else because the Kanban and dashboard paths have no
+        // other entity boundary: TaskType::getKanbanColumns() filters its find() on the task
+        // type, the state and the flags only, then delegates the whole decision to this method.
+        if (!Session::haveAccessToEntity($this->fields['entities_id'], $this->fields['is_recursive'])) {
+            return false;
+        }
         if (Session::haveRight("plugin_tasklists_see_all", 1)) {
             return true;
         }
-        if ($this->getFromDB(($id))) {
-            // Entity isolation: a task always stays within its entity tree, even when
-            // marked public (visibility == 3). Without this gate the Kanban/dashboard
-            // data paths (which rely solely on checkVisibility) would leak tasks of
-            // other entities to any user holding the global plugin READ right.
-            if (!Session::haveAccessToEntity($this->fields['entities_id'], $this->fields['is_recursive'])) {
-                return false;
-            }
-            $groupusers = Group_User::getGroupUsers($this->fields['groups_id']);
-            $groups = [];
-            foreach ($groupusers as $groupuser) {
-                $groups[] = $groupuser["id"];
-            }
-            if (($this->fields['visibility'] == 1 && ($this->fields['users_id'] == Session::getLoginUserID(
-            ) || $this->fields['users_id_requester'] == Session::getLoginUserID()))
-                || ($this->fields['visibility'] == 2 && ($this->fields['users_id'] == Session::getLoginUserID(
-                ) || $this->fields['users_id_requester'] == Session::getLoginUserID()
-            || in_array(Session::getLoginUserID(), $groups)))
-                || ($this->fields['visibility'] == 3)) {
-                return true;
-            }
+
+        $groupusers = Group_User::getGroupUsers($this->fields['groups_id']);
+        $groups = [];
+        foreach ($groupusers as $groupuser) {
+            $groups[] = $groupuser["id"];
+        }
+        $users_id = Session::getLoginUserID();
+        if (($this->fields['visibility'] == 1
+                && ($this->fields['users_id'] == $users_id
+                    || $this->fields['users_id_requester'] == $users_id))
+            || ($this->fields['visibility'] == 2
+                && ($this->fields['users_id'] == $users_id
+                    || $this->fields['users_id_requester'] == $users_id
+                    || in_array($users_id, $groups)))
+            || ($this->fields['visibility'] == 3)) {
+            return true;
         }
         return false;
+    }
+
+    /**
+     * SQL counterpart of checkVisibility(), to restrict a listing of tasks.
+     *
+     * checkVisibility() decides record by record, which is what the form paths need; a
+     * listing cannot afford to load every row to ask. The two must say the same thing,
+     * otherwise a selector offers what the object then refuses - or, as was the case for the
+     * two task dropdowns, offers names the caller is not allowed to read. The criteria below
+     * are the literal transcription of the method above: the entity tree first, then the
+     * visibility model unless plugin_tasklists_see_all relaxes it.
+     *
+     * @return array criteria to merge into a $DB->request() / Dropdown 'condition'
+     */
+    public static function getVisibilityCriteria(): array
+    {
+        $dbu   = new DbUtils();
+        $table = self::getTable();
+
+        $criteria      = [];
+        $entities_crit = $dbu->getEntitiesRestrictCriteria($table, '', '', true);
+        if (count($entities_crit)) {
+            $criteria[] = $entities_crit;
+        }
+
+        if (Session::haveRight('plugin_tasklists_see_all', 1)) {
+            return $criteria;
+        }
+
+        $users_id = (int) Session::getLoginUserID();
+        $groups   = $_SESSION['glpigroups'] ?? [];
+
+        $own = [
+            'OR' => [
+                "$table.users_id"           => $users_id,
+                "$table.users_id_requester" => $users_id,
+            ],
+        ];
+        $own_or_group = [
+            'OR' => [
+                "$table.users_id"           => $users_id,
+                "$table.users_id_requester" => $users_id,
+                // An empty group list must match nothing, not everything: a bare IN () is a
+                // syntax error and an empty array is silently dropped by the builder.
+                "$table.groups_id"          => count($groups) ? $groups : [-1],
+            ],
+        ];
+
+        $criteria[] = [
+            'OR' => [
+                ["$table.visibility" => 1, $own],
+                ["$table.visibility" => 2, $own_or_group],
+                ["$table.visibility" => 3],
+            ],
+        ];
+
+        return $criteria;
     }
 
     /**
@@ -1407,9 +1621,11 @@ class Task extends CommonDBTM
     }
 
     /**
-     * @param $options
+     * Find the template task configured for the context named in $options, if any.
      *
-     * @return bool
+     * @param array $options
+     *
+     * @return int|false identifier of the template, false when the context has none
      */
     public function hasTemplate($options)
     {
@@ -1425,7 +1641,7 @@ class Task extends CommonDBTM
         $templates = $dbu->getAllDataFromTable($this->getTable(), $restrict);
         reset($templates);
         foreach ($templates as $template) {
-            return $template['id'];
+            return (int) $template['id'];
         }
         return false;
     }
@@ -1616,6 +1832,12 @@ class Task extends CommonDBTM
 
         /** @var CommonDBTM $link_class */
         $link_class = null;
+        // $field used to be left undeclared, so the two branches of the switch were the only
+        // thing defining it: on any other itemtype the method reached the update() below with an
+        // undefined variable, which PHP evaluates as null and the query builder turns into a
+        // meaningless column name. Declaring it here and testing it with $link_class makes the
+        // refusal explicit and drops the exception that was carried in the baseline.
+        $field      = null;
         switch ($itemtype) {
             case 'User':
                 $link_class = Task::class;
@@ -1627,7 +1849,22 @@ class Task extends CommonDBTM
                 break;
         }
 
-        if ($link_class === null) {
+        if ($link_class === null || $field === null) {
+            return false;
+        }
+
+        // The endpoint that calls this method (ajax/kanban.php, action add_teammember) hands
+        // over items_id_teammember straight from the request, so the method cannot assume its
+        // caller filtered anything: it wrote an arbitrary identifier into users_id or groups_id
+        // without checking that the target exists, that it belongs to the entity of the task,
+        // or - for a group - that it is a user group at all. prepareInputForUpdate() below now
+        // replays the same test through update(), but refusing here returns false to the client
+        // instead of relying on a side effect of the model.
+        $entities_id = (int) $this->fields['entities_id'];
+        if ($field === 'users_id' && !self::isUserAllowedInEntity($items_id, $entities_id)) {
+            return false;
+        }
+        if ($field === 'groups_id' && !self::isGroupAllowedInEntity($items_id, $entities_id)) {
             return false;
         }
 
@@ -1646,6 +1883,8 @@ class Task extends CommonDBTM
 
         /** @var CommonDBTM $link_class */
         $link_class = null;
+        // Same declaration as addTeamMember() above.
+        $field      = null;
         switch ($itemtype) {
             case 'User':
                 $link_class = Task::class;
@@ -1657,7 +1896,7 @@ class Task extends CommonDBTM
                 break;
         }
 
-        if ($link_class === null) {
+        if ($link_class === null || $field === null) {
             return false;
         }
 

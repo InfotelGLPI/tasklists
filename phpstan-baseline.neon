@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Parameter \#1 \$ID of method GlpiPlugin\\Tasklists\\Task\:\:showForm\(\) expects int, true given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ajax/seetask.php
-
-		-
 			message: '#^Parameter \#2 \$force of method CommonDBTM\:\:delete\(\) expects bool, int given\.$#'
 			identifier: argument.type
 			count: 1
@@ -286,11 +280,7 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 1
 			path: src/Task.php
-		-
-			message: '#^Variable \$field might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: src/Task.php
+
 		-
 			message: '#^Access to offset ''tasktypes'' on an unknown class GlpiPlugin\\Tasklists\\type\.$#'
 			identifier: class.notFound
@@ -336,12 +326,6 @@ parameters:
 		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
-			count: 1
-			path: src/TaskState.php
-
-		-
-			message: '#^Variable \$possible_values might not be defined\.$#'
-			identifier: variable.undefined
 			count: 1
 			path: src/TaskState.php
 

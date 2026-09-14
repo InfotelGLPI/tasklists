@@ -34,6 +34,7 @@ use Glpi\Exception\Http\HttpException;
 use Glpi\Features\KanbanInterface;
 use Glpi\Features\TeamworkInterface;
 use GlpiPlugin\Tasklists\Task;
+use GlpiPlugin\Tasklists\TaskState;
 use GlpiPlugin\Tasklists\TaskType;
 use GlpiPlugin\Tasklists\TypeVisibility;
 
@@ -281,6 +282,14 @@ if (($_POST['action'] ?? null) === 'update') {
     \Item_Kanban::moveColumn($_POST['kanban']['itemtype'], $_POST['kanban']['items_id'], $_POST['column'], $_POST['position']);
 } elseif ($_REQUEST['action'] === 'refresh') {
     $checkParams(['column_field']);
+    // The only board action whose access control lived in another class: refresh relied on the
+    // generic check at the top of this file, and that one calls $item->canView(), which
+    // TaskType::canView() deliberately answers with the global plugin_tasklists READ right - not
+    // with the entity of the context nor with its group visibility. Nothing was exposed in
+    // practice because TaskType::getKanbanColumns() re-checks on its own, but every other branch
+    // of this dispatch states its own precondition rather than borrowing one, and a refresh is
+    // exactly as much a read of the board as get_column is.
+    $checkKanbanContext($_REQUEST['itemtype'] ?? null, $_REQUEST['items_id'] ?? 0);
     // Get all columns to refresh the kanban
     header("Content-Type: application/json; charset=UTF-8", true);
     $force_columns = \Item_Kanban::getAllShownColumns($itemtype, $_REQUEST['items_id']);
@@ -308,17 +317,27 @@ if (($_POST['action'] ?? null) === 'update') {
     echo $item->getKanbanUrlWithID($_REQUEST['items_id'], true);
 } elseif (($_POST['action'] ?? null) === 'create_column') {
     $checkParams(['column_field', 'items_id', 'column_name']);
-    $column_field = $_POST['column_field'];
-    $column_item = getItemForForeignKeyField($column_field);
+    // column_field used to be taken from the request and handed to getItemForForeignKeyField(),
+    // so any foreign key name of the instance designated a class the caller could instantiate
+    // and then populate. Kanban::showKanban() only ever emits this one value - the columns of
+    // the board are the task states - so it is the only one the endpoint has to accept, and
+    // resolving the class here rather than from the input also removes the null return of
+    // getItemForForeignKeyField() (a fatal on the static calls below) from the picture.
+    if (($_POST['column_field'] ?? '') !== 'plugin_tasklists_taskstates_id') {
+        throw new BadRequestHttpException("Unsupported column field");
+    }
+    $column_item = new TaskState();
     if (!$column_item::canCreate() || !$column_item::canView()) {
         // Missing rights
         throw new AccessDeniedHttpException();
     }
-    $params = $_POST['params'] ?? [];
+    // $_POST['params'] was merged into the input as-is, so the caller decided the value of any
+    // column of the table - entities_id first of all, which took the new status out of the
+    // entity of the board it was created from. Only the name is under his control.
     $column_item->add([
-        'name'   => $_POST['column_name'],
-        'entities_id'    => $_SESSION['glpiactive_entity'],
-    ] + $params);
+        'name'        => $_POST['column_name'],
+        'entities_id' => $_SESSION['glpiactive_entity'],
+    ]);
 } elseif (($_POST['action'] ?? null) === 'save_column_state') {
     $checkParams(['itemtype', 'items_id']);
     $checkKanbanContext($_POST['itemtype'], $_POST['items_id']);
@@ -353,11 +372,18 @@ if (($_POST['action'] ?? null) === 'update') {
     return;
 } elseif ($_REQUEST['action'] === 'list_columns') {
     $checkParams(['column_field']);
+    // These two were the only column actions not routed through the helper. list_columns does
+    // not always name a board, so the check applies when it does; get_column always does.
+    if (isset($_REQUEST['items_id'])) {
+        $checkKanbanContext($_REQUEST['itemtype'] ?? null, $_REQUEST['items_id']);
+    }
     header("Content-Type: application/json; charset=UTF-8", true);
     echo json_encode($itemtype::getAllKanbanColumns($_REQUEST['column_field']));
 } elseif ($_REQUEST['action'] === 'get_column') {
-    Session::writeClose();
     $checkParams(['column_id', 'column_field', 'items_id']);
+    $checkKanbanContext($_REQUEST['itemtype'] ?? null, $_REQUEST['items_id']);
+    // Closed after the checks: they read the session, and the response is built from it too.
+    Session::writeClose();
     header("Content-Type: application/json; charset=UTF-8", true);
     $column = $itemtype::getKanbanColumns($_REQUEST['items_id'], $_REQUEST['column_field'], [$_REQUEST['column_id']]);
     echo json_encode($column, JSON_FORCE_OBJECT);

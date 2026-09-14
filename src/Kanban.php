@@ -252,13 +252,22 @@ class Kanban extends CommonGLPI
                 );
             }
 
-            $canadd_item = json_encode(self::canCreate());
-            $candelete_item = json_encode(self::canDelete());
-            $canmodify_view = json_encode(Session::haveRight("plugin_tasklists_config", READ));
-            //      $canmodify_view = json_encode(($ID == 0 || $project->canModifyGlobalState()));
-            $cancreate_column = json_encode((bool) Session::haveRight("plugin_tasklists_config", READ));
+            // GLPIKanban reads these five as booleans. They were json_encode()'d here and then
+            // encoded a second time by the template's json_encode filter, so what reached the
+            // script was the strings "true" and "false" - and "false" is truthy in JavaScript,
+            // which made every client-side right test pass whatever the profile. ajax/kanban.php
+            // still refuses server-side, so nothing was escalated; what was lost is the interface
+            // telling the truth, and the guarantee that a check added later on the JS side means
+            // something. The template is the single encoding step.
+            $canadd_item = self::canCreate();
+            $candelete_item = self::canDelete();
+            // create_column and modify_view command writes, so they are read on the write bits of
+            // the configuration right rather than on READ - create_column drives the creation of a
+            // TaskState, which the server gates with TaskState::canCreate().
+            $canmodify_view = Session::haveRight("plugin_tasklists_config", UPDATE);
+            $cancreate_column = TaskState::canCreate();
             $limit_addcard_columns = [];
-            $can_order_item = json_encode((bool) TypeVisibility::isUserHaveRight($item_id));
+            $can_order_item = (bool) TypeVisibility::isUserHaveRight($item_id);
 
             $itemtype = TaskType::class;
 

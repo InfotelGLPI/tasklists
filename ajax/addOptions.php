@@ -45,6 +45,17 @@ if (!isset($_REQUEST['action'])) {
 }
 $action = $_REQUEST['action'];
 
+// Security (CSRF bypass): the dispatch reads its action from $_REQUEST, which merges $_GET and
+// $_POST, and two of the branches below are writes - they reassign $_SESSION["archive"] and
+// $_SESSION["usersKanban"]. GLPI 11's CheckCsrfListener only validates the token on non-GET
+// requests, so a state-changing action reachable over GET escapes CSRF protection entirely: an
+// <img> tag on a third-party page rewrote the Kanban filters of any authenticated visitor, and
+// the value persisted in his session. Reads stay on $_REQUEST, writes are restricted to POST.
+if (in_array($action, ['changeArchive', 'changeUsers'], true)
+    && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    throw new BadRequestHttpException("This action requires a POST request");
+}
+
 if ($_REQUEST['action'] == 'addArchived') {
 
     header("Content-Type: application/json; charset=UTF-8", true);
@@ -79,11 +90,16 @@ if ($_REQUEST['action'] == 'addArchived') {
         $_SESSION["archive"][Session::getLoginUserID()] = json_encode($_REQUEST['vals']);
     }
 
-}
-if ($_REQUEST['action'] == 'addUsers') {
+} elseif ($_REQUEST['action'] == 'addUsers') {
 
     header("Content-Type: application/json; charset=UTF-8", true);
-    $users = TaskType::findUsers($_REQUEST['context']);
+    // Was an if() opening a second chain, so the condition was re-evaluated after the
+    // addArchived / changeArchive chain had already answered and two Content-Type headers could
+    // be emitted on the same response. Also: context was read without isset() nor integer cast.
+    // findUsers() applies the entity restriction and TypeVisibility::isUserHaveRight() itself
+    // (src/TaskType.php:536-546), so nothing leaks, but the value has no business reaching it
+    // untyped.
+    $users = TaskType::findUsers((int) ($_REQUEST['context'] ?? 0));
 
     if (!isset($_SESSION["usersKanban"][Session::getLoginUserID()])) {
         $_SESSION["usersKanban"][Session::getLoginUserID()] = json_encode([-1]);

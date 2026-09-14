@@ -119,7 +119,16 @@ class TaskState extends CommonDropdown
             echo Html::hidden("tasktypes");
             $possible_values = [];
             $dbu             = new DbUtils();
-            $datatypes       = $dbu->getAllDataFromTable($dbu->getTableForItemType(TaskType::class));
+            // glpi_plugin_tasklists_tasktypes carries entities_id and is_recursive, and every
+            // other read path of this plugin restricts on them - Kanban::showKanban(),
+            // ajax/dropdownTypeTasks.php, TaskType::getAllForKanban(). This one listed the whole
+            // table, so the form of a task state disclosed the name of every context of every
+            // entity of the instance, including those of entities the caller has no access to.
+            $tasktype_table  = $dbu->getTableForItemType(TaskType::class);
+            $datatypes       = $dbu->getAllDataFromTable(
+                $tasktype_table,
+                $dbu->getEntitiesRestrictCriteria($tasktype_table, '', $_SESSION['glpiactiveentities'], true),
+            );
             if (!empty($datatypes)) {
                 foreach ($datatypes as $datatype) {
                     $possible_values[$datatype['id']] = $datatype['name'];
@@ -269,7 +278,15 @@ class TaskState extends CommonDropdown
         $dbu = new DbUtils();
         switch ($field) {
             case 'tasktypes':
-                $datatypes = $dbu->getAllDataFromTable($dbu->getTableForItemType(TaskType::class));
+                // Same unrestricted listing as showForm() carried, restricted for the same
+                // reason: this dropdown feeds the search criteria form, which is reachable by
+                // any profile holding the plugin READ right.
+                $possible_values = [];
+                $tasktype_table  = $dbu->getTableForItemType(TaskType::class);
+                $datatypes       = $dbu->getAllDataFromTable(
+                    $tasktype_table,
+                    $dbu->getEntitiesRestrictCriteria($tasktype_table, '', $_SESSION['glpiactiveentities'], true),
+                );
                 if (!empty($datatypes)) {
                     foreach ($datatypes as $datatype) {
                         $possible_values[$datatype['id']] = $datatype['name'];
@@ -318,7 +335,15 @@ class TaskState extends CommonDropdown
                 $tasktype = new TaskType();
                 foreach ($types as $type) {
                     if ($tasktype->getFromDB($type)) {
-                        $names[] = $tasktype->fields['name'];
+                        // Security (stored XSS): whatever this method returns is inserted as
+                        // HTML into the search result cell by the core search engine - the
+                        // neighbouring 'color' case escapes for exactly that reason. Context
+                        // names are written by holders of plugin_tasklists_config, a right that
+                        // is granted per entity, while task states are listed across entities:
+                        // a payload stored in the name of a context in one entity executed in
+                        // the session of anyone displaying the "Contexts" column elsewhere.
+                        // Task::getSpecificValueToDisplay() was fixed the same way.
+                        $names[] = htmlescape($tasktype->fields['name']);
                     }
                 }
                 $out = implode(", ", $names);
@@ -328,7 +353,7 @@ class TaskState extends CommonDropdown
                 // attribute so a forged color value cannot break out of it (stored XSS).
                 return sprintf(
                     "<div style='background-color: %s;'>&nbsp;</div>",
-                    htmlspecialchars((string) $values[$field]),
+                    htmlescape((string) $values[$field]),
                 );
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);

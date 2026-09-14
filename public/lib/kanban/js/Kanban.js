@@ -2181,7 +2181,7 @@ class GLPIKanbanRights {
             let card_el = `
             <li id="${card['id']}" class="kanban-item card ${readonly ? 'readonly' : ''} ${card['is_deleted'] ? 'deleted' : ''}" style="background-color:${card['bgcolor']};border-color:${card['bordercolor']}">
                 <div class="kanban-item-header">
-                    <span class="kanban-item-title" title="${card['title_tooltip']}">
+                    <span class="kanban-item-title" title="${escapeHtml(card['title_tooltip'])}">
                     <i class="${self.supported_itemtypes[itemtype]['icon']}"></i>
                         ${card['title']}`
             card_el += link;

@@ -44,7 +44,12 @@ use Toolbox;
  */
 class TypeVisibility extends CommonDBTM
 {
-    public static $rightname = 'plugin_tasklists';
+    // Visibility rows decide which groups may use a context. The class was declared under the
+    // user right, so front/typevisibility.form.php - whose check(-1, UPDATE, $_POST) bears on
+    // this property - let any task author grant his own groups access to any context, and the
+    // massive actions of the tab let him revoke anyone else's. It is a configuration object and
+    // follows the configuration right, like TaskType and TaskState.
+    public static $rightname = 'plugin_tasklists_config';
 
     /**
      * @param int $nb
@@ -129,6 +134,10 @@ class TypeVisibility extends CommonDBTM
 
         $dataGroups = $this->find(['plugin_tasklists_tasktypes_id' => $item->fields['id']]);
 
+        // $item is the context the tab is displayed on, so can() tests the very row that is
+        // about to be edited: it now resolves to plugin_tasklists_config in UPDATE, TaskType
+        // having moved to the configuration right, and it still replays
+        // Session::haveAccessToEntity(), which a bare haveRight() would not.
         $type    = new TaskType();
         $canedit = $type->can($item->fields['id'], UPDATE);
 
@@ -263,6 +272,47 @@ class TypeVisibility extends CommonDBTM
             }
         }
         return $types;
+    }
+
+    /**
+     * Is the context these visibility rows belong to inside the active entities?
+     *
+     * glpi_plugin_tasklists_typevisibilities has no entities_id column - a row is nothing but a
+     * (context, group) pair - so CommonDBTM::checkEntity() has nothing to test and silently
+     * returns true. can($id, PURGE) therefore collapsed to the global plugin_tasklists_config
+     * bit, and the massive actions of the tab let a configuration administrator of one entity
+     * delete the visibility rows of a context belonging to another. Deleting them does not
+     * merely narrow access, it widens it: isUserHaveRight() returns true when a context has no
+     * row at all, so removing the last one turns a group-restricted context into a public one.
+     * The add path already validates the entity of the parent context
+     * (front/typevisibility.form.php), which is the check replayed here for the read, update and
+     * purge paths.
+     *
+     * @return bool
+     */
+    private function parentIsInScope(): bool
+    {
+        $tasktype = new TaskType();
+        return $tasktype->getFromDB((int) $this->fields['plugin_tasklists_tasktypes_id'])
+            && Session::haveAccessToEntity(
+                $tasktype->fields['entities_id'],
+                $tasktype->fields['is_recursive'],
+            );
+    }
+
+    public function canViewItem(): bool
+    {
+        return parent::canViewItem() && $this->parentIsInScope();
+    }
+
+    public function canUpdateItem(): bool
+    {
+        return parent::canUpdateItem() && $this->parentIsInScope();
+    }
+
+    public function canPurgeItem(): bool
+    {
+        return parent::canPurgeItem() && $this->parentIsInScope();
     }
 
     /**

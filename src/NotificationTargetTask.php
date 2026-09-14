@@ -138,8 +138,12 @@ class NotificationTargetTask extends NotificationTarget
 
             foreach ($iterator as $data) {
                 //Add the user email and language in the notified users list
+                // The manual $iterator->next() that stood here advanced a cursor foreach was
+                // already advancing: DBmysqlIterator implements SeekableIterator and does expose
+                // next(), so the call raised nothing - it silently consumed one extra row per
+                // turn and only every other member of the group was ever notified. The pattern
+                // is inherited from the pre-9.5 DB API and must not survive anywhere else.
                 $this->addToRecipientsList($data);
-                $iterator->next();
             }
         }
     }

@@ -190,11 +190,16 @@ class Ticket extends CommonDBTM
             echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add task', 'tasklists') . "</th></tr>";
             echo "<tr class='tab_bg_2'><td>";
             echo Html::hidden('tickets_id', ['value' => $ID]);
+            // Same omission as ajax/dropdownTypeTasks.php: the generic dropdown restricts on the
+            // entity passed to it, never on the visibility model of the plugin, so the selector
+            // offered the names of private and group-restricted tasks of other users.
             Task::dropdown(['used'      => $used,
                 'entity'    => $ticket->getEntityID(),
-                'condition' => ['is_archived' => 0,
+                'condition' => array_merge([
+                    'is_archived' => 0,
                     'is_deleted'  => 0,
-                    'is_template' => 0]]);
+                    'is_template' => 0,
+                ], Task::getVisibilityCriteria())]);
             echo "</td><td class='center'>";
             echo Html::submit(_sx('button', 'Add'), ['name' => 'add', 'class' => 'btn btn-primary']);
             echo "</td>";

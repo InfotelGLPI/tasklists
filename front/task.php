@@ -31,16 +31,18 @@ use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Menu;
 use GlpiPlugin\Tasklists\Task;
 
-Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
-
 $task = new Task();
 
-if ($task->canView() || Session::haveRight("config", CREATE)) {
-
-    Search::show(Task::class);
-
-} else {
+// The refusal used to come after Html::header(): an unauthorized caller was served a complete
+// page - header, menu, breadcrumb, title - before being told no, which confirmed the presence
+// of the plugin and handed over the menu of his session. Nothing is emitted before the right is
+// settled, as front/kanban.php already does.
+if (!$task->canView() && !Session::haveRight("config", CREATE)) {
     throw new AccessDeniedHttpException();
 }
+
+Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
+
+Search::show(Task::class);
 
 Html::footer();

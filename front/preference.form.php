@@ -37,7 +37,17 @@ if (isset($_POST['update'])) {
     // must be pinned here, in the controller, and not only in the model.
     $_POST['id'] = Session::getLoginUserID();
     $pref = new Preference();
-    $pref->check(-1, UPDATE, $_POST);
+    // The two ends of this one form disagreed on which bit they required: Preference has
+    // $rightname = plugin_tasklists, getTabNameForItem() shows the tab on READ and
+    // displayTabContentForItem() renders the whole form including its save button, while this
+    // controller demanded UPDATE. A consultative profile could fill the form in and lose its
+    // input to an AccessDeniedHttpException, with nothing in the interface having said the
+    // preferences were out of reach. READ is the bit that matches what these rows are: a default
+    // context and a refresh delay belonging to the caller alone, and the identity is pinned
+    // twice - here, above, before the row is even loaded, and again in
+    // Preference::prepareInputForUpdate() - so read-only access to the plugin cannot be turned
+    // into a write on anyone else.
+    $pref->check(-1, READ, $_POST);
     $pref->update($_POST);
     Html::back();
 }

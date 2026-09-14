@@ -34,8 +34,9 @@ Session::checkRight('plugin_tasklists_config', UPDATE);
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
-//Html::requireJs('tinymce');
-echo "<script type='text/javascript'  src='../../../public/lib/tinymce.js'></script>";
+// Same GLPI 10 path as ajax/seetask.php carried, removed for the same reason: it resolved to
+// <glpi>/public/lib/tinymce.js and returned a 404, and the page this fragment is injected into
+// has already loaded the editor through Html::includeHeader(), which requires it for every page.
 
 if (isset($_GET['newContext'])) {
     $options = [
