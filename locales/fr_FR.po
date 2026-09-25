@@ -2,24 +2,26 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2026
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 14:23+0000\n"
+"POT-Creation-Date: 2026-09-23 16:00+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
-"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/79675/fr_FR/)\n"
+"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
+"teams/79675/fr_FR/)\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1695
 #, javascript-format
@@ -44,8 +46,8 @@ msgstr "Une tâche a été mise à jour"
 msgid "Add"
 msgstr "Ajouter"
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
 msgid "Add"
@@ -71,7 +73,7 @@ msgstr "Choisissez un gabarit"
 msgid "Add column"
 msgstr "Ajouter une colonne"
 
-#: src/Ticket.php:190 src/Dashboard.php:196 src/Dashboard.php:201
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
@@ -84,8 +86,8 @@ msgctxt "visibility"
 msgid "All"
 msgstr "Tout le monde"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:39
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1165
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:39
 msgid "Archive all tasks of this state"
 msgstr "Archiver toutes les tâches ayant ce statut"
 
@@ -93,7 +95,7 @@ msgstr "Archiver toutes les tâches ayant ce statut"
 msgid "Archive this task"
 msgstr "Archiver cette tâche"
 
-#: ajax/addOptions.php:64 src/Task.php:210
+#: src/Task.php:210 ajax/addOptions.php:64
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Archivé"
@@ -114,8 +116,8 @@ msgstr "A la création, mise à jour et suppression d'un tâche"
 msgid "Automatic refreshing of tasklist"
 msgstr "Rafraîchissement automatique des listes de tâches"
 
-#: src/TaskType.php:236 src/TaskType.php:659 src/Task.php:989
-#: src/Task.php:1066 src/Task.php:1412
+#: src/Task.php:989 src/Task.php:1066 src/Task.php:1412 src/TaskType.php:236
+#: src/TaskType.php:659
 msgid "Backlog"
 msgstr "Backlog"
 
@@ -148,8 +150,8 @@ msgstr "Commentaire"
 msgid "Configure contexts and statuses"
 msgstr "Configurer les contextes et les statuts"
 
-#: src/TaskState.php:181 src/TaskType.php:84 src/Dashboard.php:114
-#: src/Task.php:109
+#: src/Task.php:109 src/TaskState.php:181 src/Dashboard.php:114
+#: src/TaskType.php:84
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 #: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:52
 msgid "Context"
@@ -172,8 +174,8 @@ msgstr "Créer un statut"
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:510
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:800
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2598
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:443
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -182,8 +184,8 @@ msgstr "Supprimer"
 msgid "Description"
 msgstr "Description"
 
+#: src/Task.php:147 src/Dashboard.php:120 src/TaskType.php:328
 #: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: src/TaskType.php:328 src/Dashboard.php:120 src/Task.php:147
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "Date d'échéance"
@@ -202,8 +204,8 @@ msgstr "Editer le commentaire"
 msgid "Error"
 msgstr "Erreur"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:678
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 msgid "Exclude"
 msgstr "Exclure"
 
@@ -297,8 +299,8 @@ msgstr "Un objet par ligne"
 msgid "Or add a new status"
 msgstr "Ou ajouter un nouveau statut"
 
-#: src/NotificationTargetTask.php:182 src/NotificationTargetTask.php:232
-#: src/Task.php:218
+#: src/Task.php:218 src/NotificationTargetTask.php:182
+#: src/NotificationTargetTask.php:232
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
 msgstr "Autre client"
@@ -367,8 +369,8 @@ msgstr[2] "Statuts"
 msgid "Tables"
 msgstr "Tableaux"
 
-#: setup.php:105 src/Menu.php:49 src/Preference.php:56 src/Profile.php:57
-#: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
+#: setup.php:105 src/Preference.php:56 src/Profile.php:57 src/Dashboard.php:72
+#: src/Dashboard.php:210 src/Dashboard.php:215 src/Menu.php:49
 msgid "Tasks list"
 msgstr "Liste des tâches"
 
@@ -382,8 +384,7 @@ msgstr "Gabarits"
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2318
 msgid ""
-"The regular expression you entered is invalid. Please check it and try "
-"again."
+"The regular expression you entered is invalid. Please check it and try again."
 msgstr ""
 "L'expression régulière que vous utilisez est invalide. Merci de la modifier "
 "et de réessayer"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 14:18+0000\n"
+"POT-Creation-Date: 2026-09-23 16:00+0000\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>, 2018\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/infotelGLPI/"
@@ -46,8 +46,8 @@ msgstr "Byl aktualizován úkol"
 msgid "Add"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
 msgid "Add"
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Ticket.php:190 src/Dashboard.php:196 src/Dashboard.php:201
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
 msgid "Add task"
 msgstr "Přidat úkol"
 
@@ -86,8 +86,8 @@ msgctxt "visibility"
 msgid "All"
 msgstr "Všichni"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:39
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1165
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/kanban-actions.js:39
 msgid "Archive all tasks of this state"
 msgstr "Archivovat všechny úkoly, které mají tento stav"
 
@@ -95,7 +95,7 @@ msgstr "Archivovat všechny úkoly, které mají tento stav"
 msgid "Archive this task"
 msgstr "Zaarchivovat tento úkol"
 
-#: ajax/addOptions.php:64 src/Task.php:210
+#: src/Task.php:210 ajax/addOptions.php:64
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Archivováno"
@@ -116,8 +116,8 @@ msgstr "Při vytvoření, aktualizaci a odebrání úkolu"
 msgid "Automatic refreshing of tasklist"
 msgstr ""
 
-#: src/TaskType.php:236 src/TaskType.php:659 src/Task.php:989 src/Task.php:1066
-#: src/Task.php:1412
+#: src/Task.php:989 src/Task.php:1066 src/Task.php:1412 src/TaskType.php:236
+#: src/TaskType.php:659
 msgid "Backlog"
 msgstr "Nashromážděno"
 
@@ -150,8 +150,8 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr ""
 
-#: src/TaskState.php:181 src/TaskType.php:84 src/Dashboard.php:114
-#: src/Task.php:109
+#: src/Task.php:109 src/TaskState.php:181 src/Dashboard.php:114
+#: src/TaskType.php:84
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
 #: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:52
 msgid "Context"
@@ -175,8 +175,8 @@ msgstr ""
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:510
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:800
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2598
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:443
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 msgid "Delete"
 msgstr ""
 
@@ -185,8 +185,8 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+#: src/Task.php:147 src/Dashboard.php:120 src/TaskType.php:328
 #: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: src/TaskType.php:328 src/Dashboard.php:120 src/Task.php:147
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
 msgid "Due date"
 msgstr "Termín"
@@ -205,8 +205,8 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:678
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
 msgid "Exclude"
 msgstr ""
 
@@ -301,8 +301,8 @@ msgstr ""
 msgid "Or add a new status"
 msgstr ""
 
-#: src/NotificationTargetTask.php:182 src/NotificationTargetTask.php:232
-#: src/Task.php:218
+#: src/Task.php:218 src/NotificationTargetTask.php:182
+#: src/NotificationTargetTask.php:232
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
 msgid "Other client"
 msgstr "Jiný klint"
@@ -373,8 +373,8 @@ msgstr[3] ""
 msgid "Tables"
 msgstr ""
 
-#: setup.php:105 src/Menu.php:49 src/Preference.php:56 src/Profile.php:57
-#: src/Dashboard.php:72 src/Dashboard.php:210 src/Dashboard.php:215
+#: setup.php:105 src/Preference.php:56 src/Profile.php:57 src/Dashboard.php:72
+#: src/Dashboard.php:210 src/Dashboard.php:215 src/Menu.php:49
 msgid "Tasks list"
 msgstr "Seznam úkolů"
 
