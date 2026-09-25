@@ -46,6 +46,36 @@ class Ticket extends CommonDBTM
     public static $rightname = 'plugin_tasklists';
 
     /**
+     * The link table carries no entities_id, so checkEntity() is a no-op and can($id, PURGE)
+     * (used by the massive actions) only tested the global right: any id could be purged
+     * across entities. Delegate the item-level checks to both ends of the link.
+     */
+    private function canAccessLinkedItems(int $task_right): bool
+    {
+        $tasks_id = (int) ($this->fields['plugin_tasklists_tasks_id'] ?? 0);
+        $task     = new Task();
+
+        return (new \Ticket())->can((int) ($this->fields['tickets_id'] ?? 0), READ)
+            && $task->can($tasks_id, $task_right)
+            && $task->checkVisibility($tasks_id);
+    }
+
+    public function canViewItem(): bool
+    {
+        return parent::canViewItem() && $this->canAccessLinkedItems(READ);
+    }
+
+    public function canUpdateItem(): bool
+    {
+        return parent::canUpdateItem() && $this->canAccessLinkedItems(UPDATE);
+    }
+
+    public function canPurgeItem(): bool
+    {
+        return parent::canPurgeItem() && $this->canAccessLinkedItems(UPDATE);
+    }
+
+    /**
      * Returns the type name with consideration of plural
      *
      * @param int $nb Number of item(s)
@@ -297,30 +327,35 @@ class Ticket extends CommonDBTM
         $ticket = new Ticket();
 
         $task->getFromDB($ID);
-        echo "<div class='center'>";
-        echo "<form method='post' name='task_form'
+        // Only offer the link form to users allowed to write it (front/task.form.php
+        // ticket_link requires UPDATE + visibility on the task).
+        $canedit = $task->can($ID, UPDATE) && $task->checkVisibility((int) $ID);
+        if ($canedit) {
+            echo "<div class='center'>";
+            echo "<form method='post' name='task_form'
       id='task_form'  action='" . Toolbox::getItemTypeFormURL(Task::class) . "'>";
 
-        echo "<table class='tab_cadre_fixe'>";
-        echo "<tr class='tab_bg_1'>";
-        echo "<th>" . __('Link a existant ticket', 'tasklists') . "</th></tr>";
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>";
-        Ticket::dropdown(['name'        => "tickets_id",
-            'entity'      => $task->getEntityID(),
-            'entity_sons' => $task->isRecursive(),
-            'displaywith' => ['id']]);
+            echo "<table class='tab_cadre_fixe'>";
+            echo "<tr class='tab_bg_1'>";
+            echo "<th>" . __('Link a existant ticket', 'tasklists') . "</th></tr>";
+            echo "<tr class='tab_bg_1'>";
+            echo "<td>";
+            Ticket::dropdown(['name'        => "tickets_id",
+                'entity'      => $task->getEntityID(),
+                'entity_sons' => $task->isRecursive(),
+                'displaywith' => ['id']]);
 
-        echo "</td></tr>";
+            echo "</td></tr>";
 
-        echo "<tr class='tab_bg_1 center'><td>";
-        echo Html::hidden('plugin_tasklists_tasks_id', ['value' => $ID]);
-        echo Html::submit(_sx('button', 'Save'), ['name' => 'ticket_link', 'class' => 'btn btn-primary']);
-        echo "</td></tr>";
+            echo "<tr class='tab_bg_1 center'><td>";
+            echo Html::hidden('plugin_tasklists_tasks_id', ['value' => $ID]);
+            echo Html::submit(_sx('button', 'Save'), ['name' => 'ticket_link', 'class' => 'btn btn-primary']);
+            echo "</td></tr>";
 
-        echo "</table>";
-        Html::closeForm();
-        echo "</div>";
+            echo "</table>";
+            Html::closeForm();
+            echo "</div>";
+        }
 
         $task_ticket = new Ticket();
         $tickets     = $task_ticket->find(['plugin_tasklists_tasks_id' => $task->fields['id']]);

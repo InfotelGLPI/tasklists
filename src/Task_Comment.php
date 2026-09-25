@@ -95,7 +95,10 @@ class Task_Comment extends CommonDBTM
 
     public function canPurgeItem(): bool
     {
-        return $this->canUpdateItem();
+        // Same rule as the controllers enforce for edition: only the author may remove a
+        // comment, a co-editor of the task may not purge somebody else's.
+        return $this->canUpdateItem()
+            && (int) ($this->fields['users_id'] ?? 0) === (int) Session::getLoginUserID();
     }
 
     /**
