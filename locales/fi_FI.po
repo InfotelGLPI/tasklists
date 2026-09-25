@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 16:00+0000\n"
+"POT-Creation-Date: 2026-09-25 06:48+0000\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Markku Vepsä, 2018\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/infotelGLPI/"
@@ -72,7 +72,7 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
 msgid "Add task"
 msgstr "Lisää tehtävä"
 
@@ -244,17 +244,17 @@ msgstr ""
 msgid "Kanban"
 msgstr "Taulu"
 
-#: src/Ticket.php:306
+#: src/Ticket.php:340
 msgid "Link a existant ticket"
 msgstr "Liitä olemassa oleva tiketti"
 
-#: src/Ticket.php:99 src/Ticket.php:225
+#: src/Ticket.php:129 src/Ticket.php:255
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Liitetty tehtävä"
 msgstr[1] "Liitetyt tehtävät"
 
-#: src/Ticket.php:331
+#: src/Ticket.php:366
 msgid "Linked tickets"
 msgstr "Liitetyt tiketit"
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "No comments"
 msgstr ""
 
-#: src/Ticket.php:274
+#: src/Ticket.php:304
 msgid "No task linked to this ticket yet"
 msgstr "Tikettiin ei vielä ole liitetty tehtävää"
 
@@ -418,7 +418,7 @@ msgstr "Päivitä tehtävän prioriteetti"
 msgid "Visibility"
 msgstr ""
 
-#: src/Task_Comment.php:351
+#: src/Task_Comment.php:354
 msgid "You are not allowed to reply to this comment"
 msgstr ""
 

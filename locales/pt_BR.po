@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 16:00+0000\n"
+"POT-Creation-Date: 2026-09-25 06:48+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Eduardo Mozart de Oliveira <eduardomozart182@gmail.com>, "
 "2025\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
 msgid "Add task"
 msgstr "Adicionar tarefa"
 
@@ -250,18 +250,18 @@ msgstr ""
 msgid "Kanban"
 msgstr "Kanban"
 
-#: src/Ticket.php:306
+#: src/Ticket.php:340
 msgid "Link a existant ticket"
 msgstr "Vincular a um chamado existente"
 
-#: src/Ticket.php:99 src/Ticket.php:225
+#: src/Ticket.php:129 src/Ticket.php:255
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Tarefa vinculada"
 msgstr[1] "Tarefas vinculadas"
 msgstr[2] "Tarefas vinculadas"
 
-#: src/Ticket.php:331
+#: src/Ticket.php:366
 msgid "Linked tickets"
 msgstr "Vincular chamados"
 
@@ -282,7 +282,7 @@ msgstr ""
 msgid "No comments"
 msgstr ""
 
-#: src/Ticket.php:274
+#: src/Ticket.php:304
 msgid "No task linked to this ticket yet"
 msgstr "Nenhuma tarefa vinculada a este chamado ainda"
 
@@ -427,7 +427,7 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: src/Task_Comment.php:351
+#: src/Task_Comment.php:354
 msgid "You are not allowed to reply to this comment"
 msgstr ""
 

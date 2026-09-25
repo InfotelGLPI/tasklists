@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 16:00+0000\n"
+"POT-Creation-Date: 2026-09-25 06:48+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
@@ -73,7 +73,7 @@ msgstr "Choisissez un gabarit"
 msgid "Add column"
 msgstr "Ajouter une colonne"
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
@@ -246,18 +246,18 @@ msgstr "Expression régulière invalide"
 msgid "Kanban"
 msgstr "Kanban"
 
-#: src/Ticket.php:306
+#: src/Ticket.php:340
 msgid "Link a existant ticket"
 msgstr "Lier à un ticket existant"
 
-#: src/Ticket.php:99 src/Ticket.php:225
+#: src/Ticket.php:129 src/Ticket.php:255
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Tâche liée"
 msgstr[1] "Tâches liées"
 msgstr[2] "Tâches liées"
 
-#: src/Ticket.php:331
+#: src/Ticket.php:366
 msgid "Linked tickets"
 msgstr "Tickets liés"
 
@@ -278,7 +278,7 @@ msgstr "Nouveau commentaire"
 msgid "No comments"
 msgstr "Pas de commentaires"
 
-#: src/Ticket.php:274
+#: src/Ticket.php:304
 msgid "No task linked to this ticket yet"
 msgstr "Pas de tâche liée à ce ticket"
 
@@ -427,7 +427,7 @@ msgstr "Augmenter la priorité de la tâche"
 msgid "Visibility"
 msgstr "Visibilité"
 
-#: src/Task_Comment.php:351
+#: src/Task_Comment.php:354
 msgid "You are not allowed to reply to this comment"
 msgstr "Vous n'avez pas le droit de répondre à ce commentaire"
 

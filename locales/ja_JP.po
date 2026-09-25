@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 16:00+0000\n"
+"POT-Creation-Date: 2026-09-25 06:48+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: INOUE Daisuke, 2026\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/"
@@ -72,7 +72,7 @@ msgstr ""
 msgid "Add column"
 msgstr "項目追加"
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:190
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
 msgid "Add task"
 msgstr "タスクの追加"
 
@@ -243,16 +243,16 @@ msgstr "無効な正規表現"
 msgid "Kanban"
 msgstr "カンバン"
 
-#: src/Ticket.php:306
+#: src/Ticket.php:340
 msgid "Link a existant ticket"
 msgstr "既存のチケットにリンクする"
 
-#: src/Ticket.php:99 src/Ticket.php:225
+#: src/Ticket.php:129 src/Ticket.php:255
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "リンクしたタスク"
 
-#: src/Ticket.php:331
+#: src/Ticket.php:366
 msgid "Linked tickets"
 msgstr "リンクしているチケット"
 
@@ -273,7 +273,7 @@ msgstr ""
 msgid "No comments"
 msgstr ""
 
-#: src/Ticket.php:274
+#: src/Ticket.php:304
 msgid "No task linked to this ticket yet"
 msgstr "このチケットにリンクしているタスクはありません"
 
@@ -416,7 +416,7 @@ msgstr "タスクの優先度を更新"
 msgid "Visibility"
 msgstr ""
 
-#: src/Task_Comment.php:351
+#: src/Task_Comment.php:354
 msgid "You are not allowed to reply to this comment"
 msgstr ""
 
