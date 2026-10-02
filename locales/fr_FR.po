@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 06:48+0000\n"
+"POT-Creation-Date: 2026-10-02 07:17+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
@@ -343,7 +343,7 @@ msgstr "Rôle"
 #: /home/runner/work/tasklists/tasklists/templates/profile.html.twig:34
 msgctxt "button"
 msgid "Save"
-msgstr "Sauver"
+msgstr "Sauvegarder"
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1051
 msgid "Search"
