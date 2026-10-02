@@ -361,4 +361,23 @@ class Task_Comment extends CommonDBTM
 
         return $input;
     }
+
+    /**
+     * Only the text of a comment is editable. The parent check of prepareInputForAdd() is not
+     * replayed on update, so a posted parent_comment_id could detach a comment (and the replies
+     * of other users under it) from the thread of its task; the owner, the task, the language
+     * and the creation date are set once, on add.
+     */
+    public function prepareInputForUpdate($input)
+    {
+        unset(
+            $input['plugin_tasklists_tasks_id'],
+            $input['users_id'],
+            $input['language'],
+            $input['parent_comment_id'],
+            $input['date_creation'],
+        );
+
+        return $input;
+    }
 }

@@ -86,11 +86,12 @@ if (isset($_POST["edit"])) {
         || (int) $comment->fields['plugin_tasklists_tasks_id'] !== $tasks_id) {
         throw new AccessDeniedHttpException();
     }
-    $data = array_merge($comment->fields, $_POST);
-    // Never let the client rewrite ownership or reparent the comment via extra POST keys.
-    $data['users_id']                  = $comment->fields['users_id'];
-    $data['plugin_tasklists_tasks_id'] = $comment->fields['plugin_tasklists_tasks_id'];
-    if ($comment->update($data)) {
+    // Editing a comment changes its text and nothing else: ownership, task and position in
+    // the thread (parent_comment_id) are not posted values.
+    if ($comment->update([
+        'id'      => $comment->getID(),
+        'comment' => $_POST['comment'],
+    ])) {
         Session::addMessageAfterRedirect(
             "<a href='#taskcomment{$comment->getID()}'>" . __('Your comment has been edited') . "</a>",
             false,
