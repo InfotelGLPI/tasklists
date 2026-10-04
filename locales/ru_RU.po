@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 06:48+0000\n"
+"POT-Creation-Date: 2026-10-04 18:52+0000\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Denis Arkhipov <arhipovdv@mtgroup-it.ru>, 2019\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/infotelGLPI/"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:221
 msgid "Add task"
 msgstr "Добавить задачу"
 
@@ -248,11 +248,11 @@ msgstr ""
 msgid "Kanban"
 msgstr "Канбан"
 
-#: src/Ticket.php:340
+#: src/Ticket.php:313
 msgid "Link a existant ticket"
 msgstr "Связать с существующей заявкой"
 
-#: src/Ticket.php:129 src/Ticket.php:255
+#: src/Ticket.php:130 src/Ticket.php:274
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Связанная задача"
@@ -260,7 +260,7 @@ msgstr[1] "Связанные задачи"
 msgstr[2] "Связанные задачи"
 msgstr[3] "Связанные задачи"
 
-#: src/Ticket.php:366
+#: src/Ticket.php:355
 msgid "Linked tickets"
 msgstr "Связанные заявки"
 
@@ -280,10 +280,6 @@ msgstr ""
 #: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
 msgid "No comments"
 msgstr ""
-
-#: src/Ticket.php:304
-msgid "No task linked to this ticket yet"
-msgstr "Нет связанных с заявкой задач"
 
 #: ajax/addOptions.php:63
 msgid "Not archived"
@@ -392,7 +388,7 @@ msgid ""
 "The regular expression you entered is invalid. Please check it and try again."
 msgstr ""
 
-#: src/Kanban.php:179
+#: src/Kanban.php:180
 msgid "There is no accessible context"
 msgstr ""
 
@@ -459,6 +455,9 @@ msgstr "У вас нет прав на просмотр контекста"
 #: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr ""
+
+#~ msgid "No task linked to this ticket yet"
+#~ msgstr "Нет связанных с заявкой задач"
 
 #~ msgid "See archived tasks"
 #~ msgstr "Показать архивные задачи"

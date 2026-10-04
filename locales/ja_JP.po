@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 06:48+0000\n"
+"POT-Creation-Date: 2026-10-04 18:52+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: INOUE Daisuke, 2026\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/"
@@ -72,7 +72,7 @@ msgstr ""
 msgid "Add column"
 msgstr "項目追加"
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:221
 msgid "Add task"
 msgstr "タスクの追加"
 
@@ -243,16 +243,16 @@ msgstr "無効な正規表現"
 msgid "Kanban"
 msgstr "カンバン"
 
-#: src/Ticket.php:340
+#: src/Ticket.php:313
 msgid "Link a existant ticket"
 msgstr "既存のチケットにリンクする"
 
-#: src/Ticket.php:129 src/Ticket.php:255
+#: src/Ticket.php:130 src/Ticket.php:274
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "リンクしたタスク"
 
-#: src/Ticket.php:366
+#: src/Ticket.php:355
 msgid "Linked tickets"
 msgstr "リンクしているチケット"
 
@@ -272,10 +272,6 @@ msgstr ""
 #: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
 msgid "No comments"
 msgstr ""
-
-#: src/Ticket.php:304
-msgid "No task linked to this ticket yet"
-msgstr "このチケットにリンクしているタスクはありません"
 
 #: ajax/addOptions.php:63
 msgid "Not archived"
@@ -378,7 +374,7 @@ msgid ""
 "The regular expression you entered is invalid. Please check it and try again."
 msgstr "入力した正規表現は無効です。確認して再実行してください。"
 
-#: src/Kanban.php:179
+#: src/Kanban.php:180
 msgid "There is no accessible context"
 msgstr "開くことができるコンテキストがありません"
 
@@ -447,3 +443,6 @@ msgstr "コンテキストを表示する権限がありません"
 #: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr "分"
+
+#~ msgid "No task linked to this ticket yet"
+#~ msgstr "このチケットにリンクしているタスクはありません"
