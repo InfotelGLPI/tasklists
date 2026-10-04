@@ -138,8 +138,9 @@ class Kanban extends CommonGLPI
                 }
             }
             if (count($tabs) == 0) {
-                echo "<div class='alert alert-important alert-warning d-flex'>";
-                echo "<b>" . __("You don't have the right to see any context", 'tasklists') . "</b></div>";
+                TemplateRenderer::getInstance()->display('@tasklists/kanban_alert.html.twig', [
+                    'message' => __("You don't have the right to see any context", 'tasklists'),
+                ]);
                 return false;
             }
 
@@ -175,8 +176,9 @@ class Kanban extends CommonGLPI
         }
 
         if ($item_id == 0) {
-            echo "<div class='alert alert-important alert-warning d-flex'>";
-            echo "<b>" . __("There is no accessible context", "tasklists") . "</b></div>";
+            TemplateRenderer::getInstance()->display('@tasklists/kanban_alert.html.twig', [
+                'message' => __("There is no accessible context", "tasklists"),
+            ]);
         } else {
             //         $supported_itemtypes = json_encode($supported_itemtypes, JSON_FORCE_OBJECT);
             //         $column_field        = json_encode($column_field, JSON_FORCE_OBJECT);

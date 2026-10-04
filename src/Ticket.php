@@ -33,6 +33,7 @@ use CommonDBTM;
 use CommonGLPI;
 use CommonITILObject;
 use DbUtils;
+use Glpi\Application\View\TemplateRenderer;
 use Glpi\RichText\RichText;
 use Html;
 use Session;
@@ -212,108 +213,84 @@ class Ticket extends CommonDBTM
             $used[$data['id']]    = $data['id'];
         }
         if ($canedit) {
-            echo "<div class='firstbloc'>";
-            echo "<form name='taskticket_form$rand' id='taskticket_form$rand' method='post'
-               action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add task', 'tasklists') . "</th></tr>";
-            echo "<tr class='tab_bg_2'><td>";
-            echo Html::hidden('tickets_id', ['value' => $ID]);
             // Same omission as ajax/dropdownTypeTasks.php: the generic dropdown restricts on the
             // entity passed to it, never on the visibility model of the plugin, so the selector
             // offered the names of private and group-restricted tasks of other users.
-            Task::dropdown(['used'      => $used,
-                'entity'    => $ticket->getEntityID(),
-                'condition' => array_merge([
-                    'is_archived' => 0,
-                    'is_deleted'  => 0,
-                    'is_template' => 0,
-                ], Task::getVisibilityCriteria())]);
-            echo "</td><td class='center'>";
-            echo Html::submit(_sx('button', 'Add'), ['name' => 'add', 'class' => 'btn btn-primary']);
-            echo "</td>";
-            echo "</tr></table>";
-            Html::closeForm();
-            echo "</div>";
+            TemplateRenderer::getInstance()->display('@tasklists/ticket/link_form.html.twig', [
+                'action'       => Toolbox::getItemTypeFormURL(__CLASS__),
+                'title'        => __('Add task', 'tasklists'),
+                'hidden_name'  => 'tickets_id',
+                'hidden_value' => (int) $ID,
+                'selector'     => Task::dropdown([
+                    'used'      => $used,
+                    'entity'    => $ticket->getEntityID(),
+                    'condition' => array_merge([
+                        'is_archived' => 0,
+                        'is_deleted'  => 0,
+                        'is_template' => 0,
+                    ], Task::getVisibilityCriteria()),
+                    'display'   => false,
+                ]),
+                'button_name'  => 'add',
+                'button_label' => _x('button', 'Add'),
+            ]);
         }
 
-        echo "<div class='spaced'>";
-        if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams
-            = ['num_displayed'    => min($_SESSION['glpilist_limit'], $numrows),
-                'specific_actions' => ['purge' => _x('button', 'Delete permanently')],
-                'container'        => 'mass' . __CLASS__ . $rand,
-                //               'extraparams'      => ['tickets_id' => $ticket->getID()]
-            ];
-            Html::showMassiveActions($massiveactionparams);
-        }
-
-        echo "<table class='tab_cadre_fixehov'>";
-
-        echo "<tr class='noHover'><th colspan='9'>" . _n('Linked task', 'Linked tasks', $number, 'tasklists') . "</th>";
-        echo "</tr>";
-
-        if ($number > 0) {
-            echo "<tr>";
-            echo "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-            echo "<th>" . __('Name') . "</th>";
-            echo "<th>" . __('Date') . "</th>";
-            //         echo "<th>" . _n('Context', 'Contexts', 1, 'tasklists') . "</th>";
-            //         echo "<th>" . __('Status') . "</th>";
-            echo "<th>" . __('Priority') . "</th>";
-            echo "<th>" . __('Description') . "</th>";
-            echo "</tr>";
-
-            $task = new Task();
-            foreach ($tickets as $data) {
-                // Defense in depth: never disclose the name/content of a task the caller is not
-                // allowed to see, even if a link row was forged (see front/ticket.form.php add path).
-                if (!$task->checkVisibility((int) $data['id'])) {
-                    continue;
-                }
-                echo "<tr class='tab_bg_1'>";
-                echo "<td>";
-                echo Html::getMassiveActionCheckBox(__CLASS__, $data['LinkID']);
-                echo "</td>";
-
-                echo "<td>";
-                $url = Toolbox::getItemTypeFormURL(Task::class) . "?id=" . $data['id'];
-                echo "<a id='task" . $data['id'] . "' href='$url'>" . htmlescape($data['name']) . "</a>";
-                echo "</td>";
-
-                echo "<td>";
-                echo html::convDateTime($data['date_creation'], 1);
-                echo "</td>";
-
-                $style = "style=\"background-color:" . $_SESSION["glpipriority_" . $data['priority']] . ";\" ";
-                echo "<td $style>";
-                echo CommonITILObject::getPriorityName($data['priority']);
-                echo "</td>";
-
-                echo "<td>";
-                echo Html::resume_text(RichText::getTextFromHtml($data['content']), 80);
-                echo "</td>";
-
-                echo "</tr>";
+        $entries = [];
+        $task    = new Task();
+        foreach ($tickets as $data) {
+            // Defense in depth: never disclose the name/content of a task the caller is not
+            // allowed to see, even if a link row was forged (see front/ticket.form.php add path).
+            if (!$task->checkVisibility((int) $data['id'])) {
+                continue;
             }
-        } else {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>";
-            echo __('No task linked to this ticket yet', 'tasklists');
-            echo "</td>";
-            echo "</tr>";
+            $entries[] = [
+                // Massive actions act on the link row
+                'itemtype'    => __CLASS__,
+                'id'          => $data['LinkID'],
+                'name'        => sprintf(
+                    '<a href="%s">%s</a>',
+                    htmlescape(Toolbox::getItemTypeFormURL(Task::class) . '?id=' . (int) $data['id']),
+                    htmlescape($data['name']),
+                ),
+                'date'        => Html::convDateTime($data['date_creation'], 1),
+                'priority'    => CommonITILObject::getPriorityName($data['priority']),
+                // Plain text, escaped by the default formatter
+                // Task content is stored encoded (Task::prepareInputForAdd(), getSafeHtml(..., true)):
+                // decoded before the tags are stripped, escaped once by the default formatter
+                'description' => Html::resume_text(
+                    RichText::getTextFromHtml(html_entity_decode((string) $data['content'], ENT_QUOTES | ENT_HTML5), false),
+                    80,
+                ),
+                'row_class'   => '',
+            ];
         }
 
-        echo "</table>";
-        if ($canedit && $numrows) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
-        Html::closeForm();
+        $container = 'mass' . str_replace('\\', '', __CLASS__) . $rand;
+        TemplateRenderer::getInstance()->display('components/datatable.html.twig', [
+            'is_tab'              => true,
+            'nofilter'            => true,
+            'nosort'              => true,
+            'super_header'        => _n('Linked task', 'Linked tasks', count($entries), 'tasklists'),
+            'columns'             => [
+                'name'        => __('Name'),
+                'date'        => __('Date'),
+                'priority'    => __('Priority'),
+                'description' => __('Description'),
+            ],
+            'formatters'          => [
+                'name' => 'raw_html',
+            ],
+            'entries'             => $entries,
+            'total_number'        => count($entries),
+            'filtered_number'     => count($entries),
+            'showmassiveactions'  => $canedit,
+            'massiveactionparams' => [
+                'num_displayed'    => count($entries),
+                'specific_actions' => ['purge' => _x('button', 'Delete permanently')],
+                'container'        => $container,
+            ],
+        ]);
     }
 
     /**
@@ -331,89 +308,64 @@ class Ticket extends CommonDBTM
         // ticket_link requires UPDATE + visibility on the task).
         $canedit = $task->can($ID, UPDATE) && $task->checkVisibility((int) $ID);
         if ($canedit) {
-            echo "<div class='center'>";
-            echo "<form method='post' name='task_form'
-      id='task_form'  action='" . Toolbox::getItemTypeFormURL(Task::class) . "'>";
-
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr class='tab_bg_1'>";
-            echo "<th>" . __('Link a existant ticket', 'tasklists') . "</th></tr>";
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>";
-            Ticket::dropdown(['name'        => "tickets_id",
-                'entity'      => $task->getEntityID(),
-                'entity_sons' => $task->isRecursive(),
-                'displaywith' => ['id']]);
-
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1 center'><td>";
-            echo Html::hidden('plugin_tasklists_tasks_id', ['value' => $ID]);
-            echo Html::submit(_sx('button', 'Save'), ['name' => 'ticket_link', 'class' => 'btn btn-primary']);
-            echo "</td></tr>";
-
-            echo "</table>";
-            Html::closeForm();
-            echo "</div>";
+            TemplateRenderer::getInstance()->display('@tasklists/ticket/link_form.html.twig', [
+                'action'       => Toolbox::getItemTypeFormURL(Task::class),
+                'title'        => __('Link a existant ticket', 'tasklists'),
+                'hidden_name'  => 'plugin_tasklists_tasks_id',
+                'hidden_value' => (int) $ID,
+                'selector'     => \Ticket::dropdown([
+                    'name'        => "tickets_id",
+                    'entity'      => $task->getEntityID(),
+                    'entity_sons' => $task->isRecursive(),
+                    'displaywith' => ['id'],
+                    'display'     => false,
+                ]),
+                'button_name'  => 'ticket_link',
+                'button_label' => _x('button', 'Save'),
+            ]);
         }
 
         $task_ticket = new Ticket();
         $tickets     = $task_ticket->find(['plugin_tasklists_tasks_id' => $task->fields['id']]);
 
-        if (count($tickets) > 0) {
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr>";
-            echo "<th colspan='5'>" . __('Linked tickets', 'tasklists') . "</th>";
-            echo "</tr>";
-
-            echo "<tr>";
-            echo "<th>" . __('Name') . "</th>";
-            echo "<th>" . __('Date') . "</th>";
-            echo "<th>" . __('Status') . "</th>";
-            echo "<th>" . __('Priority') . "</th>";
-            //         echo "<th>" . __('Associated element', 'tasklists') . "</th>";
-            echo "</tr>";
-
-            // Use a real core ticket object: the plugin Ticket class is only the link table
-            // (rightname plugin_tasklists), so its can()/fields would be wrong here.
-            $core_ticket = new \Ticket();
-            foreach ($tickets as $data) {
-                // can(READ) validates the global right AND the entity: never disclose the
-                // title/date/status/priority of a linked ticket the caller cannot read
-                // (closes the cross-entity ticket enumeration via forged ticket_link).
-                if ($core_ticket->can((int) $data['tickets_id'], READ)) {
-                    echo "<tr class='tab_bg_1'>";
-                    echo "<td class='center'>";
-                    echo $core_ticket->getLink();
-                    echo "</td>";
-                    echo "<td class='center'>";
-                    echo Html::convDateTime($core_ticket->fields["date"]);
-                    echo "</td>";
-                    echo "<td class='center'>";
-                    echo \Ticket::getStatus($core_ticket->fields["status"]);
-                    echo "</td>";
-                    $style = "style=\"background-color:" . $_SESSION["glpipriority_" . $core_ticket->fields['priority']] . ";\" ";
-                    echo "<td class='center' $style>";
-                    echo CommonITILObject::getPriorityName($core_ticket->fields["priority"]);
-                    echo "</td>";
-                    //               echo "<td class='center'>";
-                    //               $item_ticket = new Item_Ticket();
-                    //               $items       = $item_ticket->getUsedItems($ticket->fields["id"]);
-                    //               foreach ($items as $itemtype => $items_id) {
-                    //                  $item = new $itemtype();
-                    //                  foreach ($items_id as $item_id) {
-                    //                     echo $item::getTypeName();
-                    //                  }
-                    //                  $item->getFromDB($item_id);
-                    //                  echo "<br>";
-                    //                  echo $item->getLink();
-                    //                  echo "<br>";
-                    //               }
-                    //               echo "</td>";
-                    echo "</tr>";
-                }
+        // Use a real core ticket object: the plugin Ticket class is only the link table
+        // (rightname plugin_tasklists), so its can()/fields would be wrong here.
+        $core_ticket = new \Ticket();
+        $entries     = [];
+        foreach ($tickets as $data) {
+            // can(READ) validates the global right AND the entity: never disclose the
+            // title/date/status/priority of a linked ticket the caller cannot read
+            // (closes the cross-entity ticket enumeration via forged ticket_link).
+            if (!$core_ticket->can((int) $data['tickets_id'], READ)) {
+                continue;
             }
-            echo "</table>";
+            $entries[] = [
+                'name'     => $core_ticket->getLink(),
+                'date'     => Html::convDateTime($core_ticket->fields["date"]),
+                'status'   => \Ticket::getStatus($core_ticket->fields["status"]),
+                'priority' => CommonITILObject::getPriorityName($core_ticket->fields["priority"]),
+            ];
+        }
+
+        if (count($entries) > 0) {
+            TemplateRenderer::getInstance()->display('components/datatable.html.twig', [
+                'is_tab'          => true,
+                'nofilter'        => true,
+                'nosort'          => true,
+                'super_header'    => __('Linked tickets', 'tasklists'),
+                'columns'         => [
+                    'name'     => __('Name'),
+                    'date'     => __('Date'),
+                    'status'   => __('Status'),
+                    'priority' => __('Priority'),
+                ],
+                'formatters'      => [
+                    'name' => 'raw_html',
+                ],
+                'entries'         => $entries,
+                'total_number'    => count($entries),
+                'filtered_number' => count($entries),
+            ]);
         }
     }
 }

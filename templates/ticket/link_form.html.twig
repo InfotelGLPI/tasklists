@@ -1,0 +1,42 @@
+{#
+ # -------------------------------------------------------------------------
+ # tasklists plugin for GLPI
+ # Copyright (C) 2016-2026 by the tasklists Development Team.
+ #
+ # https://github.com/InfotelGLPI/tasklists
+ # -------------------------------------------------------------------------
+ #
+ # LICENSE
+ #
+ # This file is part of tasklists.
+ #
+ # tasklists is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # tasklists is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with tasklists. If not, see <http://www.gnu.org/licenses/>.
+ # --------------------------------------------------------------------------
+ #}
+
+{# Link form of the task <-> ticket relation (Ticket::showForTicket() / showForTask()): one
+   selector, pre-rendered by the core, and the submit button. #}
+<div class="card mb-3">
+    <form method="post" action="{{ action }}">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="{{ hidden_name }}" value="{{ hidden_value }}">
+        <div class="card-header">
+            <h3 class="card-title">{{ title }}</h3>
+        </div>
+        <div class="card-body d-flex flex-wrap align-items-center gap-2">
+            <div class="flex-grow-1">{{ selector|raw }}</div>
+            <button type="submit" name="{{ button_name }}" class="btn btn-primary">{{ button_label }}</button>
+        </div>
+    </form>
+</div>
