@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 18:52+0000\n"
+"POT-Creation-Date: 2026-10-05 16:03+0000\n"
 "PO-Revision-Date: 2020-07-20 15:19+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -42,7 +42,7 @@ msgid "Add"
 msgstr ""
 
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:42
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
 msgid "Add"
@@ -56,7 +56,7 @@ msgstr "Add a column from existing status"
 msgid "Add a comment"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:34
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:33
 msgid "Add a group"
 msgstr "Add a group"
 
@@ -90,7 +90,7 @@ msgstr "Archive all tasks of this state"
 msgid "Archive this task"
 msgstr "Archive this task"
 
-#: src/Task.php:210 ajax/addOptions.php:64
+#: src/Task.php:210 ajax/addOptions.php:65
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Archived"
@@ -141,7 +141,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: src/Profile.php:178
+#: src/Profile.php:182
 msgid "Configure contexts and statuses"
 msgstr "Configure contexts and statuses"
 
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Go to"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:38
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:37
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
 msgid "Group"
 msgstr ""
@@ -271,7 +271,7 @@ msgstr ""
 msgid "No comments"
 msgstr ""
 
-#: ajax/addOptions.php:63
+#: ajax/addOptions.php:64
 msgid "Not archived"
 msgstr "Not archived"
 
@@ -341,7 +341,7 @@ msgstr "Search"
 msgid "Search or filter results"
 msgstr "Search or filter results"
 
-#: src/Profile.php:167
+#: src/Profile.php:171
 msgid "See and update all tasks"
 msgstr "See and update all tasks"
 
@@ -356,7 +356,7 @@ msgstr[1] ""
 msgid "Tables"
 msgstr ""
 
-#: setup.php:105 src/Preference.php:56 src/Profile.php:57 src/Dashboard.php:72
+#: setup.php:105 src/Preference.php:56 src/Profile.php:61 src/Dashboard.php:72
 #: src/Dashboard.php:210 src/Dashboard.php:215 src/Menu.php:49
 msgid "Tasks list"
 msgstr "Tasks list"
