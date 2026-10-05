@@ -2,24 +2,26 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2026
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 18:52+0000\n"
+"POT-Creation-Date: 2026-10-05 16:03+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
-"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/79675/fr_FR/)\n"
+"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
+"teams/79675/fr_FR/)\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:1695
 #, javascript-format
@@ -45,7 +47,7 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:42
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
 msgid "Add"
@@ -59,7 +61,7 @@ msgstr "Ajouter une colonne depuis un statut existant"
 msgid "Add a comment"
 msgstr "Ajouter un commentaire"
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:34
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:33
 msgid "Add a group"
 msgstr "Ajouter un groupe"
 
@@ -93,7 +95,7 @@ msgstr "Archiver toutes les tâches ayant ce statut"
 msgid "Archive this task"
 msgstr "Archiver cette tâche"
 
-#: src/Task.php:210 ajax/addOptions.php:64
+#: src/Task.php:210 ajax/addOptions.php:65
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "Archivé"
@@ -144,7 +146,7 @@ msgstr "Couleur"
 msgid "Comment"
 msgstr "Commentaire"
 
-#: src/Profile.php:178
+#: src/Profile.php:182
 msgid "Configure contexts and statuses"
 msgstr "Configurer les contextes et les statuts"
 
@@ -227,7 +229,7 @@ msgstr "Statut terminé"
 msgid "Go to"
 msgstr "Aller à"
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:38
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:37
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
 msgid "Group"
 msgstr "Groupe"
@@ -276,7 +278,7 @@ msgstr "Nouveau commentaire"
 msgid "No comments"
 msgstr "Pas de commentaires"
 
-#: ajax/addOptions.php:63
+#: ajax/addOptions.php:64
 msgid "Not archived"
 msgstr "Non archivé"
 
@@ -347,7 +349,7 @@ msgstr "Chercher"
 msgid "Search or filter results"
 msgstr "Chercher ou filtrer les résultats"
 
-#: src/Profile.php:167
+#: src/Profile.php:171
 msgid "See and update all tasks"
 msgstr "Voir et mettre à jour toutes les tâches"
 
@@ -363,7 +365,7 @@ msgstr[2] "Statuts"
 msgid "Tables"
 msgstr "Tableaux"
 
-#: setup.php:105 src/Preference.php:56 src/Profile.php:57 src/Dashboard.php:72
+#: setup.php:105 src/Preference.php:56 src/Profile.php:61 src/Dashboard.php:72
 #: src/Dashboard.php:210 src/Dashboard.php:215 src/Menu.php:49
 msgid "Tasks list"
 msgstr "Liste des tâches"
@@ -378,8 +380,7 @@ msgstr "Gabarits"
 
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2318
 msgid ""
-"The regular expression you entered is invalid. Please check it and try "
-"again."
+"The regular expression you entered is invalid. Please check it and try again."
 msgstr ""
 "L'expression régulière que vous utilisez est invalide. Merci de la modifier "
 "et de réessayer"

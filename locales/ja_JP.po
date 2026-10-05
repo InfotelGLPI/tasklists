@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 18:52+0000\n"
+"POT-Creation-Date: 2026-10-05 16:03+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: INOUE Daisuke, 2026\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/"
@@ -46,7 +46,7 @@ msgid "Add"
 msgstr "追加"
 
 #: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:43
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:42
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
 msgid "Add"
@@ -60,7 +60,7 @@ msgstr "既存の状態から項目を追加"
 msgid "Add a comment"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:34
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:33
 msgid "Add a group"
 msgstr "グループを追加"
 
@@ -94,7 +94,7 @@ msgstr "この状態のすべてのタスクをアーカイブ"
 msgid "Archive this task"
 msgstr "このタスクをアーカイブ"
 
-#: src/Task.php:210 ajax/addOptions.php:64
+#: src/Task.php:210 ajax/addOptions.php:65
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
 msgid "Archived"
 msgstr "保管済み"
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: src/Profile.php:178
+#: src/Profile.php:182
 msgid "Configure contexts and statuses"
 msgstr "コンテキストと状態の設定"
 
@@ -226,7 +226,7 @@ msgstr ""
 msgid "Go to"
 msgstr "行先"
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:38
+#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:37
 #: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
 msgid "Group"
 msgstr ""
@@ -273,7 +273,7 @@ msgstr ""
 msgid "No comments"
 msgstr ""
 
-#: ajax/addOptions.php:63
+#: ajax/addOptions.php:64
 msgid "Not archived"
 msgstr "未保管"
 
@@ -342,7 +342,7 @@ msgstr "検索"
 msgid "Search or filter results"
 msgstr "検索または結果フィルター"
 
-#: src/Profile.php:167
+#: src/Profile.php:171
 msgid "See and update all tasks"
 msgstr "すべてのタスクを表示・更新"
 
@@ -356,7 +356,7 @@ msgstr[0] "状態"
 msgid "Tables"
 msgstr "テーブル"
 
-#: setup.php:105 src/Preference.php:56 src/Profile.php:57 src/Dashboard.php:72
+#: setup.php:105 src/Preference.php:56 src/Profile.php:61 src/Dashboard.php:72
 #: src/Dashboard.php:210 src/Dashboard.php:215 src/Menu.php:49
 msgid "Tasks list"
 msgstr "タスクリスト"
