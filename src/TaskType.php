@@ -288,7 +288,7 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
             if (count($entities_crit)) {
                 $task_crit[] = $entities_crit;
             }
-            $datas          = $task->find($task_crit, ['priority DESC,name']);
+            $datas          = $task->find($task_crit, ['priority DESC', 'name']);
 
             foreach ($datas as $data) {
                 // Read back defensively: the session may still hold a value written by an older
