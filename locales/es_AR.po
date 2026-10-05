@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 06:48+0000\n"
+"POT-Creation-Date: 2026-10-04 18:52+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Alan Lehoux, 2026\n"
 "Language-Team: Spanish (Argentina) (https://app.transifex.com/infotelGLPI/"
@@ -73,7 +73,7 @@ msgstr "Agregar una plantilla"
 msgid "Add column"
 msgstr "Agregar columna"
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:221
 msgid "Add task"
 msgstr "Agregar tarea"
 
@@ -246,18 +246,18 @@ msgstr "Expresión regular no válida"
 msgid "Kanban"
 msgstr "Kanban"
 
-#: src/Ticket.php:340
+#: src/Ticket.php:313
 msgid "Link a existant ticket"
 msgstr "Vincular a un ticket existente"
 
-#: src/Ticket.php:129 src/Ticket.php:255
+#: src/Ticket.php:130 src/Ticket.php:274
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Tarea vinculada"
 msgstr[1] "Tareas vinculadas"
 msgstr[2] "Tareas vinculadas"
 
-#: src/Ticket.php:366
+#: src/Ticket.php:355
 msgid "Linked tickets"
 msgstr "Tickets vinculados"
 
@@ -277,10 +277,6 @@ msgstr "Nuevo comentario"
 #: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
 msgid "No comments"
 msgstr "Sin comentarios"
-
-#: src/Ticket.php:304
-msgid "No task linked to this ticket yet"
-msgstr "Todavía no hay tareas vinculadas a este ticket"
 
 #: ajax/addOptions.php:63
 msgid "Not archived"
@@ -389,7 +385,7 @@ msgstr ""
 "La expresión regular ingresada no es válida. Por favor, revisala e intentá "
 "de nuevo."
 
-#: src/Kanban.php:179
+#: src/Kanban.php:180
 msgid "There is no accessible context"
 msgstr "No hay contexto accesible"
 
@@ -458,3 +454,6 @@ msgstr "No tenés permiso para ver ningún contexto"
 #: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr "minuto(s)"
+
+#~ msgid "No task linked to this ticket yet"
+#~ msgstr "Todavía no hay tareas vinculadas a este ticket"

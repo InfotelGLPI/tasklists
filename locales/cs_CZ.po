@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin 1.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 06:48+0000\n"
+"POT-Creation-Date: 2026-10-04 18:52+0000\n"
 "PO-Revision-Date: 2017-10-18 16:45+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>, 2018\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/infotelGLPI/"
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:221
 msgid "Add task"
 msgstr "Přidat úkol"
 
@@ -247,11 +247,11 @@ msgstr ""
 msgid "Kanban"
 msgstr "Kanban"
 
-#: src/Ticket.php:340
+#: src/Ticket.php:313
 msgid "Link a existant ticket"
 msgstr "Propojit s existujícím požadavkem"
 
-#: src/Ticket.php:129 src/Ticket.php:255
+#: src/Ticket.php:130 src/Ticket.php:274
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Propojený úkol"
@@ -259,7 +259,7 @@ msgstr[1] "Propojené úkoly"
 msgstr[2] "Propojených úkolů"
 msgstr[3] "Propojené úkoly"
 
-#: src/Ticket.php:366
+#: src/Ticket.php:355
 msgid "Linked tickets"
 msgstr "Připojené požadavky"
 
@@ -279,10 +279,6 @@ msgstr ""
 #: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
 msgid "No comments"
 msgstr ""
-
-#: src/Ticket.php:304
-msgid "No task linked to this ticket yet"
-msgstr "K tomuto požadavku zatím nejsou připojené žádné úkoly"
 
 #: ajax/addOptions.php:63
 msgid "Not archived"
@@ -391,7 +387,7 @@ msgid ""
 "The regular expression you entered is invalid. Please check it and try again."
 msgstr ""
 
-#: src/Kanban.php:179
+#: src/Kanban.php:180
 msgid "There is no accessible context"
 msgstr ""
 
@@ -458,6 +454,9 @@ msgstr "Nemáte oprávnění pro zobrazení žádného kontextu"
 #: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr ""
+
+#~ msgid "No task linked to this ticket yet"
+#~ msgstr "K tomuto požadavku zatím nejsou připojené žádné úkoly"
 
 #~ msgid "See archived tasks"
 #~ msgstr "Zobrazit archivované úkoly"

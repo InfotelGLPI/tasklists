@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Tasklists plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 06:48+0000\n"
+"POT-Creation-Date: 2026-10-04 18:52+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: Eduardo Mozart de Oliveira <eduardomozart182@gmail.com>, "
 "2025\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Add column"
 msgstr ""
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:220
+#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:221
 msgid "Add task"
 msgstr "Adicionar tarefa"
 
@@ -250,18 +250,18 @@ msgstr ""
 msgid "Kanban"
 msgstr "Kanban"
 
-#: src/Ticket.php:340
+#: src/Ticket.php:313
 msgid "Link a existant ticket"
 msgstr "Vincular a um chamado existente"
 
-#: src/Ticket.php:129 src/Ticket.php:255
+#: src/Ticket.php:130 src/Ticket.php:274
 msgid "Linked task"
 msgid_plural "Linked tasks"
 msgstr[0] "Tarefa vinculada"
 msgstr[1] "Tarefas vinculadas"
 msgstr[2] "Tarefas vinculadas"
 
-#: src/Ticket.php:366
+#: src/Ticket.php:355
 msgid "Linked tickets"
 msgstr "Vincular chamados"
 
@@ -281,10 +281,6 @@ msgstr ""
 #: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
 msgid "No comments"
 msgstr ""
-
-#: src/Ticket.php:304
-msgid "No task linked to this ticket yet"
-msgstr "Nenhuma tarefa vinculada a este chamado ainda"
 
 #: ajax/addOptions.php:63
 msgid "Not archived"
@@ -391,7 +387,7 @@ msgid ""
 "The regular expression you entered is invalid. Please check it and try again."
 msgstr ""
 
-#: src/Kanban.php:179
+#: src/Kanban.php:180
 msgid "There is no accessible context"
 msgstr "Sem contexto acessível"
 
@@ -458,3 +454,6 @@ msgstr "Você não tem o direito de ver nenhum contexto"
 #: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
 msgid "minute(s)"
 msgstr "minuto(s)"
+
+#~ msgid "No task linked to this ticket yet"
+#~ msgstr "Nenhuma tarefa vinculada a este chamado ainda"
