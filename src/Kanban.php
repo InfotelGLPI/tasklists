@@ -41,7 +41,7 @@ use Session;
  */
 class Kanban extends CommonGLPI
 {
-    public static $rightname = 'plugin_tasklists';
+    public static string $rightname = 'plugin_tasklists';
 
     /**
      * @return bool
@@ -266,7 +266,7 @@ class Kanban extends CommonGLPI
             // create_column and modify_view command writes, so they are read on the write bits of
             // the configuration right rather than on READ - create_column drives the creation of a
             // TaskState, which the server gates with TaskState::canCreate().
-            $canmodify_view = Session::haveRight("plugin_tasklists_config", UPDATE);
+            $canmodify_view = Session::haveRight(TaskType::$rightname, UPDATE);
             $cancreate_column = TaskState::canCreate();
             $limit_addcard_columns = [];
             $can_order_item = (bool) TypeVisibility::isUserHaveRight($item_id);

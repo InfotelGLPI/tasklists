@@ -34,7 +34,7 @@ use GlpiPlugin\Tasklists\Task_Comment;
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkRight('plugin_tasklists', UPDATE);
+Session::checkRight(Task::$rightname, UPDATE);
 
 if (!isset($_POST['plugin_tasklists_tasks_id'])) {
     throw new \RuntimeException('Required argument missing!');

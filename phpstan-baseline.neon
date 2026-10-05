@@ -121,12 +121,6 @@ parameters:
 			path: src/Item_Kanban.php
 
 		-
-			message: '#^Static property GlpiPlugin\\Tasklists\\Item_Kanban\:\:\$checkItem_1_Rights \(1\|2\|3\) does not accept default value of type ''plugin_tasklists''\.$#'
-			identifier: property.defaultValue
-			count: 1
-			path: src/Item_Kanban.php
-
-		-
 			message: '#^Call to an undefined method GlpiPlugin\\Tasklists\\Kanban\:\:canModifyGlobalState\(\)\.$#'
 			identifier: method.notFound
 			count: 1

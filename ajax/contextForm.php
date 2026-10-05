@@ -28,8 +28,9 @@
  */
 
 use GlpiPlugin\Tasklists\TaskState;
+use GlpiPlugin\Tasklists\TaskType;
 
-Session::checkRight('plugin_tasklists_config', UPDATE);
+Session::checkRight(TaskType::$rightname, UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");

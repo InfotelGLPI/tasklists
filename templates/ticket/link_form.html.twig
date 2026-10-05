@@ -29,7 +29,6 @@
    selector, pre-rendered by the core, and the submit button. #}
 <div class="card mb-3">
     <form method="post" action="{{ action }}">
-        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="{{ hidden_name }}" value="{{ hidden_value }}">
         <div class="card-header">
             <h3 class="card-title">{{ title }}</h3>

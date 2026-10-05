@@ -80,7 +80,7 @@ function plugin_init_tasklists()
             ['addtabon' => 'Preference'],
         );
 
-        if (Session::haveRight("plugin_tasklists", READ)) {
+        if (Session::haveRight(Task::$rightname, READ)) {
             $PLUGIN_HOOKS[Hooks::MENU_TOADD]['tasklists'] = ['helpdesk' => Menu::class];
         }
 
@@ -88,7 +88,7 @@ function plugin_init_tasklists()
             $PLUGIN_HOOKS['mydashboard']['tasklists'] = [Dashboard::class];
         }
 
-        if (Session::haveRight("plugin_tasklists", CREATE)) {
+        if (Session::haveRight(Task::$rightname, CREATE)) {
             $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['tasklists'] = 1;
         }
     }
@@ -109,8 +109,8 @@ function plugin_version_tasklists()
         'homepage'     => 'https://github.com/InfotelGLPI/tasklists',
         'requirements' => [
             'glpi' => [
-                'min' => '11.0',
-                'max' => '12.0',
+                'min' => '11.0.99',
+                'max' => '12.0.99',
                 'dev' => false,
             ],
         ],

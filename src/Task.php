@@ -57,9 +57,9 @@ use User;
  */
 class Task extends CommonDBTM
 {
-    public $dohistory = true;
-    public static $rightname = 'plugin_tasklists';
-    protected $usenotepad = true;
+    public bool $dohistory = true;
+    public static string $rightname = 'plugin_tasklists';
+    protected bool $usenotepad = true;
     public static $types = [];
 
     /**
@@ -1195,7 +1195,7 @@ class Task extends CommonDBTM
 
         if ($_SESSION['glpiactiveprofile']['interface'] == 'central') {
             if ($isadmin) {
-                if (Session::haveRight('transfer', READ) && Session::isMultiEntitiesMode()
+                if (Session::haveRight(\Transfer::$rightname, READ) && Session::isMultiEntitiesMode()
                 ) {
                     $actions['GlpiPlugin\Tasklists\Task' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
                         'Transfer',
@@ -1542,7 +1542,7 @@ class Task extends CommonDBTM
         if (!Session::haveAccessToEntity($this->fields['entities_id'], $this->fields['is_recursive'])) {
             return false;
         }
-        if (Session::haveRight("plugin_tasklists_see_all", 1)) {
+        if (Session::haveRight(Profile::RIGHT_SEE_ALL, 1)) {
             return true;
         }
 
@@ -1588,7 +1588,7 @@ class Task extends CommonDBTM
             $criteria[] = $entities_crit;
         }
 
-        if (Session::haveRight('plugin_tasklists_see_all', 1)) {
+        if (Session::haveRight(Profile::RIGHT_SEE_ALL, 1)) {
             return $criteria;
         }
 

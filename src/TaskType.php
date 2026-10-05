@@ -58,7 +58,7 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
     // follows the configuration right, as TaskState already does; reading is kept on the user
     // right by the canView() override below, because the dropdown and the board switcher have
     // to stay readable by everyone.
-    public static $rightname = 'plugin_tasklists_config';
+    public static string $rightname = 'plugin_tasklists_config';
 
     /**
      * Read access is deliberately decoupled from $rightname: a context is both a configuration
@@ -70,7 +70,7 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
      */
     public static function canView(): bool
     {
-        return (bool) Session::haveRight('plugin_tasklists', READ);
+        return (bool) Session::haveRight(Task::$rightname, READ);
     }
 
     /**
@@ -340,8 +340,8 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
 
                     $right = 0;
                     if (($data['users_id'] == Session::getLoginUserID()
-                     && Session::haveRight("plugin_tasklists", UPDATE))
-                    || Session::haveRight("plugin_tasklists_see_all", 1)) {
+                     && Session::haveRight(Task::$rightname, UPDATE))
+                    || Session::haveRight(Profile::RIGHT_SEE_ALL, 1)) {
                         $right = 1;
                     }
 

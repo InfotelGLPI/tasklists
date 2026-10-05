@@ -49,7 +49,7 @@ class TypeVisibility extends CommonDBTM
     // this property - let any task author grant his own groups access to any context, and the
     // massive actions of the tab let him revoke anyone else's. It is a configuration object and
     // follows the configuration right, like TaskType and TaskState.
-    public static $rightname = 'plugin_tasklists_config';
+    public static string $rightname = 'plugin_tasklists_config';
 
     /**
      * @param int $nb

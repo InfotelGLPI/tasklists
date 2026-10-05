@@ -39,7 +39,7 @@ $kanban = new Kanban();
 // The refusal used to come after Html::header(), so an unauthorised caller was served a
 // complete page shell - menu, breadcrumb, title - before the 403, which both blurs the refusal
 // and hands out a little enumeration. Nothing is emitted before the right is settled.
-if (!$kanban->canView() && !Session::haveRight("config", CREATE)) {
+if (!$kanban->canView() && !Session::haveRight(\Config::$rightname, CREATE)) {
     throw new AccessDeniedHttpException();
 }
 

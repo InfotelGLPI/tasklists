@@ -37,7 +37,7 @@ use Session;
  */
 class Menu extends CommonGLPI
 {
-    public static $rightname = 'plugin_tasklists';
+    public static string $rightname = 'plugin_tasklists';
 
     /**
      * @param int $nb

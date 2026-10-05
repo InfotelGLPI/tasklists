@@ -43,7 +43,7 @@ use Session;
  */
 class TaskState extends CommonDropdown
 {
-    public static $rightname = 'plugin_tasklists_config';
+    public static string $rightname = 'plugin_tasklists_config';
 
     // canCreate(), canUpdate(), canDelete() and canPurge() used to be overridden here, all
     // four returning Session::haveRight(static::$rightname, READ). The right was registered

@@ -43,7 +43,7 @@ $task = new Task();
 // Every branch of this controller writes, so the right tested is UPDATE, not READ. The two
 // other paths exposing the same feature already required it - Task_Comment::getTabNameForItem()
 // hides the tab unless can($id, UPDATE) and ajax/getTaskComment.php calls
-// Session::checkRight('plugin_tasklists', UPDATE) - so a read-only profile simply never saw
+// Session::checkRight(Task::$rightname, UPDATE) - so a read-only profile simply never saw
 // the tab, while the controller receiving the POST accepted it: the protection was interface
 // concealment. checkVisibility() stays, it enforces the plugin's own visibility model.
 if (!$task->can($tasks_id, UPDATE) || !$task->checkVisibility($tasks_id)) {

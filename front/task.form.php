@@ -27,12 +27,12 @@
  * --------------------------------------------------------------------------
  */
 
-Session::checkRight("plugin_tasklists", READ);
-
 use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Menu;
 use GlpiPlugin\Tasklists\Task;
 use GlpiPlugin\Tasklists\Ticket;
+
+Session::checkRight(Task::$rightname, READ);
 
 if (!isset($_GET["id"])) {
     $_GET["id"] = "";

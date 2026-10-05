@@ -37,7 +37,7 @@ if (strpos($_SERVER['PHP_SELF'], "dropdownTypeTasks.php")) {
     Html::header_nocache();
 }
 
-Session::checkRight('plugin_tasklists', UPDATE);
+Session::checkRight(Task::$rightname, UPDATE);
 
 global $DB;
 

@@ -32,7 +32,7 @@ use GlpiPlugin\Tasklists\Task;
 use GlpiPlugin\Tasklists\TaskType;
 use GlpiPlugin\Tasklists\TypeVisibility;
 
-Session::checkRight('plugin_tasklists', UPDATE);
+Session::checkRight(Task::$rightname, UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");

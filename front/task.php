@@ -37,7 +37,7 @@ $task = new Task();
 // page - header, menu, breadcrumb, title - before being told no, which confirmed the presence
 // of the plugin and handed over the menu of his session. Nothing is emitted before the right is
 // settled, as front/kanban.php already does.
-if (!$task->canView() && !Session::haveRight("config", CREATE)) {
+if (!$task->canView() && !Session::haveRight(\Config::$rightname, CREATE)) {
     throw new AccessDeniedHttpException();
 }
 

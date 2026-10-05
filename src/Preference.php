@@ -41,7 +41,7 @@ use Session;
  */
 class Preference extends CommonDBTM
 {
-    public static $rightname = 'plugin_tasklists';
+    public static string $rightname = 'plugin_tasklists';
 
     /**
      * @param CommonGLPI $item
@@ -51,7 +51,7 @@ class Preference extends CommonDBTM
      */
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if (Session::haveRight('plugin_tasklists', READ)
+        if (Session::haveRight(Task::$rightname, READ)
           && $item->getType() == 'Preference') {
             return self::createTabEntry(__('Tasks list', 'tasklists'));
         }

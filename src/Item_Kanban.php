@@ -34,11 +34,14 @@ use Session;
 
 class Item_Kanban extends CommonDBRelation
 {
-    public static $itemtype_1         = 'itemtype';
-    public static $items_id_1         = 'items_id';
-    public static $itemtype_2         = 'User';
-    public static $items_id_2         = 'users_id';
-    public static $checkItem_1_Rights = 'plugin_tasklists';
+    public static ?string $itemtype_1      = 'itemtype';
+    public static ?string $items_id_1      = 'items_id';
+    public static ?string $itemtype_2      = 'User';
+    public static ?string $items_id_2      = 'users_id';
+    // Was the string 'plugin_tasklists', which the core only compared to its int constants:
+    // matching neither DONT_CHECK nor HAVE_VIEW, it behaved as HAVE_SAME_RIGHT_ON_ITEM. GLPI 12
+    // types the property as int, so that effective behaviour is now spelled out.
+    public static int $checkItem_1_Rights  = self::HAVE_SAME_RIGHT_ON_ITEM;
 
 
     /**

@@ -34,7 +34,7 @@ use GlpiPlugin\Tasklists\Task;
 global $CFG_GLPI;
 $task = new Task();
 
-if ($task->canView() || Session::haveRight("config", UPDATE)) {
+if ($task->canView() || Session::haveRight(\Config::$rightname, UPDATE)) {
     Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
     // Default the flag when the controller is reached without ?add=... : other

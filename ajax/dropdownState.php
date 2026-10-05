@@ -35,7 +35,7 @@ use GlpiPlugin\Tasklists\TypeVisibility;
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkRight('plugin_tasklists', UPDATE);
+Session::checkRight(Task::$rightname, UPDATE);
 
 if (isset($_POST["plugin_tasklists_tasktypes_id"])) {
 

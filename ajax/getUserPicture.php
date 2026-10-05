@@ -30,11 +30,12 @@
 use Glpi\Exception\Http\BadRequestHttpException;
 
 use function Safe\json_encode;
+use GlpiPlugin\Tasklists\Task;
 
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkRight('plugin_tasklists', READ);
+Session::checkRight(Task::$rightname, READ);
 
 if (!isset($_REQUEST['users_id'])) {
     throw new BadRequestHttpException("Missing users_id parameter");

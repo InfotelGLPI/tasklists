@@ -354,68 +354,54 @@ function plugin_tasklists_getDropdown()
 /**
  * @param $type
  *
- * @return string
+ * @return array WHERE criteria (empty array = no restriction)
  */
 function plugin_tasklists_addDefaultWhere($type)
 {
-
     switch ($type) {
         case Task::class:
-            // addDefaultWhere must return a raw SQL fragment (GLPI search API), so the
-            // query-builder cannot be used here. Enforce the "session integers only"
-            // invariant by casting every interpolated id to (int): a future change that
-            // routed client data through this string could not turn it into an injection.
-            $who = (int) Session::getLoginUserID();
-            if (!Session::haveRight("plugin_tasklists_see_all", 1)) {
-                // $_SESSION['glpigroups'] is not always set - it is absent from the API and CLI
-                // sessions and from a session that has not been through the entity switch - and
-                // count(null) has been a fatal TypeError since PHP 8.0, not a warning. This hook
-                // sits on the search engine, so the whole task search answered a 500 instead of
-                // falling back on the "no group" branch right below. Every other read of the key
-                // in the plugin already defaults it (src/Task.php:1548).
-                $session_groups = $_SESSION['glpigroups'] ?? [];
-                if (count($session_groups)
-                    //                && Session::haveRight("plugin_tasklists_my_groups", 1)
-                ) {
-                    $first_groups = true;
-                    $groups       = "";
-                    foreach ($session_groups as $val) {
-                        if (!$first_groups) {
-                            $groups .= ",";
-                        } else {
-                            $first_groups = false;
-                        }
-                        $groups .= (int) $val;
-                    }
-                    // Mirror Task::checkVisibility() exactly: visibility=1 -> owner/requester
-                    // only; visibility=2 -> owner/requester/member of the task's group;
-                    // visibility=3 -> everyone. Previously the group clause was applied
-                    // regardless of visibility (leaking a private task that happened to carry
-                    // a shared group) and the requester relationship was ignored, so the
-                    // search grid diverged from the object-level checkVisibility() guard.
-                    return " (
-               (`glpi_plugin_tasklists_tasks`.`visibility` = '1'
-                  AND (`glpi_plugin_tasklists_tasks`.`users_id` = '$who'
-                       OR `glpi_plugin_tasklists_tasks`.`users_id_requester` = '$who'))
-               OR (`glpi_plugin_tasklists_tasks`.`visibility` = '2'
-                  AND (`glpi_plugin_tasklists_tasks`.`users_id` = '$who'
-                       OR `glpi_plugin_tasklists_tasks`.`users_id_requester` = '$who'
-                       OR `glpi_plugin_tasklists_tasks`.`groups_id` IN ($groups)))
-               OR `glpi_plugin_tasklists_tasks`.`visibility` = '3'
-            ) ";
-                } else { // No groups: visibility=2 group access cannot apply, only owner/requester
-                    return " (
-               (`glpi_plugin_tasklists_tasks`.`visibility` IN ('1', '2')
-                  AND (`glpi_plugin_tasklists_tasks`.`users_id` = '$who'
-                       OR `glpi_plugin_tasklists_tasks`.`users_id_requester` = '$who'))
-               OR `glpi_plugin_tasklists_tasks`.`visibility` = '3'
-            ) ";
-                }
+            if (Session::haveRight(Profile::RIGHT_SEE_ALL, 1)) {
+                return [];
             }
-    }
-    return "";
-}
 
+            // Mirror Task::checkVisibility() exactly: visibility=1 -> owner/requester only;
+            // visibility=2 -> owner/requester/member of the task's group; visibility=3 ->
+            // everyone. GLPI 12 accepts criteria here, so values are bound parameters.
+            $table = Task::getTable();
+            $who   = (int) Session::getLoginUserID();
+            $mine  = [
+                'OR' => [
+                    "$table.users_id"           => $who,
+                    "$table.users_id_requester" => $who,
+                ],
+            ];
+
+            // $_SESSION['glpigroups'] is not always set - it is absent from the API and CLI
+            // sessions and from a session that has not been through the entity switch.
+            $session_groups = array_map('intval', $_SESSION['glpigroups'] ?? []);
+            if (count($session_groups)) {
+                return [
+                    'OR' => [
+                        ["$table.visibility" => 1] + $mine,
+                        [
+                            "$table.visibility" => 2,
+                            'OR'                => $mine['OR'] + ["$table.groups_id" => $session_groups],
+                        ],
+                        ["$table.visibility" => 3],
+                    ],
+                ];
+            }
+
+            // No groups: visibility=2 group access cannot apply, only owner/requester
+            return [
+                'OR' => [
+                    ["$table.visibility" => [1, 2]] + $mine,
+                    ["$table.visibility" => 3],
+                ],
+            ];
+    }
+    return [];
+}
 ////// SEARCH FUNCTIONS ///////() {
 /*
 function plugin_tasklists_getAddSearchOptions($itemtype) {
@@ -423,7 +409,7 @@ function plugin_tasklists_getAddSearchOptions($itemtype) {
    $sopt=[];
 
    if (in_array($itemtype, Task::getTypes(true))) {
-      if (Session::haveRight("plugin_tasklists",READ)) {
+      if (Session::haveRight(Task::$rightname,READ)) {
 
          $sopt[4411]['table']='glpi_plugin_tasklists_tasktypes';
          $sopt[4411]['field']='name';

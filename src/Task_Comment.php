@@ -49,7 +49,7 @@ class Task_Comment extends CommonDBTM
     // is an operation on its task, so the plugin right is declared here and the item-level
     // tests are delegated to the parent task below: can() then enforces the global right, the
     // entity of the task and the plugin's own visibility model in one call.
-    public static $rightname = 'plugin_tasklists';
+    public static string $rightname = 'plugin_tasklists';
 
     public static function getTypeName($nb = 0)
     {

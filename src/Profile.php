@@ -41,7 +41,11 @@ use Session;
  */
 class Profile extends \Profile
 {
-    public static $rightname = "profile";
+    public static string $rightname = "profile";
+
+    // Secondary plugin rights; the main ones are Task::$rightname and TaskType::$rightname
+    public const RIGHT_SEE_ALL   = 'plugin_tasklists_see_all';
+    public const RIGHT_MY_GROUPS = 'plugin_tasklists_my_groups';
 
     /**
      * @param CommonGLPI $item

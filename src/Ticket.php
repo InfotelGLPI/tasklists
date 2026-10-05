@@ -44,7 +44,7 @@ use Toolbox;
  */
 class Ticket extends CommonDBTM
 {
-    public static $rightname = 'plugin_tasklists';
+    public static string $rightname = 'plugin_tasklists';
 
     /**
      * The link table carries no entities_id, so checkEntity() is a no-op and can($id, PURGE)

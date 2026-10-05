@@ -30,7 +30,7 @@
 use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Tasklists\Task;
 
-Session::checkRight('plugin_tasklists', UPDATE);
+Session::checkRight(Task::$rightname, UPDATE);
 
 // IDOR write: these branches only checked the global plugin right and then updated an
 // arbitrary $_POST['data_id'], so a user could change the percent/priority/archive flag

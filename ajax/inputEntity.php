@@ -28,11 +28,12 @@
  */
 
 use Glpi\Exception\Http\AccessDeniedHttpException;
+use GlpiPlugin\Tasklists\Task;
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkRight('plugin_tasklists', UPDATE);
+Session::checkRight(Task::$rightname, UPDATE);
 
 if (isset($_POST["entities_id"])) {
     // Every other entry point of the plugin types the posted entity and confronts it with the

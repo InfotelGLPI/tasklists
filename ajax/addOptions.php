@@ -29,11 +29,12 @@
 
 use Glpi\Exception\Http\BadRequestHttpException;
 use GlpiPlugin\Tasklists\TaskType;
+use GlpiPlugin\Tasklists\Task;
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkRight('plugin_tasklists', UPDATE);
+Session::checkRight(Task::$rightname, UPDATE);
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     // Get AJAX input and load it into $_REQUEST
     $input = file_get_contents('php://input');
@@ -47,7 +48,7 @@ $action = $_REQUEST['action'];
 
 // Security (CSRF bypass): the dispatch reads its action from $_REQUEST, which merges $_GET and
 // $_POST, and two of the branches below are writes - they reassign $_SESSION["archive"] and
-// $_SESSION["usersKanban"]. GLPI 11's CheckCsrfListener only validates the token on non-GET
+// $_SESSION["usersKanban"]. GLPI's CheckCsrfListener only validates the request on non-GET
 // requests, so a state-changing action reachable over GET escapes CSRF protection entirely: an
 // <img> tag on a third-party page rewrote the Kanban filters of any authenticated visitor, and
 // the value persisted in his session. Reads stay on $_REQUEST, writes are restricted to POST.
