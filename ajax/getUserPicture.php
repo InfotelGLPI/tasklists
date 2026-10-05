@@ -28,9 +28,9 @@
  */
 
 use Glpi\Exception\Http\BadRequestHttpException;
+use GlpiPlugin\Tasklists\Task;
 
 use function Safe\json_encode;
-use GlpiPlugin\Tasklists\Task;
 
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
