@@ -77,7 +77,9 @@ F_ARGS_SN="1,2"
 find "$WORKING_DIR/templates" -type f -name "*.twig" | while read -r file; do
 
     # Convertit les blocs Twig {{ ... }} en pseudo-code PHP pour xgettext
-    perl -0pe 's/\{\{\s*(.*?)\s*\}\}/<?php \1; ?>/g' "$file" \
+    # The "{% %}" tags are converted too: a string translated in "{% set label = __('...') %}"
+    # was otherwise not extracted, and ended up obsolete (#~) in the .po files.
+    perl -0pe 's/\{\{\s*(.*?)\s*\}\}/<?php $1; ?>/gism; s/\{%-?(.*?)-?%\}/<?php $1; ?>/gism' "$file" \
     | xgettext -o "$OUTPUT_FILE" -L PHP \
         --add-comments=TRANS \
         --from-code=UTF-8 \
