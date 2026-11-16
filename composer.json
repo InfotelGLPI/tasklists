@@ -1,12 +1,12 @@
 {
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.3"
     },
     "config": {
         "autoloader-suffix": "PluginTasklists",
         "optimize-autoloader": true,
         "platform": {
-            "php": "8.2.99"
+            "php": "8.3.99"
         },
         "sort-packages": true
     },

@@ -1774,7 +1774,7 @@ class GLPIKanbanRights {
                <i class="${self.supported_itemtypes[itemtype]['icon']}"></i>
                ${self.supported_itemtypes[itemtype]['name']}
             </span>`;
-            form_header += "<i class='ti ti-x' title='Close' onclick='$(this).parent().parent().remove()'></i></div>";
+            form_header += "<i class='ti ti-x' title='Close' data-tasklists-close-form></i></div>";
             add_form += form_header;
 
             add_form += "<div class='kanban-item-content'>";
@@ -1836,7 +1836,7 @@ class GLPIKanbanRights {
                    <i class="${self.supported_itemtypes[itemtype]['icon']}"></i>
                    ${self.supported_itemtypes[itemtype]['name']}
                 </span>
-                <i class='ti ti-x' title='Close' onclick='$(this).parent().parent().remove()'></i>
+                <i class='ti ti-x' title='Close' data-tasklists-close-form></i>
                 <div>
                     <span class="kanban-item-subtitle">${__("One item per line")}</span>
                  </div>
@@ -2868,3 +2868,9 @@ class GLPIKanbanRights {
         initParams(arguments);
     };
 })();
+
+//INFOTEL: close button of the add forms, formerly onclick='$(this).parent().parent().remove()'
+// (no inline handler: Content Security Policy). Delegated, so bound once for every form built.
+$(document).on('click', '[data-tasklists-close-form]', function () {
+    $(this).parent().parent().remove();
+});

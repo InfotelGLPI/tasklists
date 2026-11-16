@@ -488,7 +488,12 @@ class TaskType extends CommonTreeDropdown implements KanbanInterface
                         $rich_content = RichText::getTextFromHtml($data['content'], false, true);
                     }
 
-                    $title = Html::link($data['name'], $itemtype::getFormURLWithID($data['id'])) . $nbcomments;
+                    // Same markup as the former Html::link(), deprecated in GLPI 12
+                    $title = sprintf(
+                        '<a href="%s">%s</a>',
+                        htmlescape($itemtype::getFormURLWithID($data['id'])),
+                        htmlescape($data['name']),
+                    ) . $nbcomments;
                     //               $ID    = $data['id'];
                     //               if ($finished == 1 && $archived == 0) {
                     //                  $title .= "&nbsp;<a id='archivetask$ID' href='#' title='" . __('Archive this task', 'tasklists') . "'><i class='ti ti-archive'></i></a>";

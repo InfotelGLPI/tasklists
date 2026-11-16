@@ -47,11 +47,18 @@ Html::header(Task::getTypeName(2), '', "helpdesk", Menu::class);
 
 //AS module for SearchTokenizer
 //   echo "<script type='module' src='../../../js/modules/Kanban/Kanban.js'></script>";
-echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchTokenizerResult.js'></script>";
-echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchToken.js'></script>";
-echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchTokenizer.js'></script>";
-echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/SearchTokenizer/SearchInput.js'></script>";
-echo "<script src='" . PLUGIN_TASKLISTS_WEBDIR . "/lib/kanban/js/Kanban.js'></script>";
+// Html::script() adds the nonce of the Content Security Policy, which a <script> tag echoed by
+// hand lacks. It prefixes the root_doc itself, hence the path without it (PLUGIN_TASKLISTS_WEBDIR
+// already holds it), and the unminified files, as loaded before.
+foreach ([
+    'SearchTokenizer/SearchTokenizerResult.js',
+    'SearchTokenizer/SearchToken.js',
+    'SearchTokenizer/SearchTokenizer.js',
+    'SearchTokenizer/SearchInput.js',
+    'Kanban.js',
+] as $kanban_script) {
+    echo Html::script('/plugins/tasklists/lib/kanban/js/' . $kanban_script, ['version' => PLUGIN_TASKLISTS_VERSION], false);
+}
 
 Html::requireJs('sortable');
 //   Html::requireJs('kanban');
