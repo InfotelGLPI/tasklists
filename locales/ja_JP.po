@@ -11,11 +11,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 16:03+0000\n"
+"POT-Creation-Date: 2026-11-16 09:48+0000\n"
 "PO-Revision-Date: 2020-11-02 16:28+0000\n"
 "Last-Translator: INOUE Daisuke, 2026\n"
-"Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/"
-"teams/79675/ja_JP/)\n"
+"Language-Team: Japanese (Japan) (https://app.transifex.com/infotelGLPI/teams/"
+"79675/ja_JP/)\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,8 +45,7 @@ msgstr "タスクを更新しました"
 msgid "Add"
 msgstr "追加"
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:45
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:42
+#: ⁨standard input⁩:42 ⁨standard input⁩:45
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2627
 msgctxt "button"
 msgid "Add"
@@ -56,15 +55,15 @@ msgstr "追加"
 msgid "Add a column from existing status"
 msgstr "既存の状態から項目を追加"
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/list.html.twig:56
+#: ⁨standard input⁩:56
 msgid "Add a comment"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:33
+#: ⁨standard input⁩:33
 msgid "Add a group"
 msgstr "グループを追加"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:68
+#: ⁨standard input⁩:68
 msgid "Add a template"
 msgstr ""
 
@@ -72,7 +71,7 @@ msgstr ""
 msgid "Add column"
 msgstr "項目追加"
 
-#: src/Dashboard.php:196 src/Dashboard.php:201 src/Ticket.php:221
+#: src/Ticket.php:221 src/Dashboard.php:196 src/Dashboard.php:201
 msgid "Add task"
 msgstr "タスクの追加"
 
@@ -94,8 +93,7 @@ msgstr "この状態のすべてのタスクをアーカイブ"
 msgid "Archive this task"
 msgstr "このタスクをアーカイブ"
 
-#: src/Task.php:210 ajax/addOptions.php:65
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:87
+#: src/Task.php:210 ajax/addOptions.php:65 ⁨standard input⁩:87
 msgid "Archived"
 msgstr "保管済み"
 
@@ -111,16 +109,16 @@ msgstr "このタスクをアーカイブします。よろしいですか？"
 msgid "At creation, update, removal of a task"
 msgstr "タスクの作成、更新、削除時"
 
-#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:34
+#: ⁨standard input⁩:34
 msgid "Automatic refreshing of tasklist"
 msgstr "タスクリストの自動画面更新"
 
 #: src/Task.php:989 src/Task.php:1066 src/Task.php:1412 src/TaskType.php:236
-#: src/TaskType.php:659
+#: src/TaskType.php:664
 msgid "Backlog"
 msgstr "バックログ"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:39
+#: ⁨standard input⁩:39
 msgid "Blank Template"
 msgstr ""
 
@@ -128,20 +126,20 @@ msgstr ""
 msgid "Bulk add"
 msgstr "一括追加"
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:48
+#: ⁨standard input⁩:48
 msgctxt "button"
 msgid "Cancel"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:32
+#: ⁨standard input⁩:32
 msgid "Choose a template"
 msgstr "テンプレートを選択してください"
 
-#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:39
+#: ⁨standard input⁩:39
 msgid "Color"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:36
+#: ⁨standard input⁩:36
 msgid "Comment"
 msgstr ""
 
@@ -149,15 +147,13 @@ msgstr ""
 msgid "Configure contexts and statuses"
 msgstr "コンテキストと状態の設定"
 
-#: src/Task.php:109 src/TaskState.php:181 src/Dashboard.php:114
-#: src/TaskType.php:84
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:32
-#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:52
+#: src/Task.php:109 src/Dashboard.php:114 src/TaskType.php:84
+#: src/TaskState.php:181 ⁨standard input⁩:32 ⁨standard input⁩:52
 msgid "Context"
 msgid_plural "Contexts"
 msgstr[0] "コンテキスト"
 
-#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:29
+#: ⁨standard input⁩:29
 msgid "Context by default"
 msgstr "デフォルトのコンテキスト"
 
@@ -171,28 +167,27 @@ msgstr "状態を作成"
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:510
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:800
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/Kanban.js:2598
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:443
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:443
 msgid "Delete"
 msgstr "削除"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:80
-#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:34
+#: ⁨standard input⁩:80 ⁨standard input⁩:34
 msgid "Description"
 msgstr ""
 
 #: src/Task.php:147 src/Dashboard.php:120 src/TaskType.php:328
 #: src/NotificationTargetTask.php:178 src/NotificationTargetTask.php:228
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:54
+#: ⁨standard input⁩:54
 msgid "Due date"
 msgstr "期限"
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:43
+#: ⁨standard input⁩:43
 msgctxt "button"
 msgid "Edit"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:32
+#: ⁨standard input⁩:32
 msgid "Edit comment"
 msgstr ""
 
@@ -201,12 +196,12 @@ msgstr ""
 msgid "Error"
 msgstr "エラー"
 
-#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:678
 #: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.min.js:60
+#: /home/runner/work/tasklists/tasklists/public/lib/kanban/js/SearchTokenizer/SearchInput.js:678
 msgid "Exclude"
 msgstr "除外"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:45
+#: ⁨standard input⁩:45
 msgid "Existing client"
 msgstr "既存のクライアント"
 
@@ -218,7 +213,7 @@ msgstr "チームメンバーの追加に失敗"
 msgid "Failed to remove team member"
 msgstr "チームメンバーの削除に失敗"
 
-#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:44
+#: ⁨standard input⁩:44
 msgid "Finished state"
 msgstr ""
 
@@ -226,8 +221,7 @@ msgstr ""
 msgid "Go to"
 msgstr "行先"
 
-#: /home/runner/work/tasklists/tasklists/templates/typevisibility/add_group.html.twig:37
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:73
+#: ⁨standard input⁩:73 ⁨standard input⁩:37
 msgid "Group"
 msgstr ""
 
@@ -260,16 +254,15 @@ msgstr "リンクしているチケット"
 msgid "More"
 msgstr "さらに..."
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:30
-#: /home/runner/work/tasklists/tasklists/templates/taskstate/form.html.twig:29
+#: ⁨standard input⁩:30 ⁨standard input⁩:29
 msgid "Name"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/form.html.twig:32
+#: ⁨standard input⁩:32
 msgid "New comment"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/comment/tab.html.twig:37
+#: ⁨standard input⁩:37
 msgid "No comments"
 msgstr ""
 
@@ -291,20 +284,19 @@ msgid "Or add a new status"
 msgstr "または新しい状態を追加"
 
 #: src/Task.php:218 src/NotificationTargetTask.php:182
-#: src/NotificationTargetTask.php:232
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:52
+#: src/NotificationTargetTask.php:232 ⁨standard input⁩:52
 msgid "Other client"
 msgstr "その他のクライアント"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:68
+#: ⁨standard input⁩:68
 msgid "Percent done"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:39
+#: ⁨standard input⁩:39
 msgid "Planned duration"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:37
+#: ⁨standard input⁩:37
 msgid "Priority"
 msgstr ""
 
@@ -312,7 +304,7 @@ msgstr ""
 msgid "Purge"
 msgstr "抹消"
 
-#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:39
+#: ⁨standard input⁩:39
 msgid "Refresh every "
 msgstr "更新間隔"
 
@@ -320,16 +312,16 @@ msgstr "更新間隔"
 msgid "Regex"
 msgstr "正規表現"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:59
+#: ⁨standard input⁩:59
 msgid "Requester"
 msgid_plural "Requesters"
 msgstr[0] ""
 
-#: /home/runner/work/tasklists/tasklists/templates/kanban.html.twig:49
+#: ⁨standard input⁩:49
 msgid "Role"
 msgstr "役割"
 
-#: /home/runner/work/tasklists/tasklists/templates/profile.html.twig:34
+#: ⁨standard input⁩:34
 msgctxt "button"
 msgid "Save"
 msgstr ""
@@ -346,8 +338,7 @@ msgstr "検索または結果フィルター"
 msgid "See and update all tasks"
 msgstr "すべてのタスクを表示・更新"
 
-#: src/TaskState.php:64
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:75
+#: src/TaskState.php:64 ⁨standard input⁩:75
 msgid "Status"
 msgid_plural "Statuses"
 msgstr[0] "状態"
@@ -356,16 +347,16 @@ msgstr[0] "状態"
 msgid "Tables"
 msgstr "テーブル"
 
-#: setup.php:105 src/Preference.php:56 src/Profile.php:61 src/Dashboard.php:72
-#: src/Dashboard.php:210 src/Dashboard.php:215 src/Menu.php:49
+#: setup.php:105 src/Profile.php:61 src/Menu.php:49 src/Dashboard.php:72
+#: src/Dashboard.php:210 src/Dashboard.php:215 src/Preference.php:56
 msgid "Tasks list"
 msgstr "タスクリスト"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:66
+#: ⁨standard input⁩:66
 msgid "Technician"
 msgstr ""
 
-#: /home/runner/work/tasklists/tasklists/templates/task/list_templates.html.twig:32
+#: ⁨standard input⁩:32
 msgid "Templates"
 msgstr ""
 
@@ -408,7 +399,7 @@ msgstr ""
 msgid "Update priority of task"
 msgstr "タスクの優先度を更新"
 
-#: /home/runner/work/tasklists/tasklists/templates/task/form.html.twig:85
+#: ⁨standard input⁩:85
 msgid "Visibility"
 msgstr ""
 
@@ -440,7 +431,7 @@ msgstr "この状態のタスクを保管できません"
 msgid "You don't have the right to see any context"
 msgstr "コンテキストを表示する権限がありません"
 
-#: /home/runner/work/tasklists/tasklists/templates/preference/form.html.twig:40
+#: ⁨standard input⁩:40
 msgid "minute(s)"
 msgstr "分"
 
